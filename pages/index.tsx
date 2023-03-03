@@ -13,14 +13,14 @@ const junk = {
 
 const junk2 = {
   height: "100vh",
-  backgroundColor: "rgba(3, 3, 3, 0.9)",
+  backgroundColor: "rgba(0, 0, 0, 0.9)",
 };
 
 const Home: NextPage = () => {
   return (
     <>
       <Navbar />
-      <Box bg={"rgba(10, 10, 10, 0.8)"} sx={landingTierListContainerSx}>
+      <Box bg="black" sx={landingTierListContainerSx}>
         {/* TODO: tweak placement with media queries, tweak colors */}
         <LandingTierListImage />
       </Box>
