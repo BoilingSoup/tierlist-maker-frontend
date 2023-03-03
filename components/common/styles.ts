@@ -10,3 +10,11 @@ export const navTextSx = (): CSSObject => ({
   color: "white",
   margin: "auto 0",
 });
+
+export const landingTierListContainerSx = (): CSSObject => ({
+  position: "absolute",
+  height: "80vh",
+  width: "100%",
+  zIndex: -1,
+  overflow: "hidden",
+});

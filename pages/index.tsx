@@ -1,23 +1,29 @@
 import { Navbar } from "../components/common/Navbar";
 import type { NextPage } from "next";
 import { Box, Button, Flex, Text } from "@mantine/core";
+import { LandingTierListImage } from "../components/home/LandingTierListImage";
+import { landingTierListContainerSx } from "../components/common/styles";
 
 const junk = {
   height: "80vh",
   justifyContent: "center",
   alignItems: "center",
-  backgroundColor: "gray",
+  backgroundColor: "rgba(0, 0, 0, 0.6)",
 };
 
 const junk2 = {
   height: "100vh",
-  backgroundColor: "rgba(10, 10, 10, 0.8)",
+  backgroundColor: "rgba(3, 3, 3, 0.9)",
 };
 
 const Home: NextPage = () => {
   return (
     <>
       <Navbar />
+      <Box bg={"rgba(10, 10, 10, 0.8)"} sx={landingTierListContainerSx}>
+        {/* TODO: tweak placement with media queries, tweak colors */}
+        <LandingTierListImage />
+      </Box>
       <Flex sx={junk}>
         <Button color="cyan" size="lg">
           Placeholder
