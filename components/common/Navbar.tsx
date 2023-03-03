@@ -1,6 +1,6 @@
 import { Flex, Group, Text, Burger, MediaQuery } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { logoImg } from "../../config/config";
+import { LOGO_IMG } from "../../config/config";
 import {
   displayNone,
   logoFlexSx,
@@ -18,7 +18,7 @@ export const Navbar = () => {
   return (
     <Flex sx={navbarSx} pl={navPadding}>
       <Flex sx={logoFlexSx}>
-        <img src={logoImg} width="50" height="40" />
+        <img src={LOGO_IMG} width="50" height="40" />
         <Text sx={logoTextSx} component="h1">
           Tierlist.lol
         </Text>

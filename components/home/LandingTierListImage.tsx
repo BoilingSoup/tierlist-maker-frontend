@@ -22,12 +22,17 @@ const rowCss: CSSObject = {
   padding: `${rowPaddingVal} ${rowPaddingVal} 0 ${rowPaddingVal}`,
   width: "100%",
 };
+
 const darkGray = "rgba(100, 100, 100, 0.9)";
 
-export const LandingTierListImage = () => {
+type Props = {
+  overlayAlpha: number;
+}
+
+export const LandingTierListImage = ({overlayAlpha}: Props) => {
   return (
     <>
-      <BlackOverlay alpha={0.3} />
+      <BlackOverlay alpha={overlayAlpha} />
       <Box
         pos="absolute"
         sx={{
