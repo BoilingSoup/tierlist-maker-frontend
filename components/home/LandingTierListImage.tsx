@@ -15,7 +15,15 @@ const rowCss = {
 
 const boxBorderRadius = 6;
 
-const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+const colors = [
+  "#fe7f7f",
+  "#febe7e",
+  "#fefe7f",
+  "#7fff7f",
+  "#7fbfff",
+  "#7f7fff",
+  "#fe7ffe",
+];
 
 export const LandingTierListImage = () => {
   return (
@@ -26,10 +34,6 @@ export const LandingTierListImage = () => {
         sx={{
           width: "90%",
           maxWidth: "1200px",
-          top: 30,
-          right: 0,
-          left: 80,
-          margin: "auto",
           transform: "rotate(330deg)",
           zIndex: -2,
           backgroundColor: darkGray,

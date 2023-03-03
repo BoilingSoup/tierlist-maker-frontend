@@ -17,4 +17,7 @@ export const landingTierListContainerSx = (): CSSObject => ({
   width: "100%",
   zIndex: -1,
   overflow: "hidden",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
 });

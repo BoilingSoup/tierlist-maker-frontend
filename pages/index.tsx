@@ -21,7 +21,6 @@ const Home: NextPage = () => {
     <>
       <Navbar />
       <Box bg="black" sx={landingTierListContainerSx}>
-        {/* TODO: tweak placement with media queries, tweak colors */}
         <LandingTierListImage />
       </Box>
       <Flex sx={junk}>
