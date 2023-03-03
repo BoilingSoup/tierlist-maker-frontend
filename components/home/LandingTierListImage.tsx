@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@mantine/core";
+import { Box, CSSObject, Flex, Text } from "@mantine/core";
 import { BlackOverlay } from "../common/BlackOverlay";
 
 const darkGray = "rgba(100, 100, 100, 0.9)";
@@ -6,14 +6,13 @@ const darkGray = "rgba(100, 100, 100, 0.9)";
 const boxSize = "15vw";
 const boxMinSize = "100px";
 const boxMaxSize = "180px";
+const boxBorderRadius = 6;
 
 const rowPaddingVal = "10px";
-const rowCss = {
+const rowCss: CSSObject = {
   padding: `${rowPaddingVal} ${rowPaddingVal} 0 ${rowPaddingVal}`,
   width: "100%",
 };
-
-const boxBorderRadius = 6;
 
 const colors = [
   "#fe7f7f",
