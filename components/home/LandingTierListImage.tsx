@@ -1,19 +1,11 @@
 import { Box, CSSObject, Flex, Text } from "@mantine/core";
 import { BlackOverlay } from "../common/BlackOverlay";
 
-const darkGray = "rgba(100, 100, 100, 0.9)";
-
+// box styles
 const boxSize = "15vw";
 const boxMinSize = "100px";
 const boxMaxSize = "180px";
 const boxBorderRadius = 6;
-
-const rowPaddingVal = "10px";
-const rowCss: CSSObject = {
-  padding: `${rowPaddingVal} ${rowPaddingVal} 0 ${rowPaddingVal}`,
-  width: "100%",
-};
-
 const colors = [
   "#fe7f7f",
   "#febe7e",
@@ -23,6 +15,14 @@ const colors = [
   "#7f7fff",
   "#fe7ffe",
 ];
+
+// row styles
+const rowPaddingVal = "10px";
+const rowCss: CSSObject = {
+  padding: `${rowPaddingVal} ${rowPaddingVal} 0 ${rowPaddingVal}`,
+  width: "100%",
+};
+const darkGray = "rgba(100, 100, 100, 0.9)";
 
 export const LandingTierListImage = () => {
   return (
