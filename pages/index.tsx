@@ -2,8 +2,7 @@ import type { NextPage } from "next";
 import { Box, Button, Center, CSSObject, Text } from "@mantine/core";
 import { LandingTierListImage } from "../components/home/LandingTierListImage";
 import { landingTierListContainerSx } from "../components/common/styles";
-import Head from "next/head";
-import { SITE_NAME } from "../config/config";
+import Link from "next/link";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
@@ -27,26 +26,30 @@ const junk3: CSSObject = {
 };
 
 const Home: NextPage = () => {
+  const placeHolderText = (
+    <>
+      A{" "}
+      <Text component="i" sx={{ textDecoration: "underline" }}>
+        blazing fast
+      </Text>{" "}
+      open source tier list builder blah blah blah...
+    </>
+  );
+
   return (
     <>
-      <Head>
-        <title>{`${SITE_NAME} - Home`}</title>
-      </Head>
-
       <Box bg="black" sx={landingTierListContainerSx}>
         <LandingTierListImage overlayAlpha={0.6} />
       </Box>
       <Center sx={junk}>
         <Text component="h2" sx={junk3}>
-          A{" "}
-          <Text component="i" sx={{ textDecoration: "underline" }}>
-            blazing fast
-          </Text>{" "}
-          open source tier list builder blah blah blah...
+          {placeHolderText}
         </Text>
-        <Button color="cyan" size="lg">
-          Create Tier List
-        </Button>
+        <Link href="/create">
+          <Button component="a" color="cyan" size="lg">
+            Create Tier List
+          </Button>
+        </Link>
       </Center>
       <Box sx={junk2}>
         <Text
