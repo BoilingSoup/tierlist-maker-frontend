@@ -27,9 +27,9 @@ const darkGray = "rgba(100, 100, 100, 0.9)";
 
 type Props = {
   overlayAlpha: number;
-}
+};
 
-export const LandingTierListImage = ({overlayAlpha}: Props) => {
+export const LandingTierListImage = ({ overlayAlpha }: Props) => {
   return (
     <>
       <BlackOverlay alpha={overlayAlpha} />
@@ -47,7 +47,10 @@ export const LandingTierListImage = ({overlayAlpha}: Props) => {
           const isLast = index === colors.length - 1;
 
           return (
-            <Flex sx={isLast ? { ...rowCss, padding: rowPaddingVal } : rowCss}>
+            <Flex
+              key={color}
+              sx={isLast ? { ...rowCss, padding: rowPaddingVal } : rowCss}
+            >
               <Box
                 sx={{
                   width: boxSize,
