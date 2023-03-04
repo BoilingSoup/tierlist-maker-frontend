@@ -1,29 +1,27 @@
 import type { NextPage } from "next";
 import { Box, Button, Center, CSSObject, Text } from "@mantine/core";
 import { LandingTierListImage } from "../components/home/LandingTierListImage";
-import { landingTierListContainerSx } from "../components/common/styles";
+import {
+  landingSectionForegroundSx,
+  landingSectionTextSx,
+  landingTierListContainerSx,
+} from "../components/common/styles";
 import Link from "next/link";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
-const junk: CSSObject = {
-  textAlign: "center",
-  margin: "auto",
-  height: "80vh",
-  width: "90%",
-  maxWidth: "700px",
-  flexDirection: "column",
-};
-
 const junk2: CSSObject = {
   height: "100vh",
   backgroundColor: "rgba(0, 0, 0, 0.9)",
 };
 
-const junk3: CSSObject = {
-  fontSize: "3rem",
+const tbd = (): CSSObject => ({
+  fontSize: "2rem",
   color: "white",
-};
+  margin: 0,
+  textAlign: "center",
+  paddingTop: "20px",
+});
 
 const Home: NextPage = () => {
   const placeHolderText = (
@@ -41,8 +39,8 @@ const Home: NextPage = () => {
       <Box bg="black" sx={landingTierListContainerSx}>
         <LandingTierListImage overlayAlpha={0.6} />
       </Box>
-      <Center sx={junk}>
-        <Text component="h2" sx={junk3}>
+      <Center sx={landingSectionForegroundSx}>
+        <Text component="h2" sx={landingSectionTextSx}>
           {placeHolderText}
         </Text>
         <Link href="/create" passHref={true}>
@@ -52,15 +50,10 @@ const Home: NextPage = () => {
         </Link>
       </Center>
       <Box sx={junk2}>
-        <Text
-          component="h2"
-          sx={{ fontSize: "2rem", color: "white" }}
-          m={0}
-          align="center"
-          pt={20}
-        >
+        <Text component="h2" sx={tbd}>
           Recent Tier Lists
         </Text>
+        {/* TODO: Carousel in here ? */}
       </Box>
     </>
   );

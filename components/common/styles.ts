@@ -40,13 +40,29 @@ export const logoTextSx = (): CSSObject => ({
   paddingLeft: "1ch",
 });
 
+const landingSectionHeight = "80vh";
+
 export const landingTierListContainerSx = (): CSSObject => ({
   position: "absolute",
-  height: "80vh",
   width: "100%",
+  height: landingSectionHeight,
   zIndex: -1,
   overflow: "hidden",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+});
+
+export const landingSectionForegroundSx = (): CSSObject => ({
+  textAlign: "center",
+  margin: "auto",
+  height: landingSectionHeight,
+  width: "90%",
+  maxWidth: "700px",
+  flexDirection: "column",
+});
+
+export const landingSectionTextSx = (): CSSObject => ({
+  fontSize: "3rem",
+  color: "white",
 });
