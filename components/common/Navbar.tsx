@@ -1,8 +1,10 @@
 import { Flex, Group, Text, Burger, MediaQuery } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import Link from "next/link";
 import { LOGO_IMG } from "../../config/config";
 import {
   displayNone,
+  homeLinkStyle,
   logoFlexSx,
   logoTextSx,
   navbarSx,
@@ -17,12 +19,14 @@ export const Navbar = () => {
 
   return (
     <Flex sx={navbarSx} pl={navPadding}>
-      <Flex sx={logoFlexSx}>
-        <img src={LOGO_IMG} width="50" height="40" />
-        <Text sx={logoTextSx} component="h1">
-          Tierlist.lol
-        </Text>
-      </Flex>
+      <Link style={homeLinkStyle} href="/">
+        <Flex sx={logoFlexSx}>
+          <img src={LOGO_IMG} width="50" height="40" />
+          <Text sx={logoTextSx} component="h1">
+            Tierlist.lol
+          </Text>
+        </Flex>
+      </Link>
       <Group pr={navPadding}>
         <MediaQuery styles={displayNone} largerThan="sm">
           <Burger

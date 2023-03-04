@@ -1,7 +1,17 @@
 import { CSSObject } from "@mantine/core";
+import { CSSProperties } from "react";
 
 export const displayNone: CSSObject = {
   display: "none",
+};
+
+const marginYAuto = {
+  margin: "auto 0",
+};
+
+export const homeLinkStyle: CSSProperties = {
+  ...marginYAuto,
+  textDecoration: "none",
 };
 
 export const navbarSx = (): CSSObject => ({
@@ -17,7 +27,7 @@ export const logoFlexSx = (): CSSObject => ({
 
 const navTextCSS: CSSObject = {
   color: "white",
-  margin: "auto 0",
+  ...marginYAuto,
 };
 
 export const navLinkTextSx = (): CSSObject => ({
