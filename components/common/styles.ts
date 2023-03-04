@@ -14,10 +14,15 @@ export const homeLinkStyle: CSSProperties = {
   textDecoration: "none",
 };
 
+export const navbarHeight = "64px";
+
 export const navbarSx = (): CSSObject => ({
+  position: "fixed",
   backgroundColor: "black",
-  height: "64px",
+  height: navbarHeight,
+  width: "100%",
   justifyContent: "space-between",
+  zIndex: 2,
 });
 
 export const logoFlexSx = (): CSSObject => ({
