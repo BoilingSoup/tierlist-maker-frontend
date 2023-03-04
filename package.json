@@ -16,7 +16,8 @@
     "@mantine/next": "^6.0.0",
     "next": "13.2.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "use-debounce": "^9.0.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
