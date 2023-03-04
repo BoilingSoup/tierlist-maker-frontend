@@ -3,7 +3,6 @@ import { Box, Button, Center, CSSObject, Text } from "@mantine/core";
 import { LandingTierListImage } from "../components/home/LandingTierListImage";
 import { landingTierListContainerSx } from "../components/common/styles";
 import Link from "next/link";
-import { useIsMounted } from "../hooks/useIsMounted";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.

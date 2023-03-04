@@ -23,7 +23,7 @@ export const Navbar = () => {
         <Flex sx={logoFlexSx}>
           <img src={LOGO_IMG} width="50" height="40" />
           <Text sx={logoTextSx} component="h1">
-            Tierlist.lol
+            tierlist.lol
           </Text>
         </Flex>
       </Link>
