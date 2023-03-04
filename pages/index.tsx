@@ -3,6 +3,7 @@ import { Box, Button, Center, CSSObject, Text } from "@mantine/core";
 import { LandingTierListImage } from "../components/home/LandingTierListImage";
 import { landingTierListContainerSx } from "../components/common/styles";
 import Link from "next/link";
+import { useIsMounted } from "../hooks/useIsMounted";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
@@ -45,8 +46,8 @@ const Home: NextPage = () => {
         <Text component="h2" sx={junk3}>
           {placeHolderText}
         </Text>
-        <Link href="/create">
-          <Button component="a" color="cyan" size="lg">
+        <Link href="/create" passHref={true}>
+          <Button component="h3" color="cyan" size="lg">
             Create Tier List
           </Button>
         </Link>
