@@ -5,13 +5,14 @@ import {
   landingSectionForegroundSx,
   landingSectionTextSx,
   landingTierListContainerSx,
+  navbarHeight,
 } from "../components/common/styles";
 import Link from "next/link";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
 const junk2: CSSObject = {
-  height: "100vh",
+  height: `calc(100vh - ${navbarHeight})`,
   backgroundColor: "rgba(0, 0, 0, 0.9)",
 };
 
