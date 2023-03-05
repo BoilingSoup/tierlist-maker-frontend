@@ -1,4 +1,5 @@
 import { CSSObject } from "@mantine/core";
+import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from "../../config/config";
 
 const landingImgBg = "rgba(100, 100, 100, 0.9)";
 
@@ -48,3 +49,37 @@ export const landingImgLastRowSx = (): CSSObject => ({
   ...landingImgRowSx(),
   borderBottomRightRadius: landingImgColorBoxBorderRadius,
 });
+
+// export const carouselGeneralSx: CSSObject = {
+//   color: "white",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   marginBlock: "2rem",
+// };
+
+export const CAROUSEL_SLIDE_SIZE = "80%";
+export const CAROUSEL_THUMBNAIL_BORDER_RADIUS = 8; // px
+
+export const recentTierListSkeletonSx = (): CSSObject => ({
+  margin: "auto",
+  width: CAROUSEL_SLIDE_SIZE,
+  background: "rgba(50, 50, 50, 0.6)",
+  aspectRatio: `${THUMBNAIL_WIDTH} / ${THUMBNAIL_HEIGHT}`,
+  borderRadius: CAROUSEL_THUMBNAIL_BORDER_RADIUS,
+});
+
+// export const carouselLoadingSx = (): CSSObject => ({
+//   ...carouselGeneralSx,
+// });
+
+// export const carouselErrorSx = (): CSSObject => ({
+//   ...carouselGeneralSx,
+// });
+
+// export const carouselSlideSx = (): CSSObject => ({
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   color: "white",
+// })

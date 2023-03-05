@@ -8,6 +8,7 @@ import {
   navbarHeight,
 } from "../components/common/styles";
 import Link from "next/link";
+import { RecentTierListCarousel } from "../components/home/RecentTierListCarousel";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
@@ -54,7 +55,7 @@ const Home: NextPage = () => {
         <Text component="h2" sx={tbd}>
           Recent Tier Lists
         </Text>
-        {/* TODO: Carousel in here ? */}
+        <RecentTierListCarousel />
       </Box>
     </>
   );
