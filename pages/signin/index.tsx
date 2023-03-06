@@ -1,44 +1,22 @@
-import { Title, Flex, TextInput, Group, Button } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { Title, Flex, TextInput, Group, Button, PasswordInput } from "@mantine/core";
 import { NextPage } from "next";
-import { NAVBAR_HEIGHT } from "../../components/common/styles";
+import { authFlexProps, authTitleProps } from "../../components/auth/styles";
+import { formFlexProps, formSubmitProps } from "../../components/forms/styles";
+import useSignInForm from "../../hooks/auth/useSignInForm";
 
 const SignIn: NextPage = () => {
-  const form = useForm({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-
-    validate: {
-      username: (value) => (value !== '' ? null : 'Username is empty'),
-      password: (value) => (value.length > 2 ? null : 'Password is too short'),
-    }
-  });
+  const form = useSignInForm();
   
   return (
     <Flex
-      direction="column"
-      justify={"flex-start"}
-      align={"center"}
-      rowGap="xl"
-      sx={{
-        backgroundColor: "black",
-        color: "white",
-        height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-        ["& .mantine-TextInput-label"] : { color: "white" }
-      }}
+      {...authFlexProps}
     >
-      <Title size={50} mt="xl">
+      <Title {...authTitleProps}>
         Sign In
       </Title>
       <form onSubmit={form.onSubmit(console.log)}>
         <Flex
-          direction={"column"}
-          maw={300}
-          mx="auto"
-          mt="5rem"
-          gap={"lg"}
+          {...formFlexProps}
         >
           <TextInput
             withAsterisk
@@ -46,15 +24,15 @@ const SignIn: NextPage = () => {
             placeholder="user.name"
             {...form.getInputProps('username')}
           />
-          <TextInput
+          <PasswordInput
             withAsterisk
             label="Password"
             placeholder="password"
-            type={"password"}
+            description="Password should be at least 3 characters long"
             {...form.getInputProps('password')}
           />
 
-          <Group position="right" mt="md">
+          <Group {...formSubmitProps}>
             <Button type="submit">Submit</Button>
           </Group>
         </Flex>
