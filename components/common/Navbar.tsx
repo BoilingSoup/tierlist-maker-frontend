@@ -52,9 +52,9 @@ export const Navbar = () => {
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
             <Group>
-              <Text sx={navLinkTextSx}>Browse</Text>
-              <Text sx={navLinkTextSx}>Register</Text>
-              <Text sx={navLinkTextSx}>Login</Text>
+              <Text sx={navLinkTextSx} component="a" href="/browse">Browse</Text>
+              <Text sx={navLinkTextSx} component="a" href="/register">Register</Text>
+              <Text sx={navLinkTextSx} component="a" href="/signin">Login</Text>
             </Group>
           </MediaQuery>
         </Group>
