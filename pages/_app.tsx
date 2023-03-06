@@ -3,11 +3,11 @@ import { Navbar } from "../components/common/Navbar";
 import type { AppProps } from "next/app";
 import { SITE_NAME } from "../config/config";
 import Head from "next/head";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { queryClient } from "../lib/queryClient";
 
 export const cssCache = createEmotionCache({ key: "mantine" });
-export const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
