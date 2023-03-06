@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LOGO_IMG } from "../../config/config";
-import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseMobileMenuIfLargeScreen";
+import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
 import { displayNone, navbarHeight, navbarSx, navLinkTextSx } from "./styles";
@@ -25,9 +25,12 @@ export const Navbar = () => {
   useCloseHamburgerOnWindowResize({
     opened,
     toggle,
-    debounceMs: 20,
     breakpoint: breakpoints.sm,
   });
+
+  const closeMobileMenuHandler = () => {
+    if (opened) toggle();
+  };
 
   return (
     <>
@@ -56,7 +59,7 @@ export const Navbar = () => {
           </MediaQuery>
         </Group>
       </Flex>
-      {opened && <MobileMenu />}
+      {opened && <MobileMenu onLinkClick={closeMobileMenuHandler} />}
 
       {/**
        * Blank Box to offset all contents below Navbar because Navbar is position="fixed"

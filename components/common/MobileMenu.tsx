@@ -7,10 +7,10 @@ import {
   Text,
 } from "@mantine/core";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouterEvent } from "./hooks/useRouterEvent";
 import { navbarHeight } from "./styles";
 
-const linkCss = ({ colors }: MantineTheme): CSSObject => ({
+const linkContainerCss = ({ colors }: MantineTheme): CSSObject => ({
   color: "white",
   height: "70px",
   backgroundColor: "black",
@@ -19,11 +19,20 @@ const linkCss = ({ colors }: MantineTheme): CSSObject => ({
   },
 });
 
-export const MobileMenu = () => {
-  {
-    /* TODO: highlight the currently active route with a different color/marker */
-  }
-  const router = useRouter();
+const linkCss = {
+  width: "100%",
+  textDecoration: "none",
+};
+
+type Props = {
+  onLinkClick: () => void;
+};
+
+export const MobileMenu = ({ onLinkClick: closeMenu }: Props) => {
+  useRouterEvent({ on: "routeChangeComplete", handler: closeMenu });
+
+  /* TODO: highlight the currently active route with a different color/marker */
+  // const router = useRouter();
 
   return (
     <Box
@@ -39,27 +48,31 @@ export const MobileMenu = () => {
       }}
     >
       <Flex sx={{ flexDirection: "column" }}>
-        <Link style={{ width: "100%", textDecoration: "none" }} href="/">
-          <Center sx={linkCss}>
+        <Link style={linkCss} href="/">
+          <Center sx={linkContainerCss}>
             <Text size="xl">Home</Text>
           </Center>
         </Link>
-        <Link style={{ width: "100%", textDecoration: "none" }} href="/browse">
-          <Center sx={linkCss}>
+        <Link style={linkCss} href="/browse">
+          <Center sx={linkContainerCss}>
             <Text size="xl">Browse</Text>
           </Center>
         </Link>
-        <Link style={{ width: "100%", textDecoration: "none" }} href="/create">
-          <Center sx={linkCss}>
-            <Text size="xl">Create Tier List</Text>
+        <Link style={linkCss} href="/create">
+          <Center sx={linkContainerCss}>
+            <Text size="xl">Create New Tier List</Text>
           </Center>
         </Link>
-        <Center sx={linkCss}>
-          <Text size="xl">Sign In</Text>
-        </Center>
-        <Center sx={linkCss}>
-          <Text size="xl">Register</Text>
-        </Center>
+        <Link style={linkCss} href="/signin">
+          <Center sx={linkContainerCss}>
+            <Text size="xl">Sign In</Text>
+          </Center>
+        </Link>
+        <Link style={linkCss} href="/register">
+          <Center sx={linkContainerCss}>
+            <Text size="xl">Register</Text>
+          </Center>
+        </Link>
       </Flex>
     </Box>
   );
