@@ -20,7 +20,7 @@ export const LogoLink = ({
   height = 40,
 }: Props) => {
   return (
-    <Link style={homeLinkStyle} href={href}>
+    <Link style={homeLinkStyle} href={href} aria-label="Go to home page">
       <Flex sx={logoFlexSx}>
         <Image src={src} alt={alt} width={width} height={height} />
         <Text sx={logoTextSx} component="h1">
