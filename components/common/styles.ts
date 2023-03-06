@@ -14,12 +14,12 @@ export const homeLinkStyle: CSSProperties = {
   textDecoration: "none",
 };
 
-export const navbarHeight = "64px";
+export const NAVBAR_HEIGHT = "64px";
 
 export const navbarSx = (): CSSObject => ({
   position: "fixed",
   backgroundColor: "black",
-  height: navbarHeight,
+  height: NAVBAR_HEIGHT,
   width: "100%",
   justifyContent: "space-between",
   zIndex: 2,
@@ -70,4 +70,17 @@ export const landingSectionForegroundSx = (): CSSObject => ({
 export const landingSectionTextSx = (): CSSObject => ({
   fontSize: "3rem",
   color: "white",
+});
+
+export const mobileNavLinksOverlaySx = (): CSSObject => ({
+  position: "fixed",
+  zIndex: 1,
+  backgroundColor: "black",
+  width: "100%",
+  marginTop: NAVBAR_HEIGHT,
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+});
+
+export const mobileNavLinksContainerSx = (): CSSObject => ({
+  flexDirection: "column",
 });

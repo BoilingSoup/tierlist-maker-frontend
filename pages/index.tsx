@@ -5,7 +5,7 @@ import {
   landingSectionForegroundSx,
   landingSectionTextSx,
   landingTierListContainerSx,
-  navbarHeight,
+  NAVBAR_HEIGHT,
 } from "../components/common/styles";
 import Link from "next/link";
 import { RecentTierListCarousel } from "../components/home/RecentTierListCarousel";
@@ -13,7 +13,7 @@ import { RecentTierListCarousel } from "../components/home/RecentTierListCarouse
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
 const junk2: CSSObject = {
-  height: `calc(100vh - ${navbarHeight})`,
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   backgroundColor: "rgba(0, 0, 0, 0.9)",
 };
 
