@@ -47,7 +47,7 @@ const Home: NextPage = () => {
         </Text>
         <Link href="/create" passHref={true}>
           <Button component="h3" color="cyan" size="lg">
-            Create Tier List
+            Create New Tier List
           </Button>
         </Link>
       </Center>
