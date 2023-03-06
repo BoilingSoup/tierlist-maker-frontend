@@ -2,7 +2,7 @@
 export const LOGO_IMG = "./trollol.png";
 
 /** site name to be displayed in document.title */
-export const SITE_NAME = "Tierlist.lol";
+export const SITE_NAME = "tierlist.lol";
 
 /** API endpoint */
 export const BASE_API = process.env.BASE_API || "localhost/v1";
