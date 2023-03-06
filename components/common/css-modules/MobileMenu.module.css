@@ -1,0 +1,21 @@
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: black;
+  color: white;
+
+  height: 70px;
+  font-size: 1.2rem;
+
+  text-decoration: none;
+}
+
+.link:focus,
+.link:focus-within,
+.link:focus-visible,
+.link:hover {
+  outline: none;
+  background-color: #0c8599;
+}

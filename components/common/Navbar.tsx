@@ -12,7 +12,7 @@ import { LOGO_IMG } from "../../config/config";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
-import { displayNone, navbarHeight, navbarSx, navLinkTextSx } from "./styles";
+import { displayNone, NAVBAR_HEIGHT, navbarSx, navLinkTextSx } from "./styles";
 
 export const Navbar = () => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -65,7 +65,7 @@ export const Navbar = () => {
        * Blank Box to offset all contents below Navbar because Navbar is position="fixed"
        * (Navbar stays at top while scrolling but is not part of regular document flow.)
        **/}
-      <Box pt={navbarHeight} />
+      <Box pt={NAVBAR_HEIGHT} />
     </>
   );
 };
