@@ -8,6 +8,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import Link from "next/link";
 import { LOGO_IMG } from "../../config/config";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
 import { LogoLink } from "./LogoLink";
@@ -52,9 +53,9 @@ export const Navbar = () => {
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
             <Group>
-              <Text sx={navLinkTextSx} component="a" href="/browse">Browse</Text>
-              <Text sx={navLinkTextSx} component="a" href="/register">Register</Text>
-              <Text sx={navLinkTextSx} component="a" href="/signin">Login</Text>
+              <Text sx={navLinkTextSx} component={Link} href="/browse">Browse</Text>
+              <Text sx={navLinkTextSx} component={Link} href="/register">Register</Text>
+              <Text sx={navLinkTextSx} component={Link} href="/signin">Login</Text>
             </Group>
           </MediaQuery>
         </Group>
