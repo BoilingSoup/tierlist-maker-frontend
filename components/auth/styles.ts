@@ -11,7 +11,7 @@ export const backdropBoxSx = (): CSSObject => ({
   backgroundColor: "white",
   position: "absolute",
   transform: `rotate(60deg)`,
-  opacity: 0.2
+  opacity: 0.2,
 });
 
 export const authFlexProps: FlexProps = {

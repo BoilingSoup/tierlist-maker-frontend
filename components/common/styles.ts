@@ -74,7 +74,7 @@ export const landingSectionTextSx = (): CSSObject => ({
 
 export const mobileNavLinksOverlaySx = (): CSSObject => ({
   position: "fixed",
-  zIndex: 1,
+  zIndex: 2,
   backgroundColor: "black",
   width: "100%",
   marginTop: NAVBAR_HEIGHT,

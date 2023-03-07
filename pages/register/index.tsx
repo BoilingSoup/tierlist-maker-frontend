@@ -22,6 +22,7 @@ const Register: NextPage = () => {
           margin: "2rem",
           backgroundColor: "white",
           borderRadius: "12px",
+          zIndex: 1
         }}
       >
         <Title {...authTitleProps}>
