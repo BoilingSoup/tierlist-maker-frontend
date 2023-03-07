@@ -24,4 +24,5 @@ const SignIn: NextPage = () => {
     </Center>
   );
 };
+
 export default SignIn;
