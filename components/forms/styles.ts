@@ -4,8 +4,9 @@ export const formFlexProps: FlexProps = {
   direction: "column",
   maw: 500,
   mx: "auto",
-  mt: "5rem",
-  gap: "lg"
+  mt: "1rem",
+  p: "xl",
+  gap: "lg",
 };
 
 export const formSubmitProps: GroupProps = {
