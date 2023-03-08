@@ -9,6 +9,7 @@ import {
   formStyle,
 } from "../../components/auth/styles";
 import { FancyInput } from "../../components/forms/FancyInput";
+import { FormTabs } from "../../components/forms/FormTabs";
 import { formSubmitProps } from "../../components/forms/styles";
 import { useSignInForm } from "../../hooks/auth/useSignInForm";
 
@@ -24,6 +25,7 @@ const SignIn: NextPage = () => {
       <Box top={-300} left={200} sx={backdropBoxSx} />
       <Stack sx={formContainerSx}>
         <Title sx={authTitleSx}>Sign In</Title>
+        <FormTabs />
         <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
           <Stack sx={formContentsContainerSx}>
             <FancyInput

@@ -14,6 +14,9 @@ export const backdropBoxSx = (): CSSObject => ({
   transform: `rotate(60deg)`,
 });
 
+const formBoxShadow =
+  "0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)";
+
 export const formPageContainerSx = (): CSSObject => ({
   position: "relative",
   background: "gray",
@@ -30,11 +33,12 @@ export const formContainerSx = (): CSSObject => ({
   backgroundColor: "white",
   borderRadius: "12px",
   zIndex: 1,
+  boxShadow: formBoxShadow,
 });
 
 export const authTitleSx = (): CSSObject => ({
-  fontSize: `clamp(2rem, 6vw, 3rem)`,
-  margin: "20px",
+  fontSize: `clamp(2rem, 6vw, 2.5rem)`,
+  padding: "40px 0 10px 0",
 });
 
 export const formStyle: React.CSSProperties = {
