@@ -1,11 +1,27 @@
-import { Box, Button, Center, Group, Stack } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Stack,
+  Styles,
+  TextInputStylesNames,
+} from "@mantine/core";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
 import { formContentsContainerSx, formStyle } from "../auth/styles";
 import { FancyInput } from "./FancyInput";
-import { formSubmitProps } from "./styles";
 
-const fancyInputSx = { width: "80%", margin: "auto" };
-const formControlSx = { width: "100%", height: "60px" };
+const fancyInputSx = {
+  width: "100%",
+  margin: "auto",
+};
+const inputBoxShadow: Styles<TextInputStylesNames, Record<string, any>> = {
+  input: {
+    boxShadow: "3px 3px 4px -4px rgba(0,0,0,0.80)",
+  },
+};
+const formControlSx = {
+  width: "80%",
+  height: "85px",
+};
 
 export const RegisterForm = () => {
   const form = useRegisterForm({ enableFloatingLabel: true });
@@ -19,6 +35,7 @@ export const RegisterForm = () => {
             label="E-mail"
             type="email"
             sx={fancyInputSx}
+            styles={inputBoxShadow}
             {...form.getInputProps("email")}
           />
         </Box>
@@ -27,6 +44,7 @@ export const RegisterForm = () => {
             withAsterisk
             label="Username"
             sx={fancyInputSx}
+            styles={inputBoxShadow}
             {...form.getInputProps("username")}
           />
         </Box>
@@ -36,6 +54,7 @@ export const RegisterForm = () => {
             label="Password"
             type="password"
             sx={fancyInputSx}
+            styles={inputBoxShadow}
             {...form.getInputProps("password")}
           />
         </Box>
@@ -45,15 +64,20 @@ export const RegisterForm = () => {
             label="Confirm Password"
             type="password"
             sx={fancyInputSx}
+            styles={inputBoxShadow}
             {...form.getInputProps("confirmPassword")}
           />
         </Box>
-        <Group {...formSubmitProps}>
-          <Button type="submit">Submit</Button>
-        </Group>
-        <Center mt={60} sx={{ fontSize: "2rem" }}>
-          Oauth stuff goes here
-        </Center>
+        <Box sx={{ ...formControlSx, height: "auto" }}>
+          <Button
+            type="submit"
+            sx={{ display: "block", width: "100%" }}
+            variant="gradient"
+            gradient={{ from: "indigo", to: "cyan" }}
+          >
+            Register
+          </Button>
+        </Box>
       </Stack>
     </form>
   );

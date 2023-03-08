@@ -1,4 +1,4 @@
-import { Title, Box, Center, Stack } from "@mantine/core";
+import { Title, Box, Center, Flex } from "@mantine/core";
 import { NextPage } from "next";
 import {
   authTitleSx,
@@ -13,13 +13,16 @@ const SignIn: NextPage = () => {
   return (
     <Center sx={formPageContainerSx}>
       <Box top={10} left={-300} sx={backdropBoxSx} />
-      <Box top={200} left={-300} sx={backdropBoxSx} />
-      <Box top={-300} left={200} sx={backdropBoxSx} />
-      <Stack sx={formContainerSx}>
+      <Box top={200} right={-300} sx={backdropBoxSx} />
+      <Box bottom={-300} left={200} sx={backdropBoxSx} />
+      <Flex sx={formContainerSx}>
         <Title sx={authTitleSx}>Sign In</Title>
         <FormTabs />
         <SignInForm />
-      </Stack>
+        <Center mt={60} sx={{ fontSize: "2rem" }}>
+          Oauth stuff goes here
+        </Center>
+      </Flex>
     </Center>
   );
 };
