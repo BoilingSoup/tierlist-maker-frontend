@@ -1,58 +1,54 @@
-import { Title, Flex, TextInput, Group, Button, PasswordInput, Box } from "@mantine/core";
+import { Title, Group, Button, Box, Center, Stack } from "@mantine/core";
 import { NextPage } from "next";
-import { authFlexProps, authTitleProps, backdropBoxSx } from "../../components/auth/styles";
-import { formFlexProps, formSubmitProps } from "../../components/forms/styles";
-import useSignInForm from "../../hooks/auth/useSignInForm";
+import {
+  authTitleSx,
+  backdropBoxSx,
+  formContainerSx,
+  formContentsContainerSx,
+  formPageContainerSx,
+  formStyle,
+} from "../../components/auth/styles";
+import { FancyInput } from "../../components/forms/FancyInput";
+import { formSubmitProps } from "../../components/forms/styles";
+import { useSignInForm } from "../../hooks/auth/useSignInForm";
+
+const fancyInputSx = { width: "80%", margin: "20px" };
 
 const SignIn: NextPage = () => {
-  const form = useSignInForm();
+  const form = useSignInForm({ enableFloatingLabel: true });
 
   return (
-    <Flex
-      {...authFlexProps}
-    >
-      <Box sx={backdropBoxSx} />
-      <Box sx={backdropBoxSx} />
-      <Box sx={backdropBoxSx} />
-      <Flex
-        direction={"column"}
-        justify={"center"}
-        align={"center"}
-        sx={{
-          margin: "2rem",
-          backgroundColor: "white",
-          borderRadius: "12px",
-          zIndex: 1
-        }}
-      >
-        <Title {...authTitleProps}>
-          Sign In
-        </Title>
-        <form onSubmit={form.onSubmit(console.log)}>
-          <Flex
-            {...formFlexProps}
-          >
-            <TextInput
+    <Center sx={formPageContainerSx}>
+      <Box top={10} left={-300} sx={backdropBoxSx} />
+      <Box top={200} left={-300} sx={backdropBoxSx} />
+      <Box top={-300} left={200} sx={backdropBoxSx} />
+      <Stack sx={formContainerSx}>
+        <Title sx={authTitleSx}>Sign In</Title>
+        <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
+          <Stack sx={formContentsContainerSx}>
+            <FancyInput
               withAsterisk
               label="Username"
-              placeholder="user.name"
-              {...form.getInputProps('username')}
+              sx={fancyInputSx}
+              {...form.getInputProps("username")}
             />
-            <PasswordInput
+            <FancyInput
               withAsterisk
               label="Password"
-              placeholder="password"
-              description="Password should be at least 3 characters long"
-              {...form.getInputProps('password')}
+              type="password"
+              sx={fancyInputSx}
+              {...form.getInputProps("password")}
             />
-
             <Group {...formSubmitProps}>
               <Button type="submit">Submit</Button>
             </Group>
-          </Flex>
+            <Center mt={60} sx={{ fontSize: "2rem" }}>
+              Oauth stuff goes here
+            </Center>
+          </Stack>
         </form>
-      </Flex>
-    </Flex>
+      </Stack>
+    </Center>
   );
 };
 export default SignIn;
