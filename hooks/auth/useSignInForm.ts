@@ -1,6 +1,6 @@
 import { useForm } from "@mantine/form";
 import { useState } from "react";
-import { passwordError, usernameError } from "./errorMessages";
+import { validationRules } from "./constants";
 import { FormParam, getInputProps } from "./form-helpers";
 
 type FormFields = "username" | "password";
@@ -15,9 +15,11 @@ export const useSignInForm = ({ enableFloatingLabel }: FormParam) => {
     },
 
     validate: {
-      username: (value) => (value !== "" ? null : usernameError),
-      password: (value) => (value.length > 2 ? null : passwordError),
+      username: validationRules.username,
+      password: validationRules.password,
     },
+
+    validateInputOnBlur: true,
   });
 
   const [inputsFocusState, setInputsFocusState] = useState<InputsFocusState>({

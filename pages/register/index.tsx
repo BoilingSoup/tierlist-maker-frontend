@@ -46,7 +46,13 @@ const Register: NextPage = () => {
               sx={fancyInputSx}
               {...form.getInputProps("password")}
             />
-
+            <FancyInput
+              withAsterisk
+              label="Confirm Password"
+              type="password"
+              sx={fancyInputSx}
+              {...form.getInputProps("confirmPassword")}
+            />
             <Group {...formSubmitProps}>
               <Button type="submit">Submit</Button>
             </Group>

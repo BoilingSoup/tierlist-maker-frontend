@@ -1,9 +1,9 @@
-import { isEmail, useForm } from "@mantine/form";
+import { useForm } from "@mantine/form";
 import { useState } from "react";
-import { usernameError, emailError, passwordError } from "./errorMessages";
+import { validationRules } from "./constants";
 import { FormParam, getInputProps } from "./form-helpers";
 
-type FormFields = "email" | "username" | "password";
+type FormFields = "email" | "username" | "password" | "confirmPassword";
 type InputsFocusState = Record<FormFields, boolean>;
 type FormValues = Record<FormFields, string>;
 
@@ -13,13 +13,17 @@ export default function useRegisterForm({ enableFloatingLabel }: FormParam) {
       email: "",
       username: "",
       password: "",
+      confirmPassword: "",
     },
 
     validate: {
-      email: isEmail(emailError),
-      username: (value) => (value !== "" ? null : usernameError),
-      password: (value) => (value.length > 2 ? null : passwordError),
+      email: validationRules.email,
+      username: validationRules.username,
+      password: validationRules.password,
+      confirmPassword: validationRules.confirmPassword,
     },
+
+    validateInputOnBlur: true,
   });
 
   // Mantine useForm doesn't expose an input field's focus state. Probably for performance reasons.
@@ -28,6 +32,7 @@ export default function useRegisterForm({ enableFloatingLabel }: FormParam) {
     email: false,
     username: false,
     password: false,
+    confirmPassword: false,
   });
 
   return {
