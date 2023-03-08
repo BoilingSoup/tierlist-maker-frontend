@@ -14,11 +14,7 @@ export const backdropBoxSx = (): CSSObject => ({
   transform: `rotate(60deg)`,
 });
 
-<<<<<<< HEAD
 const FORM_BOX_SHADOW =
-=======
-const formBoxShadow =
->>>>>>> ce36460 (Move Register page form to separate component)
   "0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)";
 
 export const formPageContainerSx = (): CSSObject => ({
@@ -38,20 +34,12 @@ export const formContainerSx = (): CSSObject => ({
   backgroundColor: "white",
   borderRadius: "12px",
   zIndex: 1,
-<<<<<<< HEAD
   boxShadow: FORM_BOX_SHADOW,
-=======
-  boxShadow: formBoxShadow,
->>>>>>> ce36460 (Move Register page form to separate component)
 });
 
 export const authTitleSx = (): CSSObject => ({
   fontSize: `clamp(2rem, 6vw, 2.5rem)`,
-<<<<<<< HEAD
   margin: "30px 0 20px 0",
-=======
-  padding: "40px 0 10px 0",
->>>>>>> ce36460 (Move Register page form to separate component)
 });
 
 export const formStyle: React.CSSProperties = {
