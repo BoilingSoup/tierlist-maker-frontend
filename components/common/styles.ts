@@ -32,11 +32,20 @@ export const logoFlexSx = (): CSSObject => ({
 
 const navTextCSS: CSSObject = {
   color: "white",
+  paddingBlock: "6px",
+  paddingInline: "10px",
   ...marginYAuto,
 };
 
 export const navLinkTextSx = (): CSSObject => ({
   ...navTextCSS,
+});
+
+export const navLinkTextCurrentSx = (): CSSObject => ({
+  ...navTextCSS,
+  backgroundColor: "#15aabf",
+  color: "white",
+  borderRadius: 10
 });
 
 export const logoTextSx = (): CSSObject => ({

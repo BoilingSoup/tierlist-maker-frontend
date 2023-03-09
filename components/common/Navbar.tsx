@@ -9,16 +9,37 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { LOGO_IMG } from "../../config/config";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
-import { displayNone, NAVBAR_HEIGHT, navbarSx, navLinkTextSx } from "./styles";
+import { displayNone, NAVBAR_HEIGHT, navbarSx, navLinkTextSx, navLinkTextCurrentSx } from "./styles";
+
+enum Route {
+  Browse,
+  Register,
+  Login,
+  None
+}
 
 export const Navbar = () => {
   const [opened, { toggle }] = useDisclosure(false);
   const label = opened ? "Close navigation" : "Open navigation";
   const { breakpoints } = useMantineTheme();
+  const { pathname } = useRouter();
+  const [currentPath, setCurrentPath] = useState<Route>(Route.None);
+
+  useEffect(() => {
+    switch (pathname) {
+      case "/browse": { setCurrentPath(Route.Browse); break; }
+      case "/register": { setCurrentPath(Route.Register); break; }
+      case "/signin": { setCurrentPath(Route.Login); break; }
+      default: { setCurrentPath(Route.None); }
+    }
+  }, [pathname, currentPath]);
+
 
   /**
    * Auto-close hamburger menu if window gets bigger than Mantine's sm breakpoint.
@@ -53,9 +74,27 @@ export const Navbar = () => {
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
             <Group>
-              <Text sx={navLinkTextSx} component={Link} href="/browse">Browse</Text>
-              <Text sx={navLinkTextSx} component={Link} href="/register">Register</Text>
-              <Text sx={navLinkTextSx} component={Link} href="/signin">Login</Text>
+              <Text
+                sx={currentPath == Route.Browse ? navLinkTextCurrentSx : navLinkTextSx}
+                component={Link}
+                href="/browse"
+              >
+                Browse
+              </Text>
+              <Text
+                sx={currentPath == Route.Register ? navLinkTextCurrentSx : navLinkTextSx}
+                component={Link}
+                href="/register"
+              >
+                Register
+              </Text>
+              <Text
+                sx={currentPath == Route.Login ? navLinkTextCurrentSx : navLinkTextSx}
+                component={Link}
+                href="/signin"
+              >
+                Login
+              </Text>
             </Group>
           </MediaQuery>
         </Group>
