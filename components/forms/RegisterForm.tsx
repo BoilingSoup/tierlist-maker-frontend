@@ -5,6 +5,7 @@ import {
   formContentsContainerSx,
   formControlSx,
   formStyle,
+  formSubmitControlSx,
   formSubmitGradient,
   formSubmitSx,
   inputStyles,
@@ -56,7 +57,7 @@ export const RegisterForm = () => {
             {...form.getInputProps("confirmPassword")}
           />
         </Box>
-        <Box sx={{ ...formControlSx, height: "auto" }}>
+        <Box sx={formSubmitControlSx}>
           <Button
             type="submit"
             sx={formSubmitSx}

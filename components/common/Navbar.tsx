@@ -8,14 +8,13 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LOGO_IMG } from "../../config/config";
-import { DesktopNavLink } from "./DesktopNavLink";
+import { DesktopNavLinksGroup } from "./DesktopNavLinksGroup";
 import { convertThemeBreakpointToPx } from "./helpers";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
 import { useCurrentPath } from "./hooks/useCurrentPath";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
 import { displayNone, NAVBAR_HEIGHT, navbarSx } from "./styles";
-import { Route } from "./types";
 
 export const Navbar = () => {
   const { breakpoints } = useMantineTheme();
@@ -56,23 +55,7 @@ export const Navbar = () => {
             />
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
-            <Group>
-              <DesktopNavLink
-                href="/browse"
-                text="Browse"
-                isCurrentPath={currentPath === Route.Browse}
-              />
-              <DesktopNavLink
-                href="/register"
-                text="Register"
-                isCurrentPath={currentPath === Route.Register}
-              />
-              <DesktopNavLink
-                href="/signin"
-                text="Sign In"
-                isCurrentPath={currentPath === Route.SignIn}
-              />
-            </Group>
+            <DesktopNavLinksGroup currentPath={currentPath} />
           </MediaQuery>
         </Group>
       </Flex>

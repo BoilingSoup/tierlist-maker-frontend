@@ -58,21 +58,26 @@ export const formContentsContainerSx = (): CSSObject => ({
   height: "90%",
 });
 
-export const formControlSx = {
+export const formControlSx = (): CSSObject => ({
   width: "80%",
   height: "85px",
-};
+});
 
-export const fancyInputSx = {
+export const fancyInputSx = (): CSSObject => ({
   width: "100%",
   margin: "auto",
-};
+});
 
 export const inputStyles: Styles<TextInputStylesNames, Record<string, any>> = {
   input: {
     boxShadow: "3px 3px 6px -4px rgba(0,0,0,0.80)",
   },
 };
+
+export const formSubmitControlSx = (): CSSObject => ({
+  ...formControlSx(),
+  height: "auto",
+});
 
 export const formSubmitSx = (): CSSObject => ({
   display: "block",
