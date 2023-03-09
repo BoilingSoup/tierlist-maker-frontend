@@ -1,27 +1,15 @@
-import {
-  Box,
-  Button,
-  Stack,
-  Styles,
-  TextInputStylesNames,
-} from "@mantine/core";
+import { Box, Button, Stack } from "@mantine/core";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
-import { formContentsContainerSx, formStyle } from "../forms/styles";
+import {
+  fancyInputSx,
+  formContentsContainerSx,
+  formControlSx,
+  formStyle,
+  formSubmitGradient,
+  formSubmitSx,
+  inputStyles,
+} from "../forms/styles";
 import { FancyInput } from "./FancyInput";
-
-const fancyInputSx = {
-  width: "100%",
-  margin: "auto",
-};
-const inputBoxShadow: Styles<TextInputStylesNames, Record<string, any>> = {
-  input: {
-    boxShadow: "3px 3px 6px -4px rgba(0,0,0,0.80)",
-  },
-};
-const formControlSx = {
-  width: "80%",
-  height: "85px",
-};
 
 export const RegisterForm = () => {
   const form = useRegisterForm({ enableFloatingLabel: true });
@@ -35,7 +23,7 @@ export const RegisterForm = () => {
             label="E-mail"
             type="email"
             sx={fancyInputSx}
-            styles={inputBoxShadow}
+            styles={inputStyles}
             {...form.getInputProps("email")}
           />
         </Box>
@@ -44,7 +32,7 @@ export const RegisterForm = () => {
             withAsterisk
             label="Username"
             sx={fancyInputSx}
-            styles={inputBoxShadow}
+            styles={inputStyles}
             {...form.getInputProps("username")}
           />
         </Box>
@@ -54,7 +42,7 @@ export const RegisterForm = () => {
             label="Password"
             type="password"
             sx={fancyInputSx}
-            styles={inputBoxShadow}
+            styles={inputStyles}
             {...form.getInputProps("password")}
           />
         </Box>
@@ -64,20 +52,16 @@ export const RegisterForm = () => {
             label="Confirm Password"
             type="password"
             sx={fancyInputSx}
-            styles={inputBoxShadow}
+            styles={inputStyles}
             {...form.getInputProps("confirmPassword")}
           />
         </Box>
         <Box sx={{ ...formControlSx, height: "auto" }}>
           <Button
             type="submit"
-            sx={{
-              display: "block",
-              width: "100%",
-              boxShadow: "6px 6px 8px -4px rgba(0,0,0,0.80)",
-            }}
+            sx={formSubmitSx}
             variant="gradient"
-            gradient={{ from: "indigo", to: "cyan" }}
+            gradient={formSubmitGradient}
           >
             Register
           </Button>

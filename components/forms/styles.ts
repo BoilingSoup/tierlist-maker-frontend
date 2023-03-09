@@ -1,4 +1,10 @@
-import { CSSObject, MantineTheme } from "@mantine/core";
+import {
+  CSSObject,
+  MantineGradient,
+  MantineTheme,
+  Styles,
+  TextInputStylesNames,
+} from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 
 export const backdropBoxSx = (): CSSObject => ({
@@ -51,3 +57,30 @@ export const formContentsContainerSx = (): CSSObject => ({
   width: "90%",
   height: "90%",
 });
+
+export const formControlSx = {
+  width: "80%",
+  height: "85px",
+};
+
+export const fancyInputSx = {
+  width: "100%",
+  margin: "auto",
+};
+
+export const inputStyles: Styles<TextInputStylesNames, Record<string, any>> = {
+  input: {
+    boxShadow: "3px 3px 6px -4px rgba(0,0,0,0.80)",
+  },
+};
+
+export const formSubmitSx = (): CSSObject => ({
+  display: "block",
+  width: "100%",
+  boxShadow: "6px 6px 8px -4px rgba(0,0,0,0.80)",
+});
+
+export const formSubmitGradient: MantineGradient = {
+  from: "cyan",
+  to: "indigo",
+};
