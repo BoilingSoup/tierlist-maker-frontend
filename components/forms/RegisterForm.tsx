@@ -6,7 +6,7 @@ import {
   TextInputStylesNames,
 } from "@mantine/core";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
-import { formContentsContainerSx, formStyle } from "../auth/styles";
+import { formContentsContainerSx, formStyle } from "../forms/styles";
 import { FancyInput } from "./FancyInput";
 
 const fancyInputSx = {

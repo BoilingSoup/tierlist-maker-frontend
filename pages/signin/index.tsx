@@ -4,7 +4,7 @@ import {
   authTitleSx,
   formContainerSx,
   formPageContainerSx,
-} from "../../components/auth/styles";
+} from "../../components/forms/styles";
 import { FormPageBackground } from "../../components/forms/FormPageBackground";
 import { FormTabs } from "../../components/forms/FormTabs";
 import { SignInForm } from "../../components/forms/SignInForm";

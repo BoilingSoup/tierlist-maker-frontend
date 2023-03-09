@@ -1,4 +1,4 @@
-import { CSSObject } from "@mantine/core";
+import { CSSObject, MantineTheme } from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 
 export const backdropBoxSx = (): CSSObject => ({
@@ -33,7 +33,8 @@ export const formContainerSx = (): CSSObject => ({
   boxShadow: FORM_BOX_SHADOW,
 });
 
-export const authTitleSx = (): CSSObject => ({
+export const authTitleSx = ({ colors }: MantineTheme): CSSObject => ({
+  color: colors.dark[4],
   fontSize: `clamp(2rem, 6vw, 2.5rem)`,
   margin: "30px 0 20px 0",
 });

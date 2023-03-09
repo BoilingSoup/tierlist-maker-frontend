@@ -4,12 +4,10 @@ import {
   authTitleSx,
   formContainerSx,
   formPageContainerSx,
-} from "../../components/auth/styles";
+} from "../../components/forms/styles";
 import { FormPageBackground } from "../../components/forms/FormPageBackground";
 import { FormTabs } from "../../components/forms/FormTabs";
 import { RegisterForm } from "../../components/forms/RegisterForm";
-
-const fancyInputSx = { width: "80%", margin: "20px" };
 
 const Register: NextPage = () => {
   return (

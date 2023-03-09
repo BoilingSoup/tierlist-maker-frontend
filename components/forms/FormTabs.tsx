@@ -1,14 +1,20 @@
-import { Tabs } from "@mantine/core";
+import { Tabs, useMantineTheme } from "@mantine/core";
 import { IconPencil, IconUserPlus } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 
 export const FormTabs = () => {
+  const theme = useMantineTheme();
   const router = useRouter();
 
   return (
     <Tabs
       value={router.pathname}
       onTabChange={(value) => router.push(`${value}`)}
+      styles={{
+        tab: {
+          color: theme.colors.dark[3],
+        },
+      }}
     >
       <Tabs.List>
         <Tabs.Tab value={"/register"} icon={<IconUserPlus size="0.8rem" />}>
