@@ -1,17 +1,13 @@
 import { CSSObject } from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 
-const backdrop: CSSObject = {
-  background: "linear-gradient(60deg, cyan, hotpink)",
-};
-
 export const backdropBoxSx = (): CSSObject => ({
   position: "absolute",
   height: 400,
   width: 400,
   backgroundColor: "white",
   opacity: 0.2,
-  transform: `rotate(60deg)`,
+  transform: `rotate(55deg)`,
 });
 
 const FORM_BOX_SHADOW =
