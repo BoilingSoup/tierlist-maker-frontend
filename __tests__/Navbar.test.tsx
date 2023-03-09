@@ -3,6 +3,24 @@ import { renderWithContexts } from "../test-utils/render";
 import { Navbar } from "../components/common/Navbar";
 import { SITE_NAME } from "../config/config";
 
+jest.mock("next/router", () => ({
+  useRouter() {
+    return {
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
+      push: jest.fn(),
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      beforePopState: jest.fn(() => null),
+      prefetch: jest.fn(() => null),
+    };
+  },
+}));
+
 const getHomeLinkByRole = () => {
   return screen.getByRole("link", { name: /go to home page/i });
 };

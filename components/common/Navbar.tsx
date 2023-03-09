@@ -6,40 +6,29 @@ import {
   MediaQuery,
   Box,
   useMantineTheme,
+  Center,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { LOGO_IMG } from "../../config/config";
+import { convertThemeBreakpointToPx } from "./helpers";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
+import { useCurrentPath } from "./hooks/useCurrentPath";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
-import { displayNone, NAVBAR_HEIGHT, navbarSx, navLinkTextSx, navLinkTextCurrentSx } from "./styles";
-
-enum Route {
-  Browse,
-  Register,
-  Login,
-  None
-}
+import {
+  displayNone,
+  NAVBAR_HEIGHT,
+  navbarSx,
+  getNavLinkTextSx,
+} from "./styles";
+import { Route } from "./types";
 
 export const Navbar = () => {
   const [opened, { toggle }] = useDisclosure(false);
   const label = opened ? "Close navigation" : "Open navigation";
   const { breakpoints } = useMantineTheme();
-  const { pathname } = useRouter();
-  const [currentPath, setCurrentPath] = useState<Route>(Route.None);
-
-  useEffect(() => {
-    switch (pathname) {
-      case "/browse": { setCurrentPath(Route.Browse); break; }
-      case "/register": { setCurrentPath(Route.Register); break; }
-      case "/signin": { setCurrentPath(Route.Login); break; }
-      default: { setCurrentPath(Route.None); }
-    }
-  }, [pathname, currentPath]);
-
+  const currentPath = useCurrentPath();
 
   /**
    * Auto-close hamburger menu if window gets bigger than Mantine's sm breakpoint.
@@ -47,7 +36,7 @@ export const Navbar = () => {
   useCloseHamburgerOnWindowResize({
     opened,
     toggle,
-    breakpoint: breakpoints.sm,
+    breakpoint: convertThemeBreakpointToPx(breakpoints),
   });
 
   const closeMobileMenuHandler = () => {
@@ -74,27 +63,33 @@ export const Navbar = () => {
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
             <Group>
-              <Text
-                sx={currentPath == Route.Browse ? navLinkTextCurrentSx : navLinkTextSx}
-                component={Link}
-                href="/browse"
-              >
-                Browse
-              </Text>
-              <Text
-                sx={currentPath == Route.Register ? navLinkTextCurrentSx : navLinkTextSx}
-                component={Link}
-                href="/register"
-              >
-                Register
-              </Text>
-              <Text
-                sx={currentPath == Route.Login ? navLinkTextCurrentSx : navLinkTextSx}
-                component={Link}
-                href="/signin"
-              >
-                Login
-              </Text>
+              <Center sx={{ width: "80px" }}>
+                <Text
+                  sx={getNavLinkTextSx(currentPath == Route.Browse)}
+                  component={Link}
+                  href="/browse"
+                >
+                  Browse
+                </Text>
+              </Center>
+              <Center sx={{ width: "80px" }}>
+                <Text
+                  sx={getNavLinkTextSx(currentPath == Route.Register)}
+                  component={Link}
+                  href="/register"
+                >
+                  Register
+                </Text>
+              </Center>
+              <Center sx={{ width: "80px" }}>
+                <Text
+                  sx={getNavLinkTextSx(currentPath == Route.Login)}
+                  component={Link}
+                  href="/signin"
+                >
+                  Login
+                </Text>
+              </Center>
             </Group>
           </MediaQuery>
         </Group>

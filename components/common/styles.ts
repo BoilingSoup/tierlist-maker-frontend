@@ -37,15 +37,18 @@ const navTextCSS: CSSObject = {
   ...marginYAuto,
 };
 
+export const getNavLinkTextSx = (isCurrentPath: boolean): CSSObject =>
+  isCurrentPath ? navLinkTextCurrentSx() : navLinkTextSx();
+
 export const navLinkTextSx = (): CSSObject => ({
   ...navTextCSS,
+  borderRadius: 10,
 });
 
 export const navLinkTextCurrentSx = (): CSSObject => ({
-  ...navTextCSS,
+  ...navLinkTextSx(),
   backgroundColor: "#15aabf",
   color: "white",
-  borderRadius: 10
 });
 
 export const logoTextSx = (): CSSObject => ({

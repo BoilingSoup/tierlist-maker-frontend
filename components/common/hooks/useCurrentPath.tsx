@@ -1,0 +1,30 @@
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Route } from "../types";
+
+export const useCurrentPath = () => {
+  const { pathname } = useRouter();
+  const [currentPath, setCurrentPath] = useState<Route>(Route.None);
+
+  useEffect(() => {
+    switch (pathname) {
+      case "/browse": {
+        setCurrentPath(Route.Browse);
+        break;
+      }
+      case "/register": {
+        setCurrentPath(Route.Register);
+        break;
+      }
+      case "/signin": {
+        setCurrentPath(Route.Login);
+        break;
+      }
+      default: {
+        setCurrentPath(Route.None);
+      }
+    }
+  }, [pathname, currentPath]);
+
+  return currentPath;
+};
