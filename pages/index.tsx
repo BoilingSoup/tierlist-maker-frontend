@@ -28,11 +28,9 @@ const tbd = (): CSSObject => ({
 const Home: NextPage = () => {
   const placeHolderText = (
     <>
-      A{" "}
-      <Text component="i" sx={{ textDecoration: "underline" }}>
-        blazing fast
-      </Text>{" "}
-      open source tier list builder blah blah blah...
+      <Text size={"4rem"}>
+        Creating tier lists doesn't need to suck.
+      </Text>
     </>
   );
 
