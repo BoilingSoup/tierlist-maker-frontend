@@ -39,6 +39,11 @@ export const formContainerSx = (): CSSObject => ({
   boxShadow: FORM_BOX_SHADOW,
 });
 
+export const formContainerControlSx = (): CSSObject => ({
+  flexDirection: "column",
+  width: "72%",
+});
+
 export const authTitleSx = ({ colors }: MantineTheme): CSSObject => ({
   color: colors.dark[4],
   fontSize: `clamp(2rem, 6vw, 2.5rem)`,
@@ -55,11 +60,11 @@ export const formContentsContainerSx = (): CSSObject => ({
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
-  width: "90%",
+  width: "100%",
 });
 
 export const formControlSx = (): CSSObject => ({
-  width: "80%",
+  width: "100%",
   height: "90px",
 });
 
