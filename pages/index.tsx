@@ -28,11 +28,7 @@ const tbd = (): CSSObject => ({
 const Home: NextPage = () => {
   const placeHolderText = (
     <>
-      A{" "}
-      <Text component="i" sx={{ textDecoration: "underline" }}>
-        blazing fast
-      </Text>{" "}
-      open source tier list builder blah blah blah...
+      <Text size={"4rem"}>Creating tier lists doesn't need to suck.</Text>
     </>
   );
 
@@ -45,11 +41,9 @@ const Home: NextPage = () => {
         <Text component="h2" sx={landingSectionTextSx}>
           {placeHolderText}
         </Text>
-        <Link href="/create" passHref={true}>
-          <Button component="h3" color="cyan" size="lg">
-            Create New Tier List
-          </Button>
-        </Link>
+        <Button component={Link} href="/create" color="cyan" size="lg">
+          Create New Tier List
+        </Button>
       </Center>
       <Box sx={junk2}>
         <Text component="h2" sx={tbd}>

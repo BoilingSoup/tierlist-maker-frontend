@@ -1,7 +1,6 @@
 import {
   Flex,
   Group,
-  Text,
   Burger,
   MediaQuery,
   Box,
@@ -9,15 +8,21 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LOGO_IMG } from "../../config/config";
+import { DesktopNavLink } from "./DesktopNavLink";
+import { convertThemeBreakpointToPx } from "./helpers";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
+import { useCurrentPath } from "./hooks/useCurrentPath";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
-import { displayNone, NAVBAR_HEIGHT, navbarSx, navLinkTextSx } from "./styles";
+import { displayNone, NAVBAR_HEIGHT, navbarSx } from "./styles";
+import { Route } from "./types";
 
 export const Navbar = () => {
+  const { breakpoints } = useMantineTheme();
+  const currentPath = useCurrentPath();
+
   const [opened, { toggle }] = useDisclosure(false);
   const label = opened ? "Close navigation" : "Open navigation";
-  const { breakpoints } = useMantineTheme();
 
   /**
    * Auto-close hamburger menu if window gets bigger than Mantine's sm breakpoint.
@@ -25,7 +30,7 @@ export const Navbar = () => {
   useCloseHamburgerOnWindowResize({
     opened,
     toggle,
-    breakpoint: breakpoints.sm,
+    breakpoint: convertThemeBreakpointToPx(breakpoints),
   });
 
   const closeMobileMenuHandler = () => {
@@ -52,9 +57,21 @@ export const Navbar = () => {
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
             <Group>
-              <Text sx={navLinkTextSx} component="a" href="/browse">Browse</Text>
-              <Text sx={navLinkTextSx} component="a" href="/register">Register</Text>
-              <Text sx={navLinkTextSx} component="a" href="/signin">Login</Text>
+              <DesktopNavLink
+                href="/browse"
+                text="Browse"
+                isCurrentPath={currentPath === Route.Browse}
+              />
+              <DesktopNavLink
+                href="/register"
+                text="Register"
+                isCurrentPath={currentPath === Route.Register}
+              />
+              <DesktopNavLink
+                href="/signin"
+                text="Sign In"
+                isCurrentPath={currentPath === Route.SignIn}
+              />
             </Group>
           </MediaQuery>
         </Group>

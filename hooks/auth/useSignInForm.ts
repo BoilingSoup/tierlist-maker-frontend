@@ -1,16 +1,42 @@
 import { useForm } from "@mantine/form";
-import { passwordError, usernameError } from "./errorMessages";
+import { useState } from "react";
+import { validationRules } from "./constants";
+import { FormParam, getInputProps } from "./form-helpers";
 
-export default function useSignInForm() {
-  return useForm({
+type FormFields = "username" | "password";
+type InputsFocusState = Record<FormFields, boolean>;
+type FormValues = Record<FormFields, string>;
+
+export const useSignInForm = ({ enableFloatingLabel }: FormParam) => {
+  const form = useForm<FormValues>({
     initialValues: {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
     },
 
     validate: {
-      username: (value) => (value !== '' ? null : usernameError),
-      password: (value) => (value.length > 2 ? null : passwordError),
-    }
+      username: validationRules.username,
+      password: validationRules.password,
+    },
+
+    validateInputOnBlur: true,
   });
-}
+
+  const [inputsFocusState, setInputsFocusState] = useState<InputsFocusState>({
+    username: false,
+    password: false,
+  });
+
+  return {
+    ...form,
+    // override getInputProps method with custom implementation to handle (optional) focus state
+    getInputProps: (inputField: FormFields) =>
+      getInputProps({
+        inputField,
+        form,
+        enableFloatingLabel,
+        inputsFocusState,
+        setInputsFocusState,
+      }),
+  };
+};

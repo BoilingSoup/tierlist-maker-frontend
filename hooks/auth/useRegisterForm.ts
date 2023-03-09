@@ -1,18 +1,50 @@
 import { useForm } from "@mantine/form";
-import { usernameError, emailError, passwordError } from "./errorMessages";
+import { useState } from "react";
+import { validationRules } from "./constants";
+import { FormParam, getInputProps } from "./form-helpers";
 
-export default function useRegisterForm() {
-  return useForm({
+type FormFields = "email" | "username" | "password" | "confirmPassword";
+type InputsFocusState = Record<FormFields, boolean>;
+type FormValues = Record<FormFields, string>;
+
+export default function useRegisterForm({ enableFloatingLabel }: FormParam) {
+  const form = useForm<FormValues>({
     initialValues: {
-      email: '',
-      username: '',
-      password: '',
+      email: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : emailError),
-      username: (value) => (value !== '' ? null : usernameError),
-      password: (value) => (value.length > 2 ? null : passwordError),
-    }
+      email: validationRules.email,
+      username: validationRules.username,
+      password: validationRules.password,
+      confirmPassword: validationRules.confirmPassword,
+    },
+
+    validateInputOnBlur: true,
   });
+
+  // Mantine useForm doesn't expose an input field's focus state. Probably for performance reasons.
+  // So I create my own here.
+  const [inputsFocusState, setInputsFocusState] = useState<InputsFocusState>({
+    email: false,
+    username: false,
+    password: false,
+    confirmPassword: false,
+  });
+
+  return {
+    ...form,
+    // override getInputProps method with custom implementation to handle (optional) focus state
+    getInputProps: (inputField: FormFields) =>
+      getInputProps({
+        inputField,
+        form,
+        enableFloatingLabel,
+        inputsFocusState,
+        setInputsFocusState,
+      }),
+  };
 }

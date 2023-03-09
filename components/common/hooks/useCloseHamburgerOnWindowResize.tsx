@@ -14,6 +14,7 @@ export const useCloseHamburgerOnWindowResize = ({
   const closeIfBigScreen = (event: Event) => {
     const { innerWidth } = event.target as Window;
 
+    console.log(breakpoint);
     if (opened && innerWidth >= breakpoint) {
       toggle();
     }
