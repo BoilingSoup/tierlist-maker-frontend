@@ -47,9 +47,6 @@ export const SignInForm = () => {
             Sign In
           </Button>
         </Box>
-        {/* <Center mt={60} sx={{ fontSize: "2rem" }}> */}
-        {/*   Oauth stuff goes here */}
-        {/* </Center> */}
       </Flex>
     </form>
   );
