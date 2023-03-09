@@ -4,11 +4,14 @@ import { Route } from "./types";
 
 type Props = {
   currentPath: Route;
+
+  /* className is automatically passed by MediaQuery component */
+  className?: string;
 };
 
-export const DesktopNavLinksGroup = ({ currentPath }: Props) => {
+export const DesktopNavLinksGroup = ({ currentPath, className }: Props) => {
   return (
-    <Group>
+    <Group className={className}>
       <DesktopNavLink
         href="/browse"
         text="Browse"

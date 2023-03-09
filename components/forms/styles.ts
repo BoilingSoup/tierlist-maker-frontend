@@ -91,3 +91,11 @@ export const formSubmitGradient: MantineGradient = {
   from: "cyan",
   to: "indigo",
 };
+
+export const oauthContainerSx = (): CSSObject => ({
+  flexDirection: "column",
+  gap: 12,
+  height: "100%",
+  width: FORM_WIDTH,
+  fontSize: "2rem",
+});

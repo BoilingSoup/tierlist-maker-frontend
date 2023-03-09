@@ -1,14 +1,15 @@
-import { Title, Center, Flex } from "@mantine/core";
+import { Title, Center, Flex, Text } from "@mantine/core";
 import { NextPage } from "next";
 import {
   authTitleSx,
   formContainerSx,
   formPageContainerSx,
-  FORM_WIDTH,
+  oauthContainerSx,
 } from "../../components/forms/styles";
 import { FormPageBackground } from "../../components/forms/FormPageBackground";
 import { FormTabs } from "../../components/forms/FormTabs";
 import { SignInForm } from "../../components/forms/SignInForm";
+import { OAuthIconsGroup } from "../../components/forms/OAuthIconsGroup";
 
 const SignIn: NextPage = () => {
   return (
@@ -18,8 +19,9 @@ const SignIn: NextPage = () => {
         <Title sx={authTitleSx}>Sign In</Title>
         <FormTabs />
         <SignInForm />
-        <Center sx={{ height: "100%", width: FORM_WIDTH, fontSize: "2rem" }}>
-          Oauth stuff goes here
+        <Center sx={oauthContainerSx}>
+          <Text size="md">Or sign in with</Text>
+          <OAuthIconsGroup />
         </Center>
       </Flex>
     </Center>
