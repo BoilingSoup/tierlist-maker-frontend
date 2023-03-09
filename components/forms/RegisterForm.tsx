@@ -15,7 +15,7 @@ const fancyInputSx = {
 };
 const inputBoxShadow: Styles<TextInputStylesNames, Record<string, any>> = {
   input: {
-    boxShadow: "3px 3px 4px -4px rgba(0,0,0,0.80)",
+    boxShadow: "3px 3px 6px -4px rgba(0,0,0,0.80)",
   },
 };
 const formControlSx = {
@@ -71,7 +71,11 @@ export const RegisterForm = () => {
         <Box sx={{ ...formControlSx, height: "auto" }}>
           <Button
             type="submit"
-            sx={{ display: "block", width: "100%" }}
+            sx={{
+              display: "block",
+              width: "100%",
+              boxShadow: "6px 6px 8px -4px rgba(0,0,0,0.80)",
+            }}
             variant="gradient"
             gradient={{ from: "indigo", to: "cyan" }}
           >
