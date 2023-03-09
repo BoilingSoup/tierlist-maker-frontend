@@ -1,34 +1,28 @@
 import {
   Flex,
   Group,
-  Text,
   Burger,
   MediaQuery,
   Box,
   useMantineTheme,
-  Center,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import Link from "next/link";
 import { LOGO_IMG } from "../../config/config";
+import { DesktopNavLink } from "./DesktopNavLink";
 import { convertThemeBreakpointToPx } from "./helpers";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
 import { useCurrentPath } from "./hooks/useCurrentPath";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
-import {
-  displayNone,
-  NAVBAR_HEIGHT,
-  navbarSx,
-  getNavLinkTextSx,
-} from "./styles";
+import { displayNone, NAVBAR_HEIGHT, navbarSx } from "./styles";
 import { Route } from "./types";
 
 export const Navbar = () => {
-  const [opened, { toggle }] = useDisclosure(false);
-  const label = opened ? "Close navigation" : "Open navigation";
   const { breakpoints } = useMantineTheme();
   const currentPath = useCurrentPath();
+
+  const [opened, { toggle }] = useDisclosure(false);
+  const label = opened ? "Close navigation" : "Open navigation";
 
   /**
    * Auto-close hamburger menu if window gets bigger than Mantine's sm breakpoint.
@@ -63,33 +57,21 @@ export const Navbar = () => {
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
             <Group>
-              <Center sx={{ width: "80px" }}>
-                <Text
-                  sx={getNavLinkTextSx(currentPath == Route.Browse)}
-                  component={Link}
-                  href="/browse"
-                >
-                  Browse
-                </Text>
-              </Center>
-              <Center sx={{ width: "80px" }}>
-                <Text
-                  sx={getNavLinkTextSx(currentPath == Route.Register)}
-                  component={Link}
-                  href="/register"
-                >
-                  Register
-                </Text>
-              </Center>
-              <Center sx={{ width: "80px" }}>
-                <Text
-                  sx={getNavLinkTextSx(currentPath == Route.Login)}
-                  component={Link}
-                  href="/signin"
-                >
-                  Login
-                </Text>
-              </Center>
+              <DesktopNavLink
+                href="/browse"
+                text="Browse"
+                isCurrentPath={currentPath === Route.Browse}
+              />
+              <DesktopNavLink
+                href="/register"
+                text="Register"
+                isCurrentPath={currentPath === Route.Register}
+              />
+              <DesktopNavLink
+                href="/signin"
+                text="Sign In"
+                isCurrentPath={currentPath === Route.SignIn}
+              />
             </Group>
           </MediaQuery>
         </Group>

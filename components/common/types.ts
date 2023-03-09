@@ -1,6 +1,6 @@
 export enum Route {
   Browse,
   Register,
-  Login,
+  SignIn,
   None,
 }

@@ -17,7 +17,7 @@ export const useCurrentPath = () => {
         break;
       }
       case "/signin": {
-        setCurrentPath(Route.Login);
+        setCurrentPath(Route.SignIn);
         break;
       }
       default: {

@@ -30,10 +30,12 @@ export const logoFlexSx = (): CSSObject => ({
   alignItems: "center",
 });
 
+export const desktopNavLinkBoxSx = (): CSSObject => ({
+  width: "80px",
+});
+
 const navTextCSS: CSSObject = {
   color: "white",
-  paddingBlock: "6px",
-  paddingInline: "10px",
   ...marginYAuto,
 };
 
@@ -43,6 +45,8 @@ export const getNavLinkTextSx = (isCurrentPath: boolean): CSSObject =>
 export const navLinkTextSx = (): CSSObject => ({
   ...navTextCSS,
   borderRadius: 10,
+  padding: "5px 15px",
+  textDecoration: "none",
 });
 
 export const navLinkTextCurrentSx = (): CSSObject => ({
