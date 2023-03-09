@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mantine/core";
+import { Box, Button, Flex } from "@mantine/core";
 import { useSignInForm } from "../../hooks/auth/useSignInForm";
 import {
   fancyInputSx,
@@ -17,7 +17,7 @@ export const SignInForm = () => {
 
   return (
     <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
-      <Stack sx={formContentsContainerSx}>
+      <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
           <FancyInput
             withAsterisk
@@ -50,7 +50,7 @@ export const SignInForm = () => {
         {/* <Center mt={60} sx={{ fontSize: "2rem" }}> */}
         {/*   Oauth stuff goes here */}
         {/* </Center> */}
-      </Stack>
+      </Flex>
     </form>
   );
 };

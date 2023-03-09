@@ -52,15 +52,15 @@ export const formStyle: React.CSSProperties = {
 
 export const formContentsContainerSx = (): CSSObject => ({
   margin: "auto",
+  flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
   width: "90%",
-  height: "90%",
 });
 
 export const formControlSx = (): CSSObject => ({
   width: "80%",
-  height: "85px",
+  height: "90px",
 });
 
 export const fancyInputSx = (): CSSObject => ({

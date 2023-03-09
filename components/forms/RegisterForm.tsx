@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mantine/core";
+import { Box, Button, Flex } from "@mantine/core";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
 import {
   fancyInputSx,
@@ -17,7 +17,7 @@ export const RegisterForm = () => {
 
   return (
     <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
-      <Stack sx={formContentsContainerSx}>
+      <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
           <FancyInput
             withAsterisk
@@ -67,7 +67,7 @@ export const RegisterForm = () => {
             Register
           </Button>
         </Box>
-      </Stack>
+      </Flex>
     </form>
   );
 };
