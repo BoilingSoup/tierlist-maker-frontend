@@ -29,7 +29,8 @@ export const Navbar = () => {
   useCloseHamburgerOnWindowResize({
     opened,
     toggle,
-    breakpoint: convertThemeBreakpointToPx(breakpoints),
+    // Mantine theme breakpoints are em units; convert to px for handling resize events
+    breakpoint: convertThemeBreakpointToPx(breakpoints.sm),
   });
 
   const closeMobileMenuHandler = () => {
