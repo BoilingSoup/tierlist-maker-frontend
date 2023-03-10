@@ -1,18 +1,17 @@
 import { useForm } from "@mantine/form";
 import { useState } from "react";
+import { useSignInFormStore } from "../store/useSignInFormStore";
 import { validationRules } from "./constants";
 import { FormParam, getInputProps } from "./form-helpers";
+import { SignInFormFields, SignInFormValues } from "./types";
 
-type FormFields = "username" | "password";
-type InputsFocusState = Record<FormFields, boolean>;
-type FormValues = Record<FormFields, string>;
+type InputsFocusState = Record<SignInFormFields, boolean>;
 
 export const useSignInForm = ({ enableFloatingLabel }: FormParam) => {
-  const form = useForm<FormValues>({
-    initialValues: {
-      username: "",
-      password: "",
-    },
+  const formValues = useSignInFormStore((state) => state.values);
+
+  const form = useForm<SignInFormValues>({
+    initialValues: formValues,
 
     validate: {
       username: validationRules.username,
@@ -30,7 +29,7 @@ export const useSignInForm = ({ enableFloatingLabel }: FormParam) => {
   return {
     ...form,
     // override getInputProps method with custom implementation to handle (optional) focus state
-    getInputProps: (inputField: FormFields) =>
+    getInputProps: (inputField: SignInFormFields) =>
       getInputProps({
         inputField,
         form,

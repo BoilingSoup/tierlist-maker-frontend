@@ -1,5 +1,8 @@
 import { Box, Button, Flex } from "@mantine/core";
+import { ChangeEventHandler } from "react";
+import { SignInFormFields } from "../../hooks/auth/types";
 import { useSignInForm } from "../../hooks/auth/useSignInForm";
+import { useSignInFormStore } from "../../hooks/store/useSignInFormStore";
 import {
   fancyInputSx,
   formContentsContainerSx,
@@ -14,6 +17,16 @@ import { FancyInput } from "./FancyInput";
 
 export const SignInForm = () => {
   const form = useSignInForm({ enableFloatingLabel: true });
+  const updateForm = useSignInFormStore((state) => state.update);
+
+  /** Update zustand state then excute default form onChange handler */
+  const onChangeHandler =
+    (input: SignInFormFields): ChangeEventHandler<HTMLInputElement> =>
+    (event) => {
+      updateForm({ input, value: event.target.value });
+      const defaultOnChange = form.getInputProps(input).onChange;
+      if (defaultOnChange) defaultOnChange(event);
+    };
 
   return (
     <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
@@ -25,6 +38,7 @@ export const SignInForm = () => {
             sx={fancyInputSx}
             styles={inputStyles}
             {...form.getInputProps("username")}
+            onChange={onChangeHandler("username")}
           />
         </Box>
         <Box sx={formControlSx}>
@@ -35,6 +49,7 @@ export const SignInForm = () => {
             sx={fancyInputSx}
             styles={inputStyles}
             {...form.getInputProps("password")}
+            onChange={onChangeHandler("password")}
           />
         </Box>
         <Box sx={formSubmitControlSx}>

@@ -1,5 +1,8 @@
 import { Box, Button, Flex } from "@mantine/core";
+import { ChangeEventHandler } from "react";
+import { RegisterFormFields } from "../../hooks/auth/types";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
+import { useRegisterFormStore } from "../../hooks/store/useRegisterFormStore";
 import {
   fancyInputSx,
   formContentsContainerSx,
@@ -14,6 +17,16 @@ import { FancyInput } from "./FancyInput";
 
 export const RegisterForm = () => {
   const form = useRegisterForm({ enableFloatingLabel: true });
+  const updateForm = useRegisterFormStore((state) => state.update);
+
+  /** Update zustand state then excute default form onChange handler */
+  const onChangeHandler =
+    (input: RegisterFormFields): ChangeEventHandler<HTMLInputElement> =>
+    (event) => {
+      updateForm({ input, value: event.target.value });
+      const defaultOnChange = form.getInputProps(input).onChange;
+      if (defaultOnChange) defaultOnChange(event);
+    };
 
   return (
     <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
@@ -26,6 +39,7 @@ export const RegisterForm = () => {
             sx={fancyInputSx}
             styles={inputStyles}
             {...form.getInputProps("email")}
+            onChange={onChangeHandler("email")}
           />
         </Box>
         <Box sx={formControlSx}>
@@ -35,6 +49,7 @@ export const RegisterForm = () => {
             sx={fancyInputSx}
             styles={inputStyles}
             {...form.getInputProps("username")}
+            onChange={onChangeHandler("username")}
           />
         </Box>
         <Box sx={formControlSx}>
@@ -45,6 +60,7 @@ export const RegisterForm = () => {
             sx={fancyInputSx}
             styles={inputStyles}
             {...form.getInputProps("password")}
+            onChange={onChangeHandler("password")}
           />
         </Box>
         <Box sx={formControlSx}>
@@ -55,6 +71,7 @@ export const RegisterForm = () => {
             sx={fancyInputSx}
             styles={inputStyles}
             {...form.getInputProps("confirmPassword")}
+            onChange={onChangeHandler("confirmPassword")}
           />
         </Box>
         <Box sx={formSubmitControlSx}>

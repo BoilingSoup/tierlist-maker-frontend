@@ -10,19 +10,19 @@ import {
 
 export const OAuthIconsGroup = () => {
   const icons = [
-    <IconBrandGithub />,
-    <IconBrandGitlab />,
-    <IconBrandGoogle />,
-    <IconBrandReddit />,
-    <IconBrandDiscord />,
-    <IconBrandTwitter />,
+    { brand: "Github", icon: <IconBrandGithub /> },
+    { brand: "Gitlab", icon: <IconBrandGitlab /> },
+    { brand: "Google", icon: <IconBrandGoogle /> },
+    { brand: "Reddit", icon: <IconBrandReddit /> },
+    { brand: "Discord", icon: <IconBrandDiscord /> },
+    { brand: "Twitter", icon: <IconBrandTwitter /> },
   ];
 
   return (
     <Group>
-      {icons.map((icon) => (
-        <ActionIcon radius="xl" color="gray" variant="filled">
-          {icon}
+      {icons.map((data) => (
+        <ActionIcon key={data.brand} radius="xl" color="gray" variant="filled">
+          {data.icon}
         </ActionIcon>
       ))}
     </Group>

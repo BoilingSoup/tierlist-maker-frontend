@@ -60,7 +60,10 @@ const getExtendedProps = <T extends string, F extends InputsFocusState>({
   ...form.getInputProps(inputField),
   onBlur: blurHandler({ inputField, form, setInputsFocusState }),
   onFocus: focusHandler({ inputField, form, setInputsFocusState }),
-  floating: inputsFocusState[inputField] || form.isDirty(inputField), // i.e. enable floating label when input isFocused || isNotBlank
+  floating:
+    inputsFocusState[inputField] ||
+    // form.isDirty(inputField) ||
+    form.values[inputField] !== "", // i.e. enable floating label when input isFocused || isNotBlank
 });
 
 type HandlerParam<T extends string, F extends InputsFocusState> = {
