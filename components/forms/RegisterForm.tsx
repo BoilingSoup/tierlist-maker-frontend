@@ -17,13 +17,13 @@ import { FancyInput } from "./FancyInput";
 
 export const RegisterForm = () => {
   const form = useRegisterForm({ enableFloatingLabel: true });
-  const updateForm = useRegisterFormStore((state) => state.update);
+  const updateFormState = useRegisterFormStore((state) => state.update);
 
   /** Update zustand state then excute default form onChange handler */
   const onChangeHandler =
     (input: RegisterFormFields): ChangeEventHandler<HTMLInputElement> =>
     (event) => {
-      updateForm({ input, value: event.target.value });
+      updateFormState({ input, value: event.target.value });
       const defaultOnChange = form.getInputProps(input).onChange;
       if (defaultOnChange) defaultOnChange(event);
     };
