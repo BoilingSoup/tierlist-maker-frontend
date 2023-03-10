@@ -1,5 +1,5 @@
 import { Box } from "@mantine/core";
-import { backdropBoxSx } from "../auth/styles";
+import { backdropBoxSx } from "../forms/styles";
 
 export const FormPageBackground = () => (
   <>

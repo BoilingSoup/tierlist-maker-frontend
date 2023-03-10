@@ -1,41 +1,44 @@
-import {
-  Box,
-  Button,
-  Stack,
-  Styles,
-  TextInputStylesNames,
-} from "@mantine/core";
+import { Box, Button, Flex } from "@mantine/core";
+import { ChangeEventHandler } from "react";
+import { SignInFormFields } from "../../hooks/auth/types";
 import { useSignInForm } from "../../hooks/auth/useSignInForm";
-import { formContentsContainerSx, formStyle } from "../auth/styles";
+import { useSignInFormStore } from "../../hooks/store/useSignInFormStore";
+import {
+  fancyInputSx,
+  formContentsContainerSx,
+  formControlSx,
+  formStyle,
+  formSubmitControlSx,
+  formSubmitGradient,
+  formSubmitSx,
+  inputStyles,
+} from "../forms/styles";
 import { FancyInput } from "./FancyInput";
-
-const fancyInputSx = {
-  width: "100%",
-  margin: "auto",
-};
-const inputBoxShadow: Styles<TextInputStylesNames, Record<string, any>> = {
-  input: {
-    boxShadow: "3px 3px 6px -4px rgba(0,0,0,0.80)",
-  },
-};
-const formControlSx = {
-  width: "80%",
-  height: "85px",
-};
 
 export const SignInForm = () => {
   const form = useSignInForm({ enableFloatingLabel: true });
+  const updateForm = useSignInFormStore((state) => state.update);
+
+  /** Update zustand state then excute default form onChange handler */
+  const onChangeHandler =
+    (input: SignInFormFields): ChangeEventHandler<HTMLInputElement> =>
+    (event) => {
+      updateForm({ input, value: event.target.value });
+      const defaultOnChange = form.getInputProps(input).onChange;
+      if (defaultOnChange) defaultOnChange(event);
+    };
 
   return (
     <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
-      <Stack sx={formContentsContainerSx}>
+      <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
           <FancyInput
             withAsterisk
             label="Username"
             sx={fancyInputSx}
-            styles={inputBoxShadow}
+            styles={inputStyles}
             {...form.getInputProps("username")}
+            onChange={onChangeHandler("username")}
           />
         </Box>
         <Box sx={formControlSx}>
@@ -44,28 +47,22 @@ export const SignInForm = () => {
             label="Password"
             type="password"
             sx={fancyInputSx}
-            styles={inputBoxShadow}
+            styles={inputStyles}
             {...form.getInputProps("password")}
+            onChange={onChangeHandler("password")}
           />
         </Box>
-        <Box sx={{ ...formControlSx, height: "auto" }}>
+        <Box sx={formSubmitControlSx}>
           <Button
             type="submit"
-            sx={{
-              display: "block",
-              width: "100%",
-              boxShadow: "6px 6px 8px -4px rgba(0,0,0,0.80)",
-            }}
+            sx={formSubmitSx}
             variant="gradient"
-            gradient={{ from: "indigo", to: "cyan" }}
+            gradient={formSubmitGradient}
           >
-            Register
+            Sign In
           </Button>
         </Box>
-        {/* <Center mt={60} sx={{ fontSize: "2rem" }}> */}
-        {/*   Oauth stuff goes here */}
-        {/* </Center> */}
-      </Stack>
+      </Flex>
     </form>
   );
 };

@@ -1,20 +1,17 @@
 import { useForm } from "@mantine/form";
 import { useState } from "react";
+import { useRegisterFormStore } from "../store/useRegisterFormStore";
 import { validationRules } from "./constants";
 import { FormParam, getInputProps } from "./form-helpers";
+import { RegisterFormFields, RegisterFormValues } from "./types";
 
-type FormFields = "email" | "username" | "password" | "confirmPassword";
-type InputsFocusState = Record<FormFields, boolean>;
-type FormValues = Record<FormFields, string>;
+type InputsFocusState = Record<RegisterFormFields, boolean>;
 
 export default function useRegisterForm({ enableFloatingLabel }: FormParam) {
-  const form = useForm<FormValues>({
-    initialValues: {
-      email: "",
-      username: "",
-      password: "",
-      confirmPassword: "",
-    },
+  const formValues = useRegisterFormStore((state) => state.values);
+
+  const form = useForm<RegisterFormValues>({
+    initialValues: formValues,
 
     validate: {
       email: validationRules.email,
@@ -38,7 +35,7 @@ export default function useRegisterForm({ enableFloatingLabel }: FormParam) {
   return {
     ...form,
     // override getInputProps method with custom implementation to handle (optional) focus state
-    getInputProps: (inputField: FormFields) =>
+    getInputProps: (inputField: RegisterFormFields) =>
       getInputProps({
         inputField,
         form,
