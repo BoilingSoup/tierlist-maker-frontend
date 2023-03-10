@@ -17,13 +17,13 @@ import { FancyInput } from "./FancyInput";
 
 export const SignInForm = () => {
   const form = useSignInForm({ enableFloatingLabel: true });
-  const updateForm = useSignInFormStore((state) => state.update);
+  const updateFormState = useSignInFormStore((state) => state.update);
 
   /** Update zustand state then excute default form onChange handler */
   const onChangeHandler =
     (input: SignInFormFields): ChangeEventHandler<HTMLInputElement> =>
     (event) => {
-      updateForm({ input, value: event.target.value });
+      updateFormState({ input, value: event.target.value });
       const defaultOnChange = form.getInputProps(input).onChange;
       if (defaultOnChange) defaultOnChange(event);
     };

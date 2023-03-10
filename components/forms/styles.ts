@@ -99,3 +99,7 @@ export const oauthContainerSx = (): CSSObject => ({
   width: FORM_WIDTH,
   fontSize: "2rem",
 });
+
+export const oauthIconSx = (): CSSObject => ({
+  boxShadow: "5px 5px 7px -4px rgba(0,0,0,0.80)",
+});
