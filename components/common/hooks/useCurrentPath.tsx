@@ -8,6 +8,14 @@ export const useCurrentPath = () => {
 
   useEffect(() => {
     switch (pathname) {
+      case "/": {
+        setCurrentPath(Route.Home)
+        break;
+      }
+      case "/create": {
+        setCurrentPath(Route.Create)
+        break;
+      }
       case "/browse": {
         setCurrentPath(Route.Browse);
         break;

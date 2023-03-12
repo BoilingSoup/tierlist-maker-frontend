@@ -13,9 +13,19 @@ export const DesktopNavLinksGroup = ({ currentPath, className }: Props) => {
   return (
     <Group className={className}>
       <DesktopNavLink
+        href="/"
+        text="Home"
+        isCurrentPath={currentPath === Route.Home}
+      />
+      <DesktopNavLink
         href="/browse"
         text="Browse"
         isCurrentPath={currentPath === Route.Browse}
+      />
+      <DesktopNavLink
+        href="/create"
+        text="Create"
+        isCurrentPath={currentPath === Route.Create}
       />
       <DesktopNavLink
         href="/register"
