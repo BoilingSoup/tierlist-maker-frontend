@@ -29,7 +29,7 @@ export const RegisterForm = () => {
     };
 
   return (
-    <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
+    <form aria-label="registration form" style={formStyle} onSubmit={form.onSubmit(console.log)}>
       <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
           <FancyInput

@@ -13,7 +13,7 @@ export const validationRules = {
   username: (value: string) =>
     value.length >= USERNAME_MIN_LENGTH && value.length <= USERNAME_MAX_LENGTH
       ? null
-      : `username must be between ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters long`,
+      : `Username must be between ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters`,
   password: (value: string) =>
     value.length >= PASSWORD_MIN_LENGTH
       ? null
