@@ -52,7 +52,6 @@ export const navLinkTextSx = (): CSSObject => ({
 export const navLinkTextCurrentSx = (): CSSObject => ({
   ...navLinkTextSx(),
   backgroundColor: "#15aabf",
-  color: "white",
 });
 
 export const logoTextSx = (): CSSObject => ({
@@ -101,9 +100,11 @@ export const mobileNavLinksContainerSx = (): CSSObject => ({
   flexDirection: "column",
 });
 
+const MOBILE_NAV_LINK_ACTIVE_BG = "#0c8599";
+
 const mobileNavLinkPseudoStyles: CSSObject = {
   outline: "none",
-  backgroundColor: "#0c8599",
+  backgroundColor: MOBILE_NAV_LINK_ACTIVE_BG,
 };
 
 export const mobileNavLinkSx = (): CSSObject => ({
@@ -125,3 +126,11 @@ export const mobileNavLinkSx = (): CSSObject => ({
     ...mobileNavLinkPseudoStyles,
   },
 });
+
+const currentMobileNavLinkSx = (): CSSObject => ({
+  ...mobileNavLinkSx(),
+  backgroundColor: MOBILE_NAV_LINK_ACTIVE_BG,
+});
+
+export const getMobileNavLinkSx = (isCurrentPath: boolean) =>
+  isCurrentPath ? currentMobileNavLinkSx : mobileNavLinkSx;
