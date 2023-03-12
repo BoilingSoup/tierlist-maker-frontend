@@ -1,8 +1,11 @@
-import { Box, Flex } from "@mantine/core";
+import { Box, Center, Flex } from "@mantine/core";
 import Link from "next/link";
 import { useRouterEvent } from "./hooks/useRouterEvent";
-import { mobileNavLinksContainerSx, mobileNavLinksOverlaySx } from "./styles";
-import styles from "./css-modules/MobileMenu.module.css";
+import {
+  mobileNavLinksContainerSx,
+  mobileNavLinksOverlaySx,
+  mobileNavLinkSx,
+} from "./styles";
 
 type Props = {
   onLinkClick: () => void;
@@ -11,29 +14,27 @@ type Props = {
 export const MobileMenu = ({ onLinkClick: closeMenu }: Props) => {
   useRouterEvent({ on: "routeChangeComplete", handler: closeMenu });
 
-  const { link } = styles; // next/link styles from CSS modules. inline styles can't target pseudo selectors :hover :focus etc.
-
   /* TODO: highlight the currently active route with a different color/marker */
   // const router = useRouter();
 
   return (
     <Box sx={mobileNavLinksOverlaySx}>
       <Flex sx={mobileNavLinksContainerSx}>
-        <Link className={link} href="/">
+        <Center sx={mobileNavLinkSx} component={Link} href="/">
           Home
-        </Link>
-        <Link className={link} href="/browse">
+        </Center>
+        <Center sx={mobileNavLinkSx} component={Link} href="/browse">
           Browse
-        </Link>
-        <Link className={link} href="/create">
+        </Center>
+        <Center sx={mobileNavLinkSx} component={Link} href="/create">
           Create New Tier List
-        </Link>
-        <Link className={link} href="/signin">
+        </Center>
+        <Center sx={mobileNavLinkSx} component={Link} href="/signin">
           Sign In
-        </Link>
-        <Link className={link} href="/register">
+        </Center>
+        <Center sx={mobileNavLinkSx} component={Link} href="/register">
           Register
-        </Link>
+        </Center>
       </Flex>
     </Box>
   );

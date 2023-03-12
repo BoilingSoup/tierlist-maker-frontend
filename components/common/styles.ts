@@ -100,3 +100,28 @@ export const mobileNavLinksOverlaySx = (): CSSObject => ({
 export const mobileNavLinksContainerSx = (): CSSObject => ({
   flexDirection: "column",
 });
+
+const mobileNavLinkPseudoStyles: CSSObject = {
+  outline: "none",
+  backgroundColor: "#0c8599",
+};
+
+export const mobileNavLinkSx = (): CSSObject => ({
+  backgroundColor: "black",
+  color: "white",
+  height: "70px",
+  fontSize: "1.2rem",
+  textDecoration: "none",
+  ":hover": {
+    ...mobileNavLinkPseudoStyles,
+  },
+  ":focus": {
+    ...mobileNavLinkPseudoStyles,
+  },
+  ":focus-within": {
+    ...mobileNavLinkPseudoStyles,
+  },
+  ":focus-visible": {
+    ...mobileNavLinkPseudoStyles,
+  },
+});
