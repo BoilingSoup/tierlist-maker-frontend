@@ -29,7 +29,11 @@ export const SignInForm = () => {
     };
 
   return (
-    <form style={formStyle} onSubmit={form.onSubmit(console.log)}>
+    <form
+      aria-label="sign in form"
+      style={formStyle}
+      onSubmit={form.onSubmit(console.log)}
+    >
       <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
           <FancyInput
