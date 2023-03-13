@@ -9,21 +9,28 @@ import { TierList } from "../../lib/types/tierlist";
 import { useRef } from "react";
 import { RecentTierListSkeleton } from "./RecentTierListSkeleton";
 
+type Props = {
+  data: TierList[] | undefined;
+  isError: boolean;
+  error: unknown;
+  isLoading: boolean;
+};
+
 export const carouselSx = (): CSSObject => ({
   margin: "0 auto",
 });
 
-export const RecentTierListCarousel = () => {
-  const { data, isError, error, isLoading } = useRecentTierList();
+export const RecentTierListCarousel = ({
+  data,
+  isError,
+  error,
+  isLoading,
+}: Props) => {
   const autoplay = useRef(Autoplay({ delay: 3000 }));
 
   if (isLoading) {
     return <RecentTierListSkeleton />;
   }
-
-  // TODO: Switch to grid view when screen > `small` screen size.
-  // TODO: Decide where to place the carousel. Finalize landing page text first.
-  // TODO: Make error handling.
 
   // if (isError && error instanceof AxiosError) {
   //   return <Text sx={carouselErrorSx}>{error.message}</Text>;

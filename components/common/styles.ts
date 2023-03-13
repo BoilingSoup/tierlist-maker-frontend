@@ -78,7 +78,7 @@ export const landingSectionForegroundSx = (): CSSObject => ({
   margin: "auto",
   height: landingSectionHeight,
   width: "90%",
-  maxWidth: "700px",
+  maxWidth: "900px",
   flexDirection: "column",
 });
 
