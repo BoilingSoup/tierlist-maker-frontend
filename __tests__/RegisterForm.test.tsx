@@ -2,7 +2,7 @@ import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RegisterForm } from "../components/forms/RegisterForm";
 import {
-  initialValues,
+  registerFormInitialValues,
   useRegisterFormStore,
 } from "../hooks/store/useRegisterFormStore";
 import { renderWithContexts } from "../test-utils/render";
@@ -20,7 +20,7 @@ const getFormByRole = () => {
 beforeEach(() => {
   // reset zustand state between tests
   useRegisterFormStore.setState(
-    (state) => ({ ...state, values: initialValues }),
+    (state) => ({ ...state, values: { ...registerFormInitialValues } }),
     true
   );
 });

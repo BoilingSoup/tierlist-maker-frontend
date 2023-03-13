@@ -9,7 +9,7 @@ type RegisterFormStore = {
 
 type RegisterFormUpdate = { input: RegisterFormFields; value: string };
 
-export const initialValues: RegisterFormValues = {
+export const registerFormInitialValues: RegisterFormValues = {
   email: "",
   username: "",
   password: "",
@@ -17,11 +17,11 @@ export const initialValues: RegisterFormValues = {
 };
 
 export const useRegisterFormStore = create<RegisterFormStore>((set) => ({
-  values: { ...initialValues },
+  values: { ...registerFormInitialValues },
   update: ({ input, value }: RegisterFormUpdate) => {
     set((state) => ({ values: { ...state.values, [input]: value } }));
   },
   reset: () => {
-    set((state) => ({ ...state, values: initialValues }));
+    set((state) => ({ ...state, values: registerFormInitialValues }));
   },
 }));
