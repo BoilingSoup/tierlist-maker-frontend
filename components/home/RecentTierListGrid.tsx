@@ -1,9 +1,9 @@
-import { Box, Flex, Image } from "@mantine/core";
+import { Box, Center, Container, Flex, Grid, Image } from "@mantine/core";
 import { THUMBNAIL_WIDTH } from "../../config/config";
-import { TierList } from "../../lib/types/tierlist";
+import { TierListDisplayData } from "../../lib/types/tierlist";
 
 type Props = {
-  data: TierList[] | undefined;
+  data: TierListDisplayData[] | undefined;
   isError: boolean;
   error: unknown;
   isLoading: boolean;
@@ -16,23 +16,44 @@ export const RecentTierListGrid = ({
 // isLoading,
 Props) => {
   return (
-    <Flex
-      sx={{
-        maxWidth: `${THUMBNAIL_WIDTH * 2 + 200}px`,
-        // maxWidth: `${THUMBNAIL_WIDTH * 2}px`,
-        margin: "auto",
-        flexWrap: "wrap",
-      }}
-    >
-      {data?.map((item) => (
-        <Box sx={{ width: "50%" }}>
-          <Image
-            key={item.id}
-            src={item.thumbnail}
-            sx={{ maxWidth: THUMBNAIL_WIDTH }}
-          />
-        </Box>
-      ))}
-    </Flex>
+    <Container sx={{ maxWidth: "80%" }}>
+      <Grid gutter={40}>
+        {data?.map((item) => (
+          <Grid.Col span={6}>
+            <Image
+              key={item.id}
+              src={item.thumbnail}
+              sx={{ margin: "auto", maxWidth: THUMBNAIL_WIDTH }}
+            />
+          </Grid.Col>
+        ))}
+      </Grid>
+    </Container>
+    //</Flex>
   );
 };
+
+{
+  /* <Flex */
+}
+{
+  /*   sx={{ */
+}
+{
+  /*     maxWidth: `${THUMBNAIL_WIDTH * 2 + 200}px`, */
+}
+{
+  /*     // maxWidth: `${THUMBNAIL_WIDTH * 2}px`, */
+}
+{
+  /*     margin: "auto", */
+}
+{
+  /*     flexWrap: "wrap", */
+}
+{
+  /*   }} */
+}
+{
+  /* > */
+}

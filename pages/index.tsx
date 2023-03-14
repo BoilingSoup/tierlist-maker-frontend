@@ -27,14 +27,15 @@ const junk2 = ({ colors }: MantineTheme): CSSObject => ({
   // height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   width: "100%",
   backgroundColor: colors.dark[5],
+  overflow: "hidden",
 });
 
 const tbd = (): CSSObject => ({
-  fontSize: "2rem",
+  fontSize: "clamp(1.5rem, 6vw, 2rem)",
   color: "white",
-  margin: 0,
+  margin: "80px",
   textAlign: "center",
-  paddingTop: "20px",
+  // paddingTop: "20px",
 });
 
 const Home: NextPage = () => {
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
 
   const { width } = useViewportSize();
   const { breakpoints } = useMantineTheme();
-  const mobileBreakpoint = convertThemeBreakpointToPx(breakpoints.sm);
+  const breakpoint = convertThemeBreakpointToPx(breakpoints.md);
 
   return (
     <>
@@ -61,9 +62,9 @@ const Home: NextPage = () => {
       </Center>
       <Box sx={junk2}>
         <Text component="h2" sx={tbd}>
-          See what other people are making
+          Recent Tier Lists
         </Text>
-        {width < mobileBreakpoint && (
+        {width < breakpoint && (
           <RecentTierListCarousel
             data={data}
             isError={isError}
@@ -71,7 +72,7 @@ const Home: NextPage = () => {
             isLoading={isLoading}
           />
         )}
-        {width >= mobileBreakpoint && (
+        {width >= breakpoint && (
           <RecentTierListGrid
             data={data}
             isError={isError}

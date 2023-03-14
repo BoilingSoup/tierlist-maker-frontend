@@ -5,12 +5,12 @@ import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 import { CAROUSEL_SLIDE_SIZE } from "./styles";
 import { AxiosError } from "axios";
 import { CarouselSlide } from "./CarouselSlide";
-import { TierList } from "../../lib/types/tierlist";
+import { TierListDisplayData } from "../../lib/types/tierlist";
 import { useRef } from "react";
 import { RecentTierListSkeleton } from "./RecentTierListSkeleton";
 
 type Props = {
-  data: TierList[] | undefined;
+  data: TierListDisplayData[] | undefined;
   isError: boolean;
   error: unknown;
   isLoading: boolean;
@@ -49,7 +49,7 @@ export const RecentTierListCarousel = ({
 
   return (
     <Carousel sx={carouselSx} {...carouselProps}>
-      {data?.map((tierList: TierList) => {
+      {data?.map((tierList: TierListDisplayData) => {
         return <CarouselSlide key={tierList.id} data={tierList} />;
       })}
     </Carousel>

@@ -1,11 +1,11 @@
 import { Carousel } from "@mantine/carousel";
 import { CSSObject, Image, Text, Stack } from "@mantine/core";
 import { THUMBNAIL_WIDTH } from "../../config/config";
-import { TierList } from "../../lib/types/tierlist";
+import { TierListDisplayData } from "../../lib/types/tierlist";
 import { CAROUSEL_THUMBNAIL_BORDER_RADIUS } from "./styles";
 
 type Prop = {
-  data: TierList;
+  data: TierListDisplayData;
 };
 
 const carouselSlideSx = (): CSSObject => ({

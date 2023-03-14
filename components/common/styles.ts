@@ -60,7 +60,7 @@ export const logoTextSx = (): CSSObject => ({
   paddingLeft: "1ch",
 });
 
-const landingSectionHeight = "80vh";
+const landingSectionHeight = "85vh";
 
 export const landingTierListContainerSx = (): CSSObject => ({
   position: "absolute",
@@ -83,7 +83,7 @@ export const landingSectionForegroundSx = (): CSSObject => ({
 });
 
 export const landingSectionTextSx = (): CSSObject => ({
-  fontSize: "3rem",
+  fontSize: "clamp(2.5rem, 6vw, 3rem)",
   color: "white",
 });
 

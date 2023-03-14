@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
-import { TierList } from "../../lib/types/tierlist";
+import { TierListDisplayData } from "../../lib/types/tierlist";
 import apiClient from "../../lib/apiClient";
 import { queryKeys } from "../../lib/queryKeys";
 
 async function fetchRecentTierLists() {
-  const res = await apiClient.get<TierList[]>("/tierlist/recent");
+  const res = await apiClient.get<TierListDisplayData[]>("/tierlist/recent");
   return res.data;
 }
 
