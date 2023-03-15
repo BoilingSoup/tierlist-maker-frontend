@@ -1,13 +1,4 @@
-import {
-  Box,
-  Center,
-  Container,
-  Flex,
-  Grid,
-  Image,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Container, Grid, Image, Stack, Text } from "@mantine/core";
 import { THUMBNAIL_WIDTH } from "../../config/config";
 import { TierListDisplayData } from "../../lib/types/tierlist";
 
