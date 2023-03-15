@@ -14,7 +14,7 @@ export const homeLinkStyle: CSSProperties = {
   textDecoration: "none",
 };
 
-export const NAVBAR_HEIGHT = "64px";
+export const NAVBAR_HEIGHT = "54px";
 
 export const navbarSx = (): CSSObject => ({
   position: "fixed",
