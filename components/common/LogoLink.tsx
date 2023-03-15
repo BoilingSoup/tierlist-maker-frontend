@@ -16,8 +16,8 @@ export const LogoLink = ({
   alt,
   text,
   href,
-  width = 50,
-  height = 40,
+  width = 40,
+  height = 32,
 }: Props) => {
   return (
     <Link style={homeLinkStyle} href={href} aria-label="Go to home page">
