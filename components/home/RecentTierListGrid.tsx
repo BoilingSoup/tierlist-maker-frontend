@@ -1,4 +1,13 @@
-import { Box, Center, Container, Flex, Grid, Image } from "@mantine/core";
+import {
+  Box,
+  Center,
+  Container,
+  Flex,
+  Grid,
+  Image,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { THUMBNAIL_WIDTH } from "../../config/config";
 import { TierListDisplayData } from "../../lib/types/tierlist";
 
@@ -16,15 +25,26 @@ export const RecentTierListGrid = ({
 // isLoading,
 Props) => {
   return (
-    <Container sx={{ maxWidth: "80%" }}>
+    <Container sx={{ maxWidth: "80%", color: "white" }}>
       <Grid gutter={40}>
         {data?.map((item) => (
           <Grid.Col span={6}>
-            <Image
-              key={item.id}
-              src={item.thumbnail}
-              sx={{ margin: "auto", maxWidth: THUMBNAIL_WIDTH }}
-            />
+            <Stack sx={{ alignItems: "center" }}>
+              <Text
+                component="h4"
+                sx={{ margin: "0.5rem", fontSize: "clamp(1rem, 6vw, 1.5rem)" }}
+              >
+                {item.title}
+              </Text>
+              <Image
+                key={item.id}
+                src={item.thumbnail}
+                sx={{ maxWidth: THUMBNAIL_WIDTH }}
+              />
+              <Text>
+                by {item.creator.username} {item.created_at}
+              </Text>
+            </Stack>
           </Grid.Col>
         ))}
       </Grid>
