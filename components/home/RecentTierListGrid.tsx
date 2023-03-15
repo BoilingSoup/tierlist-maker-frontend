@@ -19,7 +19,7 @@ Props) => {
     <Container sx={{ maxWidth: "80%", color: "white" }}>
       <Grid gutter={40}>
         {data?.map((item) => (
-          <Grid.Col span={6}>
+          <Grid.Col key={item.id} span={6}>
             <Stack sx={{ alignItems: "center" }}>
               <Text
                 component="h4"
