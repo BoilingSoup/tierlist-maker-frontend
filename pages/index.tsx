@@ -20,6 +20,7 @@ import { useRecentTierList } from "../hooks/api/useRecentTierList";
 import { useViewportSize } from "@mantine/hooks";
 import { convertThemeBreakpointToPx } from "../components/common/helpers";
 import { RecentTierListGrid } from "../components/home/RecentTierListGrid";
+import { Footer } from "../components/common/Footer";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
@@ -28,7 +29,7 @@ const junk2 = ({ colors }: MantineTheme): CSSObject => ({
   width: "100%",
   background: `radial-gradient(ellipse at top, ${colors.dark[6]}, ${colors.dark[8]})`,
   overflow: "hidden",
-  paddingBottom: "140px",
+  // paddingBottom: "140px",
 });
 
 const tbd = (): CSSObject => ({
@@ -81,6 +82,7 @@ const Home: NextPage = () => {
             isLoading={isLoading}
           />
         )}
+        <Footer />
       </Box>
     </>
   );
