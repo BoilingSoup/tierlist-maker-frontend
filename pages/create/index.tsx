@@ -1,3 +1,4 @@
+import { Box } from "@mantine/core";
 import type { NextPage } from "next";
 import Head from "next/head";
 
@@ -7,7 +8,7 @@ const Create: NextPage = () => {
       <Head>
         <title>Create Tier List</title>
       </Head>
-      <div>Create ...</div>
+      <Box sx={{ width: "70%" }}>Create ...</Box>
     </>
   );
 };
