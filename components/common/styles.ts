@@ -60,7 +60,7 @@ export const logoTextSx = (): CSSObject => ({
   paddingLeft: "1ch",
 });
 
-const landingSectionHeight = "85vh";
+const landingSectionHeight = `calc(95vh - ${NAVBAR_HEIGHT})`;
 
 export const landingTierListContainerSx = (): CSSObject => ({
   position: "absolute",

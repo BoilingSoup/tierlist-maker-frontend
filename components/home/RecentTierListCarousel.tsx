@@ -8,6 +8,7 @@ import { CarouselSlide } from "./CarouselSlide";
 import { TierListDisplayData } from "../../lib/types/tierlist";
 import { useRef } from "react";
 import { RecentTierListSkeleton } from "./RecentTierListSkeleton";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 type Props = {
   data: TierListDisplayData[] | undefined;
@@ -27,6 +28,7 @@ export const RecentTierListCarousel = ({
   isLoading,
 }: Props) => {
   const autoplay = useRef(Autoplay({ delay: 3000 }));
+  const wheelGestures = useRef(WheelGesturesPlugin());
 
   if (isLoading) {
     return <RecentTierListSkeleton />;
@@ -41,7 +43,7 @@ export const RecentTierListCarousel = ({
     slideSize: CAROUSEL_SLIDE_SIZE,
     slideGap: "lg",
     loop: true,
-    plugins: [autoplay.current],
+    plugins: [autoplay.current, wheelGestures.current],
     onMouseEnter: autoplay.current.stop,
     onMouseLeave: autoplay.current.reset,
     withControls: false,

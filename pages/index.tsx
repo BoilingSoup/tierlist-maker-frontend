@@ -26,8 +26,9 @@ import { RecentTierListGrid } from "../components/home/RecentTierListGrid";
 const junk2 = ({ colors }: MantineTheme): CSSObject => ({
   // height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   width: "100%",
-  backgroundColor: colors.dark[5],
+  background: `radial-gradient(ellipse at top, ${colors.dark[6]}, ${colors.dark[8]})`,
   overflow: "hidden",
+  paddingBottom: "140px",
 });
 
 const tbd = (): CSSObject => ({
