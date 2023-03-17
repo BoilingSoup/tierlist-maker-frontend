@@ -7,33 +7,30 @@ import {
   IconBrandReddit,
   IconBrandTwitter,
 } from "@tabler/icons-react";
+import {
+  OAuthHref,
+  OAUTH_DISCORD_REDIRECT,
+  OAUTH_GITHUB_REDIRECT,
+  OAUTH_GITLAB_REDIRECT,
+  OAUTH_GOOGLE_REDIRECT,
+  OAUTH_REDDIT_REDIRECT,
+  OAUTH_TWITTER_REDIRECT,
+} from "../../config/config";
 import { oauthIconSx } from "./styles";
 
-type IconsData = {
-  brand: string;
-  icon: JSX.Element;
-  color: DefaultMantineColor;
-};
-
 export const OAuthIconsGroup = () => {
-  const icons: IconsData[] = [
-    { brand: "Google", icon: <IconBrandGoogle />, color: "cyan" },
-    { brand: "Reddit", icon: <IconBrandReddit />, color: "red" },
-    { brand: "Discord", icon: <IconBrandDiscord />, color: "violet" },
-    { brand: "Twitter", icon: <IconBrandTwitter />, color: "blue" },
-    { brand: "Gitlab", icon: <IconBrandGitlab />, color: "orange" },
-    { brand: "Github", icon: <IconBrandGithub />, color: "dark" },
-  ];
-
   return (
     <Group>
       {icons.map((data) => (
         <ActionIcon
+          component="a"
+          href={data.href}
           key={data.brand}
           radius="xl"
           color={data.color}
           variant="filled"
           sx={oauthIconSx}
+          aria-label={`Sign in with ${data.brand}`}
         >
           {data.icon}
         </ActionIcon>
@@ -41,3 +38,49 @@ export const OAuthIconsGroup = () => {
     </Group>
   );
 };
+
+type IconsData = {
+  brand: string;
+  icon: JSX.Element;
+  color: DefaultMantineColor;
+  href: OAuthHref;
+};
+
+const icons: IconsData[] = [
+  {
+    brand: "Google",
+    icon: <IconBrandGoogle />,
+    color: "cyan",
+    href: OAUTH_GOOGLE_REDIRECT,
+  },
+  {
+    brand: "Reddit",
+    icon: <IconBrandReddit />,
+    color: "red",
+    href: OAUTH_REDDIT_REDIRECT,
+  },
+  {
+    brand: "Discord",
+    icon: <IconBrandDiscord />,
+    color: "violet",
+    href: OAUTH_DISCORD_REDIRECT,
+  },
+  {
+    brand: "Twitter",
+    icon: <IconBrandTwitter />,
+    color: "blue",
+    href: OAUTH_TWITTER_REDIRECT,
+  },
+  {
+    brand: "GitLab",
+    icon: <IconBrandGitlab />,
+    color: "orange",
+    href: OAUTH_GITLAB_REDIRECT,
+  },
+  {
+    brand: "GitHub",
+    icon: <IconBrandGithub />,
+    color: "dark",
+    href: OAUTH_GITHUB_REDIRECT,
+  },
+];
