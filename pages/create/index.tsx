@@ -69,7 +69,7 @@ const Create: NextPage = () => {
             >
               Collapse
             </Button>
-            <p style={{ overflowWrap: "break-word" }}>
+            <p style={{ fontFamily: "serif", overflowWrap: "break-word" }}>
               A problem has been detected and Windows has been shut down to
               prevent damage to your computer.
               <br /> <br />
