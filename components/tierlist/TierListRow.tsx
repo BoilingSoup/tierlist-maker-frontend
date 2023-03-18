@@ -1,4 +1,4 @@
-import { Flex } from "@mantine/core";
+import { Center, Flex } from "@mantine/core";
 import { TierListRowProps } from "./types";
 
 export const TierListRow = ({
@@ -9,17 +9,19 @@ export const TierListRow = ({
 }: TierListRowProps) => {
   return (
     <Flex>
-      <Flex
+      <Center
         sx={{
-          // height: "clamp(80px, 10vw, 140px)",
-          height: `clamp(10vw, ${height}, 140px)`,
-          width: `clamp(10vw, ${height}, 140px)`,
-          // width: "clamp(80px, 10vw, 140px)",
+          // height: `clamp(10vw, ${height}, 140px)`,
+          // width: `clamp(10vw, ${height}, 140px)`,
+          height,
+          width: height,
           backgroundColor: color,
+          color: "black",
+          fontSize: "clamp(2rem, 6vw, 3rem)",
         }}
       >
         {label}
-      </Flex>
+      </Center>
     </Flex>
   );
 };
