@@ -6,6 +6,7 @@ import Head from "next/head";
 import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "../lib/queryClient";
+import "../public/global.css";
 
 export const cssCache = createEmotionCache({ key: "mantine" });
 
