@@ -34,10 +34,10 @@ const Create: NextPage = () => {
       </Head>
       <Flex sx={{ width: "100%", height: `calc(100vh - ${NAVBAR_HEIGHT})` }}>
         <Split
-          sizes={[70, 30]}
+          sizes={[70, 30]} // might need dynamic state for TODO below
           maxSize={[Infinity, width * 0.4]}
           collapsed={collapseIndex}
-          onDragEnd={(sizes) => console.log(sizes)}
+          onDragEnd={(sizes) => console.log(sizes)} // TODO: make collapse/uncollapse size more reactive to current size.
           dragInterval={1}
           direction="horizontal"
           style={{ height: "100%", width: "100%", display: "flex" }}
