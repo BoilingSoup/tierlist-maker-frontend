@@ -45,7 +45,7 @@ const Create: NextPage = () => {
           <Box
             sx={{
               backgroundColor: "gray",
-              color: "white",
+
               overflow: "auto",
             }}
           >
