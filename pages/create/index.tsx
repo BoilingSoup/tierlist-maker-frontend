@@ -6,7 +6,11 @@ import { useState } from "react";
 import Split from "react-split";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
-import { TierListRowProps } from "../../components/tierlist/types";
+import {
+  ClientSideImage,
+  TierListRowProps,
+} from "../../components/tierlist/types";
+import { useClientSideImageID } from "../../hooks/store/useClientSideImageID";
 
 const initialData: (Omit<TierListRowProps, "height"> & { key: number })[] = [
   { key: 1, color: "#fe7f7f", label: "S", items: [] },
@@ -27,7 +31,7 @@ const Create: NextPage = () => {
     undefined
   );
 
-  const [imageSources, setImageSources] = useState<Array<string>>([]);
+  const [imageSources, setImageSources] = useState<Array<ClientSideImage>>([]);
   useWindowEvent("paste", (event: Event) => {
     if (!(event instanceof ClipboardEvent)) {
       return;
@@ -44,7 +48,13 @@ const Create: NextPage = () => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
       fileReader.onload = () => {
-        setImageSources((prev) => [...prev, fileReader.result as string]);
+        setImageSources((prev) => [
+          ...prev,
+          {
+            id: useClientSideImageID.getState().getID(),
+            src: fileReader.result as string,
+          },
+        ]);
       };
     }
   });
@@ -92,8 +102,8 @@ const Create: NextPage = () => {
             >
               Collapse
             </Button>
-            {imageSources.map((src) => (
-              <Image src={src} />
+            {imageSources.map((img) => (
+              <Image key={img.id} src={img.src} />
             ))}
           </Box>
         </Split>
