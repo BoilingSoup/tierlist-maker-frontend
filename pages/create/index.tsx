@@ -8,13 +8,12 @@ import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { TierListRowProps } from "../../components/tierlist/types";
 
-// TODO: figure out how to make a unique key prop for these
-const initialData: Omit<TierListRowProps, "height">[] = [
-  { color: "#fe7f7f", label: "S", items: [] },
-  { color: "#febe7e", label: "A", items: [] },
-  { color: "#fefe7f", label: "B", items: [] },
-  { color: "#7fff7f", label: "C", items: [] },
-  { color: "#7fbfff", label: "D", items: [] },
+const initialData: (Omit<TierListRowProps, "height"> & { key: number })[] = [
+  { key: 1, color: "#fe7f7f", label: "S", items: [] },
+  { key: 2, color: "#febe7e", label: "A", items: [] },
+  { key: 3, color: "#fefe7f", label: "B", items: [] },
+  { key: 4, color: "#7fff7f", label: "C", items: [] },
+  { key: 5, color: "#7fbfff", label: "D", items: [] },
 ];
 
 const Create: NextPage = () => {
@@ -74,6 +73,7 @@ const Create: NextPage = () => {
           >
             {data.map((row) => (
               <TierListRow
+                key={row.key}
                 label={row.label}
                 items={row.items}
                 color={row.color}
