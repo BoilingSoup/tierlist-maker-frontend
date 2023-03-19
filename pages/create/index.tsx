@@ -1,5 +1,5 @@
-import { Box, Button, Flex } from "@mantine/core";
-import { useViewportSize } from "@mantine/hooks";
+import { Box, Button, Flex, Image } from "@mantine/core";
+import { useViewportSize, useWindowEvent } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -26,6 +26,28 @@ const Create: NextPage = () => {
   const [collapseIndex, setCollapseIndex] = useState<number | undefined>(
     undefined
   );
+
+  const [imageSources, setImageSources] = useState<Array<string>>([]);
+  useWindowEvent("paste", (event: Event) => {
+    if (!(event instanceof ClipboardEvent)) {
+      return;
+    }
+    if (!event.clipboardData?.files?.length) {
+      return;
+    }
+    if (event.clipboardData.files.length <= 0) {
+      return;
+    }
+
+    const file = event.clipboardData.files[0];
+    if (file.type.startsWith("image/")) {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        setImageSources((prev) => [...prev, fileReader.result as string]);
+      };
+    }
+  });
 
   return (
     <>
@@ -69,29 +91,9 @@ const Create: NextPage = () => {
             >
               Collapse
             </Button>
-            <p style={{ fontFamily: "serif", overflowWrap: "break-word" }}>
-              A problem has been detected and Windows has been shut down to
-              prevent damage to your computer.
-              <br /> <br />
-              If this is the first time you've seen this stop error screen,
-              restart your computer. <br />
-              If this screen appears again, follow these steps: <br />
-              <br />
-              Check to make sure any new hardware or software is properly
-              installed.
-              <br /> If this is a new installation, ask your hardware or
-              software manufacturer for and Windows updates you might need.
-              <br /> <br />
-              If problems continue, disable or remove any newly installed
-              hardware or software. Disable BIOS memory options such as caching
-              or shadowing. <br />
-              If you need to use Safe Mode to remove or disable components,
-              restart your computer, press F8 to select Advanced Startup
-              Options, and then select Safe Mode.
-              <br /> <br /> Technical information:
-              <br /> <br /> *** STOP: 0x000000FE (0x00000008, 0x000000006,
-              0x00000009, 0x847075cc) <br /> <br />
-            </p>
+            {imageSources.map((src) => (
+              <Image src={src} />
+            ))}
           </Box>
         </Split>
       </Flex>
