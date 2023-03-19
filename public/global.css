@@ -20,6 +20,7 @@
   border: 2px solid #707070;
 }
 
+/* resize gutter */
 .gutter {
   background-color: #eee;
 
@@ -29,6 +30,7 @@
 
 .gutter:hover {
   cursor: col-resize;
+  background: #ccc;
 }
 
 .gutter.gutter-vertical {
