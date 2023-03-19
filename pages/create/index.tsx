@@ -8,6 +8,7 @@ import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { TierListRowProps } from "../../components/tierlist/types";
 
+// TODO: figure out how to make a unique key prop for these
 const initialData: Omit<TierListRowProps, "height">[] = [
   { color: "#fe7f7f", label: "S", items: [] },
   { color: "#febe7e", label: "A", items: [] },
