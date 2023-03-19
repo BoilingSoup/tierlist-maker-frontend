@@ -1,4 +1,11 @@
-import { Box, Button, Flex, Image } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image as MantineImage,
+  Text,
+} from "@mantine/core";
 import { useViewportSize, useWindowEvent } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -46,8 +53,15 @@ const Create: NextPage = () => {
     const file = event.clipboardData.files[0];
     if (file.type.startsWith("image/")) {
       const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
+
       fileReader.onload = () => {
+        // TODO: compress/resize images before displaying
+
+        // let img = new Image();
+        // img.onload = () => {
+        // console.log(img.width);
+        // console.log(img.height);
+        // };
         setImageSources((prev) => [
           ...prev,
           {
@@ -55,7 +69,10 @@ const Create: NextPage = () => {
             src: fileReader.result as string,
           },
         ]);
+        // img.src = fileReader.result as string;
       };
+
+      fileReader.readAsDataURL(file);
     }
   });
 
@@ -102,9 +119,28 @@ const Create: NextPage = () => {
             >
               Collapse
             </Button>
-            {imageSources.map((img) => (
-              <Image key={img.id} src={img.src} />
-            ))}
+            <Flex sx={{ flexWrap: "wrap" }}>
+              {!imageSources.length && <Text>No Images!</Text>}
+              {imageSources.map((img) => (
+                <Center
+                  key={img.id}
+                  sx={{
+                    width: "100px",
+                    height: "100px",
+                    overflow: "hidden",
+                    border: "2px solid white",
+                    margin: "1px",
+                  }}
+                >
+                  <MantineImage
+                    src={img.src}
+                    // width={100}
+                    // height={100}
+                    sx={{ height: "auto", width: "100px" }}
+                  />
+                </Center>
+              ))}
+            </Flex>
           </Box>
         </Split>
       </Flex>
