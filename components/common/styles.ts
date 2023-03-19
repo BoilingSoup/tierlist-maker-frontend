@@ -1,4 +1,4 @@
-import { CSSObject } from "@mantine/core";
+import { CSSObject, MantineTheme } from "@mantine/core";
 import { CSSProperties } from "react";
 
 export const displayNone: CSSObject = {
@@ -31,27 +31,55 @@ export const logoFlexSx = (): CSSObject => ({
 });
 
 export const desktopNavLinkBoxSx = (): CSSObject => ({
-  width: "80px",
+  width: "85px",
 });
 
 const navTextCSS: CSSObject = {
   color: "white",
+  fontWeight: 600,
   ...marginYAuto,
 };
 
-export const getNavLinkTextSx = (isCurrentPath: boolean): CSSObject =>
-  isCurrentPath ? navLinkTextCurrentSx() : navLinkTextSx();
+export const getNavLinkTextSx = (
+  isCurrentPath: boolean
+): (() => CSSObject) | ((theme: MantineTheme) => CSSObject) =>
+  isCurrentPath ? navLinkTextCurrentSx : navLinkTextSx;
+
+const navLinkBeforeElement: CSSObject = {
+  width: "100%",
+  bottom: 0,
+  content: '""',
+  position: "absolute",
+  borderRadius: 100,
+};
 
 export const navLinkTextSx = (): CSSObject => ({
   ...navTextCSS,
   borderRadius: 10,
   padding: "5px 15px",
   textDecoration: "none",
+  position: "relative",
+  ":hover": {
+    "::before": {
+      height: "3px",
+    },
+  },
+  "::before": {
+    ...navLinkBeforeElement,
+    transition: "100ms",
+    height: "0%",
+    opacity: 0.75,
+    backgroundColor: "white",
+  },
 });
 
-export const navLinkTextCurrentSx = (): CSSObject => ({
+export const navLinkTextCurrentSx = ({ colors }: MantineTheme): CSSObject => ({
   ...navLinkTextSx(),
-  backgroundColor: "#15aabf",
+  "::before": {
+    ...navLinkBeforeElement,
+    height: "3px",
+    backgroundColor: colors.cyan[3],
+  },
 });
 
 export const logoTextSx = (): CSSObject => ({
