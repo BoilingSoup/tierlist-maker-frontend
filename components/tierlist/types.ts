@@ -8,3 +8,8 @@ export type TierListRowProps = {
     text: string;
   }[];
 };
+
+export type ClientSideImage = {
+  id: number;
+  src: string;
+};
