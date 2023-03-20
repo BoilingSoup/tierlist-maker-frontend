@@ -1,5 +1,19 @@
-import { Box, Center, Flex, Image as MantineImage, Text } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Image as MantineImage,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { useViewportSize, useWindowEvent } from "@mantine/hooks";
+import {
+  IconDeviceFloppy,
+  IconDownload,
+  IconShare,
+  IconWorldUpload,
+} from "@tabler/icons-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -94,8 +108,8 @@ const Create: NextPage = () => {
             color: "white",
           })}
         >
-          <Flex sx={{ flexWrap: "wrap" }}>
-            {!imageSources.length && <Text>No Images!</Text>}
+          <Flex sx={{ flexWrap: "wrap", height: "70%", background: "brown" }}>
+            {/* {!imageSources.length && <Text>No Images!</Text>} */}
             {imageSources.map((img) => (
               <Center
                 key={img.id}
@@ -116,6 +130,38 @@ const Create: NextPage = () => {
               </Center>
             ))}
           </Flex>
+          <Center
+            sx={{
+              width: "100%",
+              height: "30%",
+            }}
+          >
+            <Stack
+              sx={{
+                width: "70%",
+                height: "80%",
+                // background: "blue",
+                justifyContent: "center",
+              }}
+            >
+              <Button>
+                <IconDownload />
+                <Text>Export Image</Text>
+              </Button>
+              <Button>
+                <IconDeviceFloppy />
+                <Text>Save Progress</Text>
+              </Button>
+              <Button>
+                <IconShare />
+                <Text>Share</Text>
+              </Button>
+              <Button>
+                <IconWorldUpload />
+                <Text>Publish</Text>
+              </Button>
+            </Stack>
+          </Center>
         </Box>
       </Flex>
     </>
