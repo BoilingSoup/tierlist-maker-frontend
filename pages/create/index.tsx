@@ -141,7 +141,7 @@ const Create: NextPage = () => {
                 width: "70%",
                 height: "80%",
                 // background: "blue",
-                justifyContent: "center",
+                justifyContent: "space-evenly",
               }}
             >
               <Button>
