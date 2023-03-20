@@ -49,8 +49,8 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Box bg="black" sx={landingTierListContainerSx}>
-        <LandingTierListImage overlayAlpha={0.6} />
+      <Box sx={landingTierListContainerSx}>
+        <LandingTierListImage overlayAlpha={0.5} />
       </Box>
       <Center sx={landingSectionForegroundSx}>
         <Text component="h2" sx={landingSectionTextSx}>

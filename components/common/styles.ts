@@ -16,9 +16,9 @@ export const homeLinkStyle: CSSProperties = {
 
 export const NAVBAR_HEIGHT = "54px";
 
-export const navbarSx = (): CSSObject => ({
+export const navbarSx = ({ colors }: MantineTheme): CSSObject => ({
   position: "fixed",
-  backgroundColor: "black",
+  background: `linear-gradient(${colors.dark[9]}, ${colors.dark[8]}, ${colors.dark[7]})`,
   height: NAVBAR_HEIGHT,
   width: "100%",
   justifyContent: "space-between",
@@ -90,7 +90,9 @@ export const logoTextSx = (): CSSObject => ({
 
 const landingSectionHeight = `calc(95vh - ${NAVBAR_HEIGHT})`;
 
-export const landingTierListContainerSx = (): CSSObject => ({
+export const landingTierListContainerSx = ({
+  colors,
+}: MantineTheme): CSSObject => ({
   position: "absolute",
   width: "100%",
   height: landingSectionHeight,
@@ -99,6 +101,7 @@ export const landingTierListContainerSx = (): CSSObject => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  background: `radial-gradient(ellipse at top, ${colors.dark[2]}, ${colors.dark[7]})`,
 });
 
 export const landingSectionForegroundSx = (): CSSObject => ({
