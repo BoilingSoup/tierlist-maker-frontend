@@ -1,12 +1,16 @@
 import {
+  ActionIcon,
   Box,
-  Button,
   Center,
   Flex,
   Image as MantineImage,
   Text,
 } from "@mantine/core";
 import { useViewportSize, useWindowEvent } from "@mantine/hooks";
+import {
+  IconLayoutSidebarRightCollapse,
+  IconLayoutSidebarRightExpand,
+} from "@tabler/icons-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -92,11 +96,10 @@ const Create: NextPage = () => {
           style={{ height: "100%", width: "100%", display: "flex" }}
         >
           <Box
-            sx={{
-              backgroundColor: "gray",
-
+            sx={(theme) => ({
+              backgroundColor: theme.colors.dark[7],
               overflow: "auto",
-            }}
+            })}
           >
             {data.map((row) => (
               <TierListRow
@@ -109,18 +112,38 @@ const Create: NextPage = () => {
             ))}
           </Box>
           <Box
-            sx={{
-              backgroundColor: "navy",
+            sx={(theme) => ({
+              backgroundColor: theme.colors.dark[4],
               color: "white",
-            }}
+            })}
           >
-            <Button
+            <ActionIcon
+              variant="outline"
+              size="xl"
+              sx={(theme) => ({
+                color: "white",
+                margin: theme.spacing.xs,
+                ":hover": {
+                  backgroundColor: "initial",
+                },
+              })}
+              title={
+                collapseIndex === undefined
+                  ? "Collapse Side Menu"
+                  : "Expand Side Menu"
+              }
               onClick={() => setCollapseIndex((prev) => (prev ? undefined : 1))}
             >
-              Collapse
-            </Button>
+              {collapseIndex === undefined ? (
+                <IconLayoutSidebarRightCollapse />
+              ) : (
+                <IconLayoutSidebarRightExpand />
+              )}
+            </ActionIcon>
             <Flex sx={{ flexWrap: "wrap" }}>
-              {!imageSources.length && <Text>No Images!</Text>}
+              {!imageSources.length && collapseIndex === undefined && (
+                <Text>No Images!</Text>
+              )}
               {imageSources.map((img) => (
                 <Center
                   key={img.id}
