@@ -1,11 +1,14 @@
 import {
   Box,
+  Button,
   Center,
   CSSObject,
   Flex,
+  Group,
   Image as MantineImage,
   Text,
 } from "@mantine/core";
+import { Dropzone } from "@mantine/dropzone";
 import { useViewportSize } from "@mantine/hooks";
 import {
   IconDeviceFloppy,
@@ -15,7 +18,7 @@ import {
 } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { TierListRow } from "../../components/tierlist/TierListRow";
@@ -53,6 +56,8 @@ const Create: NextPage = () => {
   const [imageSources, setImageSources] = useState<Array<ClientSideImage>>([]);
 
   usePasteEvent(setImageSources);
+
+  const openRef = useRef<() => void>(null);
 
   return (
     <>
@@ -113,6 +118,18 @@ const Create: NextPage = () => {
                 />
               </Center>
             ))}
+            <Dropzone
+              openRef={openRef}
+              onDrop={() => {}}
+              activateOnClick={false}
+              styles={{ inner: { pointerEvents: "all" } }}
+            >
+              <Group position="center">
+                <Button onClick={() => (openRef.current as () => void)()}>
+                  Select files
+                </Button>
+              </Group>
+            </Dropzone>
           </Flex>
           <Box sx={buttonsContainer}>
             <Center component="button" sx={buttonsSx}>
