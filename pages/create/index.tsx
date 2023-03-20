@@ -1,20 +1,8 @@
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Flex,
-  Image as MantineImage,
-  Text,
-} from "@mantine/core";
+import { Box, Center, Flex, Image as MantineImage, Text } from "@mantine/core";
 import { useViewportSize, useWindowEvent } from "@mantine/hooks";
-import {
-  IconLayoutSidebarRightCollapse,
-  IconLayoutSidebarRightExpand,
-} from "@tabler/icons-react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import Split from "react-split";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import {
@@ -33,14 +21,10 @@ const initialData: (Omit<TierListRowProps, "height"> & { key: number })[] = [
 
 const Create: NextPage = () => {
   const [data, setData] = useState<typeof initialData>(initialData);
-  const { width, height } = useViewportSize();
+  const { height } = useViewportSize();
   const rowHeight = `${
     (height - +NAVBAR_HEIGHT.split("px").shift()!) / data.length
   }px`;
-
-  const [collapseIndex, setCollapseIndex] = useState<number | undefined>(
-    undefined
-  );
 
   const [imageSources, setImageSources] = useState<Array<ClientSideImage>>([]);
   useWindowEvent("paste", (event: Event) => {
@@ -86,86 +70,53 @@ const Create: NextPage = () => {
         <title>Create Tier List</title>
       </Head>
       <Flex sx={{ width: "100%", height: `calc(100vh - ${NAVBAR_HEIGHT})` }}>
-        <Split
-          sizes={[70, 30]} // might need dynamic state for TODO below
-          maxSize={[Infinity, width * 0.4]}
-          collapsed={collapseIndex}
-          onDragEnd={(sizes) => console.log(sizes)} // TODO: make collapse/uncollapse size more reactive to current size.
-          dragInterval={1}
-          direction="horizontal"
-          style={{ height: "100%", width: "100%", display: "flex" }}
+        <Box
+          sx={(theme) => ({
+            width: "75%",
+            backgroundColor: theme.colors.dark[7],
+            overflow: "auto",
+          })}
         >
-          <Box
-            sx={(theme) => ({
-              backgroundColor: theme.colors.dark[7],
-              overflow: "auto",
-            })}
-          >
-            {data.map((row) => (
-              <TierListRow
-                key={row.key}
-                label={row.label}
-                items={row.items}
-                color={row.color}
-                height={rowHeight}
-              />
+          {data.map((row) => (
+            <TierListRow
+              key={row.key}
+              label={row.label}
+              items={row.items}
+              color={row.color}
+              height={rowHeight}
+            />
+          ))}
+        </Box>
+        <Box
+          sx={(theme) => ({
+            width: "25%",
+            backgroundColor: theme.colors.dark[4],
+            color: "white",
+          })}
+        >
+          <Flex sx={{ flexWrap: "wrap" }}>
+            {!imageSources.length && <Text>No Images!</Text>}
+            {imageSources.map((img) => (
+              <Center
+                key={img.id}
+                sx={{
+                  width: "100px",
+                  height: "100px",
+                  overflow: "hidden",
+                  border: "2px solid white",
+                  margin: "1px",
+                }}
+              >
+                <MantineImage
+                  src={img.src}
+                  // width={100}
+                  // height={100}
+                  sx={{ height: "auto", width: "100px" }}
+                />
+              </Center>
             ))}
-          </Box>
-          <Box
-            sx={(theme) => ({
-              backgroundColor: theme.colors.dark[4],
-              color: "white",
-            })}
-          >
-            <ActionIcon
-              variant="outline"
-              size="xl"
-              sx={(theme) => ({
-                color: "white",
-                margin: theme.spacing.xs,
-                ":hover": {
-                  backgroundColor: "initial",
-                },
-              })}
-              title={
-                collapseIndex === undefined
-                  ? "Collapse Side Menu"
-                  : "Expand Side Menu"
-              }
-              onClick={() => setCollapseIndex((prev) => (prev ? undefined : 1))}
-            >
-              {collapseIndex === undefined ? (
-                <IconLayoutSidebarRightCollapse />
-              ) : (
-                <IconLayoutSidebarRightExpand />
-              )}
-            </ActionIcon>
-            <Flex sx={{ flexWrap: "wrap" }}>
-              {!imageSources.length && collapseIndex === undefined && (
-                <Text>No Images!</Text>
-              )}
-              {imageSources.map((img) => (
-                <Center
-                  key={img.id}
-                  sx={{
-                    width: "100px",
-                    height: "100px",
-                    overflow: "hidden",
-                    border: "2px solid white",
-                    margin: "1px",
-                  }}
-                >
-                  <MantineImage
-                    src={img.src}
-                    // width={100}
-                    // height={100}
-                    sx={{ height: "auto", width: "100px" }}
-                  />
-                </Center>
-              ))}
-            </Flex>
-          </Box>
-        </Split>
+          </Flex>
+        </Box>
       </Flex>
     </>
   );
