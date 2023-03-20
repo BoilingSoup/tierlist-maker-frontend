@@ -1,15 +1,19 @@
-import { CSSObject } from "@mantine/core";
+import { CSSObject, MantineTheme } from "@mantine/core";
 import { THUMBNAIL_HEIGHT, THUMBNAIL_WIDTH } from "../../config/config";
 
-const landingImgBg = "rgba(100, 100, 100, 0.9)";
-
-export const landingImgContainerSx = (): CSSObject => ({
+export const landingImgContainerSx = ({
+  colors,
+  fn,
+}: MantineTheme): CSSObject => ({
   position: "absolute",
   width: "90%",
   maxWidth: "1200px",
   transform: "rotate(330deg)",
   zIndex: -2,
-  backgroundColor: landingImgBg,
+  backgroundImage: `radial-gradient(ellipse, ${colors.dark[9]}, ${fn.lighten(
+    colors.dark[8],
+    0.03
+  )})`,
 });
 
 const landingImgRowPadding = "10px";
@@ -39,14 +43,17 @@ export const landingImgColorBoxSx = (): CSSObject => ({
   borderRadius: landingImgColorBoxBorderRadius,
 });
 
-export const landingImgRowSx = (): CSSObject => ({
+export const landingImgRowSx = ({ colors, fn }: MantineTheme): CSSObject => ({
   width: "100%",
-  backgroundColor: landingImgBg,
+  backgroundImage: `radial-gradient(ellipse, ${colors.dark[8]}, ${fn.lighten(
+    colors.dark[7],
+    0.03
+  )})`,
   maxHeight: landingImgColorBoxMaxSize,
 });
 
-export const landingImgLastRowSx = (): CSSObject => ({
-  ...landingImgRowSx(),
+export const landingImgLastRowSx = (theme: MantineTheme): CSSObject => ({
+  ...landingImgRowSx(theme),
   borderBottomRightRadius: landingImgColorBoxBorderRadius,
 });
 
