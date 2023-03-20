@@ -1,17 +1,9 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Image as MantineImage,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Box, Center, Flex, Image as MantineImage, Text } from "@mantine/core";
 import { useViewportSize, useWindowEvent } from "@mantine/hooks";
 import {
   IconDeviceFloppy,
   IconDownload,
-  IconShare,
+  IconMaximize,
   IconWorldUpload,
 } from "@tabler/icons-react";
 import type { NextPage } from "next";
@@ -108,7 +100,7 @@ const Create: NextPage = () => {
             color: "white",
           })}
         >
-          <Flex sx={{ flexWrap: "wrap", height: "70%", background: "brown" }}>
+          <Flex sx={{ flexWrap: "wrap", height: "80%", background: "black" }}>
             {/* {!imageSources.length && <Text>No Images!</Text>} */}
             {imageSources.map((img) => (
               <Center
@@ -130,38 +122,58 @@ const Create: NextPage = () => {
               </Center>
             ))}
           </Flex>
-          <Center
+          <Box
             sx={{
               width: "100%",
-              height: "30%",
+              height: "20%",
+              background: "orange",
             }}
           >
-            <Stack
+            <Center
+              component="button"
               sx={{
-                width: "70%",
-                height: "80%",
-                // background: "blue",
-                justifyContent: "space-evenly",
+                width: "50%",
+                height: "50%",
+                display: "inline",
               }}
             >
-              <Button>
-                <IconDownload />
-                <Text>Export Image</Text>
-              </Button>
-              <Button>
-                <IconDeviceFloppy />
-                <Text>Save Progress</Text>
-              </Button>
-              <Button>
-                <IconShare />
-                <Text>Share</Text>
-              </Button>
-              <Button>
-                <IconWorldUpload />
-                <Text>Publish</Text>
-              </Button>
-            </Stack>
-          </Center>
+              <IconDownload />
+              <Text>Export PNG</Text>
+            </Center>
+            <Center
+              component="button"
+              sx={{
+                width: "50%",
+                height: "50%",
+                display: "inline",
+              }}
+            >
+              <IconMaximize />
+              <Text>Full Screen</Text>
+            </Center>
+            <Center
+              component="button"
+              sx={{
+                width: "50%",
+                height: "50%",
+                display: "inline",
+              }}
+            >
+              <IconDeviceFloppy />
+              <Text>Save</Text>
+            </Center>
+            <Center
+              component="button"
+              sx={{
+                width: "50%",
+                height: "50%",
+                display: "inline",
+              }}
+            >
+              <IconWorldUpload />
+              <Text>Publish</Text>
+            </Center>
+          </Box>
         </Box>
       </Flex>
     </>
