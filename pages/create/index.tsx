@@ -9,11 +9,12 @@ import {
   Text,
 } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
-import { useViewportSize } from "@mantine/hooks";
+import { useFullscreen, useViewportSize } from "@mantine/hooks";
 import {
   IconDeviceFloppy,
   IconDownload,
   IconMaximize,
+  IconMaximizeOff,
   IconWorldUpload,
 } from "@tabler/icons-react";
 import type { NextPage } from "next";
@@ -47,13 +48,26 @@ const buttonsContainer: CSSObject = {
 };
 
 const Create: NextPage = () => {
+  const {
+    toggle: toggleFullscreen,
+    fullscreen,
+    ref: fullscreenRef,
+  } = useFullscreen();
+
+  //
   const [data, setData] = useState<typeof initialData>(initialData);
   const { height } = useViewportSize();
-  const rowHeight = `${
-    (height - +NAVBAR_HEIGHT.split("px").shift()!) / data.length
-  }px`;
+  const rowHeight = fullscreen
+    ? `${height / data.length}px`
+    : `${(height - +NAVBAR_HEIGHT.split("px").shift()!) / data.length}px`;
 
   const [imageSources, setImageSources] = useState<Array<ClientSideImage>>([]);
+
+  /**
+   *
+   * Move these later
+   *
+   */
 
   usePasteEvent(setImageSources);
 
@@ -64,7 +78,13 @@ const Create: NextPage = () => {
       <Head>
         <title>Create Tier List</title>
       </Head>
-      <Flex sx={{ width: "100%", height: `calc(100vh - ${NAVBAR_HEIGHT})` }}>
+      <Flex
+        ref={fullscreenRef}
+        sx={{
+          width: "100%",
+          height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+        }}
+      >
         <Box
           sx={(theme) => ({
             width: "75%",
@@ -136,9 +156,13 @@ const Create: NextPage = () => {
               <IconDownload />
               <Text>Export PNG</Text>
             </Center>
-            <Center component="button" sx={buttonsSx}>
-              <IconMaximize />
-              <Text>Full Screen</Text>
+            <Center
+              component="button"
+              sx={buttonsSx}
+              onClick={toggleFullscreen}
+            >
+              {fullscreen ? <IconMaximizeOff /> : <IconMaximize />}
+              <Text>{fullscreen ? "Exit" : "Enter"} Full Screen</Text>
             </Center>
             <Center component="button" sx={buttonsSx}>
               <IconDeviceFloppy />
