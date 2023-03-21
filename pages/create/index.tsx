@@ -113,14 +113,17 @@ const Create: NextPage = () => {
             color: "white",
           })}
         >
-          <Flex
+          <Center
             sx={(theme) => ({
+              width: "100%",
               height: "80%",
               background: theme.colors.dark[4],
             })}
           >
-            <Flex
+            <Box
               sx={{
+                // height: "calc(100% - 1.5vw)",
+                // width: "calc(100% - 1.5vw)",
                 height: "95%",
                 width: "95%",
                 margin: "auto",
@@ -212,8 +215,8 @@ const Create: NextPage = () => {
                   {(props) => <Button {...props}>Upload image</Button>}
                 </FileButton>
               </Center>
-            </Flex>
-          </Flex>
+            </Box>
+          </Center>
           <Box sx={buttonsContainer}>
             <Center component="button" sx={buttonsSx}>
               <IconDownload />
