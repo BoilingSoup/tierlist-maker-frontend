@@ -3,13 +3,14 @@ import {
   Button,
   Center,
   CSSObject,
+  FileButton,
   Flex,
   Image as MantineImage,
   List,
   Text,
   Tooltip,
 } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useFullscreen, useViewportSize } from "@mantine/hooks";
 import {
   IconDeviceFloppy,
@@ -21,7 +22,7 @@ import {
 } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useRef, useState } from "react";
+import { RefObject, useRef, useState } from "react";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { TierListRow } from "../../components/tierlist/TierListRow";
@@ -29,6 +30,7 @@ import {
   ClientSideImage,
   TierListRowProps,
 } from "../../components/tierlist/types";
+import { useClientSideImageID } from "../../hooks/store/useClientSideImageID";
 
 const initialData: (Omit<TierListRowProps, "height"> & { key: number })[] = [
   { key: 1, color: "#fe7f7f", label: "S", items: [] },
@@ -73,7 +75,7 @@ const Create: NextPage = () => {
 
   usePasteEvent(setImageSources);
 
-  const openRef = useRef<() => void>(null);
+  const resetRef = useRef<() => void>(null);
 
   return (
     <>
@@ -113,116 +115,104 @@ const Create: NextPage = () => {
         >
           <Flex
             sx={(theme) => ({
-              flexWrap: "wrap",
               height: "80%",
               background: theme.colors.dark[4],
-              alignContent: "flex-start",
             })}
           >
-            <Center
-              sx={{ width: "100%", height: "90%", alignItems: "flex-end" }}
+            <Flex
+              sx={{
+                height: "95%",
+                width: "95%",
+                margin: "auto",
+                border: "2px solid orange",
+                borderRadius: "8px",
+                flexDirection: "column",
+              }}
             >
-              <Dropzone
-                openRef={openRef}
-                onDrop={() => {}}
-                activateOnClick={false}
-                styles={{
-                  inner: {
-                    pointerEvents: "all",
-                    height: "100%",
-                    width: "100%",
-                    display: "flex",
-                    flexWrap: "wrap",
-                    alignContent: "flex-start",
-                  },
-                }}
+              <Center
                 sx={{
-                  flexWrap: "wrap",
-                  height: "calc(100% - 20px)",
-                  width: "95%",
-                  marginTop: "20px",
-                  background: "inherit",
-                  "&:hover": {
-                    background: "inherit",
-                  },
-                  overflow: "auto",
+                  height: "90%",
+                  width: "100%",
                 }}
               >
-                {!imageSources.length && (
-                  <Center
-                    sx={{
-                      height: "100%",
-                      width: "100%",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <Text component="h2" sx={{ fontSize: "1.8rem" }}>
-                      Add Images Here!
-                    </Text>
-                    <br />
-                    <List
+                <Flex
+                  sx={{
+                    height: "95%",
+                    width: "95%",
+                    flexWrap: "wrap",
+                    alignContent: "flex-start",
+                    overflow: "auto",
+                  }}
+                >
+                  {!imageSources.length && (
+                    <Center
                       sx={{
-                        color: "white",
-                        fontSize: "1.3rem",
+                        height: "100%",
+                        width: "100%",
+                        flexDirection: "column",
                       }}
-                      styles={{ itemWrapper: { marginTop: "30px" } }}
                     >
-                      <List.Item>Copy/Paste images or URLs</List.Item>
-                      <List.Item>Drag & Drop images here</List.Item>
-                      <List.Item>
-                        Use the button below to upload files
-                      </List.Item>
-                    </List>
-                    {/* <Center sx={{ height: "70%", width: "100%" }}> */}
-                    {/*   <Text component="h2" sx={{ fontSize: "1.6rem" }}> */}
-                    {/*     Add Images Here! */}
-                    {/*   </Text> */}
-                    {/* </Center> */}
-                  </Center>
-                )}
-                {imageSources.map((img) => (
-                  <Center
-                    key={img.id}
-                    sx={{
-                      width: "100px",
-                      height: "100px",
-                      overflow: "hidden",
-                      border: "2px solid white",
-                      margin: "1px",
-                    }}
-                  >
-                    <MantineImage
-                      src={img.src}
-                      // width={100}
-                      // height={100}
-                      sx={{ height: "auto", width: "100px" }}
-                    />
-                  </Center>
-                ))}
-              </Dropzone>
-            </Center>
-            <Center sx={{ width: "100%", height: "10%", position: "relative" }}>
-              <Button onClick={() => (openRef.current as Function)()}>
-                Add Image From Computer
-              </Button>
-              {Boolean(imageSources.length) && (
-                <Tooltip label="You can add images by ___">
-                  <Flex
-                    sx={{
-                      position: "absolute",
-                      top: "5%",
-                      right: "1ch",
-                      alignItems: "center",
-                    }}
-                  >
-                    <IconHelpCircle size={"20"} />{" "}
-                    <Text component="span" ml="0.5ch">
-                      Help
-                    </Text>
-                  </Flex>
-                </Tooltip>
-              )}
-            </Center>
+                      <Text component="h2" sx={{ fontSize: "1.8rem" }}>
+                        Add Images Here!
+                      </Text>
+                      <br />
+                      <List
+                        sx={{
+                          color: "white",
+                          fontSize: "1.3rem",
+                        }}
+                        styles={{ itemWrapper: { marginTop: "30px" } }}
+                      >
+                        <List.Item>Copy/Paste images or URLs</List.Item>
+                        <List.Item>
+                          Use the button below to upload files
+                        </List.Item>
+                      </List>
+                    </Center>
+                  )}
+                  {imageSources.map((img) => (
+                    <Center
+                      key={img.id}
+                      sx={{
+                        width: "100px",
+                        height: "100px",
+                        overflow: "hidden",
+                        border: "2px solid white",
+                        margin: "1px",
+                      }}
+                    >
+                      <MantineImage
+                        src={img.src}
+                        // width={100}
+                        // height={100}
+                        sx={{ height: "auto", width: "100px" }}
+                      />
+                    </Center>
+                  ))}
+                </Flex>
+              </Center>
+              <Center sx={{ height: "10%" }}>
+                <FileButton
+                  resetRef={resetRef}
+                  onChange={(files) => {
+                    const newImages: ClientSideImage[] = files.map((file) => ({
+                      id: useClientSideImageID.getState().getID(),
+                      src: URL.createObjectURL(file),
+                    }));
+                    console.log(newImages);
+                    setImageSources((prev) => [...prev, ...newImages]);
+
+                    if (resetRef.current !== null) {
+                      resetRef.current();
+                    }
+                  }}
+                  accept="image/png,image/jpeg,image/webp"
+                  multiple
+                >
+                  {(props) => <Button {...props}>Upload image</Button>}
+                </FileButton>
+              </Center>
+            </Flex>
           </Flex>
           <Box sx={buttonsContainer}>
             <Center component="button" sx={buttonsSx}>
