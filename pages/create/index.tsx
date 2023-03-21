@@ -4,15 +4,17 @@ import {
   Center,
   CSSObject,
   Flex,
-  Group,
   Image as MantineImage,
+  List,
   Text,
+  Tooltip,
 } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { useFullscreen, useViewportSize } from "@mantine/hooks";
 import {
   IconDeviceFloppy,
   IconDownload,
+  IconHelpCircle,
   IconMaximize,
   IconMaximizeOff,
   IconWorldUpload,
@@ -110,46 +112,117 @@ const Create: NextPage = () => {
           })}
         >
           <Flex
-            sx={{
+            sx={(theme) => ({
               flexWrap: "wrap",
               height: "80%",
-              background: "black",
+              background: theme.colors.dark[4],
               alignContent: "flex-start",
-              overflow: "auto",
-            }}
+            })}
           >
-            {/* {!imageSources.length && <Text>No Images!</Text>} */}
-            {imageSources.map((img) => (
-              <Center
-                key={img.id}
+            <Center
+              sx={{ width: "100%", height: "90%", alignItems: "flex-end" }}
+            >
+              <Dropzone
+                openRef={openRef}
+                onDrop={() => {}}
+                activateOnClick={false}
+                styles={{
+                  inner: {
+                    pointerEvents: "all",
+                    height: "100%",
+                    width: "100%",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignContent: "flex-start",
+                  },
+                }}
                 sx={{
-                  width: "100px",
-                  height: "100px",
-                  overflow: "hidden",
-                  border: "2px solid white",
-                  margin: "1px",
+                  flexWrap: "wrap",
+                  height: "calc(100% - 20px)",
+                  width: "95%",
+                  marginTop: "20px",
+                  background: "inherit",
+                  "&:hover": {
+                    background: "inherit",
+                  },
+                  overflow: "auto",
                 }}
               >
-                <MantineImage
-                  src={img.src}
-                  // width={100}
-                  // height={100}
-                  sx={{ height: "auto", width: "100px" }}
-                />
-              </Center>
-            ))}
-            <Dropzone
-              openRef={openRef}
-              onDrop={() => {}}
-              activateOnClick={false}
-              styles={{ inner: { pointerEvents: "all" } }}
-            >
-              <Group position="center">
-                <Button onClick={() => (openRef.current as () => void)()}>
-                  Select files
-                </Button>
-              </Group>
-            </Dropzone>
+                {!imageSources.length && (
+                  <Center
+                    sx={{
+                      height: "100%",
+                      width: "100%",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Text component="h2" sx={{ fontSize: "1.8rem" }}>
+                      Add Images Here!
+                    </Text>
+                    <br />
+                    <List
+                      sx={{
+                        color: "white",
+                        fontSize: "1.3rem",
+                      }}
+                      styles={{ itemWrapper: { marginTop: "30px" } }}
+                    >
+                      <List.Item>Copy/Paste images or URLs</List.Item>
+                      <List.Item>Drag & Drop images here</List.Item>
+                      <List.Item>
+                        Use the button below to upload files
+                      </List.Item>
+                    </List>
+                    {/* <Center sx={{ height: "70%", width: "100%" }}> */}
+                    {/*   <Text component="h2" sx={{ fontSize: "1.6rem" }}> */}
+                    {/*     Add Images Here! */}
+                    {/*   </Text> */}
+                    {/* </Center> */}
+                  </Center>
+                )}
+                {imageSources.map((img) => (
+                  <Center
+                    key={img.id}
+                    sx={{
+                      width: "100px",
+                      height: "100px",
+                      overflow: "hidden",
+                      border: "2px solid white",
+                      margin: "1px",
+                    }}
+                  >
+                    <MantineImage
+                      src={img.src}
+                      // width={100}
+                      // height={100}
+                      sx={{ height: "auto", width: "100px" }}
+                    />
+                  </Center>
+                ))}
+              </Dropzone>
+            </Center>
+            <Center sx={{ width: "100%", height: "10%", position: "relative" }}>
+              <Button onClick={() => (openRef.current as Function)()}>
+                Add Image From Computer
+              </Button>
+              {Boolean(imageSources.length) && (
+                <Tooltip label="You can add images by ___">
+                  <Flex
+                    sx={{
+                      position: "absolute",
+                      top: "5%",
+                      right: "1ch",
+                      alignItems: "center",
+                    }}
+                  >
+                    <IconHelpCircle size={"20"} />{" "}
+                    <Text component="span" ml="0.5ch">
+                      Help
+                    </Text>
+                  </Flex>
+                </Tooltip>
+              )}
+            </Center>
           </Flex>
           <Box sx={buttonsContainer}>
             <Center component="button" sx={buttonsSx}>
