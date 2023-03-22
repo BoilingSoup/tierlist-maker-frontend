@@ -1,4 +1,9 @@
-import { CSSObject, MantineTheme } from "@mantine/core";
+import {
+  CSSObject,
+  ListStylesNames,
+  MantineTheme,
+  Styles,
+} from "@mantine/core";
 
 export const sidebarContainerSx = ({ colors }: MantineTheme): CSSObject => ({
   width: "25%",
@@ -38,6 +43,24 @@ export const imagesFlexContainerSx = (): CSSObject => ({
   flexWrap: "wrap",
   alignContent: "flex-start",
 });
+
+export const imageAreaInfoContainerSx = (): CSSObject => ({
+  height: "100%",
+  width: "100%",
+  flexDirection: "column",
+});
+
+export const imageAreaInfoHeaderSx = (): CSSObject => ({ fontSize: "1.8rem" });
+
+export const imageAreaInfoListSx = (): CSSObject => ({
+  color: "white",
+  fontSize: "1.3rem",
+});
+
+export const imageAreaInfoListStyles: Styles<
+  ListStylesNames,
+  Record<string, any>
+> = { itemWrapper: { marginTop: "30px" } };
 
 export const addImageButtonsAreaSx = (): CSSObject => ({ width: "100%" });
 
