@@ -6,13 +6,13 @@ type ClientSideImageIDStore = {
   getID(): number;
 };
 
-export const useClientSideImageID = create<ClientSideImageIDStore>(
-  (set, get) => ({
-    _id: 1,
-    getID() {
-      let currID = get()._id;
-      set((state) => ({ _id: state._id + 1 }));
-      return currID;
-    },
-  })
-);
+const useClientSideImageID = create<ClientSideImageIDStore>((set, get) => ({
+  _id: 1,
+  getID() {
+    let currID = get()._id;
+    set((state) => ({ _id: state._id + 1 }));
+    return currID;
+  },
+}));
+
+export const getClientSideID = () => useClientSideImageID.getState().getID();

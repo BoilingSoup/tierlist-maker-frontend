@@ -1,7 +1,7 @@
 import { Button, FileButton } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
 import { Dispatch, SetStateAction, useRef } from "react";
-import { useClientSideImageID } from "../../../hooks/store/useClientSideImageID";
+import { getClientSideID } from "../../../hooks/store/useClientSideImageID";
 import { addFileButtonSx } from "../styles";
 import { ClientSideImage } from "../types";
 
@@ -14,7 +14,7 @@ export const AddFileButton = ({ onAddImage: setImageSources }: Props) => {
 
   const addFileHandler = (files: File[]) => {
     const newImages: ClientSideImage[] = files.map((file) => ({
-      id: useClientSideImageID.getState().getID(),
+      id: getClientSideID(),
       src: URL.createObjectURL(file),
     }));
     // console.log(newImages);
