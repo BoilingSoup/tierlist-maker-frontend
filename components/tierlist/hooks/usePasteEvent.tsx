@@ -36,7 +36,6 @@ export const usePasteEvent = (setImageSources: Param) => {
             src: fileReader.result as string,
           },
         ]);
-        // img.src = fileReader.result as string;
       };
 
       fileReader.readAsDataURL(file);
