@@ -7,6 +7,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
+import { getFullScreenProp } from "../../components/tierlist/helpers";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { Sidebar } from "../../components/tierlist/Sidebar";
 import { TierListRow } from "../../components/tierlist/TierListRow";
@@ -68,10 +69,7 @@ const Create: NextPage = () => {
           ))}
         </Box>
         <Sidebar
-          fullScreen={{
-            state: isFullScreen,
-            toggle: fullScreen.toggle,
-          }}
+          fullScreen={getFullScreenProp(fullScreen)}
           imageSources={imageSources}
           onAddImage={setImageSources}
         />

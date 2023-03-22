@@ -13,3 +13,8 @@ export type ClientSideImage = {
   id: number;
   src: string;
 };
+
+export type FullScreenProp = {
+  state: boolean;
+  toggle: () => Promise<void>;
+};
