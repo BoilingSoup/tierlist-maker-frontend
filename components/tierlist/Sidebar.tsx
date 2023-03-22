@@ -10,6 +10,7 @@ import {
   MantineTheme,
   Text,
 } from "@mantine/core";
+import { useClipboard } from "@mantine/hooks";
 import {
   IconClipboard,
   IconDeviceFloppy,
@@ -78,6 +79,8 @@ export const Sidebar = ({
     multiple: true,
   };
 
+  const clipboard = useClipboard();
+
   return (
     <Flex sx={sidebarContainerSx}>
       <Box sx={imageAreaMaxBoundsSx}>
@@ -104,7 +107,7 @@ export const Sidebar = ({
                     styles={{ itemWrapper: { marginTop: "30px" } }}
                   >
                     <List.Item>Copy/Paste images or URLs</List.Item>
-                    <List.Item>Use the button below to upload files</List.Item>
+                    <List.Item>Use the button below to add files</List.Item>
                   </List>
                 </Center>
               )}
@@ -133,13 +136,10 @@ export const Sidebar = ({
             <FileButton {...fileButtonProps}>
               {(props) => (
                 <Button {...props} color="dark.7" sx={addImageButtonSx}>
-                  <IconPlus /> Add File
+                  <IconPlus /> Add Files
                 </Button>
               )}
             </FileButton>
-            <Button color="dark.7" sx={addImageButtonSx}>
-              <IconClipboard /> Paste
-            </Button>
           </Flex>
         </Flex>
       </Box>

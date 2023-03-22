@@ -42,7 +42,7 @@ export const imagesFlexContainerSx = (): CSSObject => ({
 export const addImageButtonsAreaSx = (): CSSObject => ({ width: "100%" });
 
 export const addImageButtonSx = ({ colors }: MantineTheme): CSSObject => ({
-  width: "50%",
+  width: "100%",
   border: `1px solid ${colors.dark[3]}`,
 });
 
