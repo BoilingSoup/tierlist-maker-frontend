@@ -7,6 +7,7 @@ import {
   Flex,
   Image as MantineImage,
   List,
+  MantineTheme,
   Text,
   Tooltip,
 } from "@mantine/core";
@@ -40,13 +41,19 @@ const initialData: (Omit<TierListRowProps, "height"> & { key: number })[] = [
   { key: 5, color: "#7fbfff", label: "D", items: [] },
 ];
 
-const buttonsSx: CSSObject = {
-  width: "50%",
+const buttonsSx = (theme: MantineTheme): CSSObject => ({
+  width: "95%",
   height: "50%",
-  display: "inline",
-};
+  // display: "",
+  color: "white",
+  backgroundColor: theme.colors.dark[5],
+  // borderColor: theme.colors.cyan[5],
+  // border
+  // borderRadius: "8px",
+});
 
 const buttonsContainer: CSSObject = {
+  // width: "calc(100% - 1.5vw)",
   width: "100%",
   height: "20%",
 };
@@ -106,31 +113,39 @@ const Create: NextPage = () => {
             />
           ))}
         </Box>
-        <Box
+        <Center
           sx={(theme) => ({
             width: "25%",
-            backgroundColor: theme.colors.dark[4],
+            backgroundColor: theme.colors.dark[6],
             color: "white",
+            // flexDirection: "column",
+            // justifyContent: "center",
+            // alignItems: "center",
           })}
         >
           <Center
             sx={(theme) => ({
-              width: "100%",
-              height: "80%",
-              background: theme.colors.dark[4],
+              width: "95%",
+              height: "95%",
+              flexDirection: "column",
+
+              // border: `2px solid ${theme.colors.dark[3]}`,
+              // borderRadius: "8px",
+              // height: "80%",
+              // background: theme.colors.dark[6],
             })}
           >
             <Box
-              sx={{
+              sx={(theme) => ({
                 // height: "calc(100% - 1.5vw)",
                 // width: "calc(100% - 1.5vw)",
-                height: "95%",
-                width: "95%",
+                height: "80%",
+                width: "100%",
                 margin: "auto",
-                border: "2px solid orange",
-                borderRadius: "8px",
+                // border: `2px solid ${theme.colors.cyan[4]}`,
+                // borderRadius: "8px",
                 flexDirection: "column",
-              }}
+              })}
             >
               <Center
                 sx={{
@@ -216,30 +231,42 @@ const Create: NextPage = () => {
                 </FileButton>
               </Center>
             </Box>
+            {/* </Center> */}
+            {/* <Center sx={{ width: "100%", height: "20%" }}> */}
+            <Center sx={buttonsContainer}>
+              <Flex sx={{ width: "100%", height: "95%", flexWrap: "wrap" }}>
+                <Center sx={{ width: "50%" }}>
+                  <Center component="button" sx={buttonsSx}>
+                    <IconDownload />
+                    <Text>Download</Text>
+                  </Center>
+                </Center>
+                <Center sx={{ width: "50%" }}>
+                  <Center
+                    component="button"
+                    sx={buttonsSx}
+                    onClick={toggleFullscreen}
+                  >
+                    {fullscreen ? <IconMaximizeOff /> : <IconMaximize />}
+                    <Text>{/*fullscreen ? "Exit" : "Enter"*/} Full Screen</Text>
+                  </Center>
+                </Center>
+                <Center sx={{ width: "50%" }}>
+                  <Center component="button" sx={buttonsSx}>
+                    <IconDeviceFloppy />
+                    <Text>Save</Text>
+                  </Center>
+                </Center>
+                <Center sx={{ width: "50%" }}>
+                  <Center component="button" sx={buttonsSx}>
+                    <IconWorldUpload />
+                    <Text>Publish</Text>
+                  </Center>
+                </Center>
+              </Flex>
+            </Center>
           </Center>
-          <Box sx={buttonsContainer}>
-            <Center component="button" sx={buttonsSx}>
-              <IconDownload />
-              <Text>Export PNG</Text>
-            </Center>
-            <Center
-              component="button"
-              sx={buttonsSx}
-              onClick={toggleFullscreen}
-            >
-              {fullscreen ? <IconMaximizeOff /> : <IconMaximize />}
-              <Text>{fullscreen ? "Exit" : "Enter"} Full Screen</Text>
-            </Center>
-            <Center component="button" sx={buttonsSx}>
-              <IconDeviceFloppy />
-              <Text>Save</Text>
-            </Center>
-            <Center component="button" sx={buttonsSx}>
-              <IconWorldUpload />
-              <Text>Publish</Text>
-            </Center>
-          </Box>
-        </Box>
+        </Center>
       </Flex>
     </>
   );
