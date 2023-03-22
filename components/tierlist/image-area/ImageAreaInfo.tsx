@@ -8,7 +8,9 @@ import {
 
 export const ImageAreaInfo = () => {
   return (
-    <Center sx={imageAreaInfoContainerSx}>
+    <Center
+      sx={imageAreaInfoContainerSx}
+    >
       <Text component="h2" sx={imageAreaInfoHeaderSx}>
         Add Images Here!
       </Text>
