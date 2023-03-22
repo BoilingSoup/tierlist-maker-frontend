@@ -42,6 +42,11 @@ export const imagesFlexContainerSx = (): CSSObject => ({
   width: "96%",
   flexWrap: "wrap",
   alignContent: "flex-start",
+  caretColor: "transparent",
+  cursor: "default",
+  ":focus-visible": {
+    outline: "none",
+  },
 });
 
 export const imageAreaInfoContainerSx = (): CSSObject => ({

@@ -1,15 +1,42 @@
 import { useWindowEvent } from "@mantine/hooks";
 import { Dispatch, SetStateAction } from "react";
-import { useClientSideImageID } from "../../../hooks/store/useClientSideImageID";
+import { getClientSideID } from "../../../hooks/store/useClientSideImageID";
 import { ClientSideImage } from "../types";
 
 type Param = Dispatch<SetStateAction<ClientSideImage[]>>;
 
 export const usePasteEvent = (setImageSources: Param) => {
-  useWindowEvent("paste", (event: Event) => {
-    if (!(event instanceof ClipboardEvent)) {
+  useWindowEvent("paste", (e: Event) => {
+    const event = e as ClipboardEvent;
+
+    const clipboardText = event.clipboardData?.getData("text/plain").trim();
+    if (clipboardText) {
+      const handleImageLinks = async () => {
+        const checkImage = async (): Promise<boolean> => {
+          const contentType = await fetch(clipboardText).then((res) =>
+            res.headers.get("content-type")
+          );
+          return (
+            typeof contentType === "string" && contentType.includes("image/")
+          );
+        };
+
+        const isImage = await checkImage();
+        if (isImage) {
+          const newImage: ClientSideImage = {
+            id: getClientSideID(),
+            src: clipboardText,
+          };
+          setImageSources((prev) => [...prev, newImage]);
+        } else {
+          console.log("not an image"); // TODO: throw an error and show a toast or something....
+        }
+      };
+
+      handleImageLinks();
       return;
     }
+
     if (!event.clipboardData?.files?.length) {
       return;
     }
@@ -32,7 +59,7 @@ export const usePasteEvent = (setImageSources: Param) => {
         setImageSources((prev) => [
           ...prev,
           {
-            id: useClientSideImageID.getState().getID(),
+            id: getClientSideID(),
             src: fileReader.result as string,
           },
         ]);
