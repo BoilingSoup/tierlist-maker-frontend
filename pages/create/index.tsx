@@ -27,8 +27,7 @@ const initialData: (Omit<TierListRowProps, "height"> & { key: number })[] = [
 const Create: NextPage = () => {
   const fullScreen = useFullScreen();
   const isFullScreen = fullScreen.fullscreen;
-  //
-  //
+
   const [data, setData] = useState<typeof initialData>(initialData);
   const { height } = useViewportSize();
   const rowHeight = isFullScreen

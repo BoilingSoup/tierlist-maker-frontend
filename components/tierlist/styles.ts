@@ -24,7 +24,7 @@ export const imageAreaContainerSx = ({ colors }: MantineTheme): CSSObject => ({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  height: "92%",
+  height: "94%",
   width: "92%",
   border: `2px solid ${colors.dark[2]}`,
   borderRadius: "8px",
@@ -57,14 +57,22 @@ export const imageAreaInfoListSx = (): CSSObject => ({
   fontSize: "1.3rem",
 });
 
+export const sidebarImageContainerSx = (): CSSObject => ({
+  width: "100px",
+  height: "100px",
+  overflow: "hidden",
+  border: "2px solid white",
+  margin: "1px",
+});
+
 export const imageAreaInfoListStyles: Styles<
   ListStylesNames,
   Record<string, any>
 > = { itemWrapper: { marginTop: "30px" } };
 
-export const addImageButtonsAreaSx = (): CSSObject => ({ width: "100%" });
+export const addFileButtonAreaSx = (): CSSObject => ({ width: "100%" });
 
-export const addImageButtonSx = ({ colors }: MantineTheme): CSSObject => ({
+export const addFileButtonSx = ({ colors }: MantineTheme): CSSObject => ({
   width: "100%",
   border: `1px solid ${colors.dark[3]}`,
 });
