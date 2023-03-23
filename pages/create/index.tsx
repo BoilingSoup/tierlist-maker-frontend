@@ -1,3 +1,4 @@
+import { DndContext } from "@dnd-kit/core";
 import { Box, Flex } from "@mantine/core";
 import {
   useFullscreen as useFullScreen,
@@ -13,66 +14,76 @@ import { Sidebar } from "../../components/tierlist/Sidebar";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import {
   ClientSideImage,
-  TierListRowProps,
+  InitialData,
 } from "../../components/tierlist/types";
 
-const initialData: (Omit<TierListRowProps, "height"> & { key: number })[] = [
-  { key: 1, color: "#fe7f7f", label: "S", items: [] },
-  { key: 2, color: "#febe7e", label: "A", items: [] },
-  { key: 3, color: "#fefe7f", label: "B", items: [] },
-  { key: 4, color: "#7fff7f", label: "C", items: [] },
-  { key: 5, color: "#7fbfff", label: "D", items: [] },
-];
+const initialData: InitialData = {
+  sidebar: [],
+  rows: [
+    { key: 1, color: "#fe7f7f", label: "S", items: [] },
+    { key: 2, color: "#febe7e", label: "A", items: [] },
+    { key: 3, color: "#fefe7f", label: "B", items: [] },
+    { key: 4, color: "#7fff7f", label: "C", items: [] },
+    { key: 5, color: "#7fbfff", label: "D", items: [] },
+  ],
+};
 
 const Create: NextPage = () => {
   const fullScreen = useFullScreen();
   const isFullScreen = fullScreen.fullscreen;
 
-  const [data, setData] = useState<typeof initialData>(initialData);
+  const [data, setData] = useState<InitialData>(initialData);
   const { height } = useViewportSize();
   const rowHeight = isFullScreen
-    ? `${height / data.length}px`
-    : `${(height - +NAVBAR_HEIGHT.split("px").shift()!) / data.length}px`;
+    ? `${height / data.rows.length}px`
+    : `${(height - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
 
-  const [imageSources, setImageSources] = useState<Array<ClientSideImage>>([]);
+  // const [imageSources, setImageSources] = useState<Array<ClientSideImage>>([]);
 
-  usePasteEvent(setImageSources);
+  usePasteEvent(setData);
 
   return (
     <>
       <Head>
         <title>Create Tier List</title>
       </Head>
-      <Flex
-        ref={fullScreen.ref}
-        sx={{
-          width: "100%",
-          height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-        }}
-      >
-        <Box
-          sx={(theme) => ({
-            width: "75%",
-            backgroundColor: theme.colors.dark[7],
-            overflow: "auto",
-          })}
+      <DndContext>
+        <Flex
+          ref={fullScreen.ref}
+          sx={{
+            width: "100%",
+            height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+          }}
         >
-          {data.map((row) => (
-            <TierListRow
-              key={row.key}
-              label={row.label}
-              items={row.items}
-              color={row.color}
-              height={rowHeight}
-            />
-          ))}
-        </Box>
-        <Sidebar
-          fullScreen={getFullScreenProp(fullScreen)}
-          imageSources={imageSources}
-          onAddImage={setImageSources}
-        />
-      </Flex>
+          <Box
+            sx={(theme) => ({
+              width: "75%",
+              backgroundColor: theme.colors.dark[7],
+              overflow: "auto",
+            })}
+          >
+            {data.rows.map((row) => (
+              <TierListRow
+                key={row.key}
+                label={row.label}
+                items={row.items}
+                color={row.color}
+                height={rowHeight}
+              />
+            ))}
+          </Box>
+          <Sidebar
+            fullScreen={getFullScreenProp(fullScreen)}
+            imageSources={data.sidebar}
+            onAddImage={(newImage: ClientSideImage[]) =>
+              setData((prev) => ({
+                sidebar: [...prev.sidebar, ...newImage],
+                rows: [...prev.rows],
+              }))
+            }
+          />
+        </Flex>
+      </DndContext>
     </>
   );
 };

@@ -6,7 +6,8 @@ import { addFileButtonSx } from "../styles";
 import { ClientSideImage } from "../types";
 
 type Props = {
-  onAddImage: Dispatch<SetStateAction<ClientSideImage[]>>;
+  // onAddImage: Dispatch<SetStateAction<ClientSideImage[]>>;
+  onAddImage: (images: ClientSideImage[]) => void;
 };
 
 export const AddFileButton = ({ onAddImage: setImageSources }: Props) => {
@@ -18,7 +19,7 @@ export const AddFileButton = ({ onAddImage: setImageSources }: Props) => {
       src: URL.createObjectURL(file),
     }));
     // console.log(newImages);
-    setImageSources((prev) => [...prev, ...newImages]);
+    setImageSources(newImages);
 
     if (resetRef.current !== null) {
       resetRef.current();
