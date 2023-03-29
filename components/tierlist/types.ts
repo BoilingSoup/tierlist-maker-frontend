@@ -11,7 +11,7 @@ export type TierListRowProps = {
 
 export type InitialData = {
   sidebar: ClientSideImage[];
-  rows: (Omit<TierListRowProps, "height"> & { key: number })[];
+  rows: (Omit<TierListRowProps, "height"> & { id: string })[];
 };
 
 export type ClientSideImage = {
