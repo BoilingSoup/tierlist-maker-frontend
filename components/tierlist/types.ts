@@ -1,25 +1,110 @@
-export type TierListRowProps = {
-  label: string;
-  color: string;
-  height: string;
-  items: {
-    src: string;
-    // alt: string;
-    // text: string;
-  }[];
-};
-
-export type InitialData = {
-  sidebar: ClientSideImage[];
-  rows: (Omit<TierListRowProps, "height"> & { id: string })[];
-};
+import { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
+import { Dispatch, SetStateAction } from "react";
+import {
+  CONTAINER,
+  DRAG_FROM_ROW_TO_ROW__CONTAINER,
+  DRAG_FROM_ROW_TO_ROW__IMAGE,
+  DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER,
+  DRAG_FROM_ROW_TO_SIDEBAR__IMAGE,
+  DRAG_FROM_SIDEBAR_TO_ROW__CONTAINER,
+  DRAG_FROM_SIDEBAR_TO_ROW__IMAGE,
+  IGNORE_DRAG,
+  IMAGE,
+  SIDEBAR,
+} from "./constants";
 
 export type ClientSideImage = {
-  id: number;
+  id: string;
   src: string;
+};
+
+export type TierListData = {
+  sidebar: ClientSideImage[];
+  rows: TierListRowData[];
+};
+
+export type TierListRowData = {
+  id: string;
+  label: string;
+  color: string;
+  items: ClientSideImage[];
 };
 
 export type FullScreenProp = {
   state: boolean;
   toggle: () => Promise<void>;
+};
+
+export type PxSize = `${number}px`;
+
+export type ActiveItem = ClientSideImage & ContainerIDPayload;
+
+export type ActiveItemState = ActiveItem | undefined;
+
+export type UpdateActiveItemParam = {
+  event: DragStartEvent;
+  setActiveItem: Dispatch<SetStateAction<ActiveItemState>>;
+};
+
+export type SortableImageProps = {
+  img: ClientSideImage;
+} & ContainerIDPayload;
+
+type ContainerIDPayload = {
+  containerID: string;
+};
+
+/*************************Drag Over Event types*************************/
+
+export type DragOverType =
+  | typeof IGNORE_DRAG
+  | typeof DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER
+  | typeof DRAG_FROM_ROW_TO_SIDEBAR__IMAGE
+  | typeof DRAG_FROM_ROW_TO_ROW__CONTAINER
+  | typeof DRAG_FROM_ROW_TO_ROW__IMAGE
+  | typeof DRAG_FROM_SIDEBAR_TO_ROW__CONTAINER
+  | typeof DRAG_FROM_SIDEBAR_TO_ROW__IMAGE;
+
+export type OverItemEventData =
+  | OverImageEventData
+  | OverRowEventData
+  | OverSidebarEventData;
+
+type OverImageEventData = DragOverEvent["over"] & ActiveImageEventData;
+
+type ActiveImageEventData = DragOverEvent["active"] & {
+  id: string;
+  data: {
+    current:
+      | (DragOverEvent["active"]["data"]["current"] & {
+          containerID: string;
+          img: ClientSideImage;
+          type: typeof IMAGE;
+        })
+      | undefined;
+  };
+};
+
+type OverRowEventData = DragOverEvent["over"] & {
+  id: string;
+  data: {
+    current:
+      | {
+          type: typeof CONTAINER;
+          containerID: OverRowEventData["id"];
+        }
+      | undefined;
+  };
+};
+
+type OverSidebarEventData = DragOverEvent["over"] & {
+  id: typeof SIDEBAR;
+  data: {
+    current:
+      | {
+          type: typeof CONTAINER;
+          containerID: typeof SIDEBAR;
+        }
+      | undefined;
+  };
 };
