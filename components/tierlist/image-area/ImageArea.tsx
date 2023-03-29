@@ -9,7 +9,8 @@ import { AddFileButton } from "./AddFileButton";
 
 type Props = {
   images: ClientSideImage[];
-  onAddImage: Dispatch<SetStateAction<ClientSideImage[]>>;
+  // onAddImage: Dispatch<SetStateAction<ClientSideImage[]>>;
+  onAddImage: (images: ClientSideImage[]) => void;
 };
 
 export const ImageArea = ({ images, onAddImage: setImageSources }: Props) => {

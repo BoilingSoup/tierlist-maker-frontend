@@ -7,7 +7,8 @@ import { ClientSideImage, FullScreenProp } from "./types";
 
 type Props = {
   imageSources: ClientSideImage[];
-  onAddImage: Dispatch<SetStateAction<ClientSideImage[]>>;
+  // onAddImage: Dispatch<SetStateAction<ClientSideImage[]>>;
+  onAddImage: (images: ClientSideImage[]) => void;
   fullScreen: FullScreenProp;
 };
 

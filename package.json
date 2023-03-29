@@ -10,6 +10,8 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
+    "@dnd-kit/sortable": "^7.0.2",
     "@emotion/react": "^11.10.6",
     "@mantine/carousel": "^6.0.0",
     "@mantine/core": "^6.0.0",
@@ -23,6 +25,7 @@
     "embla-carousel-autoplay": "^7.0.9",
     "embla-carousel-react": "^7.0.9",
     "embla-carousel-wheel-gestures": "^3.0.0",
+    "nanoid": "^4.0.2",
     "next": "13.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",

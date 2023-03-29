@@ -1,11 +1,11 @@
 import { useWindowEvent } from "@mantine/hooks";
 import { Dispatch, SetStateAction } from "react";
 import { getClientSideID } from "../../../hooks/store/useClientSideImageID";
-import { ClientSideImage } from "../types";
+import { ClientSideImage, InitialData } from "../types";
 
-type Param = Dispatch<SetStateAction<ClientSideImage[]>>;
+type Param = Dispatch<SetStateAction<InitialData>>;
 
-export const usePasteEvent = (setImageSources: Param) => {
+export const usePasteEvent = (setData: Param) => {
   useWindowEvent("paste", (e: Event) => {
     const event = e as ClipboardEvent;
 
@@ -27,7 +27,10 @@ export const usePasteEvent = (setImageSources: Param) => {
             id: getClientSideID(),
             src: clipboardText,
           };
-          setImageSources((prev) => [...prev, newImage]);
+          setData((prev) => ({
+            sidebar: [...prev.sidebar, newImage],
+            rows: [...prev.rows],
+          }));
         } else {
           console.log("not an image"); // TODO: throw an error and show a toast or something....
         }
@@ -56,13 +59,13 @@ export const usePasteEvent = (setImageSources: Param) => {
         // console.log(img.width);
         // console.log(img.height);
         // };
-        setImageSources((prev) => [
-          ...prev,
-          {
-            id: getClientSideID(),
-            src: fileReader.result as string,
-          },
-        ]);
+        setData((prev) => ({
+          sidebar: [
+            ...prev.sidebar,
+            { id: getClientSideID(), src: fileReader.result as string },
+          ],
+          rows: [...prev.rows],
+        }));
       };
 
       fileReader.readAsDataURL(file);
