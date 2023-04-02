@@ -1,4 +1,4 @@
-import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
+import { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { Dispatch, SetStateAction } from "react";
 import {
   CONTAINER,

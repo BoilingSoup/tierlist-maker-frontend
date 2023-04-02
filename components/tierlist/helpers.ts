@@ -43,10 +43,7 @@ export const getFullScreenProp = (
   state: fullScreen.fullscreen,
 });
 
-export const updateActiveItem = ({
-  event,
-  setActiveItem,
-}: UpdateActiveItemParam) => {
+const updateActiveItem = ({ event, setActiveItem }: UpdateActiveItemParam) => {
   const activeItemProperties = getActiveItemProperties(event);
 
   // Only returns undefined if dnd-kit was misconfigured
@@ -104,7 +101,7 @@ const getOverItemProperties = (event: DragOverEvent) => {
 
 // Images can be dragged from the sidebar to a row, or from a row to the sidebar + some minor variations.
 // This function identifies which of the 7 possible branching conditions to take.
-export const getDragOverType = (event: DragOverEvent): DragOverType => {
+const getDragOverType = (event: DragOverEvent): DragOverType => {
   const { somethingWentWrong, activeItemProperties, overItemProperties } =
     getDragEventData(event);
 
@@ -213,7 +210,7 @@ type DragEventData =
       overItemProperties: NonNullable<ReturnType<typeof getOverItemProperties>>;
     };
 
-export const getDragEventData = (
+const getDragEventData = (
   event: DragOverEvent | DragEndEvent
 ): DragEventData => {
   const unexpectedPath: DragEventData = {
@@ -253,7 +250,7 @@ type DispatchDragOverActionParam = {
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
 };
-export const dispatchDragOverAction = ({
+const dispatchDragOverAction = ({
   dragOverType,
   event,
   data,
@@ -456,7 +453,7 @@ export const dispatchDragOverAction = ({
 // as soon as the pointer is hovered over the container.
 // It is only after this transfer that the dragEnd event can be triggered,
 // at which point the state has already reflected that the image is in the new container.
-export const getDragEndType = (event: DragEndEvent): DragEndType => {
+const getDragEndType = (event: DragEndEvent): DragEndType => {
   const { somethingWentWrong, activeItemProperties, overItemProperties } =
     getDragEventData(event);
 
@@ -497,7 +494,7 @@ type DispatchDragEndActionParam = {
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
 };
-export const dispatchDragEndAction = ({
+const dispatchDragEndAction = ({
   dragEndType,
   event,
   data,
