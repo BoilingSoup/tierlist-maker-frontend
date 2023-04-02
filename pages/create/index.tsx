@@ -14,6 +14,7 @@ import {
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
+import { append } from "../../components/common/helpers";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import {
   CONTAINER,
@@ -139,8 +140,8 @@ const Create: NextPage = () => {
   const addImageHandler = (newImage: ClientSideImage[]) =>
     setData(
       (prev): TierListData => ({
-        sidebar: [...prev.sidebar, ...newImage],
-        rows: [...prev.rows],
+        sidebar: append(prev.sidebar, ...newImage),
+        rows: prev.rows,
       })
     );
 
