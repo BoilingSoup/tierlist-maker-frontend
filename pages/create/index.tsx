@@ -1,5 +1,5 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import { Box, Flex } from "@mantine/core";
+import { Box, CSSObject, Flex, MantineTheme } from "@mantine/core";
 import {
   useFullscreen as useFullScreen,
   useViewportSize,
@@ -26,23 +26,25 @@ import {
 } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
 
+const junk: CSSObject = {
+  width: "100%",
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+};
+
+const junk2 = (theme: MantineTheme): CSSObject => ({
+  width: "75%",
+  backgroundColor: theme.colors.dark[7],
+  overflow: "auto",
+});
+
 const Create: NextPage = () => {
   const fullScreen = useFullScreen();
-  const isFullScreen = fullScreen.fullscreen;
+  const { height } = useViewportSize();
 
   const [data, setData] = useState<TierListData>(initialData);
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
-  const { height } = useViewportSize();
-  const rowPxHeight: PxSize = isFullScreen
-    ? `${height / data.rows.length}px`
-    : `${(height - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
-
   usePasteEvent(setData);
-
-  const { dragStartHandler, dragOverHandler, dragEndHandler } = getDragHandlers(
-    { data, setData, setActiveItem }
-  );
 
   const addImageHandler = (newImage: ClientSideImage[]) =>
     setData(
@@ -51,6 +53,16 @@ const Create: NextPage = () => {
         rows: prev.rows,
       })
     );
+
+  const { dragStartHandler, dragOverHandler, dragEndHandler } = getDragHandlers(
+    { data, setData, setActiveItem }
+  );
+
+  const isFullScreen = fullScreen.fullscreen;
+
+  const rowPxHeight: PxSize = isFullScreen
+    ? `${height / data.rows.length}px`
+    : `${(height - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
 
   return (
     <>
@@ -63,20 +75,8 @@ const Create: NextPage = () => {
         onDragOver={dragOverHandler}
         onDragEnd={dragEndHandler}
       >
-        <Flex
-          ref={fullScreen.ref}
-          sx={{
-            width: "100%",
-            height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-          }}
-        >
-          <Box
-            sx={(theme) => ({
-              width: "75%",
-              backgroundColor: theme.colors.dark[7],
-              overflow: "auto",
-            })}
-          >
+        <Flex ref={fullScreen.ref} sx={junk}>
+          <Box sx={junk2}>
             {data.rows.map((row) => (
               <TierListRow key={row.id} data={row} height={rowPxHeight} />
             ))}
