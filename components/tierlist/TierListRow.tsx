@@ -1,7 +1,6 @@
-import { useDroppable } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
-import { CONTAINER } from "./constants";
+import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
 import { PxSize, TierListRowData } from "./types";
 
@@ -20,10 +19,7 @@ const junk = (theme: MantineTheme): CSSObject => ({
 
 export const TierListRow = ({ data, height }: Props) => {
   const { id, color, items, label } = data;
-  const { setNodeRef } = useDroppable({
-    id,
-    data: { type: CONTAINER, containerID: id },
-  });
+  const { setNodeRef } = useDroppableRow(id);
 
   return (
     <Flex>

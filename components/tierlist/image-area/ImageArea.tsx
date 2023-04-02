@@ -5,10 +5,10 @@ import { ImageAreaScrollContainer } from "./ImageAreaScrollContainer";
 import { addFileButtonAreaSx } from "../styles";
 import { ClientSideImage } from "../types";
 import { AddFileButton } from "./AddFileButton";
-import { useDroppable } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
 import { SortableImage } from "./SortableImage";
-import { CONTAINER, SIDEBAR } from "../constants";
+import { SIDEBAR } from "../constants";
+import { useDroppableSidebar } from "../hooks/useDroppableSidebar";
 
 type Props = {
   images: ClientSideImage[];
@@ -16,12 +16,9 @@ type Props = {
 };
 
 export const ImageArea = ({ images, onAddImage: setImages }: Props) => {
-  const noImages = !images.length;
+  const { setNodeRef } = useDroppableSidebar();
 
-  const { setNodeRef } = useDroppable({
-    id: SIDEBAR,
-    data: { type: CONTAINER, containerID: SIDEBAR },
-  });
+  const noImages = !images.length;
 
   return (
     <ImageAreaContainer>
