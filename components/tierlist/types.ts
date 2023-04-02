@@ -2,6 +2,8 @@ import { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { Dispatch, SetStateAction } from "react";
 import {
   CONTAINER,
+  DRAG_END_WITHIN_ROW,
+  DRAG_END_WITHIN_SIDEBAR,
   DRAG_FROM_ROW_TO_ROW__CONTAINER,
   DRAG_FROM_ROW_TO_ROW__IMAGE,
   DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER,
@@ -108,3 +110,13 @@ type OverSidebarEventData = DragOverEvent["over"] & {
       | undefined;
   };
 };
+/**********************************************************************/
+
+/*************************Drag End Event types*************************/
+
+export type DragEndType =
+  | typeof DRAG_END_WITHIN_ROW
+  | typeof DRAG_END_WITHIN_SIDEBAR
+  | typeof IGNORE_DRAG;
+
+/**********************************************************************/

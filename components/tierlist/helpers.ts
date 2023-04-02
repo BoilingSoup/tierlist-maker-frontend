@@ -1,4 +1,5 @@
-import { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
+import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
 import { useFullscreen } from "@mantine/hooks";
 import { Dispatch, SetStateAction } from "react";
 import {
@@ -9,6 +10,8 @@ import {
 } from "../common/helpers";
 import {
   CONTAINER,
+  DRAG_END_WITHIN_ROW,
+  DRAG_END_WITHIN_SIDEBAR,
   DRAG_FROM_ROW_TO_ROW__CONTAINER,
   DRAG_FROM_ROW_TO_ROW__IMAGE,
   DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER,
@@ -21,7 +24,9 @@ import {
 } from "./constants";
 import {
   ActiveItem,
+  ActiveItemState,
   ClientSideImage,
+  DragEndType,
   DragOverType,
   FullScreenProp,
   OverItemEventData,
@@ -38,10 +43,7 @@ export const getFullScreenProp = (
   state: fullScreen.fullscreen,
 });
 
-export const updateActiveItem = ({
-  event,
-  setActiveItem,
-}: UpdateActiveItemParam) => {
+const updateActiveItem = ({ event, setActiveItem }: UpdateActiveItemParam) => {
   const activeItemProperties = getActiveItemProperties(event);
 
   // Only returns undefined if dnd-kit was misconfigured
@@ -54,7 +56,7 @@ export const updateActiveItem = ({
 };
 
 const getActiveItemProperties = (
-  event: DragStartEvent | DragOverEvent
+  event: DragOverEvent | DragStartEvent
 ): ActiveItem | undefined => {
   const { active } = event;
 
@@ -99,9 +101,9 @@ const getOverItemProperties = (event: DragOverEvent) => {
 
 // Images can be dragged from the sidebar to a row, or from a row to the sidebar + some minor variations.
 // This function identifies which of the 7 possible branching conditions to take.
-export const getDragOverType = (event: DragOverEvent): DragOverType => {
+const getDragOverType = (event: DragOverEvent): DragOverType => {
   const { somethingWentWrong, activeItemProperties, overItemProperties } =
-    getDragOverEventData(event);
+    getDragEventData(event);
 
   // NOTE: should never return true unless dnd-kit node refs gets misconfigured
   if (somethingWentWrong) {
@@ -194,7 +196,7 @@ export const getDragOverType = (event: DragOverEvent): DragOverType => {
 
 // i.e. if somethingWentWrong (unexpected undefined/null value), other properties are undefined.
 // if somethingWentWrong === false, asserts that other properties are not nullish or undefined.
-type DragOverEventData =
+type DragEventData =
   | {
       somethingWentWrong: true;
       activeItemProperties: undefined;
@@ -208,8 +210,10 @@ type DragOverEventData =
       overItemProperties: NonNullable<ReturnType<typeof getOverItemProperties>>;
     };
 
-const getDragOverEventData = (event: DragOverEvent): DragOverEventData => {
-  const unexpectedPath: DragOverEventData = {
+const getDragEventData = (
+  event: DragOverEvent | DragEndEvent
+): DragEventData => {
+  const unexpectedPath: DragEventData = {
     somethingWentWrong: true,
     activeItemProperties: undefined,
     overItemProperties: undefined,
@@ -246,14 +250,14 @@ type DispatchDragOverActionParam = {
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
 };
-export const dispatchDragOverAction = ({
+const dispatchDragOverAction = ({
   dragOverType,
   event,
   data,
   setData,
 }: DispatchDragOverActionParam) => {
   const { somethingWentWrong, overItemProperties, activeItemProperties } =
-    getDragOverEventData(event);
+    getDragEventData(event);
 
   if (dragOverType === IGNORE_DRAG || somethingWentWrong) {
     return;
@@ -274,7 +278,7 @@ export const dispatchDragOverAction = ({
   };
 
   //
-  // Init these variables outside of switch/case or I can't reuse their names due to scope clash.
+  // Init these variables outside of switch/case or I can't reuse their names inside different cases due to scope clash.
   let overItemIndex: number;
   let overItemRowIndex: number;
   let activeItemContainerIndex: number;
@@ -437,4 +441,151 @@ export const dispatchDragOverAction = ({
     default:
       return;
   }
+};
+
+// The dragEnd event handles rearranging images within the same container.
+// ex: Moving an image in the place of another image within the same row or sidebar.
+//
+// Images handled by this event are guaranteed to be within the same container,
+// because the dragOver event is fired first when an image is moved between containers.
+//
+// i.e. An image being dragged into a different container will be added to that container
+// as soon as the pointer is hovered over the container.
+// It is only after this transfer that the dragEnd event can be triggered,
+// at which point the state has already reflected that the image is in the new container.
+const getDragEndType = (event: DragEndEvent): DragEndType => {
+  const { somethingWentWrong, activeItemProperties, overItemProperties } =
+    getDragEventData(event);
+
+  // NOTE: should never return true unless dnd-kit node refs gets misconfigured
+  if (somethingWentWrong) {
+    return IGNORE_DRAG;
+  }
+
+  const { type: overItemType, containerID: overItemContainerID } =
+    overItemProperties;
+
+  const { containerID: activeItemContainerID } = activeItemProperties;
+
+  // Inside a container, an image can be dropped on another image, rearranging the order of images.
+  // Or an image can be dropped on the container root itself.
+  switch (true) {
+    // if dropped on the container root, ignore
+    case overItemType === CONTAINER:
+      return IGNORE_DRAG;
+
+    // Otherwise, images must be rearranged
+
+    case activeItemContainerID === SIDEBAR && overItemContainerID === SIDEBAR:
+      return DRAG_END_WITHIN_SIDEBAR;
+
+    case activeItemContainerID !== SIDEBAR && overItemContainerID !== SIDEBAR:
+      return DRAG_END_WITHIN_ROW;
+  }
+
+  // NOTE: should never reach here.
+  console.log("unexpected drag");
+  return IGNORE_DRAG;
+};
+
+type DispatchDragEndActionParam = {
+  dragEndType: DragEndType;
+  event: DragEndEvent;
+  data: TierListData;
+  setData: Dispatch<SetStateAction<TierListData>>;
+};
+const dispatchDragEndAction = ({
+  dragEndType,
+  event,
+  data,
+  setData,
+}: DispatchDragEndActionParam) => {
+  const { somethingWentWrong, overItemProperties, activeItemProperties } =
+    getDragEventData(event);
+
+  if (somethingWentWrong) {
+    return;
+  }
+
+  const { id: activeItemID, containerID: activeItemContainerID } =
+    activeItemProperties;
+
+  const { id: overItemID } = overItemProperties;
+
+  //
+  // Init these variables outside of switch/case or I can't reuse their names inside different cases due to scope clash.
+  let overItemIndex: number;
+  let activeItemIndex: number;
+  //
+  //
+
+  switch (dragEndType) {
+    case IGNORE_DRAG:
+      return;
+
+    case DRAG_END_WITHIN_SIDEBAR:
+      activeItemIndex = findIndexByID(data.sidebar, activeItemID);
+      overItemIndex = findIndexByID(data.sidebar, overItemID);
+
+      setData((prev) => {
+        return {
+          sidebar: arrayMove(prev.sidebar, activeItemIndex, overItemIndex),
+          rows: prev.rows,
+        };
+      });
+      return;
+
+    case DRAG_END_WITHIN_ROW:
+      const rowIndex = findIndexByID(data.rows, activeItemContainerID);
+      activeItemIndex = findIndexByID(data.rows[rowIndex].items, activeItemID);
+      overItemIndex = findIndexByID(data.rows[rowIndex].items, overItemID);
+      setData(
+        (prev): TierListData => ({
+          sidebar: prev.sidebar,
+          rows: prev.rows.map((row) => {
+            const isRowThatTriggeredEvent = row.id === activeItemContainerID;
+            if (isRowThatTriggeredEvent) {
+              return {
+                ...row,
+                items: arrayMove(row.items, activeItemIndex, overItemIndex),
+              };
+            }
+            return row;
+          }),
+        })
+      );
+      return;
+  }
+};
+
+type DragHandlers = {
+  dragStartHandler: (event: DragStartEvent) => void;
+  dragOverHandler: (event: DragOverEvent) => void;
+  dragEndHandler: (event: DragEndEvent) => void;
+};
+type GetDragHandlersParam = {
+  setActiveItem: Dispatch<SetStateAction<ActiveItemState>>;
+  data: TierListData;
+  setData: Dispatch<SetStateAction<TierListData>>;
+};
+export const getDragHandlers = ({
+  setActiveItem,
+  data,
+  setData,
+}: GetDragHandlersParam): DragHandlers => {
+  const dragStartHandler = (event: DragStartEvent) => {
+    updateActiveItem({ event, setActiveItem });
+  };
+
+  const dragOverHandler = (event: DragOverEvent) => {
+    const dragOverType = getDragOverType(event);
+    dispatchDragOverAction({ dragOverType, event, data, setData });
+  };
+
+  const dragEndHandler = (event: DragEndEvent) => {
+    const dragEndType = getDragEndType(event);
+    dispatchDragEndAction({ dragEndType, event, data, setData });
+  };
+
+  return { dragStartHandler, dragOverHandler, dragEndHandler };
 };

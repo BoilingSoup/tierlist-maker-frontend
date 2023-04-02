@@ -38,8 +38,9 @@ export const initialData: TierListData = {
   ],
 };
 
+/*************************Drag Event Constants*************************/
+
 // These constants represent the dragOver event's possible branching conditions.
-export const IGNORE_DRAG = "IGNORE_DRAG";
 
 export const DRAG_FROM_ROW_TO_SIDEBAR__IMAGE =
   "DRAG_FROM_ROW_TO_SIDEBAR__IMAGE";
@@ -57,3 +58,15 @@ export const DRAG_FROM_ROW_TO_ROW__IMAGE = "DRAG_FROM_ROW_TO_ROW__IMAGE";
 
 export const DRAG_FROM_ROW_TO_ROW__CONTAINER =
   "DRAG_FROM_ROW_TO_ROW__CONTAINER";
+
+// These constants represnet the dragEnd event's possible branching conditions.
+
+export const DRAG_END_WITHIN_ROW = "DRAG_END_WITHIN_ROW";
+
+export const DRAG_END_WITHIN_SIDEBAR = "DRAG_END_WITHIN_SIDEBAR";
+
+// This constant is a possible branching condition in both dragOver and dragEnd events.
+
+export const IGNORE_DRAG = "IGNORE_DRAG";
+
+/**********************************************************************/
