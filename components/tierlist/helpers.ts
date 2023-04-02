@@ -2,6 +2,12 @@ import { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { useFullscreen } from "@mantine/hooks";
 import { Dispatch, SetStateAction } from "react";
 import {
+  append,
+  filterByID,
+  findIndexByID,
+  insertAtIndex,
+} from "../common/helpers";
+import {
   CONTAINER,
   DRAG_FROM_ROW_TO_ROW__CONTAINER,
   DRAG_FROM_ROW_TO_ROW__IMAGE,
@@ -346,8 +352,8 @@ export const dispatchDragOverAction = ({
         (prev): TierListData => ({
           sidebar: filterByID(prev.sidebar, activeItemID),
           rows: prev.rows.map((row, index) => {
-            const imgWasDraggedIntoThisRow = index === overItemRowIndex;
-            if (imgWasDraggedIntoThisRow) {
+            const imageWasDraggedIntoThisRow = index === overItemRowIndex;
+            if (imageWasDraggedIntoThisRow) {
               return {
                 ...row,
                 items: insertAtIndex(row.items, draggedImage, overItemIndex),
@@ -377,17 +383,17 @@ export const dispatchDragOverAction = ({
         (prev): TierListData => ({
           sidebar: prev.sidebar,
           rows: prev.rows.map((row, index) => {
-            const imgWasDraggedOutOfThisRow =
+            const imageWasDraggedOutOfThisRow =
               index === activeItemContainerIndex;
-            if (imgWasDraggedOutOfThisRow) {
+            if (imageWasDraggedOutOfThisRow) {
               return {
                 ...row,
                 items: filterByID(row.items, activeItemID),
               };
             }
 
-            const imgWasDraggedIntoThisRow = index === overItemRowIndex;
-            if (imgWasDraggedIntoThisRow) {
+            const imageWasDraggedIntoThisRow = index === overItemRowIndex;
+            if (imageWasDraggedIntoThisRow) {
               return {
                 ...row,
                 items: insertAtIndex(row.items, draggedImage, overItemIndex),
@@ -405,16 +411,17 @@ export const dispatchDragOverAction = ({
         (prev): TierListData => ({
           sidebar: prev.sidebar,
           rows: prev.rows.map((row) => {
-            const imgWasDraggedOutOfThisRow = row.id === activeItemContainerID;
-            if (imgWasDraggedOutOfThisRow) {
+            const imageWasDraggedOutOfThisRow =
+              row.id === activeItemContainerID;
+            if (imageWasDraggedOutOfThisRow) {
               return {
                 ...row,
                 items: filterByID(row.items, activeItemID),
               };
             }
 
-            const imgWasDraggedIntoThisRow = row.id === overItemID;
-            if (imgWasDraggedIntoThisRow) {
+            const imageWasDraggedIntoThisRow = row.id === overItemID;
+            if (imageWasDraggedIntoThisRow) {
               return {
                 ...row,
                 items: append(row.items, draggedImage),
@@ -431,28 +438,3 @@ export const dispatchDragOverAction = ({
       return;
   }
 };
-
-/**
- * filterByID accepts an arr of objects that has a property of ["id"], and an id.
- * A new array is returned, excluding all elements in the original array that match the provided id.
- **/
-const filterByID = <T extends { id: U }, U>(arr: T[], id: U): T[] => {
-  return arr.filter((item) => item.id !== id);
-};
-
-/**
- * findIndexByID accepts an arr of objects that has a property of ["id"], and an id.
- * The index of the first element in the array that matches the provided id will be returned.
- * Otherwise, -1 will be returned.
- */
-const findIndexByID = <T extends { id: U }, U>(arr: T[], id: U) => {
-  return arr.findIndex((el) => el.id === id);
-};
-
-/** insertAtIndex returns a copy of arr with the provided data inserted at the specified index */
-const insertAtIndex = <T>(arr: T[], data: T, index: number) => {
-  return [...arr.slice(0, index), data, ...arr.slice(index)];
-};
-
-/** arrayPush returns a copy of arr with the provided data inserted at the end of the array */
-const append = <T>(arr: T[], data: T) => [...arr, data];
