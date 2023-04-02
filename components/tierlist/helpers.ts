@@ -38,9 +38,9 @@ export const updateActiveItem = ({
 }: UpdateActiveItemParam) => {
   const activeItemProperties = getActiveItemProperties(event);
 
-  // Never seen this return undefined, but that's how dnd-kit types it. Maybe it returns undefined if misconfigured...
+  // Only returns undefined if dnd-kit was misconfigured
   if (activeItemProperties === undefined) {
-    return setActiveItem(undefined);
+    return;
   }
 
   const { id, src, containerID } = activeItemProperties;
@@ -52,7 +52,7 @@ const getActiveItemProperties = (
 ): ActiveItem | undefined => {
   const { active } = event;
 
-  // Never seen this return undefined, but that's how dnd-kit types it. Maybe it returns undefined if misconfigured...
+  // Only returns undefined if dnd-kit was misconfigured
   const activeItemData = active.data.current as SortableImageProps | undefined;
 
   if (activeItemData === undefined) {
@@ -74,7 +74,8 @@ const getOverItemProperties = (event: DragOverEvent) => {
   // overrides dnd-kit's default Over type with more specific type including the item's metadata
   const over = event.over as OverItemEventData;
 
-  const overItemData = over.data.current; // should never return undefined but typescript makes me check
+  const overItemData = over.data.current;
+  // Only returns undefined if dnd-kit was misconfigured
   if (overItemData === undefined) {
     return undefined;
   }
