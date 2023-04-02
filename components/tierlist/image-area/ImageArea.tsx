@@ -1,34 +1,41 @@
-import { Center, Flex, Image } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { ImageAreaContainer } from "./ImageAreaContainer";
 import { ImageAreaInfo } from "./ImageAreaInfo";
 import { ImageAreaScrollContainer } from "./ImageAreaScrollContainer";
-import { addFileButtonAreaSx, sidebarImageContainerSx } from "../styles";
+import { addFileButtonAreaSx } from "../styles";
 import { ClientSideImage } from "../types";
-import { Dispatch, SetStateAction } from "react";
 import { AddFileButton } from "./AddFileButton";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
+import { SortableImage } from "./SortableImage";
+import { CONTAINER, SIDEBAR } from "../constants";
 
 type Props = {
   images: ClientSideImage[];
-  // onAddImage: Dispatch<SetStateAction<ClientSideImage[]>>;
   onAddImage: (images: ClientSideImage[]) => void;
 };
 
-export const ImageArea = ({ images, onAddImage: setImageSources }: Props) => {
+export const ImageArea = ({ images, onAddImage: setImages }: Props) => {
   const noImages = !images.length;
+
+  const { setNodeRef } = useDroppable({
+    id: SIDEBAR,
+    data: { type: CONTAINER, containerID: SIDEBAR },
+  });
 
   return (
     <ImageAreaContainer>
-      <ImageAreaScrollContainer>
-        {noImages && <ImageAreaInfo />}
+      <SortableContext items={images.map((img) => img.id)}>
+        <ImageAreaScrollContainer setNodeRef={setNodeRef}>
+          {noImages && <ImageAreaInfo />}
 
-        {images.map((img) => (
-          <Center key={img.id} sx={sidebarImageContainerSx}>
-            <Image src={img.src} sx={{ height: "auto", width: "100px" }} />
-          </Center>
-        ))}
-      </ImageAreaScrollContainer>
+          {images.map((img) => (
+            <SortableImage key={img.id} img={img} containerID={SIDEBAR} />
+          ))}
+        </ImageAreaScrollContainer>
+      </SortableContext>
       <Flex sx={addFileButtonAreaSx}>
-        <AddFileButton onAddImage={setImageSources} />
+        <AddFileButton onAddImage={setImages} />
       </Flex>
     </ImageAreaContainer>
   );

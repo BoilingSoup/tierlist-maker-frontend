@@ -1,9 +1,9 @@
 import { useWindowEvent } from "@mantine/hooks";
+import { nanoid } from "nanoid";
 import { Dispatch, SetStateAction } from "react";
-import { getClientSideID } from "../../../hooks/store/useClientSideImageID";
-import { ClientSideImage, InitialData } from "../types";
+import { ClientSideImage, TierListData } from "../types";
 
-type Param = Dispatch<SetStateAction<InitialData>>;
+type Param = Dispatch<SetStateAction<TierListData>>;
 
 export const usePasteEvent = (setData: Param) => {
   useWindowEvent("paste", (e: Event) => {
@@ -24,7 +24,7 @@ export const usePasteEvent = (setData: Param) => {
         const isImage = await checkImage();
         if (isImage) {
           const newImage: ClientSideImage = {
-            id: getClientSideID(),
+            id: nanoid(),
             src: clipboardText,
           };
           setData((prev) => ({
@@ -62,7 +62,7 @@ export const usePasteEvent = (setData: Param) => {
         setData((prev) => ({
           sidebar: [
             ...prev.sidebar,
-            { id: getClientSideID(), src: fileReader.result as string },
+            { id: nanoid(), src: fileReader.result as string },
           ],
           rows: [...prev.rows],
         }));

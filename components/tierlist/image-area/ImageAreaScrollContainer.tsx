@@ -4,10 +4,11 @@ import { imagesFlexContainerSx, scrollContainerSx } from "../styles";
 
 type Props = {
   children: ReactNode;
+  setNodeRef: (element: HTMLElement | null) => void
 };
-export const ImageAreaScrollContainer = ({ children }: Props) => {
+export const ImageAreaScrollContainer = ({ children, setNodeRef }: Props) => {
   return (
-    <Center sx={scrollContainerSx}>
+    <Center sx={scrollContainerSx} ref={setNodeRef}>
       <Flex
         sx={imagesFlexContainerSx}
         contentEditable="true" // Enables right-click paste in a non-input element.
