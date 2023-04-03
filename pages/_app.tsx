@@ -7,6 +7,7 @@ import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "../lib/queryClient";
 import "../public/global.css";
+import { AuthProvider } from "../contexts/AuthProvider";
 
 export const cssCache = createEmotionCache({ key: "mantine" });
 
@@ -28,8 +29,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         withGlobalStyles
         withNormalizeCSS
       >
-        <Navbar />
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Navbar />
+          <Component {...pageProps} />
+        </AuthProvider>
       </MantineProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
