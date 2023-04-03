@@ -1,4 +1,9 @@
-import { append, filterByID, findIndexByID, insertAtIndex } from "./helpers";
+import {
+  append,
+  filterByID,
+  findIndexByID,
+  insertAtIndex,
+} from "../components/common/helpers";
 
 describe("filterByID function", () => {
   test("returns a new instance of an Array", () => {
