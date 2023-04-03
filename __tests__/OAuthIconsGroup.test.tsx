@@ -6,7 +6,6 @@ import {
   OAUTH_GITLAB_REDIRECT,
   OAUTH_GOOGLE_REDIRECT,
   OAUTH_REDDIT_REDIRECT,
-  OAUTH_TWITTER_REDIRECT,
 } from "../config/config";
 import { renderWithContexts } from "../test-utils/render";
 
@@ -56,14 +55,5 @@ describe("OAuth links group", () => {
 
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", OAUTH_REDDIT_REDIRECT);
-  });
-
-  test("has Twitter redirect link", () => {
-    renderWithContexts(<OAuthIconsGroup />);
-
-    const link = screen.getByLabelText(`${labelBase} Twitter`);
-
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", OAUTH_TWITTER_REDIRECT);
   });
 });
