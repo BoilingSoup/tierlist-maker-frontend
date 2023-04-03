@@ -5,7 +5,6 @@ import {
   IconBrandGitlab,
   IconBrandGoogle,
   IconBrandReddit,
-  IconBrandTwitter,
 } from "@tabler/icons-react";
 import {
   OAuthHref,
@@ -14,7 +13,6 @@ import {
   OAUTH_GITLAB_REDIRECT,
   OAUTH_GOOGLE_REDIRECT,
   OAUTH_REDDIT_REDIRECT,
-  OAUTH_TWITTER_REDIRECT,
 } from "../../config/config";
 import { oauthIconSx } from "./styles";
 
@@ -64,12 +62,6 @@ const icons: IconsData[] = [
     icon: <IconBrandDiscord />,
     color: "violet",
     href: OAUTH_DISCORD_REDIRECT,
-  },
-  {
-    brand: "Twitter",
-    icon: <IconBrandTwitter />,
-    color: "blue",
-    href: OAUTH_TWITTER_REDIRECT,
   },
   {
     brand: "GitLab",
