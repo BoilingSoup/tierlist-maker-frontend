@@ -1,3 +1,5 @@
+import { showNotification } from "@mantine/notifications";
+
 const emToPx = 16; // 1em === 16px
 
 export const convertThemeBreakpointToPx = (breakpoint: string): number => {
@@ -29,3 +31,10 @@ export const insertAtIndex = <T>(arr: T[], data: T, index: number) => {
 
 /** arrayPush returns a copy of arr with the provided data inserted at the end of the array */
 export const append = <T>(arr: T[], ...data: T[]) => [...arr, ...data];
+
+export const showSomethingWentWrongNotification = () =>
+  showNotification({
+    color: "red",
+    title: "Error",
+    message: "Something went wrong.",
+  });
