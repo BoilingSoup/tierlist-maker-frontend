@@ -1,5 +1,6 @@
-import { Box, Button, Flex } from "@mantine/core";
-import { ChangeEventHandler } from "react";
+import { Box, Button, Flex, Loader } from "@mantine/core";
+import { ChangeEventHandler, useState } from "react";
+import { useSignInMutation } from "../../hooks/api/useSignInMutation";
 import { SignInFormFields } from "../../hooks/auth/types";
 import { useSignInForm } from "../../hooks/auth/useSignInForm";
 import { useSignInFormStore } from "../../hooks/store/useSignInFormStore";
@@ -18,6 +19,11 @@ import { FancyInput } from "./FancyInput";
 export const SignInForm = () => {
   const form = useSignInForm({ enableFloatingLabel: true });
   const updateFormState = useSignInFormStore((state) => state.update);
+  const [disableSubmit, setDisableSubmit] = useState(false);
+  const { mutate: signIn, isLoading } = useSignInMutation({
+    form,
+    setDisableSubmit,
+  });
 
   /** Update zustand state then excute default form onChange handler */
   const onChangeHandler =
@@ -32,17 +38,17 @@ export const SignInForm = () => {
     <form
       aria-label="sign in form"
       style={formStyle}
-      onSubmit={form.onSubmit(console.log)}
+      onSubmit={form.onSubmit((values) => signIn(values))}
     >
       <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
           <FancyInput
             withAsterisk
-            label="Username"
+            label="Email"
             sx={fancyInputSx}
             styles={inputStyles}
-            {...form.getInputProps("username")}
-            onChange={onChangeHandler("username")}
+            {...form.getInputProps("email")}
+            onChange={onChangeHandler("email")}
           />
         </Box>
         <Box sx={formControlSx}>
@@ -62,8 +68,9 @@ export const SignInForm = () => {
             sx={formSubmitSx}
             variant="gradient"
             gradient={formSubmitGradient}
+            disabled={isLoading || disableSubmit}
           >
-            Sign In
+            {isLoading || disableSubmit ? <Loader size="xs" /> : "Sign In"}
           </Button>
         </Box>
       </Flex>

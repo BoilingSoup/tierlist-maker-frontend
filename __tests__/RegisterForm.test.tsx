@@ -7,12 +7,6 @@ import {
 } from "../hooks/store/useRegisterFormStore";
 import { renderWithContexts } from "../test-utils/render";
 
-const emailValidationError = /invalid email/i;
-const usernameValidationError = /username must be between 4-20 characters/i;
-const passwordValidationError =
-  /password length must be at least 8 characters/i;
-const passwordConfirmationValidationError = /password does not match/i;
-
 jest.mock("next/router", () => ({
   useRouter() {
     return {
@@ -30,6 +24,12 @@ jest.mock("next/router", () => ({
     };
   },
 }));
+
+const emailValidationError = /invalid email/i;
+const usernameValidationError = /username must be between 4-20 characters/i;
+const passwordValidationError =
+  /password length must be at least 8 characters/i;
+const passwordConfirmationValidationError = /password does not match/i;
 
 const getFormByRole = () => {
   return screen.getByRole("form", { name: /registration form/i });
