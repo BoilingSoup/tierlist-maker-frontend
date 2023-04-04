@@ -5,7 +5,9 @@ export const LOGO_IMG = "./trollol.png";
 export const SITE_NAME = "tierlist.lol";
 
 /** API endpoint */
-export const BASE_API = process.env.BASE_API || "localhost/v1";
+export const BASE_URL = "http://localhost";
+const API_VERSION = "v1";
+export const BASE_API = process.env.BASE_API || `${BASE_URL}/${API_VERSION}`;
 
 /** tier list thumbnail image dimensions (px) */
 export const THUMBNAIL_WIDTH = 600;
