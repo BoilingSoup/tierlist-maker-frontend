@@ -1,5 +1,5 @@
-import { Box, Button, Flex } from "@mantine/core";
-import { ChangeEventHandler } from "react";
+import { Box, Button, Flex, Loader } from "@mantine/core";
+import { ChangeEventHandler, useState } from "react";
 import { useRegisterMutation } from "../../hooks/api/useRegisterMutation";
 import { RegisterFormFields } from "../../hooks/auth/types";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
@@ -19,7 +19,11 @@ import { FancyInput } from "./FancyInput";
 export const RegisterForm = () => {
   const form = useRegisterForm({ enableFloatingLabel: true });
   const updateFormState = useRegisterFormStore((state) => state.update);
-  const { mutate: register, isLoading } = useRegisterMutation();
+  const [disableSubmit, setDisableSubmit] = useState(false);
+  const { mutate: register, isLoading } = useRegisterMutation({
+    form,
+    setDisableSubmit,
+  });
 
   /** Update zustand state then excute default form onChange handler */
   const onChangeHandler =
@@ -86,8 +90,9 @@ export const RegisterForm = () => {
             sx={formSubmitSx}
             variant="gradient"
             gradient={formSubmitGradient}
+            disabled={isLoading || disableSubmit}
           >
-            Register
+            {isLoading || disableSubmit ? <Loader size="xs" /> : "Register"}
           </Button>
         </Box>
       </Flex>

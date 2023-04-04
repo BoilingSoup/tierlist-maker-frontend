@@ -8,6 +8,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "../lib/queryClient";
 import "../public/global.css";
 import { AuthProvider } from "../contexts/AuthProvider";
+import { Notifications } from "@mantine/notifications";
 
 export const cssCache = createEmotionCache({ key: "mantine" });
 
@@ -29,6 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         withGlobalStyles
         withNormalizeCSS
       >
+        <Notifications />
         <AuthProvider>
           <Navbar />
           <Component {...pageProps} />
