@@ -10,7 +10,7 @@ type SignInFormStore = {
 type SignInFormUpdate = { input: SignInFormFields; value: string };
 
 export const signInFormInitialValues: SignInFormValues = {
-  username: "",
+  email: "",
   password: "",
 };
 

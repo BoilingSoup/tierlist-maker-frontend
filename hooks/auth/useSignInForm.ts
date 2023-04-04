@@ -14,7 +14,7 @@ export const useSignInForm = ({ enableFloatingLabel }: FormParam) => {
     initialValues: formValues,
 
     validate: {
-      username: validationRules.username,
+      email: validationRules.email,
       password: validationRules.password,
     },
 
@@ -22,7 +22,7 @@ export const useSignInForm = ({ enableFloatingLabel }: FormParam) => {
   });
 
   const [inputsFocusState, setInputsFocusState] = useState<InputsFocusState>({
-    username: false,
+    email: false,
     password: false,
   });
 

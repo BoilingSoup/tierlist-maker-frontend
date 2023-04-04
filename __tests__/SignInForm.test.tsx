@@ -7,7 +7,25 @@ import {
 } from "../hooks/store/useSignInFormStore";
 import { renderWithContexts } from "../test-utils/render";
 
-const usernameValidationError = /username must be between 4-20 characters/i;
+jest.mock("next/router", () => ({
+  useRouter() {
+    return {
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
+      push: jest.fn(),
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      beforePopState: jest.fn(() => null),
+      prefetch: jest.fn(() => null),
+    };
+  },
+}));
+
+const emailValidationError = /invalid email/i;
 const passwordValidationError =
   /password length must be at least 8 characters/i;
 
@@ -35,10 +53,7 @@ describe("Sign in form", () => {
   test("initially does not show any validation errors", () => {
     renderWithContexts(<SignInForm />);
     const form = getFormByRole();
-    const allValidationErrors = [
-      usernameValidationError,
-      passwordValidationError,
-    ];
+    const allValidationErrors = [emailValidationError, passwordValidationError];
 
     for (const validationError of allValidationErrors) {
       const errorText = within(form).queryByText(validationError);
@@ -54,7 +69,7 @@ describe("Sign in form", () => {
     const submitBtn = within(form).getByRole("button", {
       name: /sign in/i,
     });
-    const validationErrors = [usernameValidationError, passwordValidationError];
+    const validationErrors = [emailValidationError, passwordValidationError];
 
     await user.click(submitBtn);
 
@@ -65,58 +80,43 @@ describe("Sign in form", () => {
     }
   });
 
-  describe("Username input", () => {
+  describe("Email input", () => {
     test("has accessible label", () => {
       renderWithContexts(<SignInForm />);
       const form = getFormByRole();
 
-      const inputField = within(form).getByLabelText(/username/i);
+      const inputField = within(form).getByLabelText(/email/i);
 
       expect(inputField).toBeInTheDocument();
     });
 
-    test("shows validation error when input is less than 4 characters", async () => {
+    test("shows validation error when input is not a valid email", async () => {
       const user = userEvent.setup();
       renderWithContexts(<SignInForm />);
       const form = getFormByRole();
-      const inputField = within(form).getByLabelText(/username/i);
-      const invalidInput = "3ch";
+      const inputField = within(form).getByLabelText(/email/i);
+      const invalidInput = "invalid";
 
       await user.click(inputField);
       await user.keyboard(invalidInput);
       await user.click(form);
 
-      const validationText = within(form).getByText(usernameValidationError);
+      const validationText = within(form).getByText(emailValidationError);
       expect(validationText).toBeInTheDocument();
     });
 
-    test("shows validation error when input is more than 20 characters", async () => {
+    test("does not show validation error when input is a valid email", async () => {
       const user = userEvent.setup();
       renderWithContexts(<SignInForm />);
       const form = getFormByRole();
-      const inputField = within(form).getByLabelText(/username/i);
-      const invalidInput = "21characterssssssssss"; // 21 chars
-
-      await user.click(inputField);
-      await user.keyboard(invalidInput);
-      await user.click(form);
-
-      const validationText = within(form).getByText(usernameValidationError);
-      expect(validationText).toBeInTheDocument();
-    });
-
-    test("does not show validation error when input is between 4-20 characters", async () => {
-      const user = userEvent.setup();
-      renderWithContexts(<SignInForm />);
-      const form = getFormByRole();
-      const inputField = within(form).getByLabelText(/username/i);
-      const validInput = "validUsername";
+      const inputField = within(form).getByLabelText(/email/i);
+      const validInput = "validEmail@test.com";
 
       await user.click(inputField);
       await user.keyboard(validInput);
       await user.click(form);
 
-      const validationText = within(form).queryByText(usernameValidationError);
+      const validationText = within(form).queryByText(validInput);
       expect(validationText).not.toBeInTheDocument();
     });
   });
