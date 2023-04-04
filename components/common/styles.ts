@@ -31,7 +31,7 @@ export const logoFlexSx = (): CSSObject => ({
 });
 
 export const desktopNavLinkBoxSx = (): CSSObject => ({
-  width: "85px",
+  width: "105px",
 });
 
 const navTextCSS: CSSObject = {
@@ -41,7 +41,7 @@ const navTextCSS: CSSObject = {
 };
 
 export const getNavLinkTextSx = (
-  isCurrentPath: boolean
+  isCurrentPath?: boolean
 ): (() => CSSObject) | ((theme: MantineTheme) => CSSObject) =>
   isCurrentPath ? navLinkTextCurrentSx : navLinkTextSx;
 
@@ -58,6 +58,7 @@ export const navLinkTextSx = (): CSSObject => ({
   borderRadius: 10,
   padding: "5px 15px",
   textDecoration: "none",
+  lineHeight: 1.55, // makes <a> and <button> consistent by explicitly defining and avoiding browser defaults.
   position: "relative",
   ":hover": {
     "::before": {
@@ -80,6 +81,14 @@ export const navLinkTextCurrentSx = ({ colors }: MantineTheme): CSSObject => ({
     height: "3px",
     backgroundColor: colors.cyan[3],
   },
+});
+
+export const signOutButtonSx = (): CSSObject => ({
+  width: "inherit",
+  background: "none",
+  border: "none",
+  cursor: "pointer",
+  ...navLinkTextSx(),
 });
 
 export const logoTextSx = (): CSSObject => ({

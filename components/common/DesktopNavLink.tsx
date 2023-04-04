@@ -1,19 +1,64 @@
-import { Box, Center } from "@mantine/core";
+import { Box, Center, Loader } from "@mantine/core";
 import Link from "next/link";
-import { desktopNavLinkBoxSx, getNavLinkTextSx } from "./styles";
+import { ReactElement } from "react";
+import {
+  desktopNavLinkBoxSx,
+  getNavLinkTextSx,
+  signOutButtonSx,
+} from "./styles";
 
-type Props = {
+type PageLink = {
   href: string;
   isCurrentPath: boolean;
   text: string;
+  isLoading?: boolean;
+  onClick?: undefined;
 };
 
-export const DesktopNavLink = ({ href, isCurrentPath, text }: Props) => {
-  return (
-    <Box sx={desktopNavLinkBoxSx}>
-      <Center sx={getNavLinkTextSx(isCurrentPath)} component={Link} href={href}>
-        {text}
-      </Center>
-    </Box>
-  );
+type SignOutButton = {
+  href?: undefined;
+  isCurrentPath?: undefined;
+  text: string;
+  isLoading: boolean;
+  onClick: () => void;
+};
+
+type Props = PageLink | SignOutButton;
+
+export const DesktopNavLink = ({
+  href,
+  isCurrentPath,
+  text,
+  isLoading,
+  onClick: clickHandler,
+}: Props) => {
+  let element: ReactElement;
+
+  if (href !== undefined) {
+    element = (
+      <Box sx={desktopNavLinkBoxSx}>
+        <Center
+          sx={getNavLinkTextSx(isCurrentPath)}
+          component={Link}
+          href={href}
+        >
+          {isLoading ? <Loader size="sm" /> : text}
+        </Center>
+      </Box>
+    );
+  } else {
+    element = (
+      <Box sx={desktopNavLinkBoxSx}>
+        <Center
+          sx={signOutButtonSx}
+          component={"button"}
+          onClick={clickHandler}
+        >
+          {isLoading ? <Loader size="sm" /> : text}
+        </Center>
+      </Box>
+    );
+  }
+
+  return element;
 };

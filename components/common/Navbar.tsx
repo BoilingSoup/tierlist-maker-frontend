@@ -8,6 +8,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LOGO_IMG } from "../../config/config";
+// import { useAuth } from "../../contexts/AuthProvider";
 import { DesktopNavLinksGroup } from "./DesktopNavLinksGroup";
 import { convertThemeBreakpointToPx } from "./helpers";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
@@ -39,7 +40,7 @@ export const Navbar = () => {
 
   return (
     <>
-      <Flex sx={navbarSx} pl={10} pr={20}>
+      <Flex sx={navbarSx} px={10}>
         <LogoLink
           text="tierlist.lol"
           src={LOGO_IMG}

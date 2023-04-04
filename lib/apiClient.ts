@@ -33,21 +33,21 @@ class AxiosClient {
     return this.axiosInstance.get<ResponseType>(url);
   }
 
-  public async post<ResponseType>(url: string, data: any) {
+  public async post<ResponseType>(url: string, data?: any) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
     return this.axiosInstance.post<ResponseType>(url, data);
   }
 
-  public async put<ResponseType>(url: string, data: any) {
+  public async put<ResponseType>(url: string, data?: any) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
     return this.axiosInstance.put<ResponseType>(url, data);
   }
 
-  public async patch<ResponseType>(url: string, data: any) {
+  public async patch<ResponseType>(url: string, data?: any) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
