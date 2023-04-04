@@ -9,11 +9,11 @@ export const useCurrentPath = () => {
   useEffect(() => {
     switch (pathname) {
       case "/": {
-        setCurrentPath(Route.Home)
+        setCurrentPath(Route.Home);
         break;
       }
       case "/create": {
-        setCurrentPath(Route.Create)
+        setCurrentPath(Route.Create);
         break;
       }
       case "/browse": {
@@ -26,6 +26,10 @@ export const useCurrentPath = () => {
       }
       case "/signin": {
         setCurrentPath(Route.SignIn);
+        break;
+      }
+      case "/account": {
+        setCurrentPath(Route.Account);
         break;
       }
       default: {

@@ -4,5 +4,6 @@ export enum Route {
   Browse,
   Register,
   SignIn,
+  Account,
   None,
 }
