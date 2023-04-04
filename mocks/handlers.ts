@@ -1,18 +1,16 @@
 import { rest } from "msw";
+import { User } from "../contexts/AuthProvider";
+
+const mockUser: User = { username: "bobby", id: "1234-5678", is_admin: false };
 
 export const handlers = [
-  rest.post("/login", (req, res, ctx) => {
-    return res(ctx.status(403));
+  rest.post("/login", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json<User>(mockUser));
   }),
-  rest.get("/user", (req, res, ctx) => {
-    return res(
-      ctx.status(403),
-      ctx.json({
-        errorMessage: "Not authorized",
-      })
-    );
+  rest.get("/user", (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json<User>(mockUser));
   }),
-  rest.get("/sanctum/csrf-cookie", (req, res, ctx) => {
+  rest.get("/sanctum/csrf-cookie", (_, res, ctx) => {
     return res(ctx.status(204));
   }),
 ];
