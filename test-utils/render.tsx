@@ -2,6 +2,7 @@ import { MantineProvider } from "@mantine/core";
 import { render, RenderResult } from "@testing-library/react";
 import { ReactElement } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthProvider } from "../contexts/AuthProvider";
 import { generateQueryClient } from "../lib/queryClient";
 
 const generateTestQueryClient = () => {
@@ -23,7 +24,9 @@ export const renderWithContexts = (
   const queryClient = opts?.queryClient ?? generateTestQueryClient();
   return render(
     <QueryClientProvider client={queryClient}>
-      <MantineProvider>{ui}</MantineProvider>
+      <MantineProvider>
+        <AuthProvider>{ui}</AuthProvider>
+      </MantineProvider>
     </QueryClientProvider>
   );
 };

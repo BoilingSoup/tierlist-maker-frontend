@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@mantine/core";
 import { ChangeEventHandler } from "react";
+import { useRegisterMutation } from "../../hooks/api/useRegisterMutation";
 import { RegisterFormFields } from "../../hooks/auth/types";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
 import { useRegisterFormStore } from "../../hooks/store/useRegisterFormStore";
@@ -18,6 +19,7 @@ import { FancyInput } from "./FancyInput";
 export const RegisterForm = () => {
   const form = useRegisterForm({ enableFloatingLabel: true });
   const updateFormState = useRegisterFormStore((state) => state.update);
+  const { mutate: register, isLoading } = useRegisterMutation();
 
   /** Update zustand state then excute default form onChange handler */
   const onChangeHandler =
@@ -29,7 +31,11 @@ export const RegisterForm = () => {
     };
 
   return (
-    <form aria-label="registration form" style={formStyle} onSubmit={form.onSubmit(console.log)}>
+    <form
+      aria-label="registration form"
+      style={formStyle}
+      onSubmit={form.onSubmit((values) => register(values))}
+    >
       <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
           <FancyInput
@@ -70,8 +76,8 @@ export const RegisterForm = () => {
             type="password"
             sx={fancyInputSx}
             styles={inputStyles}
-            {...form.getInputProps("confirmPassword")}
-            onChange={onChangeHandler("confirmPassword")}
+            {...form.getInputProps("password_confirmation")}
+            onChange={onChangeHandler("password_confirmation")}
           />
         </Box>
         <Box sx={formSubmitControlSx}>

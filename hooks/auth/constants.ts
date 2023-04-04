@@ -18,6 +18,6 @@ export const validationRules = {
     value.length >= PASSWORD_MIN_LENGTH
       ? null
       : `Password length must be at least ${PASSWORD_MIN_LENGTH} characters`,
-  confirmPassword: (value: string, allValues: FormWithPassword) =>
+  password_confirmation: (value: string, allValues: FormWithPassword) =>
     value === allValues.password ? null : "Password does not match",
 };

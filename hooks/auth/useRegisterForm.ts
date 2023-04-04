@@ -17,7 +17,7 @@ export default function useRegisterForm({ enableFloatingLabel }: FormParam) {
       email: validationRules.email,
       username: validationRules.username,
       password: validationRules.password,
-      confirmPassword: validationRules.confirmPassword,
+      password_confirmation: validationRules.password_confirmation,
     },
 
     validateInputOnBlur: true,
@@ -29,7 +29,7 @@ export default function useRegisterForm({ enableFloatingLabel }: FormParam) {
     email: false,
     username: false,
     password: false,
-    confirmPassword: false,
+    password_confirmation: false,
   });
 
   return {

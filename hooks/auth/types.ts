@@ -2,7 +2,7 @@ export type RegisterFormFields =
   | "email"
   | "username"
   | "password"
-  | "confirmPassword";
+  | "password_confirmation";
 export type RegisterFormValues = Record<RegisterFormFields, string>;
 
 export type SignInFormFields = "username" | "password";

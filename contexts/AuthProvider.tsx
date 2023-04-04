@@ -7,7 +7,7 @@ import {
   ReactNode,
 } from "react";
 
-type User = {
+export type User = {
   id: string;
   username: string;
   is_admin: boolean;

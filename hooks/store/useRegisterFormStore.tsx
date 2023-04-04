@@ -13,7 +13,7 @@ export const registerFormInitialValues: RegisterFormValues = {
   email: "",
   username: "",
   password: "",
-  confirmPassword: "",
+  password_confirmation: "",
 };
 
 export const useRegisterFormStore = create<RegisterFormStore>((set) => ({

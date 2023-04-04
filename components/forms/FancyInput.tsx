@@ -2,8 +2,10 @@ import { TextInput } from "@mantine/core";
 import { useFloatingInputLabel } from "../../hooks/styles/useFloatingInputLabel";
 import { FancyInputProps } from "./types";
 
-// If floating prop is undefined, render regular TextInput.
-// Else, use floating label animation.
+// If floating = undefined, render regular TextInput.
+
+// If floating = true, float label above the input.
+// If floating = false, label is inside input.
 export const FancyInput = ({
   floating,
   ...textInputProps
