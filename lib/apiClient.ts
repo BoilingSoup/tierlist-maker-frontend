@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from "axios";
 import { BASE_API, BASE_URL } from "../config/config";
 
+/** common options used for all clients */
 const axiosOpts = (baseURL: string): CreateAxiosDefaults => ({
   baseURL,
   headers: {
@@ -76,5 +77,15 @@ class AxiosClient {
   }
 }
 
+/**
+ * Auth endpoints don't have v1/ prefix
+ * ex. /login /register
+ * Not for any particular reason, Laravel scaffolds like that and I didn't change it.
+ */
 export const authClient = new AxiosClient(BASE_URL);
+
+/**
+ * API endpoints have version prefix
+ * ex: /v1/tierlist/recent
+ */
 export const apiClient = new AxiosClient(BASE_API);
