@@ -13,6 +13,24 @@ const passwordValidationError =
   /password length must be at least 8 characters/i;
 const passwordConfirmationValidationError = /password does not match/i;
 
+jest.mock("next/router", () => ({
+  useRouter() {
+    return {
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
+      push: jest.fn(),
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      beforePopState: jest.fn(() => null),
+      prefetch: jest.fn(() => null),
+    };
+  },
+}));
+
 const getFormByRole = () => {
   return screen.getByRole("form", { name: /registration form/i });
 };
