@@ -54,11 +54,11 @@ class AxiosClient {
     return this.axiosInstance.patch<ResponseType>(url, data);
   }
 
-  public async delete<ResponseType>(url: string, data: any) {
+  public async delete<ResponseType>(url: string) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
-    return this.axiosInstance.patch<ResponseType>(url, data);
+    return this.axiosInstance.delete<ResponseType>(url);
   }
 
   private get csrfToken() {
