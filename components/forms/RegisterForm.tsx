@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Loader } from "@mantine/core";
 import { ChangeEventHandler, useState } from "react";
 import { useRegisterMutation } from "../../hooks/api/useRegisterMutation";
+import { useRouterEvent } from "../common/hooks/useRouterEvent";
 import { RegisterFormFields } from "../../hooks/auth/types";
 import useRegisterForm from "../../hooks/auth/useRegisterForm";
 import { useRegisterFormStore } from "../../hooks/store/useRegisterFormStore";

@@ -9,10 +9,13 @@ import { queryClient } from "../lib/queryClient";
 import "../public/global.css";
 import { AuthProvider } from "../contexts/AuthProvider";
 import { Notifications } from "@mantine/notifications";
+import { useFormSmartReset } from "../hooks/store/useFormSmartReset";
 
 export const cssCache = createEmotionCache({ key: "mantine" });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useFormSmartReset();
+
   return (
     <QueryClientProvider client={queryClient}>
       <Head>
