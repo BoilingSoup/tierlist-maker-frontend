@@ -46,7 +46,7 @@ export const getNavLinkTextSx = (
   isCurrentPath ? navLinkTextCurrentSx : navLinkTextSx;
 
 const navLinkBeforeElement: CSSObject = {
-  width: "100%",
+  width: "80%",
   bottom: 0,
   content: '""',
   position: "absolute",
