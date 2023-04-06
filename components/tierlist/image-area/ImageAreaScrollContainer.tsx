@@ -4,7 +4,7 @@ import { imagesFlexContainerSx, scrollContainerSx } from "../styles";
 
 type Props = {
   children: ReactNode;
-  setNodeRef: (element: HTMLElement | null) => void
+  setNodeRef: (element: HTMLElement | null) => void;
 };
 export const ImageAreaScrollContainer = ({ children, setNodeRef }: Props) => {
   return (
@@ -17,6 +17,7 @@ export const ImageAreaScrollContainer = ({ children, setNodeRef }: Props) => {
         onKeyDown={(e) => {
           if (!e.ctrlKey) e.preventDefault();
         }}
+        onPointerDown={(e) => e.preventDefault()}
       >
         {children}
       </Flex>
