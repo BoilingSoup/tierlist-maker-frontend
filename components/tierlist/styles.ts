@@ -68,6 +68,7 @@ export const sidebarImageContainerSx = (): CSSObject => ({
   overflow: "hidden",
   border: "2px solid white",
   margin: "1px",
+  touchAction: "none",
 });
 
 export const imageAreaInfoListStyles: Styles<
