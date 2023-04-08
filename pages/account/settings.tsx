@@ -1,4 +1,5 @@
-import { Center, Text } from "@mantine/core";
+import { ActionIcon, Center, Container, Text, TextInput } from "@mantine/core";
+import { IconPencil } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
@@ -12,11 +13,61 @@ const Settings: NextPage = () => {
 
   return (
     <AccountNavShell>
-      {userIsLoaded && (
-        <Center sx={{ width: "100%", height: "100%" }}>
-          <Text color="white">{user.username}</Text>
+      <Container sx={{ marginTop: "3rem" }}>
+        <Text color="white" sx={{ fontSize: "2rem", textAlign: "center" }}>
+          Account Settings
+        </Text>
+
+        <Center mt="xl">
+          <TextInput
+            label="username"
+            styles={{
+              label: {
+                color: "white",
+                display: "inline-block",
+                width: "150px",
+                textAlign: "left",
+                fontSize: "1.2rem",
+              },
+              wrapper: {
+                display: "inline-block",
+              },
+            }}
+            disabled
+            placeholder={user?.username}
+          />
+          <ActionIcon>
+            <IconPencil />
+          </ActionIcon>
         </Center>
-      )}
+        <Center mt="xl">
+          <TextInput
+            label="e-mail"
+            styles={{
+              label: {
+                color: "white",
+                display: "inline-block",
+                width: "150px",
+                textAlign: "left",
+                fontSize: "1.2rem",
+              },
+              wrapper: {
+                display: "inline-block",
+              },
+            }}
+            disabled
+            placeholder={user?.username}
+          />
+          <ActionIcon>
+            <IconPencil />
+          </ActionIcon>
+        </Center>
+      </Container>
+      {/* {userIsLoaded && ( */}
+      {/*   <Text color="white" align="center" weight={"bold"} mt="xl"> */}
+      {/*     {user.username} */}
+      {/*   </Text> */}
+      {/* )} */}
     </AccountNavShell>
   );
 };
