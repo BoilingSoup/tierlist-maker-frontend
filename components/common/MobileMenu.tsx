@@ -1,13 +1,11 @@
 import { Box, Center, Flex } from "@mantine/core";
 import Link from "next/link";
-import { useCurrentPath } from "./hooks/useCurrentPath";
 import { useRouterEvent } from "./hooks/useRouterEvent";
 import {
   getMobileNavLinkSx,
   mobileNavLinksContainerSx,
   mobileNavLinksOverlaySx,
 } from "./styles";
-import { Route } from "./types";
 
 type Props = {
   onLinkClick: () => void;
@@ -15,41 +13,40 @@ type Props = {
 
 export const MobileMenu = ({ onLinkClick: closeMenu }: Props) => {
   useRouterEvent({ on: "routeChangeComplete", handler: closeMenu });
-  const currentPath = useCurrentPath();
 
   return (
     <Box sx={mobileNavLinksOverlaySx}>
       <Flex sx={mobileNavLinksContainerSx}>
         <Center
-          sx={getMobileNavLinkSx(currentPath === Route.Home)}
+          // sx={getMobileNavLinkSx(currentPath === Route.Home)}
           component={Link}
           href="/"
         >
           Home
         </Center>
         <Center
-          sx={getMobileNavLinkSx(currentPath === Route.Browse)}
+          // sx={getMobileNavLinkSx(currentPath === Route.Browse)}
           component={Link}
           href="/browse"
         >
           Browse
         </Center>
         <Center
-          sx={getMobileNavLinkSx(currentPath === Route.Create)}
+          // sx={getMobileNavLinkSx(currentPath === Route.Create)}
           component={Link}
           href="/create"
         >
           Create New Tier List
         </Center>
         <Center
-          sx={getMobileNavLinkSx(currentPath === Route.Register)}
+          // sx={getMobileNavLinkSx(currentPath === Route.Register)}
           component={Link}
           href="/register"
         >
           Register
         </Center>
         <Center
-          sx={getMobileNavLinkSx(currentPath === Route.SignIn)}
+          // sx={getMobileNavLinkSx(currentPath === Route.SignIn)}
           component={Link}
           href="/signin"
         >

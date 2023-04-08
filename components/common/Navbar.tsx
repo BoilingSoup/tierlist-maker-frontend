@@ -8,18 +8,15 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LOGO_IMG } from "../../config/config";
-// import { useAuth } from "../../contexts/AuthProvider";
 import { DesktopNavLinksGroup } from "./DesktopNavLinksGroup";
 import { convertThemeBreakpointToPx } from "./helpers";
 import { useCloseHamburgerOnWindowResize } from "./hooks/useCloseHamburgerOnWindowResize";
-import { useCurrentPath } from "./hooks/useCurrentPath";
 import { LogoLink } from "./LogoLink";
 import { MobileMenu } from "./MobileMenu";
 import { displayNone, NAVBAR_HEIGHT, navbarSx } from "./styles";
 
 export const Navbar = () => {
   const { breakpoints } = useMantineTheme();
-  const currentPath = useCurrentPath();
 
   const [opened, { toggle }] = useDisclosure(false);
   const label = opened ? "Close navigation" : "Open navigation";
@@ -57,7 +54,7 @@ export const Navbar = () => {
             />
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="sm">
-            <DesktopNavLinksGroup currentPath={currentPath} />
+            <DesktopNavLinksGroup />
           </MediaQuery>
         </Group>
       </Flex>
