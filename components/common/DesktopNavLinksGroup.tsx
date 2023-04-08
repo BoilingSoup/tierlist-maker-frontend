@@ -1,58 +1,56 @@
 import { Group } from "@mantine/core";
+import { useRouter } from "next/router";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useSignOutMutation } from "../../hooks/api/useSignOutMutation";
 import { DesktopNavLink } from "./DesktopNavLink";
-import { Route } from "./types";
 
 type Props = {
-  currentPath: Route;
-
   /* className is automatically passed by MediaQuery component */
   className?: string;
 };
 
-export const DesktopNavLinksGroup = ({ currentPath, className }: Props) => {
-  const { user, setUser, isLoading } = useAuth();
+export const DesktopNavLinksGroup = ({ className }: Props) => {
+  const { user, isLoading } = useAuth();
   const { mutate: signOut, isLoading: isSigningOut } = useSignOutMutation();
+  const { pathname } = useRouter();
 
   return (
     <Group className={className}>
-      <DesktopNavLink
-        href="/"
-        text="Home"
-        isCurrentPath={currentPath === Route.Home}
-      />
+      <DesktopNavLink href="/" text="Home" isCurrentPath={pathname === "/"} />
       <DesktopNavLink
         href="/browse"
         text="Browse"
-        isCurrentPath={currentPath === Route.Browse}
+        isCurrentPath={pathname === "/browse"}
       />
       <DesktopNavLink
         href="/create"
         text="Create"
-        isCurrentPath={currentPath === Route.Create}
+        isCurrentPath={pathname === "/create"}
       />
       {isLoading || !user ? (
         <>
           <DesktopNavLink
             href={"/register"}
             text="Register"
-            isCurrentPath={currentPath === Route.Register}
+            isCurrentPath={pathname === "/register"}
             isLoading={isLoading}
           />
           <DesktopNavLink
             href="/signin"
             text="Sign In"
-            isCurrentPath={currentPath === Route.SignIn}
+            isCurrentPath={pathname === "/signin"}
             isLoading={isLoading}
           />
         </>
       ) : (
         <>
           <DesktopNavLink
-            href={"/account"}
+            href={"/account/tierlists"}
             text="Account"
-            isCurrentPath={currentPath === Route.Account}
+            isCurrentPath={
+              pathname === "/account/tierlists" ||
+              pathname === "/account/settings"
+            }
             isLoading={isLoading}
           />
           <DesktopNavLink

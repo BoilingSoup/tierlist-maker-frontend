@@ -1,5 +1,6 @@
 import { CSSObject, MantineTheme } from "@mantine/core";
 import { CSSProperties } from "react";
+import { PxSize } from "../tierlist/types";
 
 export const displayNone: CSSObject = {
   display: "none",
@@ -14,7 +15,7 @@ export const homeLinkStyle: CSSProperties = {
   textDecoration: "none",
 };
 
-export const NAVBAR_HEIGHT = "54px";
+export const NAVBAR_HEIGHT: PxSize = "54px";
 
 export const navbarSx = ({ colors }: MantineTheme): CSSObject => ({
   position: "fixed",
