@@ -52,7 +52,11 @@ export const AuthProvider = ({ children }: Props) => {
   );
 };
 
+export type UserDataServerResponse = {
+  data: User;
+};
+
 const fetchUser = async () => {
-  const res = await authClient.get<User>("/user");
-  return res.data;
+  const res = await authClient.get<UserDataServerResponse>("/user");
+  return res.data.data;
 };

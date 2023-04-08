@@ -1,4 +1,4 @@
-import { Flex, NavLink } from "@mantine/core";
+import { Box, Flex, NavLink } from "@mantine/core";
 import { IconActivity, IconSettings } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +9,7 @@ import {
   accountNavLinkSx,
   accountSideNavSx,
   mainContainerSx,
+  mainContentContainerSx,
 } from "./styles";
 
 const iconSize: RemSize = "1.2rem";
@@ -43,7 +44,7 @@ export const AccountNavShell = ({ children }: Props) => {
           active={pathname === "/account/settings"}
         />
       </Flex>
-      {children}
+      <Box sx={mainContentContainerSx}>{children}</Box>
     </Flex>
   );
 };

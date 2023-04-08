@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
-import { useAuth, User } from "../../contexts/AuthProvider";
+import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
 import { SignInFormValues } from "../auth/types";
 import { useSignInForm } from "../auth/useSignInForm";
@@ -40,6 +40,6 @@ export const useSignInMutation = ({ form, setDisableSubmit }: Param) => {
 };
 
 const attemptSignIn = async (values: SignInFormValues) => {
-  const res = await authClient.post<User>("/login", values);
-  return res.data;
+  const res = await authClient.post<UserDataServerResponse>("/login", values);
+  return res.data.data;
 };
