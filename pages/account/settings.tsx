@@ -1,4 +1,4 @@
-import { Text } from "@mantine/core";
+import { Center, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
@@ -8,12 +8,15 @@ const Settings: NextPage = () => {
   const { user, isLoading } = useAuth();
   useRedirectIfUnauthenticated({ user, isLoading, redirectTo: "/" });
 
+  const userIsLoaded = !isLoading && user !== null;
+
   return (
     <AccountNavShell>
-      <Text color="white">
-        {isLoading && "Loading..."}
-        {user !== null ? JSON.stringify(user) : "You're not logged in"}
-      </Text>
+      {userIsLoaded && (
+        <Center sx={{ width: "100%", height: "100%" }}>
+          <Text color="white">{user.username}</Text>
+        </Center>
+      )}
     </AccountNavShell>
   );
 };

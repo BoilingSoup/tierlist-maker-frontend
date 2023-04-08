@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
 import { showSomethingWentWrongNotification } from "../../components/common/helpers";
-import { useAuth, User } from "../../contexts/AuthProvider";
+import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
 import { RegisterFormValues } from "../auth/types";
 import useRegisterForm from "../auth/useRegisterForm";
@@ -59,6 +59,9 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
 };
 
 const attemptRegister = async (values: RegisterFormValues) => {
-  const res = await authClient.post<User>("/register", values);
-  return res.data;
+  const res = await authClient.post<UserDataServerResponse>(
+    "/register",
+    values
+  );
+  return res.data.data;
 };

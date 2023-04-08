@@ -53,3 +53,8 @@ export const accountNavLinkStyles: Styles<
     fontSize: "1.0rem",
   },
 };
+
+export const mainContentContainerSx: CSSObject = {
+  width: "80%",
+  height: "100%",
+};
