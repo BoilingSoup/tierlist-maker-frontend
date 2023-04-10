@@ -13,7 +13,9 @@ import { queryKeys } from "../lib/queryKeys";
 export type User = {
   id: string;
   username: string;
+  email: string | null; // null only if Reddit OAuth, maybe use discriminated union.
   is_admin: boolean;
+  email_verified: boolean;
 } | null;
 
 type UserContext = {
