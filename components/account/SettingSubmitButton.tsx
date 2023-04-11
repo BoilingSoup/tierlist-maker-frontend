@@ -8,7 +8,6 @@ import {
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { useAuth } from "../../contexts/AuthProvider";
-import { inputContainerWidth } from "./styles";
 
 type Props = {
   isLoading: boolean;
@@ -29,7 +28,7 @@ export const SettingSubmitButton = ({ isLoading }: Props) => {
   const userIsLoaded = !isLoading && user !== null;
 
   return (
-    <Flex w={inputContainerWidth} justify="flex-end">
+    <Flex w="100%" justify="flex-end">
       {isLoading && <Skeleton h={26} w={95.59} sx={junk} />}
       {!isLoading && (
         <Button

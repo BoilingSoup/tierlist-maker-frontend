@@ -13,9 +13,10 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { EditableUserSetting } from "../../components/account/EditableUserSetting";
+import { SettingContainer } from "../../components/account/SettingContainer";
 import { SettingSubmitButton } from "../../components/account/SettingSubmitButton";
 import {
-  inputContainerWidth,
+  settingContainerWidth,
   labelWidth,
   settingsDividerColor,
   settingsTitleSx,
@@ -40,20 +41,25 @@ const Settings: NextPage = () => {
           Account Settings
         </Text>
         <Divider my="xl" color={settingsDividerColor} />
-        <EditableUserSetting
-          my="xl"
-          label="Username"
-          placeholder={user?.username ?? "zzzzz"}
-          isLoading={isLoading}
-        />
-        <Divider color={settingsDividerColor} />
-        <Stack my="xl" align="center">
+        <SettingContainer my="xl">
           <EditableUserSetting
-            label="E-mail"
-            placeholder={user?.email ?? "xxxxx"}
+            label="Username"
+            placeholder={user?.username ?? "zzzzz"}
             isLoading={isLoading}
           />
-          <SettingSubmitButton isLoading={isLoading} />
+        </SettingContainer>
+        <Divider my="xl" color={settingsDividerColor} />
+        <Stack align="center" my="xl">
+          <SettingContainer>
+            <EditableUserSetting
+              label="E-mail"
+              placeholder={user?.email ?? "xxxxx"}
+              isLoading={isLoading}
+            />
+          </SettingContainer>
+          <SettingContainer>
+            <SettingSubmitButton isLoading={isLoading} />
+          </SettingContainer>
         </Stack>
 
         <Accordion
@@ -95,7 +101,7 @@ const Settings: NextPage = () => {
                   mt="xl"
                   mx="auto"
                   sx={{
-                    width: inputContainerWidth,
+                    width: settingContainerWidth,
                     // outline: "2px solid red",
                     justifyContent: "space-between",
                   }}
@@ -122,7 +128,7 @@ const Settings: NextPage = () => {
                       },
                       input: {
                         color: "white",
-                        width: `calc(${inputContainerWidth} - ${labelWidth} - 50px)`,
+                        width: `calc(${settingContainerWidth} - ${labelWidth} - 50px)`,
                         // padding: 0,
                         border: "none",
                         background: theme.colors.dark[6],
@@ -139,7 +145,7 @@ const Settings: NextPage = () => {
                   mt="xl"
                   mx="auto"
                   sx={{
-                    width: inputContainerWidth,
+                    width: settingContainerWidth,
                     // outline: "2px solid red",
                     // justifyContent: "space-between",
                   }}
@@ -165,7 +171,7 @@ const Settings: NextPage = () => {
                       },
                       input: {
                         color: "white",
-                        width: `calc(${inputContainerWidth} - ${labelWidth} - 50px)`,
+                        width: `calc(${settingContainerWidth} - ${labelWidth} - 50px)`,
                         // padding: 0,
                         border: "none",
                         background: theme.colors.dark[6],
@@ -180,7 +186,7 @@ const Settings: NextPage = () => {
 
                 <Flex
                   sx={{
-                    width: inputContainerWidth,
+                    width: settingContainerWidth,
                     justifyContent: "flex-end",
                   }}
                 >

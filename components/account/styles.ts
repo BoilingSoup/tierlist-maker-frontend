@@ -70,7 +70,7 @@ export const settingsTitleSx = (): CSSObject => ({
 
 export const settingsDividerColor: DefaultMantineColor = "dark.4";
 
-export const inputContainerWidth: PxSize = "500px";
+export const settingContainerWidth: PxSize = "500px";
 export const labelWidth: PxSize = "200px";
 
 export const accountSettingContainerSx = (): CSSObject => ({
@@ -104,5 +104,14 @@ export const getTextInputStyles = ({
       background: theme.colors.dark[7],
       cursor: "default",
     },
+  },
+});
+
+export const settingSkeletonSx = ({ colors }: MantineTheme): CSSObject => ({
+  ":before": {
+    background: colors.dark[5],
+  },
+  ":after": {
+    background: colors.dark[7],
   },
 });
