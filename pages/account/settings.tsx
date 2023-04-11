@@ -1,30 +1,27 @@
 import {
   Accordion,
-  ActionIcon,
-  Box,
   Button,
-  Center,
   Container,
   Divider,
   Flex,
-  MantineTheme,
   Stack,
   Text,
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconPencil } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
-import { UsernameSettings } from "../../components/account/UsernameSettings";
+import { EditableUserSetting } from "../../components/account/EditableUserSetting";
+import { SettingSubmitButton } from "../../components/account/SettingSubmitButton";
+import {
+  inputContainerWidth,
+  labelWidth,
+  settingsDividerColor,
+  settingsTitleSx,
+} from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
-
-const accountSettingsDividerColor = "dark.4";
-
-const inputContainerWidth = "500px";
-const labelWidth = "200px";
 
 const Settings: NextPage = () => {
   const { user, isLoading } = useAuth();
@@ -39,92 +36,25 @@ const Settings: NextPage = () => {
   return (
     <AccountNavShell>
       <Container mt="3rem">
-        <Text
-          sx={() => ({
-            fontSize: "2rem",
-            textAlign: "center",
-            color: "white",
-          })}
-        >
+        <Text component="h1" sx={settingsTitleSx}>
           Account Settings
         </Text>
-
-        <Divider my="xl" color={accountSettingsDividerColor} />
-
-        <UsernameSettings />
-
-        <Divider color={accountSettingsDividerColor} />
-        <Stack my="xl" sx={{ alignItems: "center" }}>
-          <Flex
-            sx={{
-              width: inputContainerWidth,
-              // outline: "2px solid red",
-              justifyContent: "space-between",
-            }}
-          >
-            <TextInput
-              label="E-mail"
-              styles={{
-                label: {
-                  color: "white",
-                  display: "inline-block",
-                  width: labelWidth,
-                  fontSize: "1rem",
-                  marginRight: "3rem",
-                },
-                wrapper: {
-                  display: "inline-block",
-                },
-                input: {
-                  width: "180px",
-                  padding: 0,
-                  border: "none",
-                  background: theme.colors.dark[7],
-                  ":disabled": {
-                    cursor: "default",
-                    background: theme.colors.dark[7],
-                  },
-                },
-              }}
-              disabled
-              placeholder={user?.email !== null ? user?.email : "oauth user"}
-              mr="md"
-            />
-            <ActionIcon>
-              <IconPencil />
-            </ActionIcon>
-          </Flex>
-          <Flex sx={{ width: inputContainerWidth, justifyContent: "flex-end" }}>
-            <Button
-              compact
-              color="dark"
-              // variant="outline"
-              sx={{
-                outline: "0px solid green",
-                color: "white",
-              }}
-            >
-              {user?.email_verified ? (
-                <Text
-                  span
-                  sx={{
-                    display: "flex",
-                    alignItems: "flex-end",
-                    color: theme.colors.lime[4],
-                  }}
-                >
-                  <IconCheck size={20} />{" "}
-                  <Text span ml="1ch">
-                    verified
-                  </Text>
-                </Text>
-              ) : (
-                "Resend Verification Email"
-              )}
-            </Button>
-          </Flex>
+        <Divider my="xl" color={settingsDividerColor} />
+        <EditableUserSetting
+          my="xl"
+          label="Username"
+          placeholder={user?.username ?? "zzzzz"}
+          isLoading={isLoading}
+        />
+        <Divider color={settingsDividerColor} />
+        <Stack my="xl" align="center">
+          <EditableUserSetting
+            label="E-mail"
+            placeholder={user?.email ?? "xxxxx"}
+            isLoading={isLoading}
+          />
+          <SettingSubmitButton isLoading={isLoading} />
         </Stack>
-        {/* <Divider my="xl" color={accountSettingsDividerColor} /> */}
 
         <Accordion
           my="xl"
@@ -172,6 +102,7 @@ const Settings: NextPage = () => {
                 >
                   <TextInput
                     label="New Password"
+                    type="password"
                     styles={{
                       label: {
                         color: "white",
@@ -188,12 +119,11 @@ const Settings: NextPage = () => {
 
                       root: {
                         width: "100%",
-                        outline: "2px solid red",
-                        // marginRight: 0,
                       },
                       input: {
+                        color: "white",
                         width: `calc(${inputContainerWidth} - ${labelWidth} - 50px)`,
-                        padding: 0,
+                        // padding: 0,
                         border: "none",
                         background: theme.colors.dark[6],
                         ":disabled": {
@@ -202,8 +132,6 @@ const Settings: NextPage = () => {
                         },
                       },
                     }}
-                    disabled
-                    mr="md"
                   />
                 </Flex>
 
@@ -218,6 +146,7 @@ const Settings: NextPage = () => {
                 >
                   <TextInput
                     label="Confirm New Password"
+                    type="password"
                     styles={{
                       label: {
                         color: "white",
@@ -233,13 +162,11 @@ const Settings: NextPage = () => {
                       },
                       root: {
                         width: "100%",
-                        outline: "2px solid red",
-                        // marginRight: 0,
                       },
                       input: {
-                        // outline: "2px solid red",
+                        color: "white",
                         width: `calc(${inputContainerWidth} - ${labelWidth} - 50px)`,
-                        padding: 0,
+                        // padding: 0,
                         border: "none",
                         background: theme.colors.dark[6],
                         ":disabled": {
@@ -248,9 +175,6 @@ const Settings: NextPage = () => {
                         },
                       },
                     }}
-                    disabled
-                    // placeholder={""}
-                    mr="md"
                   />
                 </Flex>
 
@@ -281,34 +205,6 @@ const Settings: NextPage = () => {
             <Accordion.Panel>stuff here</Accordion.Panel>
           </Accordion.Item>
         </Accordion>
-
-        {/* <Accordion */}
-        {/*   my="xl" */}
-        {/*   value={"test"} */}
-        {/*   onChange={() => {}} */}
-        {/*   styles={{ */}
-        {/*     label: { */}
-        {/*       color: "white", */}
-        {/*     }, */}
-        {/*     chevron: { */}
-        {/*       color: "white", */}
-        {/*     }, */}
-        {/*     item: { */}
-        {/*       borderBottom: `1px solid ${theme.colors.dark[4]}`, */}
-        {/*     }, */}
-        {/*     control: { */}
-        {/*       background: theme.colors.dark[7], */}
-        {/*       ":hover": { */}
-        {/*         background: theme.colors.dark[7], */}
-        {/*       }, */}
-        {/*     }, */}
-        {/*   }} */}
-        {/* > */}
-        {/*   <Accordion.Item value="item-1"> */}
-        {/*     <Accordion.Control>Delete Account</Accordion.Control> */}
-        {/*     <Accordion.Panel>panel-1</Accordion.Panel> */}
-        {/*   </Accordion.Item> */}
-        {/* </Accordion> */}
       </Container>
 
       {/* {userIsLoaded && ( */}

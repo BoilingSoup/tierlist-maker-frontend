@@ -1,10 +1,13 @@
 import {
   CSSObject,
+  DefaultMantineColor,
   MantineTheme,
   NavLinkStylesParams,
   Styles,
+  TextInputStylesNames,
 } from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../common/styles";
+import { PxSize } from "../tierlist/types";
 
 const getAccountNavShellBorder = (colors: MantineTheme["colors"]) =>
   `1px solid ${colors.dark[4]}`;
@@ -56,6 +59,50 @@ export const accountNavLinkStyles: Styles<
 
 export const mainContentContainerSx: CSSObject = {
   width: "80%",
-  // height: "100%",
   overflowY: "auto",
 };
+
+export const settingsTitleSx = (): CSSObject => ({
+  fontSize: "2rem",
+  textAlign: "center",
+  color: "white",
+});
+
+export const settingsDividerColor: DefaultMantineColor = "dark.4";
+
+export const inputContainerWidth: PxSize = "500px";
+export const labelWidth: PxSize = "200px";
+
+export const accountSettingContainerSx = (): CSSObject => ({
+  justifyContent: "space-between",
+  alignItems: "center",
+});
+
+export const getTextInputStyles = ({
+  theme,
+  isLoading,
+}: {
+  theme: MantineTheme;
+  isLoading: boolean;
+}): Styles<TextInputStylesNames, Record<string, any>> => ({
+  label: {
+    color: "white",
+    display: "inline-block",
+    width: labelWidth,
+    fontSize: "1rem",
+    marginRight: "3rem",
+  },
+  wrapper: {
+    display: "inline-block",
+  },
+  input: {
+    display: isLoading ? "none" : "default",
+    width: "180px",
+    padding: 0,
+    border: "none",
+    ":disabled": {
+      background: theme.colors.dark[7],
+      cursor: "default",
+    },
+  },
+});
