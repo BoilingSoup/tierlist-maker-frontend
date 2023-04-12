@@ -115,3 +115,7 @@ export const settingSkeletonSx = ({ colors }: MantineTheme): CSSObject => ({
     background: colors.dark[7],
   },
 });
+
+export const settingEditIconSx = ({ colors }: MantineTheme) => ({
+  ":hover": { background: colors.dark[5] },
+});

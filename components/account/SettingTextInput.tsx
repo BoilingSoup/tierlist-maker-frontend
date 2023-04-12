@@ -3,7 +3,7 @@ import { getTextInputStyles } from "./styles";
 
 type Props = {
   label: string;
-  placeholder: string;
+  placeholder: string | undefined;
   isLoading: boolean;
   editable?: boolean;
 };

@@ -13,6 +13,7 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { EditableUserSetting } from "../../components/account/EditableUserSetting";
+import { getEmailPlaceholder } from "../../components/account/helpers";
 import { SettingContainer } from "../../components/account/SettingContainer";
 import { SettingSubmitButton } from "../../components/account/SettingSubmitButton";
 import {
@@ -44,7 +45,7 @@ const Settings: NextPage = () => {
         <SettingContainer my="xl">
           <EditableUserSetting
             label="Username"
-            placeholder={user?.username ?? "zzzzz"}
+            placeholder={user?.username}
             isLoading={isLoading}
           />
         </SettingContainer>
@@ -53,7 +54,7 @@ const Settings: NextPage = () => {
           <SettingContainer>
             <EditableUserSetting
               label="E-mail"
-              placeholder={user?.email ?? "xxxxx"}
+              placeholder={getEmailPlaceholder(user)}
               isLoading={isLoading}
             />
           </SettingContainer>
@@ -88,8 +89,6 @@ const Settings: NextPage = () => {
             },
             panel: {
               color: "white",
-              // display: "flex",
-              // justifyContent: "center",
             },
           }}
         >

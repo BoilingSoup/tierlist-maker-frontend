@@ -10,13 +10,24 @@ import { useQuery } from "react-query";
 import { authClient } from "../lib/apiClient";
 import { queryKeys } from "../lib/queryKeys";
 
-export type User = {
-  id: string;
-  username: string;
-  email: string | null; // null only if Reddit OAuth, maybe use discriminated union.
-  is_admin: boolean;
-  email_verified: boolean;
-} | null;
+export type User =
+  | {
+      id: string;
+      username: string;
+      email: string;
+      is_admin: boolean;
+      email_verified: boolean;
+      oauth_provider: null;
+    }
+  | {
+      id: string;
+      username: string;
+      email: null;
+      is_admin: boolean;
+      email_verified: boolean;
+      oauth_provider: "GITHUB" | "GITLAB" | "DISCORD" | "GOOGLE" | "REDDIT";
+    }
+  | null;
 
 type UserContext = {
   user: User;
