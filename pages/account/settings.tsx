@@ -9,6 +9,7 @@ import {
   TextInput,
   useMantineTheme,
 } from "@mantine/core";
+import { IconCheck } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
@@ -19,8 +20,14 @@ import { SettingSubmitButton } from "../../components/account/SettingSubmitButto
 import {
   settingContainerWidth,
   labelWidth,
-  settingsDividerColor,
-  settingsTitleSx,
+  settingDividerColor,
+  accountSettingsTitleSx,
+  settingButtonContainerSx,
+  compactButtonHeight,
+  emailVerifiedButtonContentsSx,
+  verifiedCheckSize,
+  getEmailVerificationButtonWidth,
+  getEmailVerificationButtonSx,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -39,29 +46,47 @@ const Settings: NextPage = () => {
   return (
     <AccountNavShell>
       <Container mt="3rem">
-        <Text component="h1" sx={settingsTitleSx}>
+        <Text component="h1" sx={accountSettingsTitleSx}>
           Account Settings
         </Text>
-        <Divider my="xl" color={settingsDividerColor} />
+        <Divider my="xl" color={settingDividerColor} />
         <SettingContainer my="xl">
           <EditableUserSetting
+            skeleton={isLoading}
             label="Username"
             placeholder={user?.username}
-            isLoading={isLoading}
           />
         </SettingContainer>
-        <Divider my="xl" color={settingsDividerColor} />
+        <Divider my="xl" color={settingDividerColor} />
         <Stack align="center" my="xl">
           <SettingContainer>
             <EditableUserSetting
+              skeleton={isLoading}
               label="E-mail"
               placeholder={getEmailPlaceholder(user)}
-              isLoading={isLoading}
               editable={emailIsEditable}
             />
           </SettingContainer>
-          <SettingContainer>
-            <SettingSubmitButton isLoading={isLoading} />
+          <SettingContainer sx={settingButtonContainerSx}>
+            <SettingSubmitButton
+              skeleton={isLoading}
+              compact
+              h={compactButtonHeight}
+              w={getEmailVerificationButtonWidth({ user, isLoading })}
+              sx={getEmailVerificationButtonSx({ user, isLoading })}
+              disabled={userIsLoaded && user.email_verified}
+            >
+              {userIsLoaded && user.email_verified ? (
+                <Flex sx={emailVerifiedButtonContentsSx}>
+                  <IconCheck size={verifiedCheckSize} />
+                  <Text span ml="1ch">
+                    verified
+                  </Text>
+                </Flex>
+              ) : (
+                "Resend Verification Email"
+              )}
+            </SettingSubmitButton>
           </SettingContainer>
         </Stack>
 

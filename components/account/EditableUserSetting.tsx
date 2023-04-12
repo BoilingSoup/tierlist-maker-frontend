@@ -11,14 +11,14 @@ import {
 type Props = {
   label: string;
   placeholder: string | undefined;
-  isLoading: boolean;
+  skeleton: boolean;
   editable?: boolean;
 };
 
 export const EditableUserSetting = ({
   label,
   placeholder,
-  isLoading,
+  skeleton: isLoading,
   editable = true,
 }: Props) => {
   const textInputProps = {

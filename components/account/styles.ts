@@ -6,6 +6,7 @@ import {
   Styles,
   TextInputStylesNames,
 } from "@mantine/core";
+import { User } from "../../contexts/AuthProvider";
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "../tierlist/types";
 
@@ -62,13 +63,13 @@ export const mainContentContainerSx: CSSObject = {
   overflowY: "auto",
 };
 
-export const settingsTitleSx = (): CSSObject => ({
+export const accountSettingsTitleSx = (): CSSObject => ({
   fontSize: "2rem",
   textAlign: "center",
   color: "white",
 });
 
-export const settingsDividerColor: DefaultMantineColor = "dark.4";
+export const settingDividerColor: DefaultMantineColor = "dark.4";
 
 export const settingContainerWidth: PxSize = "500px";
 export const labelWidth: PxSize = "200px";
@@ -134,4 +135,59 @@ export const disabledSettingEditIconSx = ({
   },
 });
 
-export const buttonSkeletonHeight: PxSize = "26px";
+export const compactButtonHeight: PxSize = "26px";
+
+export const settingButtonContainerSx = (): CSSObject => ({
+  display: "flex",
+  justifyContent: "flex-end",
+});
+
+export const emailVerifiedButtonWidth: PxSize = "95.98px";
+
+export const getEmailVerificationButtonWidth = ({
+  user,
+  isLoading,
+}: {
+  user: User;
+  isLoading: boolean;
+}) => {
+  if (!isLoading && !user?.email_verified) {
+    return "default";
+  }
+
+  return emailVerifiedButtonWidth;
+};
+
+export const getEmailVerificationButtonSx =
+  ({ user, isLoading }: { user: User; isLoading: boolean }) =>
+  ({ colors }: MantineTheme): CSSObject => {
+    if (isLoading || user?.email_verified) {
+      return {
+        border: "none",
+        background: colors.dark[6],
+        ":hover": {
+          background: colors.dark[6],
+        },
+        ":disabled": {
+          background: colors.dark[6],
+        },
+      };
+    }
+
+    return {
+      border: `1px solid ${colors.dark[4]}`,
+      background: colors.dark[6],
+      ":hover": {
+        background: colors.dark[5],
+      },
+    };
+  };
+
+export const emailVerifiedButtonContentsSx = ({
+  colors,
+}: MantineTheme): CSSObject => ({
+  alignItems: "flex-end",
+  color: colors.lime[4],
+});
+
+export const verifiedCheckSize: PxSize = "20px";
