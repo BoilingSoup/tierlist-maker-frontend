@@ -81,9 +81,11 @@ export const accountSettingContainerSx = (): CSSObject => ({
 export const getTextInputStyles = ({
   theme,
   isLoading,
+  editable,
 }: {
   theme: MantineTheme;
   isLoading: boolean;
+  editable: boolean;
 }): Styles<TextInputStylesNames, Record<string, any>> => ({
   label: {
     color: "white",
@@ -104,6 +106,7 @@ export const getTextInputStyles = ({
       background: theme.colors.dark[7],
       cursor: "default",
     },
+    fontStyle: editable ? "default" : "italic",
   },
 });
 
@@ -116,6 +119,19 @@ export const settingSkeletonSx = ({ colors }: MantineTheme): CSSObject => ({
   },
 });
 
-export const settingEditIconSx = ({ colors }: MantineTheme) => ({
+export const settingEditIconSx = ({ colors }: MantineTheme): CSSObject => ({
+  color: colors.dark[2],
   ":hover": { background: colors.dark[5] },
 });
+
+export const disabledSettingEditIconSx = ({
+  colors,
+}: MantineTheme): CSSObject => ({
+  ":disabled": {
+    color: colors.dark[2],
+    background: colors.dark[7],
+    border: "none",
+  },
+});
+
+export const buttonSkeletonHeight: PxSize = "26px";

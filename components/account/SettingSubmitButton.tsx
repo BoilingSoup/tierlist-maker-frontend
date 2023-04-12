@@ -1,27 +1,14 @@
-import {
-  Button,
-  CSSObject,
-  Flex,
-  MantineTheme,
-  Skeleton,
-  Text,
-} from "@mantine/core";
+import { Button, Flex, Skeleton, Text } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { useAuth } from "../../contexts/AuthProvider";
+import { PxSize } from "../tierlist/types";
+import { buttonSkeletonHeight, settingSkeletonSx } from "./styles";
 
 type Props = {
   isLoading: boolean;
 };
 
-const junk = (theme: MantineTheme): CSSObject => ({
-  width: "60px",
-  ":before": {
-    background: theme.colors.dark[5],
-  },
-  ":after": {
-    background: theme.colors.dark[7],
-  },
-});
+const emailVerifiedButtonWidth: PxSize = "95.98px";
 
 export const SettingSubmitButton = ({ isLoading }: Props) => {
   const { user } = useAuth();
@@ -29,11 +16,17 @@ export const SettingSubmitButton = ({ isLoading }: Props) => {
 
   return (
     <Flex w="100%" justify="flex-end">
-      {isLoading && <Skeleton h={26} w={95.59} sx={junk} />}
+      {isLoading && (
+        <Skeleton
+          h={buttonSkeletonHeight}
+          w={emailVerifiedButtonWidth}
+          sx={settingSkeletonSx}
+        />
+      )}
       {!isLoading && (
         <Button
           compact
-          h={26}
+          h={buttonSkeletonHeight}
           w={95.59}
           // color="dark"
           // variant="outline"

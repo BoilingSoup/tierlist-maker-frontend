@@ -8,13 +8,18 @@ type Props = {
   editable?: boolean;
 };
 
-export const SettingTextInput = ({ label, placeholder, isLoading }: Props) => {
+export const SettingTextInput = ({
+  label,
+  placeholder,
+  isLoading,
+  editable = true,
+}: Props) => {
   const theme = useMantineTheme();
 
   return (
     <TextInput
       label={label}
-      styles={getTextInputStyles({ theme, isLoading })}
+      styles={getTextInputStyles({ theme, isLoading, editable })}
       disabled
       placeholder={placeholder}
       mr={isLoading ? undefined : "md"}

@@ -32,6 +32,7 @@ const Settings: NextPage = () => {
   const theme = useMantineTheme();
 
   const userIsLoaded = !isLoading && user !== null;
+  const emailIsEditable = userIsLoaded && user.email !== null;
 
   const [value, setValue] = useState<string[]>([]);
 
@@ -56,6 +57,7 @@ const Settings: NextPage = () => {
               label="E-mail"
               placeholder={getEmailPlaceholder(user)}
               isLoading={isLoading}
+              editable={emailIsEditable}
             />
           </SettingContainer>
           <SettingContainer>

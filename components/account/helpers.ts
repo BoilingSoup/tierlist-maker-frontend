@@ -1,10 +1,10 @@
 import { User } from "../../contexts/AuthProvider";
 
-export const githubInputPlaceholder = "GitHub Account";
-export const gitlabInputPlaceholder = "GitLab Account";
-export const googleInputPlaceholder = "Google Account";
-export const redditInputPlaceholder = "Reddit Account";
-export const discordInputPlaceholder = "Discord Account";
+export const githubInputPlaceholder = "Signed in with GitHub";
+export const gitlabInputPlaceholder = "Signed in with GitLab";
+export const googleInputPlaceholder = "Signed in with Google";
+export const redditInputPlaceholder = "Signed in with Reddit";
+export const discordInputPlaceholder = "Signed in with Discord";
 
 export const getEmailPlaceholder = (user: User): string | undefined => {
   if (!user) {

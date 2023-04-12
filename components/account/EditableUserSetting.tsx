@@ -2,7 +2,11 @@ import { ActionIcon, Flex } from "@mantine/core";
 import { IconPencil, IconPencilOff } from "@tabler/icons-react";
 import { SettingSkeleton } from "./SettingSkeleton";
 import { SettingTextInput } from "./SettingTextInput";
-import { accountSettingContainerSx, settingEditIconSx } from "./styles";
+import {
+  accountSettingContainerSx,
+  disabledSettingEditIconSx,
+  settingEditIconSx,
+} from "./styles";
 
 type Props = {
   label: string;
@@ -15,21 +19,27 @@ export const EditableUserSetting = ({
   label,
   placeholder,
   isLoading,
+  editable = true,
 }: Props) => {
   const textInputProps = {
     label,
     placeholder,
+    isLoading,
+    editable,
   };
 
   return (
     <Flex w="100%" sx={accountSettingContainerSx}>
-      {/*isLoading not included in textInputProps to make common dependencies obvious at a glance*/}
-      <SettingTextInput {...{ ...textInputProps, isLoading }} />
+      <SettingTextInput {...textInputProps} />
       {isLoading && <SettingSkeleton />}
-      {!isLoading && (
+      {!isLoading && editable && (
         <ActionIcon sx={settingEditIconSx}>
-          {/* <IconPencil /> */}
           <IconPencil />
+        </ActionIcon>
+      )}
+      {!isLoading && !editable && (
+        <ActionIcon sx={disabledSettingEditIconSx} disabled>
+          <IconPencilOff />
         </ActionIcon>
       )}
     </Flex>
