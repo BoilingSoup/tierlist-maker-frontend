@@ -6,7 +6,7 @@ export const googleInputPlaceholder = "Signed in with Google";
 export const redditInputPlaceholder = "Signed in with Reddit";
 export const discordInputPlaceholder = "Signed in with Discord";
 
-export const getEmailPlaceholder = (user: User): string | undefined => {
+export const getInputPlaceholder = (user: User): string | undefined => {
   if (!user) {
     return undefined;
   }

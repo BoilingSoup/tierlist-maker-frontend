@@ -201,6 +201,8 @@ export const emailVerifiedButtonContentsSx = ({
 
 export const verifiedCheckSize: PxSize = "20px";
 
+export const accordionCollapsedHeight: PxSize = "151px";
+
 export const getAccountSettingsAccordionStyles = (
   theme: MantineTheme
 ): Styles<AccordionStylesNames, AccordionStylesParams> => ({
@@ -251,7 +253,7 @@ export const getPasswordTextInputStyles = ({
     background: theme.colors.dark[6],
     ":disabled": {
       cursor: "default",
-      background: theme.colors.dark[6],
+      background: theme.colors.dark[7],
     },
   },
 });

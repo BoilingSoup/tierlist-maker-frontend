@@ -14,7 +14,7 @@ import type { NextPage } from "next";
 import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { EditableUserSetting } from "../../components/account/EditableUserSetting";
-import { getEmailPlaceholder } from "../../components/account/helpers";
+import { getInputPlaceholder } from "../../components/account/helpers";
 import { SettingContainer } from "../../components/account/SettingContainer";
 import { SettingSubmitButton } from "../../components/account/SettingSubmitButton";
 import {
@@ -32,6 +32,7 @@ import {
   settingSkeletonSx,
   passwordInputContainerSx,
   inputHeight,
+  accordionCollapsedHeight,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -44,6 +45,7 @@ const Settings: NextPage = () => {
 
   const userIsLoaded = !isLoading && user !== null;
   const emailIsEditable = userIsLoaded && user.email !== null;
+  const oauthProvider = user?.oauth_provider;
 
   const [activeAccordionPanel, setActiveAccordionPanel] = useState<string[]>(
     []
@@ -69,7 +71,7 @@ const Settings: NextPage = () => {
             <EditableUserSetting
               skeleton={isLoading}
               label="E-mail"
-              placeholder={getEmailPlaceholder(user)}
+              placeholder={getInputPlaceholder(user)}
               editable={emailIsEditable}
             />
           </SettingContainer>
@@ -96,65 +98,82 @@ const Settings: NextPage = () => {
           </SettingContainer>
         </Stack>
 
-        <Accordion
-          my="xl"
-          value={activeAccordionPanel}
-          multiple
-          onChange={setActiveAccordionPanel}
-          styles={getAccountSettingsAccordionStyles(theme)}
-        >
-          <Accordion.Item value="item-1">
-            <Accordion.Control>Change Password</Accordion.Control>
-            <Accordion.Panel>
-              <Stack my="xl" align="center">
-                <SettingContainer
-                  mt="xl"
-                  display="flex"
-                  sx={passwordInputContainerSx}
-                >
-                  <TextInput
-                    label="New Password"
-                    type="password"
-                    styles={getPasswordTextInputStyles({ theme, isLoading })}
-                  />
-                  {isLoading && (
-                    <Skeleton height={inputHeight} sx={settingSkeletonSx} />
-                  )}
-                </SettingContainer>
-                <SettingContainer
-                  mt="xl"
-                  display="flex"
-                  sx={passwordInputContainerSx}
-                >
-                  <TextInput
-                    label="Confirm New Password"
-                    type="password"
-                    styles={getPasswordTextInputStyles({ theme, isLoading })}
-                  />
-                  {isLoading && (
-                    <Skeleton height={inputHeight} sx={settingSkeletonSx} />
-                  )}
-                </SettingContainer>
-                <SettingContainer sx={settingButtonContainerSx}>
-                  <SettingSubmitButton
-                    compact
-                    color="dark"
-                    skeleton={isLoading}
-                    mt="xl"
-                    h={compactButtonHeight}
-                    w={changePasswordButtonWidth}
-                  >
-                    Change Password
-                  </SettingSubmitButton>
-                </SettingContainer>
-              </Stack>
-            </Accordion.Panel>
-          </Accordion.Item>
-          <Accordion.Item value="item-2">
-            <Accordion.Control>Delete Account</Accordion.Control>
-            <Accordion.Panel>stuff here</Accordion.Panel>
-          </Accordion.Item>
-        </Accordion>
+        {isLoading ? (
+          <Skeleton
+            my="xl"
+            h={accordionCollapsedHeight}
+            w="100%"
+            sx={settingSkeletonSx}
+          />
+        ) : (
+          <Accordion
+            my="xl"
+            value={activeAccordionPanel}
+            multiple
+            onChange={setActiveAccordionPanel}
+            styles={getAccountSettingsAccordionStyles(theme)}
+          >
+            {(isLoading || !oauthProvider) && (
+              <Accordion.Item value="item-1">
+                <Accordion.Control>Change Password</Accordion.Control>
+                <Accordion.Panel>
+                  <Stack my="xl" align="center">
+                    <SettingContainer
+                      mt="xl"
+                      display="flex"
+                      sx={passwordInputContainerSx}
+                    >
+                      <TextInput
+                        label="New Password"
+                        type="password"
+                        styles={getPasswordTextInputStyles({
+                          theme,
+                          isLoading,
+                        })}
+                      />
+                      {isLoading && (
+                        <Skeleton height={inputHeight} sx={settingSkeletonSx} />
+                      )}
+                    </SettingContainer>
+                    <SettingContainer
+                      mt="xl"
+                      display="flex"
+                      sx={passwordInputContainerSx}
+                    >
+                      <TextInput
+                        label="Confirm New Password"
+                        type="password"
+                        styles={getPasswordTextInputStyles({
+                          theme,
+                          isLoading,
+                        })}
+                      />
+                      {isLoading && (
+                        <Skeleton height={inputHeight} sx={settingSkeletonSx} />
+                      )}
+                    </SettingContainer>
+                    <SettingContainer sx={settingButtonContainerSx}>
+                      <SettingSubmitButton
+                        compact
+                        color="dark"
+                        skeleton={isLoading}
+                        mt="xl"
+                        h={compactButtonHeight}
+                        w={changePasswordButtonWidth}
+                      >
+                        Change Password
+                      </SettingSubmitButton>
+                    </SettingContainer>
+                  </Stack>
+                </Accordion.Panel>
+              </Accordion.Item>
+            )}
+            <Accordion.Item value="item-2">
+              <Accordion.Control>Delete Account</Accordion.Control>
+              <Accordion.Panel>stuff here</Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
+        )}
       </Container>
 
       {/* {userIsLoaded && ( */}
