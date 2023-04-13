@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { User } from "../../contexts/AuthProvider";
 import { NAVBAR_HEIGHT } from "../common/styles";
-import { PxSize, RemSize } from "../tierlist/types";
+import { CalcSize, PxSize, RemSize } from "../tierlist/types";
 
 const getAccountNavShellBorder = (colors: MantineTheme["colors"]) =>
   `1px solid ${colors.dark[4]}`;
@@ -82,6 +82,18 @@ export const accountSettingContainerSx = (): CSSObject => ({
   alignItems: "center",
 });
 
+const inputLabelStyles: CSSObject = {
+  color: "white",
+  display: "inline-block",
+  width: labelWidth,
+  fontSize: "1rem",
+  marginRight: labelMarginRight,
+};
+
+const inputWrapperStyles = {
+  display: "inline-block",
+};
+
 export const getTextInputStyles = ({
   theme,
   isLoading,
@@ -91,16 +103,8 @@ export const getTextInputStyles = ({
   isLoading: boolean;
   editable: boolean;
 }): Styles<TextInputStylesNames, Record<string, any>> => ({
-  label: {
-    color: "white",
-    display: "inline-block",
-    width: labelWidth,
-    fontSize: "1rem",
-    marginRight: labelMarginRight,
-  },
-  wrapper: {
-    display: "inline-block",
-  },
+  label: inputLabelStyles,
+  wrapper: inputWrapperStyles,
   input: {
     display: isLoading ? "none" : "default",
     width: "180px",
@@ -113,6 +117,8 @@ export const getTextInputStyles = ({
     fontStyle: editable ? "default" : "italic",
   },
 });
+
+export const skeletonBarHeight: PxSize = "16px";
 
 export const settingSkeletonSx = ({ colors }: MantineTheme): CSSObject => ({
   ":before": {
@@ -221,21 +227,25 @@ export const getAccountSettingsAccordionStyles = (
   },
 });
 
-export const getPasswordTextInputStyles = (
-  theme: MantineTheme
-): Styles<TextInputStylesNames, Record<string, any>> => ({
-  label: {
-    color: "white",
-    display: "inline-block",
-    width: labelWidth,
-    fontSize: "1rem",
-    marginRight: labelMarginRight,
-  },
+export const passwordInputContainerSx = (): CSSObject => ({
+  alignItems: "center",
+});
+
+export const getPasswordTextInputStyles = ({
+  theme,
+  isLoading,
+}: {
+  theme: MantineTheme;
+  isLoading: boolean;
+}): Styles<TextInputStylesNames, Record<string, any>> => ({
+  label: inputLabelStyles,
   wrapper: {
-    display: "inline-block",
+    ...inputWrapperStyles,
     width: `calc(${settingContainerWidth} - ${labelWidth} - ${labelMarginRight})`,
+    display: isLoading ? "none" : "inline-block",
   },
   input: {
+    display: isLoading ? "none" : "default",
     color: "white",
     border: "none",
     background: theme.colors.dark[6],
@@ -247,3 +257,7 @@ export const getPasswordTextInputStyles = (
 });
 
 export const changePasswordButtonWidth: PxSize = "140px";
+
+export const passwordInputSkeletonWidth: CalcSize = `calc(${settingContainerWidth} - ${labelWidth} - ${labelMarginRight})`;
+
+export const inputHeight: PxSize = "36px";

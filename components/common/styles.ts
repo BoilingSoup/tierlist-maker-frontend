@@ -1,6 +1,6 @@
 import { CSSObject, MantineTheme } from "@mantine/core";
 import { CSSProperties } from "react";
-import { PxSize } from "../tierlist/types";
+import { CalcSize, PxSize } from "../tierlist/types";
 
 export const displayNone: CSSObject = {
   display: "none",
@@ -98,7 +98,7 @@ export const logoTextSx = (): CSSObject => ({
   paddingLeft: "1ch",
 });
 
-const landingSectionHeight = `calc(95vh - ${NAVBAR_HEIGHT})`;
+const landingSectionHeight: CalcSize = `calc(95vh - ${NAVBAR_HEIGHT})`;
 
 export const landingTierListContainerSx = ({
   colors,

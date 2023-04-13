@@ -3,6 +3,7 @@ import {
   Container,
   Divider,
   Flex,
+  Skeleton,
   Stack,
   Text,
   TextInput,
@@ -28,6 +29,9 @@ import {
   getAccountSettingsAccordionStyles,
   getPasswordTextInputStyles,
   changePasswordButtonWidth,
+  settingSkeletonSx,
+  passwordInputContainerSx,
+  inputHeight,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -41,7 +45,9 @@ const Settings: NextPage = () => {
   const userIsLoaded = !isLoading && user !== null;
   const emailIsEditable = userIsLoaded && user.email !== null;
 
-  const [value, setValue] = useState<string[]>([]);
+  const [activeAccordionPanel, setActiveAccordionPanel] = useState<string[]>(
+    []
+  );
 
   return (
     <AccountNavShell>
@@ -92,28 +98,42 @@ const Settings: NextPage = () => {
 
         <Accordion
           my="xl"
-          value={value}
+          value={activeAccordionPanel}
           multiple
-          onChange={setValue}
+          onChange={setActiveAccordionPanel}
           styles={getAccountSettingsAccordionStyles(theme)}
         >
           <Accordion.Item value="item-1">
             <Accordion.Control>Change Password</Accordion.Control>
             <Accordion.Panel>
               <Stack my="xl" align="center">
-                <SettingContainer mt="xl">
+                <SettingContainer
+                  mt="xl"
+                  display="flex"
+                  sx={passwordInputContainerSx}
+                >
                   <TextInput
                     label="New Password"
                     type="password"
-                    styles={getPasswordTextInputStyles(theme)}
+                    styles={getPasswordTextInputStyles({ theme, isLoading })}
                   />
+                  {isLoading && (
+                    <Skeleton height={inputHeight} sx={settingSkeletonSx} />
+                  )}
                 </SettingContainer>
-                <SettingContainer mt="xl">
+                <SettingContainer
+                  mt="xl"
+                  display="flex"
+                  sx={passwordInputContainerSx}
+                >
                   <TextInput
                     label="Confirm New Password"
                     type="password"
-                    styles={getPasswordTextInputStyles(theme)}
+                    styles={getPasswordTextInputStyles({ theme, isLoading })}
                   />
+                  {isLoading && (
+                    <Skeleton height={inputHeight} sx={settingSkeletonSx} />
+                  )}
                 </SettingContainer>
                 <SettingContainer sx={settingButtonContainerSx}>
                   <SettingSubmitButton

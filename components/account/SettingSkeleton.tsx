@@ -1,9 +1,5 @@
 import { Center, Skeleton } from "@mantine/core";
-import { PxSize } from "../tierlist/types";
-import { settingSkeletonSx } from "./styles";
-
-const skeletonBarHeight: PxSize = "16px";
-const inputHeight: PxSize = "36px";
+import { inputHeight, settingSkeletonSx, skeletonBarHeight } from "./styles";
 
 export const SettingSkeleton = () => {
   return (
