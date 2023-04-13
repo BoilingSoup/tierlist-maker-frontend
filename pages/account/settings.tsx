@@ -1,6 +1,5 @@
 import {
   Accordion,
-  Button,
   Container,
   Divider,
   Flex,
@@ -18,8 +17,6 @@ import { getEmailPlaceholder } from "../../components/account/helpers";
 import { SettingContainer } from "../../components/account/SettingContainer";
 import { SettingSubmitButton } from "../../components/account/SettingSubmitButton";
 import {
-  settingContainerWidth,
-  labelWidth,
   settingDividerColor,
   accountSettingsTitleSx,
   settingButtonContainerSx,
@@ -29,6 +26,8 @@ import {
   getEmailVerificationButtonWidth,
   getEmailVerificationButtonSx,
   getAccountSettingsAccordionStyles,
+  getPasswordTextInputStyles,
+  changePasswordButtonWidth,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -90,6 +89,7 @@ const Settings: NextPage = () => {
             </SettingSubmitButton>
           </SettingContainer>
         </Stack>
+
         <Accordion
           my="xl"
           value={value}
@@ -105,84 +105,27 @@ const Settings: NextPage = () => {
                   <TextInput
                     label="New Password"
                     type="password"
-                    styles={{
-                      label: {
-                        color: "white",
-                        display: "inline-block",
-                        width: labelWidth,
-                        fontSize: "1rem",
-                        marginRight: "3rem",
-                      },
-                      wrapper: {
-                        display: "inline-block",
-                        margin: 0,
-                        // width: inputContainerWidth,
-                      },
-
-                      root: {
-                        width: "100%",
-                      },
-                      input: {
-                        color: "white",
-                        width: `calc(${settingContainerWidth} - ${labelWidth} - 50px)`,
-                        // padding: 0,
-                        border: "none",
-                        background: theme.colors.dark[6],
-                        ":disabled": {
-                          cursor: "default",
-                          background: theme.colors.dark[6],
-                        },
-                      },
-                    }}
+                    styles={getPasswordTextInputStyles(theme)}
                   />
                 </SettingContainer>
                 <SettingContainer mt="xl">
                   <TextInput
                     label="Confirm New Password"
                     type="password"
-                    styles={{
-                      label: {
-                        color: "white",
-                        display: "inline-block",
-                        width: labelWidth,
-                        fontSize: "1rem",
-                        marginRight: "3rem",
-                      },
-                      wrapper: {
-                        display: "inline-block",
-                        // width: `calc(${inputContainerWidth} - ${labelWidth})`,
-                        // outline: "2px solid red",
-                      },
-                      root: {
-                        width: "100%",
-                      },
-                      input: {
-                        color: "white",
-                        width: `calc(${settingContainerWidth} - ${labelWidth} - 50px)`,
-                        // padding: 0,
-                        border: "none",
-                        background: theme.colors.dark[6],
-                        ":disabled": {
-                          cursor: "default",
-                          background: theme.colors.dark[6],
-                        },
-                      },
-                    }}
+                    styles={getPasswordTextInputStyles(theme)}
                   />
                 </SettingContainer>
                 <SettingContainer sx={settingButtonContainerSx}>
-                  <Button
+                  <SettingSubmitButton
                     compact
                     color="dark"
+                    skeleton={isLoading}
                     mt="xl"
-                    // variant="outline"
-                    sx={{
-                      outline: "0px solid green",
-                      color: "white",
-                    }}
+                    h={compactButtonHeight}
+                    w={changePasswordButtonWidth}
                   >
                     Change Password
-                  </Button>
+                  </SettingSubmitButton>
                 </SettingContainer>
               </Stack>
             </Accordion.Panel>

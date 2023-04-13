@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { User } from "../../contexts/AuthProvider";
 import { NAVBAR_HEIGHT } from "../common/styles";
-import { PxSize } from "../tierlist/types";
+import { PxSize, RemSize } from "../tierlist/types";
 
 const getAccountNavShellBorder = (colors: MantineTheme["colors"]) =>
   `1px solid ${colors.dark[4]}`;
@@ -73,8 +73,9 @@ export const accountSettingsTitleSx = (): CSSObject => ({
 
 export const settingDividerColor: DefaultMantineColor = "dark.4";
 
-export const settingContainerWidth: PxSize = "500px";
-export const labelWidth: PxSize = "200px";
+const settingContainerWidth: PxSize = "500px";
+const labelWidth: PxSize = "200px";
+const labelMarginRight: RemSize = "3rem";
 
 export const accountSettingContainerSx = (): CSSObject => ({
   justifyContent: "space-between",
@@ -95,7 +96,7 @@ export const getTextInputStyles = ({
     display: "inline-block",
     width: labelWidth,
     fontSize: "1rem",
-    marginRight: "3rem",
+    marginRight: labelMarginRight,
   },
   wrapper: {
     display: "inline-block",
@@ -219,3 +220,30 @@ export const getAccountSettingsAccordionStyles = (
     color: "white",
   },
 });
+
+export const getPasswordTextInputStyles = (
+  theme: MantineTheme
+): Styles<TextInputStylesNames, Record<string, any>> => ({
+  label: {
+    color: "white",
+    display: "inline-block",
+    width: labelWidth,
+    fontSize: "1rem",
+    marginRight: labelMarginRight,
+  },
+  wrapper: {
+    display: "inline-block",
+    width: `calc(${settingContainerWidth} - ${labelWidth} - ${labelMarginRight})`,
+  },
+  input: {
+    color: "white",
+    border: "none",
+    background: theme.colors.dark[6],
+    ":disabled": {
+      cursor: "default",
+      background: theme.colors.dark[6],
+    },
+  },
+});
+
+export const changePasswordButtonWidth: PxSize = "140px";
