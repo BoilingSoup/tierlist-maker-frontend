@@ -28,6 +28,7 @@ import {
   verifiedCheckSize,
   getEmailVerificationButtonWidth,
   getEmailVerificationButtonSx,
+  getAccountSettingsAccordionStyles,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -89,49 +90,18 @@ const Settings: NextPage = () => {
             </SettingSubmitButton>
           </SettingContainer>
         </Stack>
-
         <Accordion
           my="xl"
           value={value}
           multiple
           onChange={setValue}
-          styles={{
-            label: {
-              color: "white",
-            },
-            chevron: {
-              color: "white",
-            },
-            item: {
-              margin: "3rem 0",
-              border: "none",
-              // borderBottom: `1px solid ${theme.colors.dark[4]}`,
-            },
-            control: {
-              background: theme.colors.dark[7],
-              borderBottom: `1px solid ${theme.colors.dark[4]}`,
-              ":hover": {
-                background: theme.colors.dark[7],
-              },
-            },
-            panel: {
-              color: "white",
-            },
-          }}
+          styles={getAccountSettingsAccordionStyles(theme)}
         >
           <Accordion.Item value="item-1">
-            <Accordion.Control>Reset Password</Accordion.Control>
+            <Accordion.Control>Change Password</Accordion.Control>
             <Accordion.Panel>
-              <Stack my="xl" sx={{ alignItems: "center" }}>
-                <Flex
-                  mt="xl"
-                  mx="auto"
-                  sx={{
-                    width: settingContainerWidth,
-                    // outline: "2px solid red",
-                    justifyContent: "space-between",
-                  }}
-                >
+              <Stack my="xl" align="center">
+                <SettingContainer mt="xl">
                   <TextInput
                     label="New Password"
                     type="password"
@@ -165,17 +135,8 @@ const Settings: NextPage = () => {
                       },
                     }}
                   />
-                </Flex>
-
-                <Flex
-                  mt="xl"
-                  mx="auto"
-                  sx={{
-                    width: settingContainerWidth,
-                    // outline: "2px solid red",
-                    // justifyContent: "space-between",
-                  }}
-                >
+                </SettingContainer>
+                <SettingContainer mt="xl">
                   <TextInput
                     label="Confirm New Password"
                     type="password"
@@ -208,14 +169,8 @@ const Settings: NextPage = () => {
                       },
                     }}
                   />
-                </Flex>
-
-                <Flex
-                  sx={{
-                    width: settingContainerWidth,
-                    justifyContent: "flex-end",
-                  }}
-                >
+                </SettingContainer>
+                <SettingContainer sx={settingButtonContainerSx}>
                   <Button
                     compact
                     color="dark"
@@ -228,7 +183,7 @@ const Settings: NextPage = () => {
                   >
                     Change Password
                   </Button>
-                </Flex>
+                </SettingContainer>
               </Stack>
             </Accordion.Panel>
           </Accordion.Item>

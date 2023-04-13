@@ -1,4 +1,6 @@
 import {
+  AccordionStylesNames,
+  AccordionStylesParams,
   CSSObject,
   DefaultMantineColor,
   MantineTheme,
@@ -191,3 +193,29 @@ export const emailVerifiedButtonContentsSx = ({
 });
 
 export const verifiedCheckSize: PxSize = "20px";
+
+export const getAccountSettingsAccordionStyles = (
+  theme: MantineTheme
+): Styles<AccordionStylesNames, AccordionStylesParams> => ({
+  label: {
+    color: "white",
+  },
+  chevron: {
+    color: "white",
+  },
+  item: {
+    margin: "3rem 0",
+    border: "none",
+    // borderBottom: `1px solid ${theme.colors.dark[4]}`,
+  },
+  control: {
+    background: theme.colors.dark[7],
+    borderBottom: `1px solid ${theme.colors.dark[4]}`,
+    ":hover": {
+      background: theme.colors.dark[7],
+    },
+  },
+  panel: {
+    color: "white",
+  },
+});
