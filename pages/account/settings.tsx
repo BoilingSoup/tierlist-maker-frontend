@@ -1,5 +1,6 @@
 import {
   Accordion,
+  Button,
   Container,
   Divider,
   Flex,
@@ -31,8 +32,8 @@ import {
   changePasswordButtonWidth,
   settingSkeletonSx,
   passwordInputContainerSx,
-  inputHeight,
   accordionCollapsedHeight,
+  settingButtonSx,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -113,58 +114,53 @@ const Settings: NextPage = () => {
             onChange={setActiveAccordionPanel}
             styles={getAccountSettingsAccordionStyles(theme)}
           >
-            {(isLoading || !oauthProvider) && (
+            {!oauthProvider && (
               <Accordion.Item value="item-1">
                 <Accordion.Control>Change Password</Accordion.Control>
                 <Accordion.Panel>
-                  <Stack my="xl" align="center">
-                    <SettingContainer
-                      mt="xl"
-                      display="flex"
-                      sx={passwordInputContainerSx}
-                    >
-                      <TextInput
-                        label="New Password"
-                        type="password"
-                        styles={getPasswordTextInputStyles({
-                          theme,
-                          isLoading,
-                        })}
-                      />
-                      {isLoading && (
-                        <Skeleton height={inputHeight} sx={settingSkeletonSx} />
-                      )}
-                    </SettingContainer>
-                    <SettingContainer
-                      mt="xl"
-                      display="flex"
-                      sx={passwordInputContainerSx}
-                    >
-                      <TextInput
-                        label="Confirm New Password"
-                        type="password"
-                        styles={getPasswordTextInputStyles({
-                          theme,
-                          isLoading,
-                        })}
-                      />
-                      {isLoading && (
-                        <Skeleton height={inputHeight} sx={settingSkeletonSx} />
-                      )}
-                    </SettingContainer>
-                    <SettingContainer sx={settingButtonContainerSx}>
-                      <SettingSubmitButton
-                        compact
-                        color="dark"
-                        skeleton={isLoading}
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      console.log("submitted");
+                    }}
+                  >
+                    <Stack my="xl" align="center">
+                      <SettingContainer
                         mt="xl"
-                        h={compactButtonHeight}
-                        w={changePasswordButtonWidth}
+                        display="flex"
+                        sx={passwordInputContainerSx}
                       >
-                        Change Password
-                      </SettingSubmitButton>
-                    </SettingContainer>
-                  </Stack>
+                        <TextInput
+                          label="New Password"
+                          type="password"
+                          styles={getPasswordTextInputStyles({ theme })}
+                        />
+                      </SettingContainer>
+                      <SettingContainer
+                        mt="xl"
+                        display="flex"
+                        sx={passwordInputContainerSx}
+                      >
+                        <TextInput
+                          label="Confirm New Password"
+                          type="password"
+                          styles={getPasswordTextInputStyles({ theme })}
+                        />
+                      </SettingContainer>
+                      <SettingContainer sx={settingButtonContainerSx}>
+                        <Button
+                          compact
+                          color="dark"
+                          h={compactButtonHeight}
+                          w={changePasswordButtonWidth}
+                          sx={settingButtonSx}
+                          type="submit"
+                        >
+                          Change Password
+                        </Button>
+                      </SettingContainer>
+                    </Stack>
+                  </form>
                 </Accordion.Panel>
               </Accordion.Item>
             )}

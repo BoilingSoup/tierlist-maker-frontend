@@ -10,9 +10,7 @@ export const SettingSubmitButton = (props: Props) => {
   const { skeleton: isLoading } = props;
 
   if (isLoading) {
-    return (
-      <Skeleton h={props.h} w={props.w} sx={settingSkeletonSx} mt={props.mt} />
-    );
+    return <Skeleton h={props.h} w={props.w} sx={settingSkeletonSx} />;
   }
 
   return (

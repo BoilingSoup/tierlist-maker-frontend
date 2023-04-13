@@ -167,10 +167,20 @@ export const getEmailVerificationButtonWidth = ({
   return emailVerifiedButtonWidth;
 };
 
+export const settingButtonSx = ({ colors }: MantineTheme): CSSObject => ({
+  border: `1px solid ${colors.dark[4]}`,
+  background: colors.dark[6],
+  ":hover": {
+    background: colors.dark[5],
+  },
+});
+
 export const getEmailVerificationButtonSx =
   ({ user, isLoading }: { user: User; isLoading: boolean }) =>
-  ({ colors }: MantineTheme): CSSObject => {
+  (theme: MantineTheme): CSSObject => {
     if (isLoading || user?.email_verified) {
+      const { colors } = theme;
+
       return {
         border: "none",
         background: colors.dark[6],
@@ -183,13 +193,7 @@ export const getEmailVerificationButtonSx =
       };
     }
 
-    return {
-      border: `1px solid ${colors.dark[4]}`,
-      background: colors.dark[6],
-      ":hover": {
-        background: colors.dark[5],
-      },
-    };
+    return settingButtonSx(theme);
   };
 
 export const emailVerifiedButtonContentsSx = ({
@@ -235,19 +239,16 @@ export const passwordInputContainerSx = (): CSSObject => ({
 
 export const getPasswordTextInputStyles = ({
   theme,
-  isLoading,
 }: {
   theme: MantineTheme;
-  isLoading: boolean;
 }): Styles<TextInputStylesNames, Record<string, any>> => ({
   label: inputLabelStyles,
   wrapper: {
     ...inputWrapperStyles,
     width: `calc(${settingContainerWidth} - ${labelWidth} - ${labelMarginRight})`,
-    display: isLoading ? "none" : "inline-block",
   },
   input: {
-    display: isLoading ? "none" : "default",
+    // display: isLoading ? "none" : "default",
     color: "white",
     border: "none",
     background: theme.colors.dark[6],
