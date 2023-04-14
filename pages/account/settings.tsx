@@ -1,21 +1,20 @@
 import {
   Accordion,
-  Button,
   Container,
   Divider,
   Flex,
   Skeleton,
   Stack,
   Text,
-  TextInput,
   useMantineTheme,
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
-import { EditableUserSetting } from "../../components/account/EditableUserSetting";
-import { getInputPlaceholder } from "../../components/account/helpers";
+import { ChangePasswordForm } from "../../components/account/forms/ChangePasswordForm";
+import { EmailForm } from "../../components/account/forms/EmailForm";
+import { UsernameForm } from "../../components/account/forms/UsernameForm";
 import { SettingContainer } from "../../components/account/SettingContainer";
 import { SettingSubmitButton } from "../../components/account/SettingSubmitButton";
 import {
@@ -28,12 +27,8 @@ import {
   getEmailVerificationButtonWidth,
   getEmailVerificationButtonSx,
   getAccountSettingsAccordionStyles,
-  getPasswordTextInputStyles,
-  changePasswordButtonWidth,
   settingSkeletonSx,
-  passwordInputContainerSx,
   accordionCollapsedHeight,
-  settingButtonSx,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -45,7 +40,6 @@ const Settings: NextPage = () => {
   const theme = useMantineTheme();
 
   const userIsLoaded = !isLoading && user !== null;
-  const emailIsEditable = userIsLoaded && user.email !== null;
   const oauthProvider = user?.oauth_provider;
 
   const [activeAccordionPanel, setActiveAccordionPanel] = useState<string[]>(
@@ -60,21 +54,12 @@ const Settings: NextPage = () => {
         </Text>
         <Divider my="xl" color={settingDividerColor} />
         <SettingContainer my="xl">
-          <EditableUserSetting
-            skeleton={isLoading}
-            label="Username"
-            placeholder={user?.username}
-          />
+          <UsernameForm />
         </SettingContainer>
         <Divider my="xl" color={settingDividerColor} />
         <Stack align="center" my="xl">
           <SettingContainer>
-            <EditableUserSetting
-              skeleton={isLoading}
-              label="E-mail"
-              placeholder={getInputPlaceholder(user)}
-              editable={emailIsEditable}
-            />
+            <EmailForm />
           </SettingContainer>
           <SettingContainer sx={settingButtonContainerSx}>
             <SettingSubmitButton
@@ -118,49 +103,7 @@ const Settings: NextPage = () => {
               <Accordion.Item value="item-1">
                 <Accordion.Control>Change Password</Accordion.Control>
                 <Accordion.Panel>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      console.log("submitted");
-                    }}
-                  >
-                    <Stack my="xl" align="center">
-                      <SettingContainer
-                        mt="xl"
-                        display="flex"
-                        sx={passwordInputContainerSx}
-                      >
-                        <TextInput
-                          label="New Password"
-                          type="password"
-                          styles={getPasswordTextInputStyles({ theme })}
-                        />
-                      </SettingContainer>
-                      <SettingContainer
-                        mt="xl"
-                        display="flex"
-                        sx={passwordInputContainerSx}
-                      >
-                        <TextInput
-                          label="Confirm New Password"
-                          type="password"
-                          styles={getPasswordTextInputStyles({ theme })}
-                        />
-                      </SettingContainer>
-                      <SettingContainer sx={settingButtonContainerSx}>
-                        <Button
-                          compact
-                          color="dark"
-                          h={compactButtonHeight}
-                          w={changePasswordButtonWidth}
-                          sx={settingButtonSx}
-                          type="submit"
-                        >
-                          Change Password
-                        </Button>
-                      </SettingContainer>
-                    </Stack>
-                  </form>
+                  <ChangePasswordForm />
                 </Accordion.Panel>
               </Accordion.Item>
             )}

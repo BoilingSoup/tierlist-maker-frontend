@@ -29,19 +29,21 @@ export const EditableUserSetting = ({
   };
 
   return (
-    <Flex w="100%" sx={accountSettingContainerSx}>
-      <SettingTextInput {...textInputProps} />
-      {isLoading && <SettingSkeleton />}
-      {!isLoading && editable && (
-        <ActionIcon sx={settingEditIconSx}>
-          <IconPencil />
-        </ActionIcon>
-      )}
-      {!isLoading && !editable && (
-        <ActionIcon sx={disabledSettingEditIconSx} disabled>
-          <IconPencilOff />
-        </ActionIcon>
-      )}
-    </Flex>
+    <form>
+      <Flex w="100%" sx={accountSettingContainerSx}>
+        <SettingTextInput {...textInputProps} />
+        {isLoading && <SettingSkeleton />}
+        {!isLoading && editable && (
+          <ActionIcon sx={settingEditIconSx}>
+            <IconPencil />
+          </ActionIcon>
+        )}
+        {!isLoading && !editable && (
+          <ActionIcon sx={disabledSettingEditIconSx} disabled>
+            <IconPencilOff />
+          </ActionIcon>
+        )}
+      </Flex>
+    </form>
   );
 };
