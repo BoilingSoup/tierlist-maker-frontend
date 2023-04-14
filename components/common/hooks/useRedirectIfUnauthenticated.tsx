@@ -14,7 +14,7 @@ export const useRedirectIfUnauthenticated = ({
 }: Param) => {
   const router = useRouter();
 
-  if (!isLoading && user === null) {
+  if (!isLoading && !user) {
     router.push(redirectTo);
   }
 };
