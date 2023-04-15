@@ -21,7 +21,7 @@ export const UsernameForm = () => {
       <Flex w="100%" sx={accountSettingContainerSx}>
         <TextInput
           label={"Username"}
-          styles={getTextInputStyles({ theme, isLoading, editable })}
+          styles={getTextInputStyles({ theme, isLoading, user })}
           disabled
           placeholder={user?.username}
           mr={isLoading ? undefined : "md"}

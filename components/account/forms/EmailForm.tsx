@@ -22,7 +22,7 @@ export const EmailForm = () => {
       <Flex w="100%" sx={accountSettingContainerSx}>
         <TextInput
           label={"Email"}
-          styles={getTextInputStyles({ theme, isLoading, editable })}
+          styles={getTextInputStyles({ theme, isLoading, user })}
           disabled
           placeholder={getInputPlaceholder(user)}
           mr={isLoading ? undefined : "md"}
