@@ -110,6 +110,8 @@ export const getTextInputStyles = ({
     width: "180px",
     padding: 0,
     border: "none",
+    background: theme.colors.dark[7],
+    color: "white",
     ":disabled": {
       background: theme.colors.dark[7],
       cursor: "default",
