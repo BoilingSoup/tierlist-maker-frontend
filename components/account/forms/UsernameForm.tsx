@@ -1,13 +1,20 @@
 import {
   ActionIcon,
   Flex,
+  FocusTrap,
   Styles,
   TextInput,
   TextInputStylesNames,
   useMantineTheme,
 } from "@mantine/core";
-import { IconPencil, IconPencilOff } from "@tabler/icons-react";
-import { useReducer } from "react";
+import { useDisclosure } from "@mantine/hooks";
+import {
+  IconX,
+  IconCheck,
+  IconPencil,
+  IconPencilOff,
+} from "@tabler/icons-react";
+import { useReducer, useRef } from "react";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { SettingSkeleton } from "../SettingSkeleton";
 import {
@@ -31,23 +38,35 @@ export const UsernameForm = () => {
     textInputStyles.input!.fontStyle = "default";
   }
 
-  const [disabled, toggle] = useReducer((prev) => !prev, editable);
+  const [active, { toggle }] = useDisclosure(editable);
 
   return (
     <form>
       <Flex w="100%" sx={accountSettingContainerSx}>
-        <TextInput
-          label={"Username"}
-          styles={textInputStyles}
-          disabled={disabled}
-          placeholder={user?.username}
-          mr={isLoading ? undefined : "md"}
-        />
+        <FocusTrap active={active}>
+          <TextInput
+            label={"Username"}
+            styles={textInputStyles}
+            disabled={!active}
+            placeholder={user?.username}
+            mr={isLoading ? undefined : "md"}
+          />
+        </FocusTrap>
         {isLoading && <SettingSkeleton />}
-        {userIsLoaded && editable && (
+        {userIsLoaded && !active && (
           <ActionIcon sx={settingEditIconSx} onClick={toggle}>
             <IconPencil />
           </ActionIcon>
+        )}
+        {userIsLoaded && active && (
+          <>
+            <ActionIcon sx={settingEditIconSx} onClick={toggle}>
+              <IconX />
+            </ActionIcon>
+            <ActionIcon sx={settingEditIconSx} onClick={toggle}>
+              <IconCheck />
+            </ActionIcon>
+          </>
         )}
         {userIsLoaded && !editable && (
           <ActionIcon sx={disabledSettingEditIconSx} disabled>
