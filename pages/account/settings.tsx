@@ -99,7 +99,7 @@ const Settings: NextPage = () => {
             onChange={setActiveAccordionPanel}
             styles={getAccountSettingsAccordionStyles(theme)}
           >
-            {!oauthProvider && (
+            {!oauthProvider && user?.email_verified && (
               <Accordion.Item value="item-1">
                 <Accordion.Control>Change Password</Accordion.Control>
                 <Accordion.Panel>

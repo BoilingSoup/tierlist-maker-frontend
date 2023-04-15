@@ -97,11 +97,11 @@ const inputWrapperStyles = {
 export const getTextInputStyles = ({
   theme,
   isLoading,
-  editable,
+  user,
 }: {
   theme: MantineTheme;
   isLoading: boolean;
-  editable: boolean;
+  user: User;
 }): Styles<TextInputStylesNames, Record<string, any>> => ({
   label: inputLabelStyles,
   wrapper: inputWrapperStyles,
@@ -114,7 +114,7 @@ export const getTextInputStyles = ({
       background: theme.colors.dark[7],
       cursor: "default",
     },
-    fontStyle: editable ? "default" : "italic",
+    fontStyle: user?.oauth_provider ? "italic" : "default",
   },
 });
 
