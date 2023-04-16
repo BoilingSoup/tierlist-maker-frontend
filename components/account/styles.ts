@@ -79,7 +79,7 @@ const labelMarginRight: RemSize = "3rem";
 
 export const accountSettingContainerSx = (): CSSObject => ({
   justifyContent: "space-between",
-  alignItems: "center",
+  alignItems: "flex-start",
 });
 
 const inputLabelStyles: CSSObject = {
@@ -110,6 +110,8 @@ export const getTextInputStyles = ({
     width: "180px",
     padding: 0,
     border: "none",
+    background: theme.colors.dark[7],
+    color: "white",
     ":disabled": {
       background: theme.colors.dark[7],
       cursor: "default",
@@ -132,6 +134,11 @@ export const settingSkeletonSx = ({ colors }: MantineTheme): CSSObject => ({
 export const settingEditIconSx = ({ colors }: MantineTheme): CSSObject => ({
   color: colors.dark[2],
   ":hover": { background: colors.dark[5] },
+  ":disabled": {
+    background: colors.dark[7],
+    border: "none",
+    color: colors.dark[4],
+  },
 });
 
 export const disabledSettingEditIconSx = ({
