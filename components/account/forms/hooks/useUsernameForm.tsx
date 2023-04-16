@@ -1,15 +1,12 @@
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../../../contexts/AuthProvider";
 import { validationRules } from "../../../../hooks/auth/constants";
-
-type FormValues = {
-  username: string;
-};
+import { UsernameFormValues } from "../types";
 
 export const useUsernameForm = () => {
   const { user } = useAuth();
 
-  return useForm<FormValues>({
+  return useForm<UsernameFormValues>({
     initialValues: {
       username: user?.username ?? "",
     },
