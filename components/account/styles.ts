@@ -180,6 +180,10 @@ export const settingButtonSx = ({ colors }: MantineTheme): CSSObject => ({
   ":hover": {
     background: colors.dark[5],
   },
+  ":disabled": {
+    color: colors.dark[3],
+    background: colors.dark[6],
+  },
 });
 
 export const getEmailVerificationButtonSx =
