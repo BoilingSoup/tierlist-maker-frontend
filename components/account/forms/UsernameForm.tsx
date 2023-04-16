@@ -46,12 +46,12 @@ export const UsernameForm = () => {
   const { mutate: updateUsername, isLoading: isMutating } =
     useUsernameMutation(close);
 
-  const placeholder = active ? "" : user?.username;
-
   const resetAndToggle = () => {
     form.setValues({ username: user?.username });
     toggle();
   };
+
+  const placeholder = active ? "" : user?.username;
 
   return (
     <form onSubmit={form.onSubmit((values) => updateUsername(values))}>
@@ -93,7 +93,9 @@ export const UsernameForm = () => {
                 <ActionIcon
                   sx={settingEditIconSx}
                   type="submit"
-                  disabled={!form.isValid()}
+                  disabled={
+                    !form.isValid() || form.values.username === user?.username
+                  }
                 >
                   <IconCheck />
                 </ActionIcon>
