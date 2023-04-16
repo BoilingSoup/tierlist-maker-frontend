@@ -271,3 +271,8 @@ export const changePasswordButtonWidth: PxSize = "140px";
 export const passwordInputSkeletonWidth: CalcSize = `calc(${settingContainerWidth} - ${labelWidth} - ${labelMarginRight})`;
 
 export const inputHeight: PxSize = "36px";
+
+export const changeEmailWarningSx = ({ colors }: MantineTheme): CSSObject => ({
+  color: colors.yellow[6],
+  alignItems: "center",
+});

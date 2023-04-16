@@ -6,23 +6,25 @@ import {
 import { apiClient } from "../../../../lib/apiClient";
 
 type Payload = {
-  username: string;
+  email: string;
 };
 
-export const useUsernameMutation = (closeForm: () => void) => {
+export const useEmailMutation = (closeForm: () => void) => {
   const { setUser } = useAuth();
 
-  return useMutation((payload: Payload) => attemptUpdateUsername(payload), {
+  return useMutation((payload: Payload) => attemptUpdateEmail(payload), {
     onSuccess: (userData) => {
       setUser(userData);
 
       closeForm();
+      // TODO: show success notification
+      // TODO: show verification email sent notification
     },
     // TODO: onError show notification
   });
 };
 
-const attemptUpdateUsername = async (payload: Payload) => {
+const attemptUpdateEmail = async (payload: Payload) => {
   const res = await apiClient.patch<UserDataServerResponse>("/user", payload);
   return res.data.data;
 };
