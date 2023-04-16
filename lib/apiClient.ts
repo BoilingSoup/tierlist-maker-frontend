@@ -80,7 +80,6 @@ class AxiosClient {
 /**
  * Auth endpoints don't have v1/ prefix
  * ex. /login /register
- * Not for any particular reason, Laravel scaffolds like that and I didn't change it.
  */
 export const authClient = new AxiosClient(BASE_URL);
 

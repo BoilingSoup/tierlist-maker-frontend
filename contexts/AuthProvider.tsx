@@ -7,7 +7,7 @@ import {
   ReactNode,
 } from "react";
 import { useQuery } from "react-query";
-import { authClient } from "../lib/apiClient";
+import { apiClient } from "../lib/apiClient";
 import { queryKeys } from "../lib/queryKeys";
 
 export type User =
@@ -70,6 +70,6 @@ export type UserDataServerResponse = {
 };
 
 const fetchUser = async () => {
-  const res = await authClient.get<UserDataServerResponse>("/user");
+  const res = await apiClient.get<UserDataServerResponse>("/user");
   return res.data.data;
 };
