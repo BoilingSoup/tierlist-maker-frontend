@@ -21,6 +21,13 @@ export const ChangePasswordForm = () => {
       <Stack my="xl" align="center">
         <SettingContainer mt="xl" display="flex" sx={passwordInputContainerSx}>
           <TextInput
+            label="Old Password"
+            type="password"
+            styles={getPasswordTextInputStyles({ theme })}
+          />
+        </SettingContainer>
+        <SettingContainer mt="xl" display="flex" sx={passwordInputContainerSx}>
+          <TextInput
             label="New Password"
             type="password"
             styles={getPasswordTextInputStyles({ theme })}
