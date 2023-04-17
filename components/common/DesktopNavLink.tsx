@@ -42,7 +42,7 @@ export const DesktopNavLink = ({
           component={Link}
           href={href}
         >
-          {isLoading ? <Loader size="sm" /> : text}
+          {isLoading ? <Loader size="sm" color="cyan" /> : text}
         </Center>
       </Box>
     );
@@ -54,7 +54,7 @@ export const DesktopNavLink = ({
           component={"button"}
           onClick={clickHandler}
         >
-          {isLoading ? <Loader size="sm" /> : text}
+          {isLoading ? <Loader size="sm" color="cyan" /> : text}
         </Center>
       </Box>
     );

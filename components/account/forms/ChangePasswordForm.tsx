@@ -1,4 +1,10 @@
-import { Button, Stack, TextInput, useMantineTheme } from "@mantine/core";
+import {
+  Button,
+  Loader,
+  Stack,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
 import { SettingContainer } from "../SettingContainer";
 import {
   changePasswordButtonWidth,
@@ -15,7 +21,8 @@ export const ChangePasswordForm = () => {
   const theme = useMantineTheme();
 
   const form = useChangePasswordForm();
-  const { mutate: changePassword } = useChangePasswordMutation(form.reset);
+  const { mutate: changePassword, isLoading: isMutating } =
+    useChangePasswordMutation(form.reset);
 
   return (
     <form onSubmit={form.onSubmit((values) => changePassword(values))}>
@@ -26,6 +33,7 @@ export const ChangePasswordForm = () => {
             type="password"
             styles={getPasswordTextInputStyles({ theme })}
             {...form.getInputProps("current_password")}
+            disabled={isMutating}
           />
         </SettingContainer>
         <SettingContainer mt="xl" display="flex" sx={passwordInputContainerSx}>
@@ -34,6 +42,7 @@ export const ChangePasswordForm = () => {
             type="password"
             styles={getPasswordTextInputStyles({ theme })}
             {...form.getInputProps("password")}
+            disabled={isMutating}
           />
         </SettingContainer>
         <SettingContainer mt="xl" display="flex" sx={passwordInputContainerSx}>
@@ -42,6 +51,7 @@ export const ChangePasswordForm = () => {
             type="password"
             styles={getPasswordTextInputStyles({ theme })}
             {...form.getInputProps("password_confirmation")}
+            disabled={isMutating}
           />
         </SettingContainer>
         <SettingContainer sx={settingButtonContainerSx}>
@@ -52,9 +62,9 @@ export const ChangePasswordForm = () => {
             w={changePasswordButtonWidth}
             sx={settingButtonSx}
             type="submit"
-            disabled={!form.isValid()}
+            disabled={!form.isValid() || isMutating}
           >
-            Change Password
+            {isMutating ? <Loader size={16} color="cyan" /> : "Change Password"}
           </Button>
         </SettingContainer>
       </Stack>
