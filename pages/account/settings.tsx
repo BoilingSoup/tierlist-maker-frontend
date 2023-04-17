@@ -8,9 +8,10 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { ChangePasswordForm } from "../../components/account/forms/ChangePasswordForm";
 import { EmailForm } from "../../components/account/forms/EmailForm";

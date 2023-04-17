@@ -1,4 +1,9 @@
-import { CSSObject, MantineTheme } from "@mantine/core";
+import {
+  CSSObject,
+  MantineTheme,
+  NotificationStylesParams,
+  Styles,
+} from "@mantine/core";
 import { CSSProperties } from "react";
 import { CalcSize, PxSize } from "../tierlist/types";
 
@@ -175,3 +180,28 @@ const currentMobileNavLinkSx = (): CSSObject => ({
 
 export const getMobileNavLinkSx = (isCurrentPath: boolean) =>
   isCurrentPath ? currentMobileNavLinkSx : mobileNavLinkSx;
+
+export const getNotificationStyles = (
+  background: string
+): Styles<
+  "icon" | "body" | "title" | "root" | "description" | "closeButton" | "loader",
+  NotificationStylesParams
+> => ({
+  root: {
+    background,
+    border: "none",
+  },
+  closeButton: {
+    color: "white",
+  },
+  title: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  description: {
+    color: "white",
+  },
+  icon: {
+    color: "white",
+  },
+});
