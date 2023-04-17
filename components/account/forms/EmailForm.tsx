@@ -1,7 +1,5 @@
 import {
   ActionIcon,
-  Box,
-  Center,
   Flex,
   FocusTrap,
   Loader,
@@ -27,6 +25,7 @@ import {
   changeEmailWarningSx,
   disabledSettingEditIconSx,
   getTextInputStyles,
+  loaderSize,
   settingEditIconSx,
 } from "../styles";
 import { useEmailForm } from "./hooks/useEmailForm";
@@ -58,7 +57,7 @@ export const EmailForm = () => {
             <TextInput
               label={"Email"}
               styles={getTextInputStyles({ theme, isLoading, user })}
-              disabled={!active}
+              disabled={!active || isMutating}
               placeholder={getInputPlaceholder(user)}
               mr={isLoading ? undefined : "md"}
               {...form.getInputProps("email")}
@@ -80,12 +79,16 @@ export const EmailForm = () => {
           {userIsLoaded && active && (
             <>
               <Tooltip label="Cancel">
-                <ActionIcon sx={settingEditIconSx} onClick={resetAndToggle}>
+                <ActionIcon
+                  sx={settingEditIconSx}
+                  onClick={resetAndToggle}
+                  disabled={isMutating}
+                >
                   <IconX />
                 </ActionIcon>
               </Tooltip>
               {isMutating ? (
-                <Loader size={20} mt={4} color="cyan" />
+                <Loader size={loaderSize} mt={4} color="cyan" />
               ) : (
                 <Tooltip label="Update">
                   <ActionIcon

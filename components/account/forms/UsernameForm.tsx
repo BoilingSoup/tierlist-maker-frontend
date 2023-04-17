@@ -22,6 +22,7 @@ import {
   accountSettingContainerSx,
   disabledSettingEditIconSx,
   getTextInputStyles,
+  loaderSize,
   settingEditIconSx,
 } from "../styles";
 import { useUsernameForm } from "./hooks/useUsernameForm";
@@ -60,7 +61,7 @@ export const UsernameForm = () => {
           <TextInput
             label={"Username"}
             styles={textInputStyles}
-            disabled={!active}
+            disabled={!active || isMutating}
             placeholder={placeholder}
             mr={isLoading ? undefined : "md"}
             {...form.getInputProps("username")}
@@ -82,12 +83,16 @@ export const UsernameForm = () => {
         {userIsLoaded && active && (
           <>
             <Tooltip label="Cancel">
-              <ActionIcon sx={settingEditIconSx} onClick={resetAndToggle}>
+              <ActionIcon
+                sx={settingEditIconSx}
+                onClick={resetAndToggle}
+                disabled={isMutating}
+              >
                 <IconX />
               </ActionIcon>
             </Tooltip>
             {isMutating ? (
-              <Loader size={20} mt={4} color="cyan" />
+              <Loader size={loaderSize} mt={4} color="cyan" />
             ) : (
               <Tooltip label="Update">
                 <ActionIcon

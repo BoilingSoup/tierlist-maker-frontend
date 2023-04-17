@@ -280,3 +280,5 @@ export const changeEmailWarningSx = ({ colors }: MantineTheme): CSSObject => ({
   color: colors.yellow[6],
   alignItems: "center",
 });
+
+export const loaderSize: PxSize = "20px";
