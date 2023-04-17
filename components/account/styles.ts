@@ -79,7 +79,7 @@ const labelMarginRight: RemSize = "3rem";
 
 export const accountSettingContainerSx = (): CSSObject => ({
   justifyContent: "space-between",
-  alignItems: "flex-start",
+  alignItems: "center",
 });
 
 const inputLabelStyles: CSSObject = {
@@ -117,6 +117,9 @@ export const getTextInputStyles = ({
       cursor: "default",
     },
     fontStyle: user?.oauth_provider ? "italic" : "default",
+  },
+  error: {
+    marginLeft: `calc(${labelWidth} + ${labelMarginRight})`,
   },
 });
 
@@ -267,6 +270,9 @@ export const getPasswordTextInputStyles = ({
       cursor: "default",
       background: theme.colors.dark[7],
     },
+  },
+  error: {
+    marginLeft: `calc(${labelWidth} + ${labelMarginRight})`,
   },
 });
 
