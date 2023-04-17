@@ -1,8 +1,9 @@
-import { showNotification } from "@mantine/notifications";
+import { useMantineTheme } from "@mantine/core";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
+import { showSuccessNotification } from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
 import { SignInFormValues } from "../auth/types";
@@ -16,6 +17,7 @@ type Param = {
 export const useSignInMutation = ({ form, setDisableSubmit }: Param) => {
   const { setUser } = useAuth();
   const router = useRouter();
+  const theme = useMantineTheme();
 
   return useMutation((values: SignInFormValues) => attemptSignIn(values), {
     onSuccess: (userData) => {
@@ -25,10 +27,10 @@ export const useSignInMutation = ({ form, setDisableSubmit }: Param) => {
       router.push("/");
 
       // TODO: check if verified, etc.
-      showNotification({
-        color: "lime",
-        title: "Success!",
-        message: "Welcome back",
+      showSuccessNotification({
+        theme,
+        title: "Success",
+        message: "Welcome back!",
       });
     },
     onError: (e: AxiosError<{ message: string }>) => {
