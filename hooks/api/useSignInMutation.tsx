@@ -8,6 +8,7 @@ import {
   showInfoNotification,
   showSomethingWentWrongNotification,
   showSuccessNotification,
+  showVerifyAccountNotification,
 } from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
@@ -36,11 +37,7 @@ export const useSignInMutation = ({ setDisableSubmit }: Param) => {
           message: "Welcome back!",
         });
       } else {
-        showInfoNotification({
-          theme,
-          title: "Verify Account",
-          message: `Please verify your account with the email sent to ${userData?.email}`,
-        });
+        showVerifyAccountNotification({ theme, user: userData });
       }
     },
     onError: (e: AxiosError<{ message: string }>) => {

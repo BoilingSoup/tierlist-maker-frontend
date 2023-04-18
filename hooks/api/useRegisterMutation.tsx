@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
 import {
-  showInfoNotification,
   showSomethingWentWrongNotification,
+  showVerifyAccountNotification,
 } from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
@@ -29,11 +29,7 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
 
       router.push("/");
 
-      showInfoNotification({
-        theme,
-        title: "Verify Account",
-        message: `Please verify your account with the email sent to ${userData?.email}`,
-      });
+      showVerifyAccountNotification({ theme, user: userData });
     },
     onError: (e: AxiosError<{ message: string }>) => {
       const errorReceived = e.response?.data.message;
