@@ -1,7 +1,7 @@
-import { Box, Button, Flex, Loader } from "@mantine/core";
+import { Box, Button, Checkbox, Flex, Loader } from "@mantine/core";
 import { ChangeEventHandler, useState } from "react";
 import { useSignInMutation } from "../../hooks/api/useSignInMutation";
-import { SignInFormFields } from "../../hooks/auth/types";
+import { SignInFormFields, SignInFormValues } from "../../hooks/auth/types";
 import { useSignInForm } from "../../hooks/auth/useSignInForm";
 import { useSignInFormStore } from "../../hooks/store/useSignInFormStore";
 import {
@@ -33,11 +33,16 @@ export const SignInForm = () => {
       if (defaultOnChange) defaultOnChange(event);
     };
 
+  const rememberMe = useSignInFormStore((state) => state.rememberMe);
+  const setRememberMe = useSignInFormStore((state) => state.setRememberMe);
+
   return (
     <form
       aria-label="sign in form"
       style={formStyle}
-      onSubmit={form.onSubmit((values) => signIn(values))}
+      onSubmit={form.onSubmit(({ email, password }: SignInFormValues) =>
+        signIn({ email, password, remember: rememberMe })
+      )}
     >
       <Flex sx={formContentsContainerSx}>
         <Box sx={formControlSx}>
@@ -59,6 +64,13 @@ export const SignInForm = () => {
             styles={inputStyles}
             {...form.getInputProps("password")}
             onChange={onChangeHandler("password")}
+          />
+        </Box>
+        <Box sx={formControlSx}>
+          <Checkbox
+            label="Remember me"
+            defaultChecked={rememberMe}
+            onChange={(event) => setRememberMe(event.currentTarget.checked)}
           />
         </Box>
         <Box sx={formSubmitControlSx}>
