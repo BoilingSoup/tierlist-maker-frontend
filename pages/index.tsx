@@ -21,12 +21,6 @@ import { useViewportSize } from "@mantine/hooks";
 import { convertThemeBreakpointToPx } from "../components/common/helpers";
 import { RecentTierListGrid } from "../components/home/RecentTierListGrid";
 import { Footer } from "../components/common/Footer";
-import { useRouter } from "next/router";
-import {
-  NOTIFY_UNVERIFIED_QUERY_PARAM,
-  PARAM_VALUE_TRUE,
-} from "../components/common/constants";
-import { useShowVerifyAccountNotification } from "../components/common/hooks/useShowVerifyAccountNotification";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
@@ -52,11 +46,6 @@ const Home: NextPage = () => {
   const breakpoint = convertThemeBreakpointToPx(breakpoints.md);
 
   const { data, isError, error, isLoading } = useRecentTierList();
-
-  const router = useRouter();
-  const showVerifyNotification =
-    router.query[NOTIFY_UNVERIFIED_QUERY_PARAM] === PARAM_VALUE_TRUE;
-  useShowVerifyAccountNotification({ condition: showVerifyNotification });
 
   return (
     <>

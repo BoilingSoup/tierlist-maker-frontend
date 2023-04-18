@@ -5,20 +5,19 @@ import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
 import {
   showErrorNotification,
+  showInfoNotification,
   showSomethingWentWrongNotification,
   showSuccessNotification,
 } from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
 import { SignInFormValues } from "../auth/types";
-import { useSignInForm } from "../auth/useSignInForm";
 
 type Param = {
-  form: ReturnType<typeof useSignInForm>;
   setDisableSubmit: Dispatch<SetStateAction<boolean>>;
 };
 
-export const useSignInMutation = ({ form, setDisableSubmit }: Param) => {
+export const useSignInMutation = ({ setDisableSubmit }: Param) => {
   const { setUser } = useAuth();
   const router = useRouter();
   const theme = useMantineTheme();
@@ -30,12 +29,19 @@ export const useSignInMutation = ({ form, setDisableSubmit }: Param) => {
 
       router.push("/");
 
-      // TODO: check if verified, etc.
-      showSuccessNotification({
-        theme,
-        title: "Success",
-        message: "Welcome back!",
-      });
+      if (userData?.email_verified) {
+        showSuccessNotification({
+          theme,
+          title: "Success",
+          message: "Welcome back!",
+        });
+      } else {
+        showInfoNotification({
+          theme,
+          title: "Verify Account",
+          message: `Please verify your account with the email sent to ${userData?.email}`,
+        });
+      }
     },
     onError: (e: AxiosError<{ message: string }>) => {
       const errorReceived = e.response?.data.message;

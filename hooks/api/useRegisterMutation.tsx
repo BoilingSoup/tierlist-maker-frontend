@@ -4,10 +4,9 @@ import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
 import {
-  NOTIFY_UNVERIFIED_QUERY_PARAM,
-  PARAM_VALUE_TRUE,
-} from "../../components/common/constants";
-import { showSomethingWentWrongNotification } from "../../components/common/helpers";
+  showInfoNotification,
+  showSomethingWentWrongNotification,
+} from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
 import { RegisterFormValues } from "../auth/types";
@@ -28,10 +27,13 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
       setDisableSubmit(true);
       setUser(userData);
 
-      router.push(
-        `/?${NOTIFY_UNVERIFIED_QUERY_PARAM}=${PARAM_VALUE_TRUE}`,
-        "/"
-      );
+      router.push("/");
+
+      showInfoNotification({
+        theme,
+        title: "Verify Account",
+        message: `Please verify your account with the email sent to ${userData?.email}`,
+      });
     },
     onError: (e: AxiosError<{ message: string }>) => {
       const errorReceived = e.response?.data.message;
