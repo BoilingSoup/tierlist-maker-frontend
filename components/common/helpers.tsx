@@ -1,6 +1,10 @@
 import { MantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
+import {
+  IconAlertOctagon,
+  IconCheck,
+  IconInfoCircle,
+} from "@tabler/icons-react";
 import { getNotificationStyles } from "./styles";
 
 const emToPx = 16; // 1em === 16px
@@ -35,15 +39,17 @@ export const insertAtIndex = <T,>(arr: T[], data: T, index: number) => {
 /** arrayPush returns a copy of arr with the provided data inserted at the end of the array */
 export const append = <T,>(arr: T[], ...data: T[]) => [...arr, ...data];
 
+type Notification = {
+  theme: MantineTheme;
+  title: string;
+  message: string;
+};
+
 export const showErrorNotification = ({
   theme,
   title,
   message,
-}: {
-  theme: MantineTheme;
-  title: string;
-  message: string;
-}) =>
+}: Notification) =>
   showNotification({
     color: "red.9",
     title,
@@ -52,15 +58,20 @@ export const showErrorNotification = ({
     icon: <IconAlertOctagon />,
   });
 
+export const showInfoNotification = ({ theme, title, message }: Notification) =>
+  showNotification({
+    color: "blue.9",
+    title,
+    message,
+    styles: getNotificationStyles(theme.colors.blue[9]),
+    icon: <IconInfoCircle />,
+  });
+
 export const showSuccessNotification = ({
   theme,
   title,
   message,
-}: {
-  theme: MantineTheme;
-  title: string;
-  message: string;
-}) =>
+}: Notification) =>
   showNotification({
     color: "lime.9",
     title,
