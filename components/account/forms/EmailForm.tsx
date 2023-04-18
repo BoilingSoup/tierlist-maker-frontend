@@ -41,8 +41,10 @@ export const EmailForm = () => {
 
   const [active, { toggle, close }] = useDisclosure(false);
   const form = useEmailForm();
-  const { mutate: updateEmail, isLoading: isMutating } =
-    useEmailMutation(close);
+  const { mutate: updateEmail, isLoading: isMutating } = useEmailMutation({
+    close,
+    form,
+  });
 
   const resetAndToggle = () => {
     form.setValues({ email: user?.email as string });
@@ -88,7 +90,7 @@ export const EmailForm = () => {
                 </ActionIcon>
               </Tooltip>
               {isMutating ? (
-                <Loader size={loaderSize} mt={4} color="cyan" />
+                <Loader size={loaderSize} mt={3} color="cyan" />
               ) : (
                 <Tooltip label="Update">
                   <ActionIcon
