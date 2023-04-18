@@ -22,7 +22,7 @@ export const ChangePasswordForm = () => {
 
   const form = useChangePasswordForm();
   const { mutate: changePassword, isLoading: isMutating } =
-    useChangePasswordMutation(form.reset);
+    useChangePasswordMutation(form);
 
   return (
     <form onSubmit={form.onSubmit((values) => changePassword(values))}>
