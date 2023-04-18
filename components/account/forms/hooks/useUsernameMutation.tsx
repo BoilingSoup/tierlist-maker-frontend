@@ -1,11 +1,15 @@
 import { useMantineTheme } from "@mantine/core";
+import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 import {
   useAuth,
   UserDataServerResponse,
 } from "../../../../contexts/AuthProvider";
 import { apiClient } from "../../../../lib/apiClient";
-import { showSuccessNotification } from "../../../common/helpers";
+import {
+  showSomethingWentWrongNotification,
+  showSuccessNotification,
+} from "../../../common/helpers";
 import { UsernameFormValues } from "../types";
 
 export const useUsernameMutation = (closeForm: () => void) => {
@@ -25,7 +29,10 @@ export const useUsernameMutation = (closeForm: () => void) => {
           message: "Your username was changed.",
         });
       },
-      // TODO: onError show notification
+      onError: (e: AxiosError) => {
+        // NOTE: Should only fail if throttled or there's a network error.
+        showSomethingWentWrongNotification(theme);
+      },
     }
   );
 };
