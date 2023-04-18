@@ -5,6 +5,8 @@ type SignInFormStore = {
   values: SignInFormValues;
   update(data: SignInFormUpdate): void;
   reset(): void;
+  rememberMe: boolean;
+  setRememberMe(data: boolean): void;
 };
 
 type SignInFormUpdate = { input: SignInFormFields; value: string };
@@ -20,6 +22,14 @@ export const useSignInFormStore = create<SignInFormStore>((set) => ({
     set((state) => ({ values: { ...state.values, [input]: value } }));
   },
   reset: () => {
-    set((state) => ({ ...state, values: signInFormInitialValues }));
+    set((state) => ({
+      ...state,
+      values: signInFormInitialValues,
+      rememberMe: true,
+    }));
+  },
+  rememberMe: true,
+  setRememberMe: (rememberMe: boolean) => {
+    set((state) => ({ ...state, rememberMe }));
   },
 }));
