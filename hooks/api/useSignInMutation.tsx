@@ -5,6 +5,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
 import {
   showErrorNotification,
+  showSomethingWentWrongNotification,
   showSuccessNotification,
 } from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
@@ -51,6 +52,8 @@ export const useSignInMutation = ({ form, setDisableSubmit }: Param) => {
         });
         return;
       }
+
+      showSomethingWentWrongNotification(theme);
     },
   });
 };
