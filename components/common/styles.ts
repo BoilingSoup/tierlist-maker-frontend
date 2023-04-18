@@ -193,6 +193,9 @@ export const getNotificationStyles = (
   },
   closeButton: {
     color: "white",
+    ":hover": {
+      background: "none",
+    },
   },
   title: {
     color: "white",

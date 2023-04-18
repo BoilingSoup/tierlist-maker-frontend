@@ -1,6 +1,6 @@
 import { MantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
+import { IconAlertOctagon, IconCheck } from "@tabler/icons-react";
 import { getNotificationStyles } from "./styles";
 
 const emToPx = 16; // 1em === 16px
@@ -35,11 +35,21 @@ export const insertAtIndex = <T,>(arr: T[], data: T, index: number) => {
 /** arrayPush returns a copy of arr with the provided data inserted at the end of the array */
 export const append = <T,>(arr: T[], ...data: T[]) => [...arr, ...data];
 
-export const showSomethingWentWrongNotification = () =>
+export const showErrorNotification = ({
+  theme,
+  title,
+  message,
+}: {
+  theme: MantineTheme;
+  title: string;
+  message: string;
+}) =>
   showNotification({
-    color: "red",
-    title: "Error",
-    message: "Something went wrong.",
+    color: "red.9",
+    title,
+    message,
+    styles: getNotificationStyles(theme.colors.red[9]),
+    icon: <IconAlertOctagon />,
   });
 
 export const showSuccessNotification = ({
@@ -57,4 +67,11 @@ export const showSuccessNotification = ({
     message,
     styles: getNotificationStyles(theme.colors.lime[9]),
     icon: <IconCheck />,
+  });
+
+export const showSomethingWentWrongNotification = (theme: MantineTheme) =>
+  showErrorNotification({
+    theme,
+    title: "Error",
+    message: "Something went wrong.",
   });

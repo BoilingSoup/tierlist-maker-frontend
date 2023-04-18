@@ -38,7 +38,7 @@ export const useChangePasswordMutation = (
         }
 
         // NOTE: shouldn't reach here unless client is deliberately overriding client-side validation. Or network error.
-        showSomethingWentWrongNotification();
+        showSomethingWentWrongNotification(theme);
       },
     }
   );
