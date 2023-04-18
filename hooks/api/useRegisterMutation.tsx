@@ -1,9 +1,12 @@
 import { useMantineTheme } from "@mantine/core";
-import { showNotification } from "@mantine/notifications";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
+import {
+  NOTIFY_UNVERIFIED_QUERY_PARAM,
+  PARAM_VALUE_TRUE,
+} from "../../components/common/constants";
 import { showSomethingWentWrongNotification } from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
@@ -25,14 +28,10 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
       setDisableSubmit(true);
       setUser(userData);
 
-      router.push("/");
-
-      // TODO: replace with a Verify Email notification
-      showNotification({
-        color: "lime",
-        title: "Registered!",
-        message: "Your account was successfully created.",
-      });
+      router.push(
+        `/?${NOTIFY_UNVERIFIED_QUERY_PARAM}=${PARAM_VALUE_TRUE}`,
+        "/"
+      );
     },
     onError: (e: AxiosError<{ message: string }>) => {
       const errorReceived = e.response?.data.message;
