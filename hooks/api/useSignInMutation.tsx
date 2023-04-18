@@ -3,7 +3,10 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
-import { showSuccessNotification } from "../../components/common/helpers";
+import {
+  showErrorNotification,
+  showSuccessNotification,
+} from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
 import { SignInFormValues } from "../auth/types";
@@ -35,8 +38,19 @@ export const useSignInMutation = ({ form, setDisableSubmit }: Param) => {
     },
     onError: (e: AxiosError<{ message: string }>) => {
       const errorReceived = e.response?.data.message;
-      // TODO: set errors
-      console.log(errorReceived);
+      const invalidCredentialsErrMsg = new RegExp(/credentials do not match/i); // Full error: "These credentials do not match our records."
+
+      if (
+        errorReceived !== undefined &&
+        invalidCredentialsErrMsg.test(errorReceived)
+      ) {
+        showErrorNotification({
+          theme,
+          title: "Error",
+          message: "Invalid credentials.",
+        });
+        return;
+      }
     },
   });
 };

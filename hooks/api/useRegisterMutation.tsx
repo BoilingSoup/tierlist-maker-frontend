@@ -1,3 +1,4 @@
+import { useMantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
@@ -17,6 +18,7 @@ type Param = {
 export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
   const { setUser } = useAuth();
   const router = useRouter();
+  const theme = useMantineTheme();
 
   return useMutation((values: RegisterFormValues) => attemptRegister(values), {
     onSuccess: (userData) => {
@@ -44,7 +46,7 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
       }
 
       // NOTE: shouldn't reach here unless client is deliberately overriding client-side validation. Or network error.
-      showSomethingWentWrongNotification();
+      showSomethingWentWrongNotification(theme);
     },
   });
 };

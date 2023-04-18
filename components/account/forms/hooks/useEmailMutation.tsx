@@ -1,3 +1,4 @@
+import { useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
@@ -17,6 +18,7 @@ type Param = {
 
 export const useEmailMutation = ({ close: closeForm, form }: Param) => {
   const { setUser } = useAuth();
+  const theme = useMantineTheme();
 
   return useMutation(
     (payload: EmailFormValues) => attemptUpdateEmail(payload),
@@ -40,7 +42,7 @@ export const useEmailMutation = ({ close: closeForm, form }: Param) => {
         }
 
         // NOTE: shouldn't reach here unless client is deliberately overriding client-side validation. Or network error.
-        showSomethingWentWrongNotification();
+        showSomethingWentWrongNotification(theme);
       },
     }
   );
