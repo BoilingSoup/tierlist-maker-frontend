@@ -6,7 +6,10 @@ import {
   UserDataServerResponse,
 } from "../../../../contexts/AuthProvider";
 import { apiClient } from "../../../../lib/apiClient";
-import { showSomethingWentWrongNotification } from "../../../common/helpers";
+import {
+  showSomethingWentWrongNotification,
+  showVerifyAccountNotification,
+} from "../../../common/helpers";
 import { EmailFormValues } from "../types";
 import { useEmailForm } from "./useEmailForm";
 
@@ -26,8 +29,7 @@ export const useEmailMutation = ({ close: closeForm, form }: Param) => {
         setUser(userData);
 
         closeForm();
-        // TODO: show success notification
-        // TODO: show verification email sent notification
+        showVerifyAccountNotification({ theme, user: userData });
       },
       onError: (e: AxiosError<{ message: string }>) => {
         const errorReceived = e.response?.data.message;

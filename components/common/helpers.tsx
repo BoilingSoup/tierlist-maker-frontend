@@ -5,6 +5,7 @@ import {
   IconCheck,
   IconInfoCircle,
 } from "@tabler/icons-react";
+import { User } from "../../contexts/AuthProvider";
 import { getNotificationStyles } from "./styles";
 
 const emToPx = 16; // 1em === 16px
@@ -85,4 +86,17 @@ export const showSomethingWentWrongNotification = (theme: MantineTheme) =>
     theme,
     title: "Error",
     message: "Something went wrong.",
+  });
+
+export const showVerifyAccountNotification = ({
+  theme,
+  user,
+}: {
+  theme: MantineTheme;
+  user: User;
+}) =>
+  showInfoNotification({
+    theme,
+    title: "Verify Account",
+    message: `Please verify your account with the email sent to ${user?.email}`,
   });
