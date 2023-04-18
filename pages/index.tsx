@@ -18,9 +18,15 @@ import Link from "next/link";
 import { RecentTierListCarousel } from "../components/home/RecentTierListCarousel";
 import { useRecentTierList } from "../hooks/api/useRecentTierList";
 import { useViewportSize } from "@mantine/hooks";
-import { convertThemeBreakpointToPx } from "../components/common/helpers";
+import {
+  convertThemeBreakpointToPx,
+  showSuccessNotification,
+} from "../components/common/helpers";
 import { RecentTierListGrid } from "../components/home/RecentTierListGrid";
 import { Footer } from "../components/common/Footer";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useShowAccountVerifiedNotification } from "../components/home/hooks/useShowAccountVerifiedNotification";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
@@ -42,10 +48,12 @@ const tbd = (): CSSObject => ({
 
 const Home: NextPage = () => {
   const { width } = useViewportSize();
-  const { breakpoints } = useMantineTheme();
-  const breakpoint = convertThemeBreakpointToPx(breakpoints.md);
+  const theme = useMantineTheme();
+  const breakpoint = convertThemeBreakpointToPx(theme.breakpoints.md);
 
   const { data, isError, error, isLoading } = useRecentTierList();
+
+  useShowAccountVerifiedNotification(theme);
 
   return (
     <>
