@@ -34,21 +34,12 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
     },
     onError: (e: AxiosError<{ message: string }>) => {
       const errorReceived = e.response?.data.message;
-      const emailDuplicateErrMsg = new RegExp(/email already/i); // Full error: "A user with this email already exists."
+      const emailDuplicateErrMsg = new RegExp(/email is already/i); // Full error: "This email is already in use."
       if (
         errorReceived !== undefined &&
         emailDuplicateErrMsg.test(errorReceived)
       ) {
         form.setErrors({ email: errorReceived });
-        return;
-      }
-
-      const usernameDuplicateErrMsg = new RegExp(/username has already/i); // Full error: "This username has already been taken."
-      if (
-        errorReceived !== undefined &&
-        usernameDuplicateErrMsg.test(errorReceived)
-      ) {
-        form.setErrors({ username: errorReceived });
         return;
       }
 

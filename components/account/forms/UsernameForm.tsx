@@ -92,7 +92,7 @@ export const UsernameForm = () => {
               </ActionIcon>
             </Tooltip>
             {isMutating ? (
-              <Loader size={loaderSize} mt={4} color="cyan" />
+              <Loader size={loaderSize} mt={3} color="cyan" />
             ) : (
               <Tooltip label="Update">
                 <ActionIcon
