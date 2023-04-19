@@ -31,9 +31,11 @@ const ForgotPassword: NextPage = () => {
           height: "clamp(350px, 35%, 420px)",
         }}
       >
-        <Title sx={authTitleSx}>Forgot Password</Title>
+        <Center sx={{ height: "40%" }}>
+          <Title sx={authTitleSx}>Forgot Password</Title>
+        </Center>
         <form
-          style={{ ...formStyle, margin: "auto" }}
+          style={{ ...formStyle, marginTop: "0", height: "60%" }}
           onSubmit={form.onSubmit((values) => sendPasswordResetLink(values))}
         >
           <Box sx={formControlSx}>
