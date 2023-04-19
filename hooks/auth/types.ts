@@ -12,3 +12,12 @@ export type ForgotPasswordFormFields = "email";
 export type ForgotPasswordFormValues = {
   email: string;
 };
+
+export type PasswordResetFormFields = "password" | "password_confirmation";
+
+export type PasswordResetFormValues = Record<PasswordResetFormFields, string>;
+
+export type PasswordResetPayload = PasswordResetFormValues & {
+  token: string;
+  email: string;
+};
