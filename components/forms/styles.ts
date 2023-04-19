@@ -45,6 +45,12 @@ export const authTitleSx = ({ colors }: MantineTheme): CSSObject => ({
   margin: "30px 0 20px 0",
 });
 
+export const forgotPasswordTitleSx = ({ colors }: MantineTheme): CSSObject => ({
+  color: colors.dark[4],
+  fontSize: `clamp(2rem, 6vw, 2.5rem)`,
+  height: "33%",
+});
+
 export const FORM_WIDTH = "72%";
 
 export const formStyle: React.CSSProperties = {
