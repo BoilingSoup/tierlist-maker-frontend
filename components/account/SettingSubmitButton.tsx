@@ -3,6 +3,7 @@ import { settingSkeletonSx } from "./styles";
 
 type Props = {
   skeleton: boolean;
+  onClick?(): void;
 } & ButtonProps &
   Required<Pick<ButtonProps, "w" | "h">>; // h & w props are required (so a skeleton can be rendered while loading)
 
