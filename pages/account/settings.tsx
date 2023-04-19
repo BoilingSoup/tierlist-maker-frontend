@@ -3,6 +3,7 @@ import {
   Container,
   Divider,
   Flex,
+  Loader,
   Skeleton,
   Stack,
   Text,
@@ -14,6 +15,7 @@ import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { ChangePasswordForm } from "../../components/account/forms/ChangePasswordForm";
 import { EmailForm } from "../../components/account/forms/EmailForm";
+import { useResendVerificationEmail } from "../../components/account/forms/hooks/useResendVerificationEmail";
 import { UsernameForm } from "../../components/account/forms/UsernameForm";
 import { SettingContainer } from "../../components/account/SettingContainer";
 import { SettingSubmitButton } from "../../components/account/SettingSubmitButton";
@@ -29,6 +31,7 @@ import {
   getAccountSettingsAccordionStyles,
   settingSkeletonSx,
   accordionCollapsedHeight,
+  loaderSize,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -45,6 +48,9 @@ const Settings: NextPage = () => {
   const [activeAccordionPanel, setActiveAccordionPanel] = useState<string[]>(
     []
   );
+
+  const { mutate: resendVerification, isLoading: isMutating } =
+    useResendVerificationEmail();
 
   return (
     <AccountNavShell>
@@ -68,17 +74,22 @@ const Settings: NextPage = () => {
               h={compactButtonHeight}
               w={getEmailVerificationButtonWidth({ user, isLoading })}
               sx={getEmailVerificationButtonSx({ user, isLoading })}
-              disabled={userIsLoaded && user.email_verified}
+              disabled={(userIsLoaded && user.email_verified) || isMutating}
+              onClick={resendVerification}
             >
-              {userIsLoaded && user.email_verified ? (
+              {userIsLoaded && user.email_verified && (
                 <Flex sx={emailVerifiedButtonContentsSx}>
                   <IconCheck size={verifiedCheckSize} />
                   <Text span ml="1ch">
                     verified
                   </Text>
                 </Flex>
-              ) : (
-                "Resend Verification Email"
+              )}
+              {userIsLoaded && !user.email_verified && !isMutating && (
+                <Text span>Resend Verification Email</Text>
+              )}
+              {userIsLoaded && !user.email_verified && isMutating && (
+                <Loader size="xs" color="cyan" />
               )}
             </SettingSubmitButton>
           </SettingContainer>
