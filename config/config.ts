@@ -5,7 +5,7 @@ export const LOGO_IMG = "/trollol.png";
 export const SITE_NAME = "tierlist.lol";
 
 /** API endpoint */
-export const BASE_URL = "http://localhost";
+export const BASE_URL = "http://localhost:8080";
 const API_VERSION = "v1";
 export const BASE_API = process.env.BASE_API || `${BASE_URL}/${API_VERSION}`;
 
@@ -14,11 +14,11 @@ export const THUMBNAIL_WIDTH = 600;
 export const THUMBNAIL_HEIGHT = 420;
 
 /** OAuth redirect links */
-export const OAUTH_GITHUB_REDIRECT = "http://localhost/github/redirect";
-export const OAUTH_GITLAB_REDIRECT = "http://localhost/gitlab/redirect";
-export const OAUTH_GOOGLE_REDIRECT = "http://localhost/google/redirect";
-export const OAUTH_REDDIT_REDIRECT = "http://localhost/reddit/redirect";
-export const OAUTH_DISCORD_REDIRECT = "http://localhost/discord/redirect";
+export const OAUTH_GITHUB_REDIRECT = BASE_URL + "/github/redirect";
+export const OAUTH_GITLAB_REDIRECT = BASE_URL + "/gitlab/redirect";
+export const OAUTH_GOOGLE_REDIRECT = BASE_URL + "/google/redirect";
+export const OAUTH_REDDIT_REDIRECT = BASE_URL + "/reddit/redirect";
+export const OAUTH_DISCORD_REDIRECT = BASE_URL + "/discord/redirect";
 
 export type OAuthHref =
   | typeof OAUTH_GITHUB_REDIRECT

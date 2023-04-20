@@ -1,4 +1,5 @@
 import { rest } from "msw";
+import { BASE_URL } from "../config/config";
 import { User } from "../contexts/AuthProvider";
 
 const mockUser: User = {
@@ -11,13 +12,13 @@ const mockUser: User = {
 };
 
 export const handlers = [
-  rest.post("/login", (_, res, ctx) => {
+  rest.post(BASE_URL + "/login", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json<User>(mockUser));
   }),
-  rest.get("/v1/user", (_, res, ctx) => {
+  rest.get(BASE_URL + "/v1/user", (_, res, ctx) => {
     return res(ctx.status(200), ctx.json<User>(mockUser));
   }),
-  rest.get("/sanctum/csrf-cookie", (_, res, ctx) => {
+  rest.get(BASE_URL + "/sanctum/csrf-cookie", (_, res, ctx) => {
     return res(ctx.status(204));
   }),
 ];
