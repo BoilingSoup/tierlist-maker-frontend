@@ -31,7 +31,6 @@ import {
   getAccountSettingsAccordionStyles,
   settingSkeletonSx,
   accordionCollapsedHeight,
-  loaderSize,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
