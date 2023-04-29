@@ -10,8 +10,13 @@ import { FormPageBackground } from "../../components/forms/FormPageBackground";
 import { FormTabs } from "../../components/forms/FormTabs";
 import { SignInForm } from "../../components/forms/SignInForm";
 import { OAuthIconsGroup } from "../../components/forms/OAuthIconsGroup";
+import { useAuth } from "../../contexts/AuthProvider";
+import { useRedirectIfAuthenticated } from "../../components/common/hooks/useRedirectIfAuthenticated";
 
 const SignIn: NextPage = () => {
+  const { user, isLoading } = useAuth();
+  useRedirectIfAuthenticated({ user, isLoading, redirectTo: "/" });
+
   return (
     <Center sx={formPageContainerSx}>
       <FormPageBackground />

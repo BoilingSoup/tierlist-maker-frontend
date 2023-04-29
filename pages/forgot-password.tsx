@@ -1,5 +1,6 @@
 import { Box, Button, Center, Flex, Loader, Title } from "@mantine/core";
 import { NextPage } from "next";
+import { useRedirectIfAuthenticated } from "../components/common/hooks/useRedirectIfAuthenticated";
 import { FancyInput } from "../components/forms/FancyInput";
 import { FormPageBackground } from "../components/forms/FormPageBackground";
 import {
@@ -14,10 +15,14 @@ import {
   formSubmitSx,
   inputStyles,
 } from "../components/forms/styles";
+import { useAuth } from "../contexts/AuthProvider";
 import { useSendPasswordResetLinkMutation } from "../hooks/api/useSendPasswordResetLinkMuation";
 import { useForgotPasswordForm } from "../hooks/auth/useForgotPasswordForm";
 
 const ForgotPassword: NextPage = () => {
+  const { user, isLoading } = useAuth();
+  useRedirectIfAuthenticated({ user, isLoading, redirectTo: "/" });
+
   const form = useForgotPasswordForm({ enableFloatingLabel: true });
   const { mutate: sendPasswordResetLink, isLoading: isMutating } =
     useSendPasswordResetLinkMutation(form);
