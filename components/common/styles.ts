@@ -158,6 +158,7 @@ export const mobileNavLinkSx = (): CSSObject => ({
   color: "white",
   height: "70px",
   fontSize: "1.2rem",
+  lineHeight: 1.55, // makes <a> and <button> consistent by explicitly defining and avoiding browser defaults.
   textDecoration: "none",
   ":hover": {
     ...mobileNavLinkPseudoStyles,
@@ -171,6 +172,14 @@ export const mobileNavLinkSx = (): CSSObject => ({
   ":focus-visible": {
     ...mobileNavLinkPseudoStyles,
   },
+});
+
+export const mobileSignOutButtonSx = (): CSSObject => ({
+  width: "inherit",
+  background: "none",
+  border: "none",
+  cursor: "pointer",
+  ...mobileNavLinkSx(),
 });
 
 const currentMobileNavLinkSx = (): CSSObject => ({
