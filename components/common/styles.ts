@@ -217,3 +217,19 @@ export const getNotificationStyles = (
     color: "white",
   },
 });
+
+export const text404Sx = ({ colors }: MantineTheme): CSSObject => ({
+  color: colors.dark[0],
+  fontSize: "3rem",
+  textAlign: "center",
+});
+
+export const container404Content = (): CSSObject => ({
+  justifyContent: "center",
+});
+
+export const page404Sx = ({ colors }: MantineTheme): CSSObject => ({
+  background: `radial-gradient(ellipse at top, ${colors.dark[4]}, ${colors.dark[9]})`,
+  width: "100%",
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+});

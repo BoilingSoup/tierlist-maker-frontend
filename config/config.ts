@@ -1,6 +1,9 @@
 /** logo image src path */
 export const LOGO_IMG = "/trollol.png";
 
+/** 404 image src path */
+export const ERROR_404_IMG = "/404.png";
+
 /** site name to be displayed in document.title */
 export const SITE_NAME = "tierlist.lol";
 
