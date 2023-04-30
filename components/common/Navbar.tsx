@@ -45,7 +45,7 @@ export const Navbar = () => {
           href="/"
         />
         <Group>
-          <MediaQuery styles={displayNone} largerThan="sm">
+          <MediaQuery styles={displayNone} largerThan="md">
             <Burger
               color="white"
               opened={opened}
@@ -53,7 +53,7 @@ export const Navbar = () => {
               aria-label={label}
             />
           </MediaQuery>
-          <MediaQuery styles={displayNone} smallerThan="sm">
+          <MediaQuery styles={displayNone} smallerThan="md">
             <DesktopNavLinksGroup />
           </MediaQuery>
         </Group>
