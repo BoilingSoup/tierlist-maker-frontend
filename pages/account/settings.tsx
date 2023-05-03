@@ -124,12 +124,6 @@ const Settings: NextPage = () => {
           </Accordion>
         )}
       </Container>
-
-      {/* {userIsLoaded && ( */}
-      {/*   <Text color="white" align="center" weight={"bold"} mt="xl"> */}
-      {/*     {JSON.stringify(user)} */}
-      {/*   </Text> */}
-      {/* )} */}
     </AccountNavShell>
   );
 };
