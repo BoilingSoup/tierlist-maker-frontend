@@ -60,10 +60,9 @@ export const accountNavLinkStyles: Styles<
   },
 };
 
-export const mainContentContainerSx: CSSObject = {
-  width: "80%",
+export const mainContentContainerSx = (): CSSObject => ({
   overflowY: "auto",
-};
+});
 
 export const accountSettingsTitleSx = (): CSSObject => ({
   fontSize: "2rem",
