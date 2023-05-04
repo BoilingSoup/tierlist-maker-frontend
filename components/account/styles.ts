@@ -16,10 +16,14 @@ const getAccountNavShellBorder = (colors: MantineTheme["colors"]) =>
   `1px solid ${colors.dark[4]}`;
 
 export const mainContainerSx = ({ colors }: MantineTheme): CSSObject => ({
+  flexDirection: "column",
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   width: "100%",
   background: colors.dark[7],
   borderTop: getAccountNavShellBorder(colors),
+  "@media (min-width: 62em)": {
+    flexDirection: "row",
+  },
 });
 
 export const accountSideNavSx = ({ colors }: MantineTheme): CSSObject => ({
@@ -61,7 +65,11 @@ export const accountNavLinkStyles: Styles<
 };
 
 export const mainContentContainerSx = (): CSSObject => ({
+  width: "100%",
   overflowY: "auto",
+  "@media (min-width: 62em)": {
+    width: "80%",
+  },
 });
 
 export const accountSettingsTitleSx = (): CSSObject => ({
