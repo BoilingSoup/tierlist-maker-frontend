@@ -1,5 +1,12 @@
-import { Box, Flex, NavLink, Tabs, useMantineTheme } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import {
+  Box,
+  Divider,
+  Flex,
+  MediaQuery,
+  NavLink,
+  Tabs,
+  useMantineTheme,
+} from "@mantine/core";
 import {
   IconActivity,
   IconPencil,
@@ -9,6 +16,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
+import { displayNone } from "../common/styles";
 import { RemSize } from "../tierlist/types";
 import {
   accountNavLinkStyles,
@@ -20,23 +28,20 @@ import {
 
 const iconSize: RemSize = "1.2rem";
 const iconStroke: number = 2;
+const MY_TIER_LISTS_LABEL_TEXT = "My Tier Lists";
+const ACCOUNT_SETTINGS_LABEL_TEXT = "Account Settings";
 
 type Props = {
   children: ReactNode;
 };
 
-const MY_TIER_LISTS_LABEL_TEXT = "My Tier Lists";
-const ACCOUNT_SETTINGS_LABEL_TEXT = "Account Settings";
-
 export const AccountNavShell = ({ children }: Props) => {
   const router = useRouter();
-
   const theme = useMantineTheme();
-  const largeScreen = useMediaQuery("(min-width: 62em)");
 
   return (
-    <Flex sx={mainContainerSx} direction={largeScreen ? "row" : "column"}>
-      {largeScreen ? (
+    <Flex sx={mainContainerSx}>
+      <MediaQuery styles={displayNone} smallerThan="md">
         <Flex sx={accountSideNavSx}>
           <NavLink
             label={MY_TIER_LISTS_LABEL_TEXT}
@@ -57,36 +62,52 @@ export const AccountNavShell = ({ children }: Props) => {
             active={router.pathname === "/account/settings"}
           />
         </Flex>
-      ) : (
-        <Tabs
-          // mx="auto"
-          value={router.pathname}
-          onTabChange={(value) => router.push(`${value}`)}
-          styles={{
-            tab: {
-              color: theme.colors.dark[3],
-            },
-          }}
-        >
-          <Tabs.List>
-            <Tabs.Tab
-              value={"/account/tierlists"}
-              icon={<IconUserPlus size="0.8rem" />}
-            >
-              {MY_TIER_LISTS_LABEL_TEXT}
-            </Tabs.Tab>
-            <Tabs.Tab
-              value={"/account/settings"}
-              icon={<IconPencil size="0.8rem" />}
-            >
-              {ACCOUNT_SETTINGS_LABEL_TEXT}
-            </Tabs.Tab>
-          </Tabs.List>
-        </Tabs>
-      )}
-      <Box sx={mainContentContainerSx} w={largeScreen ? "80%" : "100%"}>
-        {children}
-      </Box>
+      </MediaQuery>
+      <MediaQuery styles={displayNone} largerThan="md">
+        <Box mx="auto" mt="xl">
+          <Tabs
+            variant="outline"
+            value={router.pathname}
+            onTabChange={(value) => router.push(`${value}`)}
+            styles={{
+              tabsList: {
+                border: "none",
+              },
+              tab: {
+                color: theme.colors.dark[0],
+                "&[data-active]": {
+                  color: theme.colors.cyan[2],
+                  border: `1px solid ${theme.colors.cyan[2]}`,
+                  borderBottom: "none",
+                  "::before": {
+                    background: "none",
+                  },
+                },
+                ":hover": {
+                  background: "none",
+                },
+              },
+            }}
+          >
+            <Tabs.List>
+              <Tabs.Tab
+                value={"/account/tierlists"}
+                icon={<IconUserPlus size="0.8rem" />}
+              >
+                {MY_TIER_LISTS_LABEL_TEXT}
+              </Tabs.Tab>
+              <Tabs.Tab
+                value={"/account/settings"}
+                icon={<IconPencil size="0.8rem" />}
+              >
+                {ACCOUNT_SETTINGS_LABEL_TEXT}
+              </Tabs.Tab>
+            </Tabs.List>
+          </Tabs>
+          <Divider color="dark.3" />
+        </Box>
+      </MediaQuery>
+      <Box sx={mainContentContainerSx}>{children}</Box>
     </Flex>
   );
 };
