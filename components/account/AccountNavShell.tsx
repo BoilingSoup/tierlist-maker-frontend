@@ -1,6 +1,11 @@
-import { Box, Flex, NavLink } from "@mantine/core";
+import { Box, Flex, NavLink, Tabs, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { IconActivity, IconSettings } from "@tabler/icons-react";
+import {
+  IconActivity,
+  IconPencil,
+  IconSettings,
+  IconUserPlus,
+} from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
@@ -20,33 +25,64 @@ type Props = {
   children: ReactNode;
 };
 
+const MY_TIER_LISTS_LABEL_TEXT = "My Tier Lists";
+const ACCOUNT_SETTINGS_LABEL_TEXT = "Account Settings";
+
 export const AccountNavShell = ({ children }: Props) => {
-  const { pathname } = useRouter();
+  const router = useRouter();
+
+  const theme = useMantineTheme();
   const largeScreen = useMediaQuery("(min-width: 62em)");
 
   return (
-    <Flex sx={mainContainerSx}>
-      {largeScreen && (
+    <Flex sx={mainContainerSx} direction={largeScreen ? "row" : "column"}>
+      {largeScreen ? (
         <Flex sx={accountSideNavSx}>
           <NavLink
-            label="My Tier Lists"
+            label={MY_TIER_LISTS_LABEL_TEXT}
             component={Link}
             href="/account/tierlists"
             sx={accountNavLinkSx}
             styles={accountNavLinkStyles}
             icon={<IconActivity size={iconSize} stroke={iconStroke} />}
-            active={pathname === "/account/tierlists"}
+            active={router.pathname === "/account/tierlists"}
           />
           <NavLink
-            label="Account Settings"
+            label={ACCOUNT_SETTINGS_LABEL_TEXT}
             component={Link}
             href="/account/settings"
             sx={accountNavLinkSx}
             styles={accountNavLinkStyles}
             icon={<IconSettings size={iconSize} stroke={iconStroke} />}
-            active={pathname === "/account/settings"}
+            active={router.pathname === "/account/settings"}
           />
         </Flex>
+      ) : (
+        <Tabs
+          // mx="auto"
+          value={router.pathname}
+          onTabChange={(value) => router.push(`${value}`)}
+          styles={{
+            tab: {
+              color: theme.colors.dark[3],
+            },
+          }}
+        >
+          <Tabs.List>
+            <Tabs.Tab
+              value={"/account/tierlists"}
+              icon={<IconUserPlus size="0.8rem" />}
+            >
+              {MY_TIER_LISTS_LABEL_TEXT}
+            </Tabs.Tab>
+            <Tabs.Tab
+              value={"/account/settings"}
+              icon={<IconPencil size="0.8rem" />}
+            >
+              {ACCOUNT_SETTINGS_LABEL_TEXT}
+            </Tabs.Tab>
+          </Tabs.List>
+        </Tabs>
       )}
       <Box sx={mainContentContainerSx} w={largeScreen ? "80%" : "100%"}>
         {children}
