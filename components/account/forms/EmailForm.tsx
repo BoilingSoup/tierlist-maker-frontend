@@ -66,46 +66,48 @@ export const EmailForm = () => {
             />
           </FocusTrap>
           {isLoading && <SettingSkeleton />}
-          {userIsLoaded && editable && !active && (
-            <Tooltip label="Edit">
-              <ActionIcon sx={settingEditIconSx} onClick={toggle}>
-                <IconPencil />
-              </ActionIcon>
-            </Tooltip>
-          )}
-          {userIsLoaded && !editable && (
-            <ActionIcon sx={disabledSettingEditIconSx} disabled>
-              <IconPencilOff />
-            </ActionIcon>
-          )}
-          {userIsLoaded && active && (
-            <>
-              <Tooltip label="Cancel">
-                <ActionIcon
-                  sx={settingEditIconSx}
-                  onClick={resetAndToggle}
-                  disabled={isMutating}
-                >
-                  <IconX />
+          <Flex>
+            {userIsLoaded && editable && !active && (
+              <Tooltip label="Edit">
+                <ActionIcon sx={settingEditIconSx} onClick={toggle}>
+                  <IconPencil />
                 </ActionIcon>
               </Tooltip>
-              {isMutating ? (
-                <Loader size={loaderSize} mt={3} color="cyan" />
-              ) : (
-                <Tooltip label="Update">
+            )}
+            {userIsLoaded && !editable && (
+              <ActionIcon sx={disabledSettingEditIconSx} disabled>
+                <IconPencilOff />
+              </ActionIcon>
+            )}
+            {userIsLoaded && active && (
+              <>
+                <Tooltip label="Cancel">
                   <ActionIcon
                     sx={settingEditIconSx}
-                    type="submit"
-                    disabled={
-                      !form.isValid() || form.values.email === user?.email
-                    }
+                    onClick={resetAndToggle}
+                    disabled={isMutating}
                   >
-                    <IconCheck />
+                    <IconX />
                   </ActionIcon>
                 </Tooltip>
-              )}
-            </>
-          )}
+                {isMutating ? (
+                  <Loader size={loaderSize} mt={3} color="cyan" />
+                ) : (
+                  <Tooltip label="Update">
+                    <ActionIcon
+                      sx={settingEditIconSx}
+                      type="submit"
+                      disabled={
+                        !form.isValid() || form.values.email === user?.email
+                      }
+                    >
+                      <IconCheck />
+                    </ActionIcon>
+                  </Tooltip>
+                )}
+              </>
+            )}
+          </Flex>
         </Flex>
       </form>
       <Transition
