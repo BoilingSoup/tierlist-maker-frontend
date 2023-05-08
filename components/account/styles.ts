@@ -81,8 +81,14 @@ export const accountSettingsTitleSx = (): CSSObject => ({
 export const settingDividerColor: DefaultMantineColor = "dark.4";
 
 const settingContainerWidth: PxSize = "500px";
-const labelWidth: PxSize = "200px";
+const labelWidthLg: PxSize = "200px";
 const labelMarginRight: RemSize = "3rem";
+
+const labelStylesSm = {
+  width: "100px",
+  marginRight: "1rem",
+  fontSize: "0.8rem",
+};
 
 export const accountSettingContainerSx = (): CSSObject => ({
   justifyContent: "space-between",
@@ -92,9 +98,10 @@ export const accountSettingContainerSx = (): CSSObject => ({
 const inputLabelStyles: CSSObject = {
   color: "white",
   display: "inline-block",
-  width: labelWidth,
+  width: labelWidthLg,
   fontSize: "1rem",
   marginRight: labelMarginRight,
+  "@media(max-width: 590px)": labelStylesSm,
 };
 
 const inputWrapperStyles = {
@@ -126,7 +133,11 @@ export const getTextInputStyles = ({
     fontStyle: user?.oauth_provider ? "italic" : "default",
   },
   error: {
-    marginLeft: `calc(${labelWidth} + ${labelMarginRight})`,
+    marginLeft: `calc(${labelWidthLg} + ${labelMarginRight})`,
+  },
+  root: {
+    display: "flex",
+    alignItems: "center",
   },
 });
 
@@ -252,6 +263,9 @@ export const getAccountSettingsAccordionStyles = (
   panel: {
     color: "white",
   },
+  content: {
+    padding: 0,
+  },
 });
 
 export const passwordInputContainerSx = (): CSSObject => ({
@@ -266,7 +280,7 @@ export const getPasswordTextInputStyles = ({
   label: inputLabelStyles,
   wrapper: {
     ...inputWrapperStyles,
-    width: `calc(${settingContainerWidth} - ${labelWidth} - ${labelMarginRight})`,
+    width: `calc(${settingContainerWidth} - ${labelWidthLg} - ${labelMarginRight})`,
   },
   input: {
     // display: isLoading ? "none" : "default",
@@ -279,13 +293,16 @@ export const getPasswordTextInputStyles = ({
     },
   },
   error: {
-    marginLeft: `calc(${labelWidth} + ${labelMarginRight})`,
+    marginLeft: `calc(${labelWidthLg} + ${labelMarginRight})`,
+    "@media (max-width: 590px)": {
+      marginLeft: `calc(${labelStylesSm.width} + ${labelStylesSm.marginRight})`,
+    },
   },
 });
 
 export const changePasswordButtonWidth: PxSize = "140px";
 
-export const passwordInputSkeletonWidth: CalcSize = `calc(${settingContainerWidth} - ${labelWidth} - ${labelMarginRight})`;
+export const passwordInputSkeletonWidth: CalcSize = `calc(${settingContainerWidth} - ${labelWidthLg} - ${labelMarginRight})`;
 
 export const inputHeight: PxSize = "36px";
 
