@@ -10,13 +10,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconCheck,
-  IconExclamationCircle,
-  IconPencil,
-  IconPencilOff,
-  IconX,
-} from "@tabler/icons-react";
+import { IconCheck, IconExclamationCircle, IconPencil, IconPencilOff, IconX } from "@tabler/icons-react";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { getInputPlaceholder } from "../helpers";
 import { SettingSkeleton } from "../SettingSkeleton";
@@ -24,6 +18,7 @@ import {
   accountSettingContainerSx,
   changeEmailWarningSx,
   disabledSettingEditIconSx,
+  emailWarnTextSx,
   getTextInputStyles,
   loaderSize,
   settingEditIconSx,
@@ -36,8 +31,7 @@ export const EmailForm = () => {
 
   const { user, isLoading } = useAuth();
   const userIsLoaded = !isLoading && user !== null;
-  const editable =
-    userIsLoaded && user.email_verified && user.oauth_provider === null;
+  const editable = userIsLoaded && user.email_verified && user.oauth_provider === null;
 
   const [active, { toggle, close }] = useDisclosure(false);
   const form = useEmailForm();
@@ -82,11 +76,7 @@ export const EmailForm = () => {
             {userIsLoaded && active && (
               <>
                 <Tooltip label="Cancel">
-                  <ActionIcon
-                    sx={settingEditIconSx}
-                    onClick={resetAndToggle}
-                    disabled={isMutating}
-                  >
+                  <ActionIcon sx={settingEditIconSx} onClick={resetAndToggle} disabled={isMutating}>
                     <IconX />
                   </ActionIcon>
                 </Tooltip>
@@ -97,9 +87,7 @@ export const EmailForm = () => {
                     <ActionIcon
                       sx={settingEditIconSx}
                       type="submit"
-                      disabled={
-                        !form.isValid() || form.values.email === user?.email
-                      }
+                      disabled={!form.isValid() || form.values.email === user?.email}
                     >
                       <IconCheck />
                     </ActionIcon>
@@ -110,16 +98,11 @@ export const EmailForm = () => {
           </Flex>
         </Flex>
       </form>
-      <Transition
-        mounted={active}
-        transition="slide-down"
-        duration={100}
-        timingFunction="ease"
-      >
+      <Transition mounted={active} transition="slide-down" duration={100} timingFunction="ease">
         {(style) => (
           <Flex style={style} sx={changeEmailWarningSx}>
             <IconExclamationCircle size={16} />
-            <Text span ml="1ch" size="sm">
+            <Text span ml="1ch" sx={emailWarnTextSx}>
               You will need to verify your email again if you change it.
             </Text>
           </Flex>
