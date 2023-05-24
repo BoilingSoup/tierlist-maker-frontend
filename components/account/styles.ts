@@ -12,8 +12,7 @@ import { User } from "../../contexts/AuthProvider";
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { CalcSize, PxSize, RemSize } from "../tierlist/types";
 
-const getAccountNavShellBorder = (colors: MantineTheme["colors"]) =>
-  `1px solid ${colors.dark[4]}`;
+const getAccountNavShellBorder = (colors: MantineTheme["colors"]) => `1px solid ${colors.dark[4]}`;
 
 export const mainContainerSx = ({ colors }: MantineTheme): CSSObject => ({
   flexDirection: "column",
@@ -50,13 +49,7 @@ export const accountNavLinkSx = ({ colors }: MantineTheme): CSSObject => ({
 });
 
 export const accountNavLinkStyles: Styles<
-  | "children"
-  | "body"
-  | "label"
-  | "root"
-  | "icon"
-  | "rightSection"
-  | "description",
+  "children" | "body" | "label" | "root" | "icon" | "rightSection" | "description",
   NavLinkStylesParams
 > = {
   label: {
@@ -76,6 +69,9 @@ export const accountSettingsTitleSx = (): CSSObject => ({
   fontSize: "2rem",
   textAlign: "center",
   color: "white",
+  [`@media (max-width: ${XXXXS_BREAKPOINT})`]: {
+    fontSize: "1.6rem",
+  },
 });
 
 export const settingDividerColor: DefaultMantineColor = "dark.4";
@@ -84,10 +80,54 @@ const settingContainerWidth: PxSize = "500px";
 const labelWidthLg: PxSize = "200px";
 const labelMarginRight: RemSize = "3rem";
 
+const SM_BREAKPOINT = "590px";
+const XS_BREAKPOINT = "510px";
+const XXS_BREAKPOINT = "470px";
+const XXXS_BREAKPOINT = "410px";
+const XXXXS_BREAKPOINT = "360px";
+const XXXXXS_BREAKPOINT = "345px";
+const XXXXXXS_BREAKPOINT = "300px";
+
 const labelStylesSm = {
-  width: "100px",
+  width: "160px",
   marginRight: "1rem",
   fontSize: "0.8rem",
+};
+
+const labelStylesXs = {
+  width: "120px",
+  marginRight: "1rem",
+  fontSize: "0.8rem",
+};
+
+const labelStylesXxs = {
+  width: "110px",
+  marginRight: "0.9rem",
+  fontSize: "0.7rem",
+};
+
+const labelStylesXxxs = {
+  width: "100px",
+  marginRight: "0.9rem",
+  fontSize: "0.7rem",
+};
+
+const labelStylesXxxxs = {
+  width: "80px",
+  marginRight: "0.9rem",
+  fontSize: "0.7rem",
+};
+
+const labelStylesXxxxxs = {
+  width: "90px",
+  marginRight: "0.9rem",
+  fontSize: "0.7rem",
+};
+
+const labelStylesXxxxxxs = {
+  width: "80px",
+  marginRight: "0.8rem",
+  fontSize: "0.7rem",
 };
 
 export const accountSettingContainerSx = (): CSSObject => ({
@@ -101,7 +141,12 @@ const inputLabelStyles: CSSObject = {
   width: labelWidthLg,
   fontSize: "1rem",
   marginRight: labelMarginRight,
-  "@media(max-width: 590px)": labelStylesSm,
+  [`@media(max-width: ${SM_BREAKPOINT})`]: labelStylesSm,
+  [`@media(max-width: ${XS_BREAKPOINT})`]: labelStylesXs,
+  [`@media(max-width: ${XXS_BREAKPOINT})`]: labelStylesXxs,
+  [`@media(max-width: ${XXXS_BREAKPOINT})`]: labelStylesXxxs,
+  [`@media(max-width: ${XXXXS_BREAKPOINT})`]: labelStylesXxxxs,
+  [`@media(max-width: ${XXXXXS_BREAKPOINT})`]: labelStylesXxxxs,
 };
 
 const inputWrapperStyles = {
@@ -129,8 +174,22 @@ export const getTextInputStyles = ({
     ":disabled": {
       background: theme.colors.dark[7],
       cursor: "default",
+      textOverflow: "ellipsis",
     },
     fontStyle: user?.oauth_provider ? "italic" : "default",
+    [`@media (max-width: ${XXXS_BREAKPOINT})`]: {
+      width: "140px",
+    },
+    [`@media (max-width: ${XXXXS_BREAKPOINT})`]: {
+      fontSize: "0.8rem",
+      width: "120px",
+    },
+    [`@media (max-width: ${XXXXXS_BREAKPOINT})`]: {
+      width: "90px",
+    },
+    [`@media (max-width: ${XXXXXXS_BREAKPOINT})`]: {
+      width: "80px",
+    },
   },
   error: {
     marginLeft: `calc(${labelWidthLg} + ${labelMarginRight})`,
@@ -138,6 +197,13 @@ export const getTextInputStyles = ({
   root: {
     display: "flex",
     alignItems: "center",
+  },
+});
+
+export const emailWarnTextSx = ({ fontSizes }: MantineTheme): CSSObject => ({
+  fontSize: fontSizes.sm,
+  [`@media (max-width: ${XXXS_BREAKPOINT})`]: {
+    fontSize: fontSizes.xs,
   },
 });
 
@@ -162,9 +228,7 @@ export const settingEditIconSx = ({ colors }: MantineTheme): CSSObject => ({
   },
 });
 
-export const disabledSettingEditIconSx = ({
-  colors,
-}: MantineTheme): CSSObject => ({
+export const disabledSettingEditIconSx = ({ colors }: MantineTheme): CSSObject => ({
   ":disabled": {
     color: colors.dark[2],
     background: colors.dark[7],
@@ -181,13 +245,7 @@ export const settingButtonContainerSx = (): CSSObject => ({
 
 export const emailVerifiedButtonWidth: PxSize = "95.98px";
 
-export const getEmailVerificationButtonWidth = ({
-  user,
-  isLoading,
-}: {
-  user: User;
-  isLoading: boolean;
-}) => {
+export const getEmailVerificationButtonWidth = ({ user, isLoading }: { user: User; isLoading: boolean }) => {
   if (!isLoading && !user?.email_verified) {
     return "default";
   }
@@ -228,9 +286,7 @@ export const getEmailVerificationButtonSx =
     return settingButtonSx(theme);
   };
 
-export const emailVerifiedButtonContentsSx = ({
-  colors,
-}: MantineTheme): CSSObject => ({
+export const emailVerifiedButtonContentsSx = ({ colors }: MantineTheme): CSSObject => ({
   alignItems: "flex-end",
   color: colors.lime[4],
 });
@@ -251,7 +307,6 @@ export const getAccountSettingsAccordionStyles = (
   item: {
     margin: "3rem 0",
     border: "none",
-    // borderBottom: `1px solid ${theme.colors.dark[4]}`,
   },
   control: {
     background: theme.colors.dark[7],
@@ -281,9 +336,26 @@ export const getPasswordTextInputStyles = ({
   wrapper: {
     ...inputWrapperStyles,
     width: `calc(${settingContainerWidth} - ${labelWidthLg} - ${labelMarginRight})`,
+    [`@media (max-width: ${SM_BREAKPOINT})`]: {
+      width: "290px",
+    },
+    [`@media (max-width: ${XXS_BREAKPOINT})`]: {
+      width: "240px",
+    },
+    [`@media (max-width: ${XXXS_BREAKPOINT})`]: {
+      width: "200px",
+    },
+    [`@media (max-width: ${XXXXS_BREAKPOINT})`]: {
+      width: "160px",
+    },
+    [`@media (max-width: ${XXXXXS_BREAKPOINT})`]: {
+      width: "160px",
+    },
+    [`@media (max-width: ${XXXXXXS_BREAKPOINT})`]: {
+      width: "140px",
+    },
   },
   input: {
-    // display: isLoading ? "none" : "default",
     color: "white",
     border: "none",
     background: theme.colors.dark[6],
@@ -294,8 +366,26 @@ export const getPasswordTextInputStyles = ({
   },
   error: {
     marginLeft: `calc(${labelWidthLg} + ${labelMarginRight})`,
-    "@media (max-width: 590px)": {
+    [`@media (max-width: ${SM_BREAKPOINT})`]: {
       marginLeft: `calc(${labelStylesSm.width} + ${labelStylesSm.marginRight})`,
+    },
+    [`@media(max-width: ${XS_BREAKPOINT})`]: {
+      marginLeft: `calc(${labelStylesXs.width} + ${labelStylesXs.marginRight})`,
+    },
+    [`@media(max-width: ${XXS_BREAKPOINT})`]: {
+      marginLeft: `calc(${labelStylesXxs.width} + ${labelStylesXxs.marginRight})`,
+    },
+    [`@media(max-width: ${XXXS_BREAKPOINT})`]: {
+      marginLeft: `calc(${labelStylesXxxs.width} + ${labelStylesXxxs.marginRight})`,
+    },
+    [`@media(max-width: ${XXXXS_BREAKPOINT})`]: {
+      marginLeft: `calc(${labelStylesXxxxs.width} + ${labelStylesXxxxs.marginRight})`,
+    },
+    [`@media(max-width: ${XXXXXS_BREAKPOINT})`]: {
+      marginLeft: `calc(${labelStylesXxxxxs.width} + ${labelStylesXxxxxs.marginRight})`,
+    },
+    [`@media(max-width: ${XXXXXXS_BREAKPOINT})`]: {
+      marginLeft: `calc(${labelStylesXxxxxxs.width} + ${labelStylesXxxxxxs.marginRight})`,
     },
   },
 });
