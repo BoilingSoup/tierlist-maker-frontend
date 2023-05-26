@@ -15,20 +15,27 @@ import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState, ClientSideImage, PxSize, TierListData } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
 
-const junk: CSSObject = {
+const junk = (theme: MantineTheme): CSSObject => ({
   width: "100%",
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-};
+  [`@media (max-width: ${theme.breakpoints.lg})`]: {
+    display: "flex",
+    flexDirection: "column",
+  },
+});
 
 const junk2 = (theme: MantineTheme): CSSObject => ({
   width: "75%",
   backgroundColor: theme.colors.dark[7],
   overflow: "auto",
+  [`@media (max-width: ${theme.breakpoints.lg})`]: {
+    width: "100%",
+  },
 });
 
 const Create: NextPage = () => {
   const fullScreen = useFullScreen();
-  const { height } = useViewportSize();
+  const { height: viewportHeight } = useViewportSize();
 
   const [data, setData] = useState<TierListData>(initialData);
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
@@ -45,11 +52,7 @@ const Create: NextPage = () => {
 
   const { dragStartHandler, dragOverHandler, dragEndHandler } = getDragHandlers({ data, setData, setActiveItem });
 
-  const isFullScreen = fullScreen.fullscreen;
-
-  const rowPxHeight: PxSize = isFullScreen
-    ? `${height / data.rows.length}px`
-    : `${(height - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
+  const rowPxHeight: PxSize = `${(viewportHeight - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
 
   return (
     <>
