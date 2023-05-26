@@ -52,7 +52,10 @@ const Create: NextPage = () => {
 
   const { dragStartHandler, dragOverHandler, dragEndHandler } = getDragHandlers({ data, setData, setActiveItem });
 
-  const rowPxHeight: PxSize = `${(viewportHeight - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
+  const maxHeight: PxSize = `${(viewportHeight - +NAVBAR_HEIGHT.split("px").shift()!) / 5}px`;
+  const rowHeight: PxSize = `${(viewportHeight - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
+  // maxHeight = viewport - navbar / 5
+  // minHeight = 100px
 
   return (
     <>
@@ -63,7 +66,7 @@ const Create: NextPage = () => {
         <Flex sx={junk}>
           <Box sx={junk2}>
             {data.rows.map((row) => (
-              <TierListRow key={row.id} data={row} height={rowPxHeight} />
+              <TierListRow key={row.id} data={row} height={rowHeight} maxHeight={maxHeight} />
             ))}
           </Box>
           <Sidebar fullScreen={getFullScreenProp(fullScreen)} images={data.sidebar} onAddImage={addImageHandler} />

@@ -7,17 +7,16 @@ import { PxSize, TierListRowData } from "./types";
 type Props = {
   data: TierListRowData;
   height: PxSize;
+  maxHeight: PxSize;
 };
 
 const junk = (theme: MantineTheme): CSSObject => ({
   width: "100%",
-  backgroundImage: `radial-gradient(ellipse, ${
-    theme.colors.dark[9]
-  }, ${theme.fn.lighten(theme.colors.dark[8], 0.03)})`,
+  backgroundImage: `radial-gradient(ellipse, ${theme.colors.dark[9]}, ${theme.fn.lighten(theme.colors.dark[8], 0.03)})`,
   border: "2px solid black",
 });
 
-export const TierListRow = ({ data, height }: Props) => {
+export const TierListRow = ({ data, height, maxHeight }: Props) => {
   const { id, color, items, label } = data;
   const { setNodeRef } = useDroppableRow(id);
 
@@ -25,10 +24,10 @@ export const TierListRow = ({ data, height }: Props) => {
     <Flex>
       <Center
         sx={{
-          // height: `clamp(10vw, ${height}, 140px)`,
-          // width: `clamp(10vw, ${height}, 140px)`,
-          height,
-          width: height,
+          height: `clamp(100px, ${height}, ${maxHeight})`,
+          width: `clamp(100px, ${height}, ${maxHeight})`,
+          // height,
+          // width: height,
           backgroundColor: color,
           color: "black",
           fontSize: "clamp(2rem, 6vw, 3rem)",
