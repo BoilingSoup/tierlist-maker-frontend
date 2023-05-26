@@ -42,22 +42,17 @@ export const initialData: TierListData = {
 
 // These constants represent the dragOver event's possible branching conditions.
 
-export const DRAG_FROM_ROW_TO_SIDEBAR__IMAGE =
-  "DRAG_FROM_ROW_TO_SIDEBAR__IMAGE";
+export const DRAG_FROM_ROW_TO_SIDEBAR__IMAGE = "DRAG_FROM_ROW_TO_SIDEBAR__IMAGE";
 
-export const DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER =
-  "DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER";
+export const DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER = "DRAG_FROM_ROW_TO_SIDEBAR__CONTAINER";
 
-export const DRAG_FROM_SIDEBAR_TO_ROW__IMAGE =
-  "DRAG_FROM_SIDEBAR_TO_ROW__IMAGE";
+export const DRAG_FROM_SIDEBAR_TO_ROW__IMAGE = "DRAG_FROM_SIDEBAR_TO_ROW__IMAGE";
 
-export const DRAG_FROM_SIDEBAR_TO_ROW__CONTAINER =
-  "DRAG_FROM_SIDEBAR_TO_ROW__CONTAINER";
+export const DRAG_FROM_SIDEBAR_TO_ROW__CONTAINER = "DRAG_FROM_SIDEBAR_TO_ROW__CONTAINER";
 
 export const DRAG_FROM_ROW_TO_ROW__IMAGE = "DRAG_FROM_ROW_TO_ROW__IMAGE";
 
-export const DRAG_FROM_ROW_TO_ROW__CONTAINER =
-  "DRAG_FROM_ROW_TO_ROW__CONTAINER";
+export const DRAG_FROM_ROW_TO_ROW__CONTAINER = "DRAG_FROM_ROW_TO_ROW__CONTAINER";
 
 // These constants represnet the dragEnd event's possible branching conditions.
 
