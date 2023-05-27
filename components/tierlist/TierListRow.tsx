@@ -26,8 +26,6 @@ export const TierListRow = ({ data, height, maxHeight }: Props) => {
         sx={{
           height: `clamp(100px, ${height}, ${maxHeight})`,
           width: `clamp(100px, ${height}, ${maxHeight})`,
-          // height,
-          // width: height,
           backgroundColor: color,
           color: "black",
           fontSize: "clamp(2rem, 6vw, 3rem)",

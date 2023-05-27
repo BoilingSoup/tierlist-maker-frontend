@@ -16,21 +16,21 @@ import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState, ClientSideImage, PxSize, TierListData } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
 
-const junk = (theme: MantineTheme): CSSObject => ({
+const junk = ({ breakpoints }: MantineTheme): CSSObject => ({
+  flexDirection: "column",
   width: "100%",
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-  [`@media (max-width: ${theme.breakpoints.lg})`]: {
-    display: "flex",
-    flexDirection: "column",
+  [`@media (min-width: ${breakpoints.lg})`]: {
+    flexDirection: "row",
   },
 });
 
-const junk2 = (theme: MantineTheme): CSSObject => ({
-  width: "75%",
-  backgroundColor: theme.colors.dark[7],
+const junk2 = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
+  width: "100%",
+  backgroundColor: colors.dark[7],
   overflow: "auto",
-  [`@media (max-width: ${theme.breakpoints.lg})`]: {
-    width: "100%",
+  [`@media (min-width: ${breakpoints.lg})`]: {
+    width: "75%",
   },
 });
 

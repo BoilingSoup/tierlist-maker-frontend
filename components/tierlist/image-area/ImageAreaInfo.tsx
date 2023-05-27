@@ -1,4 +1,5 @@
-import { Center, Text, List } from "@mantine/core";
+import { Center, Text, List, useMantineTheme } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import {
   imageAreaInfoContainerSx,
   imageAreaInfoHeaderSx,
@@ -7,18 +8,23 @@ import {
 } from "../styles";
 
 export const ImageAreaInfo = () => {
+  const { breakpoints } = useMantineTheme();
+  const desktopScreen = useMediaQuery(`(min-width: ${breakpoints.lg})`);
+
   return (
-    <Center
-      sx={imageAreaInfoContainerSx}
-    >
+    <Center sx={imageAreaInfoContainerSx}>
       <Text component="h2" sx={imageAreaInfoHeaderSx}>
         Add Images Here!
       </Text>
-      <br />
-      <List sx={imageAreaInfoListSx} styles={imageAreaInfoListStyles}>
-        <List.Item>Copy/Paste images or URLs</List.Item>
-        <List.Item>Use the button below to add files</List.Item>
-      </List>
+      {desktopScreen && (
+        <>
+          <br />
+          <List sx={imageAreaInfoListSx} styles={imageAreaInfoListStyles}>
+            <List.Item>Copy/Paste images or URLs</List.Item>
+            <List.Item>Use the button below to add files</List.Item>
+          </List>
+        </>
+      )}
     </Center>
   );
 };
