@@ -1,11 +1,8 @@
 import { MantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
-import {
-  IconAlertOctagon,
-  IconCheck,
-  IconInfoCircle,
-} from "@tabler/icons-react";
+import { IconAlertOctagon, IconCheck, IconInfoCircle } from "@tabler/icons-react";
 import { User } from "../../contexts/AuthProvider";
+import { PxSize } from "../tierlist/types";
 import { getNotificationStyles } from "./styles";
 
 const emToPx = 16; // 1em === 16px
@@ -14,6 +11,8 @@ export const convertThemeBreakpointToPx = (breakpoint: string): number => {
   const smBreakpointEmInt = +breakpoint.split("em").shift()!;
   return smBreakpointEmInt * emToPx;
 };
+
+export const pxToNumber = (pxSize: PxSize): number => +pxSize.split("px").shift()!;
 
 /**
  * filterByID accepts an arr of objects that has a property of ["id"], and an id.
@@ -46,11 +45,7 @@ type Notification = {
   message: string;
 };
 
-export const showErrorNotification = ({
-  theme,
-  title,
-  message,
-}: Notification) =>
+export const showErrorNotification = ({ theme, title, message }: Notification) =>
   showNotification({
     color: "red.9",
     title,
@@ -68,11 +63,7 @@ export const showInfoNotification = ({ theme, title, message }: Notification) =>
     icon: <IconInfoCircle />,
   });
 
-export const showSuccessNotification = ({
-  theme,
-  title,
-  message,
-}: Notification) =>
+export const showSuccessNotification = ({ theme, title, message }: Notification) =>
   showNotification({
     color: "lime.9",
     title,
@@ -88,13 +79,7 @@ export const showSomethingWentWrongNotification = (theme: MantineTheme) =>
     message: "Something went wrong.",
   });
 
-export const showVerifyAccountNotification = ({
-  theme,
-  user,
-}: {
-  theme: MantineTheme;
-  user: User;
-}) =>
+export const showVerifyAccountNotification = ({ theme, user }: { theme: MantineTheme; user: User }) =>
   showInfoNotification({
     theme,
     title: "Verify Account",

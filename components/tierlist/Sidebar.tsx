@@ -10,11 +10,7 @@ type Props = {
   fullScreen: FullScreenProp;
 };
 
-export const Sidebar = ({
-  images,
-  onAddImage: setImages,
-  fullScreen,
-}: Props) => {
+export const Sidebar = ({ images, onAddImage: setImages, fullScreen }: Props) => {
   return (
     <Flex sx={sidebarContainerSx}>
       <ImageArea images={images} onAddImage={setImages} />

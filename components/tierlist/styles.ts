@@ -1,34 +1,45 @@
-import {
-  CSSObject,
-  ListStylesNames,
-  MantineTheme,
-  Styles,
-} from "@mantine/core";
+import { CSSObject, ListStylesNames, MantineTheme, Styles } from "@mantine/core";
+import { PxSize } from "./types";
 
-export const sidebarContainerSx = ({ colors }: MantineTheme): CSSObject => ({
+export const MOBILE_BOTTOM_BAR: PxSize = "250px";
+
+export const sidebarContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "25%",
-  backgroundColor: colors.dark[6],
+  backgroundColor: colors.dark[8],
   color: "white",
   flexDirection: "column",
+  [`@media (max-width:${breakpoints.lg})`]: {
+    width: "100%",
+    height: MOBILE_BOTTOM_BAR,
+    flexDirection: "column-reverse",
+  },
 });
 
-export const imageAreaMaxBoundsSx = (): CSSObject => ({
+export const imageAreaMaxBoundsSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   height: "85%",
   width: "100%",
   flexDirection: "column",
   position: "relative",
+  [`@media (max-width:${breakpoints.lg})`]: {
+    // width: "80%",
+    // height: "100%",
+  },
 });
 
-export const imageAreaContainerSx = ({ colors }: MantineTheme): CSSObject => ({
+export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   height: "94%",
   width: "92%",
-  border: `2px solid ${colors.dark[2]}`,
+  border: `2px solid ${colors.dark[4]}`,
   borderRadius: "8px",
   flexDirection: "column",
+  [`@media (max-width:${breakpoints.lg})`]: {
+    width: "100%",
+    height: "100%",
+  },
 });
 
 export const scrollContainerSx = (): CSSObject => ({
@@ -71,28 +82,43 @@ export const sidebarImageContainerSx = (): CSSObject => ({
   touchAction: "none",
 });
 
-export const imageAreaInfoListStyles: Styles<
-  ListStylesNames,
-  Record<string, any>
-> = { itemWrapper: { marginTop: "30px" } };
+export const imageAreaInfoListStyles: Styles<ListStylesNames, Record<string, any>> = {
+  itemWrapper: { marginTop: "30px" },
+};
 
 export const addFileButtonAreaSx = (): CSSObject => ({ width: "100%" });
 
 export const addFileButtonSx = ({ colors }: MantineTheme): CSSObject => ({
   width: "100%",
-  border: `1px solid ${colors.dark[3]}`,
+  background: colors.dark[6],
+  borderTop: `1px solid ${colors.dark[3]}`,
+  ":hover": {
+    background: colors.dark[5],
+  },
 });
 
-export const actionButtonsGroupSx = (): CSSObject => ({
+export const actionButtonsGroupSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
   height: "15%",
   flexWrap: "wrap",
+  [`@media (max-width:${breakpoints.lg})`]: {
+    height: "50px",
+  },
 });
 
-export const actionButtonsSx = (theme: MantineTheme): CSSObject => ({
+export const actionButtonsSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "50%",
   height: "50%",
   color: "white",
-  backgroundColor: theme.colors.dark[5],
-  borderRadius: "8px",
+  backgroundColor: colors.dark[8],
+  border: `2px solid ${colors.dark[4]}`,
+  cursor: "pointer",
+  ":hover": {
+    background: `${colors.dark[6]}`,
+  },
+  [`@media (max-width:${breakpoints.lg})`]: {
+    width: "25%",
+    height: "100%",
+    borderRadius: "3px",
+  },
 });

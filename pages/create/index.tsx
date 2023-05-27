@@ -1,16 +1,17 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import { Box, CSSObject, Flex, MantineTheme } from "@mantine/core";
-import { useFullscreen as useFullScreen, useViewportSize } from "@mantine/hooks";
+import { Box, CSSObject, Flex, MantineTheme, useMantineTheme } from "@mantine/core";
+import { useFullscreen as useFullScreen, useMediaQuery, useViewportSize } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { append } from "../../components/common/helpers";
+import { append, pxToNumber } from "../../components/common/helpers";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { initialData } from "../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp } from "../../components/tierlist/helpers";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../components/tierlist/Sidebar";
+import { MOBILE_BOTTOM_BAR } from "../../components/tierlist/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState, ClientSideImage, PxSize, TierListData } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
@@ -52,10 +53,25 @@ const Create: NextPage = () => {
 
   const { dragStartHandler, dragOverHandler, dragEndHandler } = getDragHandlers({ data, setData, setActiveItem });
 
-  const maxHeight: PxSize = `${(viewportHeight - +NAVBAR_HEIGHT.split("px").shift()!) / 5}px`;
-  const rowHeight: PxSize = `${(viewportHeight - +NAVBAR_HEIGHT.split("px").shift()!) / data.rows.length}px`;
-  // maxHeight = viewport - navbar / 5
-  // minHeight = 100px
+  const { breakpoints } = useMantineTheme();
+  const desktopScreen = useMediaQuery(`(min-width: ${breakpoints.lg})`);
+
+  const amountOfRowsToPerfectlyFitOnScreen = 5;
+  let maxHeight: PxSize;
+  let rowHeight: PxSize;
+
+  if (desktopScreen) {
+    maxHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / amountOfRowsToPerfectlyFitOnScreen}px`;
+    rowHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / data.rows.length}px`;
+  } else {
+    maxHeight = `${
+      (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / amountOfRowsToPerfectlyFitOnScreen
+    }px`;
+    rowHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / data.rows.length}px`;
+  }
+
+  // TODO:
+  // - responsive images dimensions
 
   return (
     <>
