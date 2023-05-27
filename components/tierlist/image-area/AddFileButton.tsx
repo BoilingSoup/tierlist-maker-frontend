@@ -25,14 +25,9 @@ export const AddFileButton = ({ onAddImage: setImageSources }: Props) => {
   };
 
   return (
-    <FileButton
-      resetRef={resetRef}
-      onChange={addFileHandler}
-      accept="image/png,image/jpeg,image/webp"
-      multiple
-    >
+    <FileButton resetRef={resetRef} onChange={addFileHandler} accept="image/png,image/jpeg,image/webp" multiple>
       {(props) => (
-        <Button {...props} color="dark.7" sx={addFileButtonSx}>
+        <Button {...props} sx={addFileButtonSx}>
           <IconPlus /> Add Files
         </Button>
       )}
