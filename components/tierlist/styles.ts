@@ -16,11 +16,13 @@ export const sidebarContainerSx = ({ colors, breakpoints }: MantineTheme): CSSOb
   },
 });
 
-export const imageAreaMaxBoundsSx = (): CSSObject => ({
+export const imageAreaMaxBoundsSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   height: "85%",
   width: "100%",
-  flexDirection: "column",
   position: "relative",
+  [`@media (min-width:${breakpoints.lg})`]: {
+    flexDirection: "column",
+  },
 });
 
 export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
@@ -32,17 +34,20 @@ export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSS
   height: "100%",
   border: `2px solid ${colors.dark[4]}`,
   borderRadius: "8px",
-  flexDirection: "column",
   [`@media (min-width:${breakpoints.lg})`]: {
     height: "94%",
     width: "92%",
+    flexDirection: "column",
   },
 });
 
-export const scrollContainerSx = (): CSSObject => ({
+export const scrollContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   height: "100%",
-  width: "100%",
+  width: "75%",
   overflow: "auto",
+  [`@media (min-width:${breakpoints.lg})`]: {
+    width: "100%",
+  },
 });
 
 export const imagesFlexContainerSx = (): CSSObject => ({
@@ -96,10 +101,16 @@ export const imageAreaInfoListStyles: Styles<ListStylesNames, Record<string, any
   itemWrapper: { marginTop: "30px" },
 };
 
-export const addFileButtonAreaSx = (): CSSObject => ({ width: "100%" });
+export const addFileButtonAreaSx = ({ breakpoints }: MantineTheme): CSSObject => ({
+  width: "25%",
+  [`@media (min-width:${breakpoints.lg})`]: {
+    width: "100%",
+  },
+});
 
 export const addFileButtonSx = ({ colors }: MantineTheme): CSSObject => ({
   width: "100%",
+  height: "100%",
   background: colors.dark[6],
   borderTop: `1px solid ${colors.dark[3]}`,
   ":hover": {
