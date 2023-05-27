@@ -4,26 +4,23 @@ import { PxSize } from "./types";
 export const MOBILE_BOTTOM_BAR: PxSize = "250px";
 
 export const sidebarContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
-  width: "25%",
+  width: "100%",
+  height: MOBILE_BOTTOM_BAR,
+  flexDirection: "column-reverse",
   backgroundColor: colors.dark[8],
   color: "white",
-  flexDirection: "column",
-  [`@media (max-width:${breakpoints.lg})`]: {
-    width: "100%",
-    height: MOBILE_BOTTOM_BAR,
-    flexDirection: "column-reverse",
+  [`@media (min-width:${breakpoints.lg})`]: {
+    width: "25%",
+    height: "100%",
+    flexDirection: "column",
   },
 });
 
-export const imageAreaMaxBoundsSx = ({ breakpoints }: MantineTheme): CSSObject => ({
+export const imageAreaMaxBoundsSx = (): CSSObject => ({
   height: "85%",
   width: "100%",
   flexDirection: "column",
   position: "relative",
-  [`@media (max-width:${breakpoints.lg})`]: {
-    // width: "80%",
-    // height: "100%",
-  },
 });
 
 export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
@@ -31,14 +28,14 @@ export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSS
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  height: "94%",
-  width: "92%",
+  width: "100%",
+  height: "100%",
   border: `2px solid ${colors.dark[4]}`,
   borderRadius: "8px",
   flexDirection: "column",
-  [`@media (max-width:${breakpoints.lg})`]: {
-    width: "100%",
-    height: "100%",
+  [`@media (min-width:${breakpoints.lg})`]: {
+    height: "94%",
+    width: "92%",
   },
 });
 
@@ -66,20 +63,33 @@ export const imageAreaInfoContainerSx = (): CSSObject => ({
   flexDirection: "column",
 });
 
-export const imageAreaInfoHeaderSx = (): CSSObject => ({ fontSize: "1.8rem" });
+export const imageAreaInfoHeaderSx = (): CSSObject => ({ fontSize: "1.8rem", textAlign: "center" });
 
 export const imageAreaInfoListSx = (): CSSObject => ({
   color: "white",
   fontSize: "1.3rem",
+  "@media (max-width: 1540px)": {
+    fontSize: "1.2rem",
+  },
+  "@media (max-width: 1450px)": {
+    fontSize: "1.1rem",
+  },
+  "@media (max-width: 1320px)": {
+    fontSize: "1rem",
+  },
 });
 
-export const sidebarImageContainerSx = (): CSSObject => ({
+export const sidebarImageContainerSx = ({ colors }: MantineTheme): CSSObject => ({
   width: "100px",
   height: "100px",
   overflow: "hidden",
   border: "2px solid white",
   margin: "1px",
   touchAction: "none",
+  ":focus-visible": {
+    outline: `none`,
+    border: `4px solid ${colors.blue[6]}`,
+  },
 });
 
 export const imageAreaInfoListStyles: Styles<ListStylesNames, Record<string, any>> = {
@@ -99,26 +109,27 @@ export const addFileButtonSx = ({ colors }: MantineTheme): CSSObject => ({
 
 export const actionButtonsGroupSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
-  height: "15%",
+  height: "50px",
   flexWrap: "wrap",
-  [`@media (max-width:${breakpoints.lg})`]: {
-    height: "50px",
+  [`@media (min-width:${breakpoints.lg})`]: {
+    height: "15%",
   },
 });
 
 export const actionButtonsSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
-  width: "50%",
-  height: "50%",
+  width: "25%",
+  height: "100%",
   color: "white",
   backgroundColor: colors.dark[8],
   border: `2px solid ${colors.dark[4]}`,
+  borderRadius: "3px",
   cursor: "pointer",
   ":hover": {
     background: `${colors.dark[6]}`,
   },
-  [`@media (max-width:${breakpoints.lg})`]: {
-    width: "25%",
-    height: "100%",
-    borderRadius: "3px",
+  [`@media (min-width:${breakpoints.lg})`]: {
+    width: "50%",
+    height: "50%",
+    borderRadius: 0,
   },
 });
