@@ -1,5 +1,5 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import { Box, CSSObject, Flex, MantineTheme } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { useFullscreen as useFullScreen, useViewportSize } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -12,28 +12,10 @@ import { getDragHandlers, getFullScreenProp } from "../../components/tierlist/he
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../components/tierlist/Sidebar";
-import { MOBILE_BOTTOM_BAR } from "../../components/tierlist/styles";
+import { createPageMainContainer, MOBILE_BOTTOM_BAR, rowsContainer } from "../../components/tierlist/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState, ClientSideImage, PxSize, TierListData } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
-
-const junk = ({ breakpoints }: MantineTheme): CSSObject => ({
-  flexDirection: "column",
-  width: "100%",
-  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-  [`@media (min-width: ${breakpoints.lg})`]: {
-    flexDirection: "row",
-  },
-});
-
-const junk2 = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
-  width: "100%",
-  backgroundColor: colors.dark[7],
-  overflow: "auto",
-  [`@media (min-width: ${breakpoints.lg})`]: {
-    width: "75%",
-  },
-});
 
 const Create: NextPage = () => {
   const fullScreen = useFullScreen();
@@ -87,8 +69,8 @@ const Create: NextPage = () => {
         <title>Create Tier List</title>
       </Head>
       <DndContext id={SITE_NAME} onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDragEnd={dragEndHandler}>
-        <Flex sx={junk}>
-          <Box sx={junk2}>
+        <Flex sx={createPageMainContainer}>
+          <Box sx={rowsContainer}>
             {data.rows.map((row) => (
               <TierListRow key={row.id} data={row} height={rowHeight} maxHeight={maxHeight} />
             ))}
