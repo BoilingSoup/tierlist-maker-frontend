@@ -1,7 +1,7 @@
 import { CSSObject, ListStylesNames, MantineTheme, Styles } from "@mantine/core";
 import { PxSize } from "./types";
 
-export const MOBILE_BOTTOM_BAR: PxSize = "250px";
+export const MOBILE_BOTTOM_BAR: PxSize = "200px";
 
 export const sidebarContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
@@ -108,13 +108,17 @@ export const addFileButtonAreaSx = ({ breakpoints }: MantineTheme): CSSObject =>
   },
 });
 
-export const addFileButtonSx = ({ colors }: MantineTheme): CSSObject => ({
+export const addFileButtonSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
   height: "100%",
   background: colors.dark[6],
-  borderTop: `1px solid ${colors.dark[3]}`,
+  border: `1px solid ${colors.dark[3]}`,
   ":hover": {
     background: colors.dark[5],
+  },
+  [`@media (min-width:${breakpoints.lg})`]: {
+    border: 0,
+    borderTop: `1px solid ${colors.dark[3]}`,
   },
 });
 

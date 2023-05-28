@@ -36,7 +36,7 @@ export const insertAtIndex = <T,>(arr: T[], data: T, index: number) => {
   return [...arr.slice(0, index), data, ...arr.slice(index)];
 };
 
-/** arrayPush returns a copy of arr with the provided data inserted at the end of the array */
+/** append returns a copy of arr with the provided data inserted at the end of the array */
 export const append = <T,>(arr: T[], ...data: T[]) => [...arr, ...data];
 
 type Notification = {

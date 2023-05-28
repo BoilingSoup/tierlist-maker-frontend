@@ -1,5 +1,5 @@
-import { Center, Text, List, useMantineTheme } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import { Center, Text, List } from "@mantine/core";
+import { useIsDesktopScreen } from "../../common/hooks/useIsDesktopScreen";
 import {
   imageAreaInfoContainerSx,
   imageAreaInfoHeaderSx,
@@ -8,15 +8,14 @@ import {
 } from "../styles";
 
 export const ImageAreaInfo = () => {
-  const { breakpoints } = useMantineTheme();
-  const desktopScreen = useMediaQuery(`(min-width: ${breakpoints.lg})`);
+  const isDesktopScreen = useIsDesktopScreen();
 
   return (
     <Center sx={imageAreaInfoContainerSx}>
       <Text component="h2" sx={imageAreaInfoHeaderSx}>
         Add Images Here!
       </Text>
-      {desktopScreen && (
+      {isDesktopScreen && (
         <>
           <br />
           <List sx={imageAreaInfoListSx} styles={imageAreaInfoListStyles}>
