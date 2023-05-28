@@ -63,21 +63,29 @@ export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSS
 export const scrollContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   height: "100%",
   width: "75%",
-  overflow: "auto",
+  overflowX: "auto",
   [`@media (min-width:${breakpoints.lg})`]: {
     width: "100%",
+    overflow: "auto",
   },
 });
 
-export const imagesFlexContainerSx = (): CSSObject => ({
+export const imagesFlexContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
+  display: "flex",
   height: "96%",
   width: "96%",
-  flexWrap: "wrap",
+  alignItems: "center",
   alignContent: "flex-start",
   caretColor: "transparent",
   cursor: "default",
   ":focus-visible": {
     outline: "none",
+  },
+  [`@media (min-width:${breakpoints.lg})`]: {
+    display: "flex",
+    alignItem: "flex-start",
+    justifyContent: "center",
+    flexWrap: "wrap",
   },
 });
 
@@ -104,6 +112,7 @@ export const imageAreaInfoListSx = (): CSSObject => ({
 });
 
 export const sidebarImageContainerSx = ({ colors }: MantineTheme): CSSObject => ({
+  flexShrink: 0,
   width: "100px",
   height: "100px",
   overflow: "hidden",
