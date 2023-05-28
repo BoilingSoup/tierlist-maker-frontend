@@ -3,7 +3,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { nanoid } from "nanoid";
 import { useRef } from "react";
 import { useIsDesktopScreen } from "../../common/hooks/useIsDesktopScreen";
-import { addFileButtonSx } from "../styles";
+import { addFileButtonStyles, addFileButtonSx, addFileButtonTextSx } from "../styles";
 import { ClientSideImage } from "../types";
 
 type Props = {
@@ -29,16 +29,16 @@ export const AddFileButton = ({ onAddImage: setImageSources }: Props) => {
   return (
     <FileButton resetRef={resetRef} onChange={addFileHandler} accept="image/png,image/jpeg,image/webp" multiple>
       {(props) => (
-        <Button {...props} sx={addFileButtonSx}>
+        <Button {...props} sx={addFileButtonSx} styles={addFileButtonStyles}>
           {isDesktopScreen ? (
             <>
               <IconPlus />
               Add Files
             </>
           ) : (
-            <Stack>
+            <Stack w="100%">
               <IconPlus size="50" style={{ margin: "auto" }} />
-              <Text component="span" size="lg">
+              <Text component="span" sx={addFileButtonTextSx}>
                 Add Files
               </Text>
             </Stack>

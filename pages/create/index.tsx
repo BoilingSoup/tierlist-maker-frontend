@@ -53,8 +53,8 @@ const Create: NextPage = () => {
 
   // TODO:
   // - finish styling mobile view
-  //   - tweak add files button
-  //   - tweak font sizes
+  //   - tweak add files button  -- DONE
+  //   - tweak font sizes -- DONE
   //   - mobile image area horizontal scroll
   //   - authenticated view (hide save/publish buttons)
   //

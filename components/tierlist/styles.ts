@@ -1,4 +1,4 @@
-import { CSSObject, ListStylesNames, MantineTheme, Styles } from "@mantine/core";
+import { ButtonStylesParams, CSSObject, ListStylesNames, MantineTheme, Styles } from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "./types";
 
@@ -141,6 +141,20 @@ export const addFileButtonSx = ({ colors, breakpoints }: MantineTheme): CSSObjec
   },
 });
 
+export const addFileButtonStyles: Styles<
+  "root" | "label" | "icon" | "leftIcon" | "rightIcon" | "centerLoader" | "inner",
+  ButtonStylesParams
+> = {
+  root: { width: "100%", padding: 0 },
+};
+
+export const addFileButtonTextSx = ({ breakpoints, fontSizes }: MantineTheme): CSSObject => ({
+  fontSize: fontSizes.sm,
+  [`@media (min-width:${breakpoints.xs})`]: {
+    fontSize: fontSizes.xl,
+  },
+});
+
 export const actionButtonsGroupSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
   height: "50px",
@@ -151,6 +165,8 @@ export const actionButtonsGroupSx = ({ breakpoints }: MantineTheme): CSSObject =
 });
 
 export const actionButtonsSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
+  flexDirection: "column",
+  fontSize: "0.6rem",
   width: "25%",
   height: "100%",
   color: "white",
@@ -160,6 +176,10 @@ export const actionButtonsSx = ({ colors, breakpoints }: MantineTheme): CSSObjec
   cursor: "pointer",
   ":hover": {
     background: `${colors.dark[6]}`,
+  },
+  [`@media (min-width:${breakpoints.sm})`]: {
+    flexDirection: "row",
+    fontSize: "0.9rem",
   },
   [`@media (min-width:${breakpoints.lg})`]: {
     width: "50%",
