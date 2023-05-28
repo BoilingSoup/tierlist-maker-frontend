@@ -1,5 +1,24 @@
 import { CSSObject, ListStylesNames, MantineTheme, Styles } from "@mantine/core";
+import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "./types";
+
+export const createPageMainContainer = ({ breakpoints }: MantineTheme): CSSObject => ({
+  flexDirection: "column",
+  width: "100%",
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+  [`@media (min-width: ${breakpoints.lg})`]: {
+    flexDirection: "row",
+  },
+});
+
+export const rowsContainer = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
+  width: "100%",
+  backgroundColor: colors.dark[7],
+  overflow: "auto",
+  [`@media (min-width: ${breakpoints.lg})`]: {
+    width: "75%",
+  },
+});
 
 export const MOBILE_BOTTOM_BAR: PxSize = "200px";
 
