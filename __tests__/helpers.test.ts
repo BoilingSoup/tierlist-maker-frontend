@@ -1,9 +1,14 @@
-import {
-  append,
-  filterByID,
-  findIndexByID,
-  insertAtIndex,
-} from "../components/common/helpers";
+import { append, filterByID, findIndexByID, insertAtIndex, pxToNumber } from "../components/common/helpers";
+import { PxSize } from "../components/tierlist/types";
+
+test("pxToNumber function converts px string to a number", () => {
+  const pxNumber = 100;
+  const pxString: PxSize = `${pxNumber}px`;
+
+  const result = pxToNumber(pxString);
+
+  expect(result).toEqual(pxNumber);
+});
 
 describe("filterByID function", () => {
   test("returns a new instance of an Array", () => {
