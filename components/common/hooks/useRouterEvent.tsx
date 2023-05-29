@@ -22,5 +22,5 @@ export const useRouterEvent = ({ on, handler }: Param) => {
     return () => {
       router.events.off(on, handler);
     };
-  }, []);
+  }, [handler, on, router.events]);
 };
