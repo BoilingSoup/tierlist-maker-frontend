@@ -9,6 +9,7 @@ import { useIsDesktopScreen } from "../../components/common/hooks/useIsDesktopSc
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { initialData } from "../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp } from "../../components/tierlist/helpers";
+import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../components/tierlist/Sidebar";
@@ -35,6 +36,7 @@ const Create: NextPage = () => {
     );
 
   const { dragStartHandler, dragOverHandler, dragEndHandler } = getDragHandlers({ data, setData, setActiveItem });
+  const sensors = useDndSensors();
 
   const isDesktopScreen = useIsDesktopScreen();
   const amountOfRowsToPerfectlyFitOnScreen = 5;
@@ -56,13 +58,20 @@ const Create: NextPage = () => {
   // - Move rows buttons, add row button, delete row button, change row color, change row title
   // - paste event only send network request if text is a valid URL
   // - responsive images dimensions
+  // - mobile menu bg to theme.colors.dark[?] , not black
 
   return (
     <>
       <Head>
         <title>Create Tier List</title>
       </Head>
-      <DndContext id={SITE_NAME} onDragStart={dragStartHandler} onDragOver={dragOverHandler} onDragEnd={dragEndHandler}>
+      <DndContext
+        id={SITE_NAME}
+        onDragStart={dragStartHandler}
+        onDragOver={dragOverHandler}
+        onDragEnd={dragEndHandler}
+        sensors={sensors}
+      >
         <Flex sx={createPageMainContainer}>
           <Box sx={rowsContainer}>
             {data.rows.map((row) => (
