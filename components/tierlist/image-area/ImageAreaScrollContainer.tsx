@@ -9,18 +9,7 @@ type Props = {
 export const ImageAreaScrollContainer = ({ children, setNodeRef }: Props) => {
   return (
     <Center sx={scrollContainerSx} ref={setNodeRef}>
-      <Flex
-        sx={imagesFlexContainerSx}
-        contentEditable="true" // Enables right-click paste in a non-input element.
-        suppressContentEditableWarning={true} // State changes are handled properly. Paste/KeyDown events are prevented and usePasteEvent takes over.
-        onPaste={(e) => e.preventDefault()}
-        onKeyDown={(e) => {
-          if (!e.ctrlKey) e.preventDefault();
-        }}
-        onPointerDown={(e) => e.preventDefault()}
-      >
-        {children}
-      </Flex>
+      <Flex sx={imagesFlexContainerSx}>{children}</Flex>
     </Center>
   );
 };
