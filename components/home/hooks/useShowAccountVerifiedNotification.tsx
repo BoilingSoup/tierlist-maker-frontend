@@ -11,5 +11,5 @@ export const useShowAccountVerifiedNotification = (theme: MantineTheme) => {
         message: "Your account has been verified.",
       });
     }
-  }, []);
+  }, [theme]);
 };

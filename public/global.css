@@ -19,24 +19,3 @@
   border-radius: 10px;
   border: 2px solid #707070;
 }
-
-/* resize gutter */
-.gutter {
-  background-color: #eee;
-
-  background-repeat: no-repeat;
-  background-position: 50%;
-}
-
-.gutter:hover {
-  cursor: col-resize;
-  background: #ccc;
-}
-
-.gutter.gutter-vertical {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=");
-}
-
-.gutter.gutter-horizontal {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
-}

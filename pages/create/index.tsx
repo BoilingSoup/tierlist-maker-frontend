@@ -52,13 +52,7 @@ const Create: NextPage = () => {
   }
 
   // TODO:
-  // - finish styling mobile view
-  //   - tweak add files button  -- DONE
-  //   - tweak font sizes -- DONE
-  //   - mobile image area horizontal scroll
-  //   - authenticated view (hide save/publish buttons)
-  //
-  // TODO:
+  // - authenticated view (hide save/publish buttons)
   // - Move rows buttons, add row button, delete row button, change row color, change row title
   // - paste event only send network request if text is a valid URL
   // - responsive images dimensions
