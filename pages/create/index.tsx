@@ -58,7 +58,6 @@ const Create: NextPage = () => {
   // - Move rows buttons, add row button, delete row button, change row color, change row title
   // - paste event only send network request if text is a valid URL
   // - responsive images dimensions
-  // - mobile menu bg to theme.colors.dark[?] , not black
 
   return (
     <>

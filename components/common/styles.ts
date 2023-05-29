@@ -1,9 +1,4 @@
-import {
-  CSSObject,
-  MantineTheme,
-  NotificationStylesParams,
-  Styles,
-} from "@mantine/core";
+import { CSSObject, MantineTheme, NotificationStylesParams, Styles } from "@mantine/core";
 import { CSSProperties } from "react";
 import { CalcSize, PxSize } from "../tierlist/types";
 
@@ -46,9 +41,7 @@ const navTextCSS: CSSObject = {
   ...marginYAuto,
 };
 
-export const getNavLinkTextSx = (
-  isCurrentPath?: boolean
-): (() => CSSObject) | ((theme: MantineTheme) => CSSObject) =>
+export const getNavLinkTextSx = (isCurrentPath?: boolean): (() => CSSObject) | ((theme: MantineTheme) => CSSObject) =>
   isCurrentPath ? navLinkTextCurrentSx : navLinkTextSx;
 
 const navLinkBeforeElement: CSSObject = {
@@ -105,9 +98,7 @@ export const logoTextSx = (): CSSObject => ({
 
 const landingSectionHeight: CalcSize = `calc(95vh - ${NAVBAR_HEIGHT})`;
 
-export const landingTierListContainerSx = ({
-  colors,
-}: MantineTheme): CSSObject => ({
+export const landingTierListContainerSx = ({ colors }: MantineTheme): CSSObject => ({
   position: "absolute",
   width: "100%",
   height: landingSectionHeight,
@@ -133,10 +124,10 @@ export const landingSectionTextSx = (): CSSObject => ({
   color: "white",
 });
 
-export const mobileNavLinksOverlaySx = (): CSSObject => ({
+export const mobileNavLinksOverlaySx = ({ colors }: MantineTheme): CSSObject => ({
   position: "fixed",
   zIndex: 2,
-  backgroundColor: "black",
+  backgroundColor: colors.dark[9],
   width: "100%",
   marginTop: NAVBAR_HEIGHT,
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
@@ -153,8 +144,8 @@ const mobileNavLinkPseudoStyles: CSSObject = {
   backgroundColor: MOBILE_NAV_LINK_ACTIVE_BG,
 };
 
-export const mobileNavLinkSx = (): CSSObject => ({
-  backgroundColor: "black",
+export const mobileNavLinkSx = ({ colors }: MantineTheme): CSSObject => ({
+  backgroundColor: colors.dark[9],
   color: "white",
   height: "70px",
   fontSize: "1.2rem",
@@ -174,16 +165,16 @@ export const mobileNavLinkSx = (): CSSObject => ({
   },
 });
 
-export const mobileSignOutButtonSx = (): CSSObject => ({
+export const mobileSignOutButtonSx = (theme: MantineTheme): CSSObject => ({
   width: "inherit",
   background: "none",
   border: "none",
   cursor: "pointer",
-  ...mobileNavLinkSx(),
+  ...mobileNavLinkSx(theme),
 });
 
-const currentMobileNavLinkSx = (): CSSObject => ({
-  ...mobileNavLinkSx(),
+const currentMobileNavLinkSx = (theme: MantineTheme): CSSObject => ({
+  ...mobileNavLinkSx(theme),
   backgroundColor: MOBILE_NAV_LINK_ACTIVE_BG,
 });
 
@@ -192,10 +183,7 @@ export const getMobileNavLinkSx = (isCurrentPath: boolean) =>
 
 export const getNotificationStyles = (
   background: string
-): Styles<
-  "icon" | "body" | "title" | "root" | "description" | "closeButton" | "loader",
-  NotificationStylesParams
-> => ({
+): Styles<"icon" | "body" | "title" | "root" | "description" | "closeButton" | "loader", NotificationStylesParams> => ({
   root: {
     background,
     border: "none",
