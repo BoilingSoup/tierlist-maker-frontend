@@ -1,5 +1,6 @@
 import { SortableContext } from "@dnd-kit/sortable";
 import { Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
+import { IconChevronDown, IconChevronUp, IconSettings } from "@tabler/icons-react";
 import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
 import { PxSize, TierListRowData } from "./types";
@@ -13,7 +14,6 @@ type Props = {
 const junk = (theme: MantineTheme): CSSObject => ({
   width: "100%",
   backgroundImage: `radial-gradient(ellipse, ${theme.colors.dark[9]}, ${theme.fn.lighten(theme.colors.dark[8], 0.03)})`,
-  border: "2px solid black",
 });
 
 export const TierListRow = ({ data, height, maxHeight }: Props) => {
@@ -21,15 +21,19 @@ export const TierListRow = ({ data, height, maxHeight }: Props) => {
   const { setNodeRef } = useDroppableRow(id);
 
   return (
-    <Flex>
+    <Flex
+      sx={{
+        border: "2px solid black",
+        height: `clamp(100px, ${height}, ${maxHeight})`,
+      }}
+    >
       <Center
         sx={{
-          height: `clamp(100px, ${height}, ${maxHeight})`,
           width: `clamp(100px, ${height}, ${maxHeight})`,
           backgroundColor: color,
           color: "black",
           fontSize: "clamp(2rem, 6vw, 3rem)",
-          border: "2px solid black",
+          borderRight: "2px solid black",
         }}
       >
         {label}
@@ -41,6 +45,15 @@ export const TierListRow = ({ data, height, maxHeight }: Props) => {
           ))}
         </Flex>
       </SortableContext>
+      <Flex sx={{ background: "black", width: "120px" }}>
+        <Center w="50%">
+          <IconSettings color="white" />
+        </Center>
+        <Center w="50%" sx={{ flexDirection: "column", justifyContent: "space-evenly" }}>
+          <IconChevronUp color="white" />
+          <IconChevronDown color="white" />
+        </Center>
+      </Flex>
     </Flex>
   );
 };
