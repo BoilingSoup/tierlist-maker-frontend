@@ -27,7 +27,7 @@ const Create: NextPage = () => {
 
   usePasteEvent(setData);
 
-  const addImageHandler = (newImage: ClientSideImage[]) =>
+  const handleAddImage = (newImage: ClientSideImage[]) =>
     setData(
       (prev): TierListData => ({
         sidebar: append(prev.sidebar, ...newImage),
@@ -35,7 +35,7 @@ const Create: NextPage = () => {
       })
     );
 
-  const { dragStartHandler, dragOverHandler, dragEndHandler } = getDragHandlers({ data, setData, setActiveItem });
+  const { handleDragStart, handleDragOver, handleDragEnd } = getDragHandlers({ data, setData, setActiveItem });
   const sensors = useDndSensors();
 
   const isDesktopScreen = useIsDesktopScreen();
@@ -59,6 +59,14 @@ const Create: NextPage = () => {
   // - paste event only send network request if text is a valid URL
   // - responsive images dimensions
 
+  const handleMoveRowUp = (rowID: string) => {
+    //
+  };
+
+  const handleMoveRowDown = (rowID: string) => {
+    //
+  };
+
   return (
     <>
       <Head>
@@ -66,9 +74,9 @@ const Create: NextPage = () => {
       </Head>
       <DndContext
         id={SITE_NAME}
-        onDragStart={dragStartHandler}
-        onDragOver={dragOverHandler}
-        onDragEnd={dragEndHandler}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
         sensors={sensors}
       >
         <Flex sx={createPageMainContainer}>
@@ -77,7 +85,7 @@ const Create: NextPage = () => {
               <TierListRow key={row.id} data={row} height={rowHeight} maxHeight={maxHeight} />
             ))}
           </Box>
-          <Sidebar fullScreen={getFullScreenProp(fullScreen)} images={data.sidebar} onAddImage={addImageHandler} />
+          <Sidebar fullScreen={getFullScreenProp(fullScreen)} images={data.sidebar} onAddImage={handleAddImage} />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>
       </DndContext>
