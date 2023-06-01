@@ -2,12 +2,7 @@ import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useFullscreen } from "@mantine/hooks";
 import { Dispatch, SetStateAction } from "react";
-import {
-  append,
-  filterByID,
-  findIndexByID,
-  insertAtIndex,
-} from "../common/helpers";
+import { append, filterByID, findIndexByID, insertAtIndex } from "../common/helpers";
 import {
   CONTAINER,
   DRAG_END_WITHIN_ROW,
@@ -36,9 +31,7 @@ import {
 } from "./types";
 
 /** Converts value of useFullscreen() to prop used in components */
-export const getFullScreenProp = (
-  fullScreen: ReturnType<typeof useFullscreen>
-): FullScreenProp => ({
+export const getFullScreenProp = (fullScreen: ReturnType<typeof useFullscreen>): FullScreenProp => ({
   toggle: fullScreen.toggle,
   state: fullScreen.fullscreen,
 });
@@ -55,9 +48,7 @@ const updateActiveItem = ({ event, setActiveItem }: UpdateActiveItemParam) => {
   return setActiveItem({ id, src, containerID });
 };
 
-const getActiveItemProperties = (
-  event: DragOverEvent | DragStartEvent
-): ActiveItem | undefined => {
+const getActiveItemProperties = (event: DragOverEvent | DragStartEvent): ActiveItem | undefined => {
   const { active } = event;
 
   // Only returns undefined if dnd-kit was misconfigured
@@ -102,8 +93,7 @@ const getOverItemProperties = (event: DragOverEvent) => {
 // Images can be dragged from the sidebar to a row, or from a row to the sidebar + some minor variations.
 // This function identifies which of the 7 possible branching conditions to take.
 const getDragOverType = (event: DragOverEvent): DragOverType => {
-  const { somethingWentWrong, activeItemProperties, overItemProperties } =
-    getDragEventData(event);
+  const { somethingWentWrong, activeItemProperties, overItemProperties } = getDragEventData(event);
 
   // NOTE: should never return true unless dnd-kit node refs gets misconfigured
   if (somethingWentWrong) {
@@ -112,8 +102,7 @@ const getDragOverType = (event: DragOverEvent): DragOverType => {
 
   const { containerID: activeItemContainerID } = activeItemProperties;
 
-  const { type: overItemType, containerID: overItemContainerID } =
-    overItemProperties;
+  const { type: overItemType, containerID: overItemContainerID } = overItemProperties;
 
   // NOTE: Drags that occur within the same container are ignored in this event handler.
   // Drags within the same container are handled entirely by the DragEnd event.
@@ -135,8 +124,7 @@ const getDragOverType = (event: DragOverEvent): DragOverType => {
   //    - an image in a row container
   //
 
-  const dragIsFromRowToSidebar =
-    activeItemContainerID !== SIDEBAR && overItemContainerID === SIDEBAR;
+  const dragIsFromRowToSidebar = activeItemContainerID !== SIDEBAR && overItemContainerID === SIDEBAR;
 
   if (dragIsFromRowToSidebar) {
     switch (overItemType) {
@@ -153,8 +141,7 @@ const getDragOverType = (event: DragOverEvent): DragOverType => {
     }
   }
 
-  const dragIsFromSidebarToRow =
-    activeItemContainerID === SIDEBAR && overItemContainerID !== SIDEBAR;
+  const dragIsFromSidebarToRow = activeItemContainerID === SIDEBAR && overItemContainerID !== SIDEBAR;
 
   if (dragIsFromSidebarToRow) {
     switch (overItemType) {
@@ -171,8 +158,7 @@ const getDragOverType = (event: DragOverEvent): DragOverType => {
     }
   }
 
-  const dragIsFromRowToAnotherRow =
-    activeItemContainerID !== SIDEBAR && overItemContainerID !== SIDEBAR;
+  const dragIsFromRowToAnotherRow = activeItemContainerID !== SIDEBAR && overItemContainerID !== SIDEBAR;
 
   if (dragIsFromRowToAnotherRow) {
     switch (overItemType) {
@@ -204,15 +190,11 @@ type DragEventData =
     }
   | {
       somethingWentWrong: false;
-      activeItemProperties: NonNullable<
-        ReturnType<typeof getActiveItemProperties>
-      >;
+      activeItemProperties: NonNullable<ReturnType<typeof getActiveItemProperties>>;
       overItemProperties: NonNullable<ReturnType<typeof getOverItemProperties>>;
     };
 
-const getDragEventData = (
-  event: DragOverEvent | DragEndEvent
-): DragEventData => {
+const getDragEventData = (event: DragOverEvent | DragEndEvent): DragEventData => {
   const unexpectedPath: DragEventData = {
     somethingWentWrong: true,
     activeItemProperties: undefined,
@@ -250,27 +232,16 @@ type DispatchDragOverActionParam = {
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
 };
-const dispatchDragOverAction = ({
-  dragOverType,
-  event,
-  data,
-  setData,
-}: DispatchDragOverActionParam) => {
-  const { somethingWentWrong, overItemProperties, activeItemProperties } =
-    getDragEventData(event);
+const dispatchDragOverAction = ({ dragOverType, event, data, setData }: DispatchDragOverActionParam) => {
+  const { somethingWentWrong, overItemProperties, activeItemProperties } = getDragEventData(event);
 
   if (dragOverType === IGNORE_DRAG || somethingWentWrong) {
     return;
   }
 
-  const {
-    containerID: activeItemContainerID,
-    id: activeItemID,
-    src: activeItemSrc,
-  } = activeItemProperties;
+  const { containerID: activeItemContainerID, id: activeItemID, src: activeItemSrc } = activeItemProperties;
 
-  const { containerID: overItemContainerID, id: overItemID } =
-    overItemProperties;
+  const { containerID: overItemContainerID, id: overItemID } = overItemProperties;
 
   const draggedImage: ClientSideImage = {
     id: activeItemID,
@@ -310,8 +281,7 @@ const dispatchDragOverAction = ({
         (prev): TierListData => ({
           sidebar: append(prev.sidebar, draggedImage),
           rows: prev.rows.map((row) => {
-            const imageWasDraggedOutOfThisRow =
-              row.id === activeItemContainerID;
+            const imageWasDraggedOutOfThisRow = row.id === activeItemContainerID;
             if (imageWasDraggedOutOfThisRow) {
               return {
                 ...row,
@@ -347,10 +317,7 @@ const dispatchDragOverAction = ({
     case DRAG_FROM_SIDEBAR_TO_ROW__IMAGE:
       overItemRowIndex = findIndexByID(data.rows, overItemContainerID);
 
-      overItemIndex = findIndexByID(
-        data.rows[overItemRowIndex].items,
-        overItemID
-      );
+      overItemIndex = findIndexByID(data.rows[overItemRowIndex].items, overItemID);
 
       setData(
         (prev): TierListData => ({
@@ -371,24 +338,17 @@ const dispatchDragOverAction = ({
       return;
 
     case DRAG_FROM_ROW_TO_ROW__IMAGE:
-      activeItemContainerIndex = findIndexByID(
-        data.rows,
-        activeItemContainerID
-      );
+      activeItemContainerIndex = findIndexByID(data.rows, activeItemContainerID);
 
       overItemRowIndex = findIndexByID(data.rows, overItemContainerID);
 
-      overItemIndex = findIndexByID(
-        data.rows[overItemRowIndex].items,
-        overItemID
-      );
+      overItemIndex = findIndexByID(data.rows[overItemRowIndex].items, overItemID);
 
       setData(
         (prev): TierListData => ({
           sidebar: prev.sidebar,
           rows: prev.rows.map((row, index) => {
-            const imageWasDraggedOutOfThisRow =
-              index === activeItemContainerIndex;
+            const imageWasDraggedOutOfThisRow = index === activeItemContainerIndex;
             if (imageWasDraggedOutOfThisRow) {
               return {
                 ...row,
@@ -415,8 +375,7 @@ const dispatchDragOverAction = ({
         (prev): TierListData => ({
           sidebar: prev.sidebar,
           rows: prev.rows.map((row) => {
-            const imageWasDraggedOutOfThisRow =
-              row.id === activeItemContainerID;
+            const imageWasDraggedOutOfThisRow = row.id === activeItemContainerID;
             if (imageWasDraggedOutOfThisRow) {
               return {
                 ...row,
@@ -454,16 +413,14 @@ const dispatchDragOverAction = ({
 // It is only after this transfer that the dragEnd event can be triggered,
 // at which point the state has already reflected that the image is in the new container.
 const getDragEndType = (event: DragEndEvent): DragEndType => {
-  const { somethingWentWrong, activeItemProperties, overItemProperties } =
-    getDragEventData(event);
+  const { somethingWentWrong, activeItemProperties, overItemProperties } = getDragEventData(event);
 
   // NOTE: should never return true unless dnd-kit node refs gets misconfigured
   if (somethingWentWrong) {
     return IGNORE_DRAG;
   }
 
-  const { type: overItemType, containerID: overItemContainerID } =
-    overItemProperties;
+  const { type: overItemType, containerID: overItemContainerID } = overItemProperties;
 
   const { containerID: activeItemContainerID } = activeItemProperties;
 
@@ -494,21 +451,14 @@ type DispatchDragEndActionParam = {
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
 };
-const dispatchDragEndAction = ({
-  dragEndType,
-  event,
-  data,
-  setData,
-}: DispatchDragEndActionParam) => {
-  const { somethingWentWrong, overItemProperties, activeItemProperties } =
-    getDragEventData(event);
+const dispatchDragEndAction = ({ dragEndType, event, data, setData }: DispatchDragEndActionParam) => {
+  const { somethingWentWrong, overItemProperties, activeItemProperties } = getDragEventData(event);
 
   if (somethingWentWrong) {
     return;
   }
 
-  const { id: activeItemID, containerID: activeItemContainerID } =
-    activeItemProperties;
+  const { id: activeItemID, containerID: activeItemContainerID } = activeItemProperties;
 
   const { id: overItemID } = overItemProperties;
 
@@ -559,33 +509,29 @@ const dispatchDragEndAction = ({
 };
 
 type DragHandlers = {
-  dragStartHandler: (event: DragStartEvent) => void;
-  dragOverHandler: (event: DragOverEvent) => void;
-  dragEndHandler: (event: DragEndEvent) => void;
+  handleDragStart: (event: DragStartEvent) => void;
+  handleDragOver: (event: DragOverEvent) => void;
+  handleDragEnd: (event: DragEndEvent) => void;
 };
 type GetDragHandlersParam = {
   setActiveItem: Dispatch<SetStateAction<ActiveItemState>>;
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
 };
-export const getDragHandlers = ({
-  setActiveItem,
-  data,
-  setData,
-}: GetDragHandlersParam): DragHandlers => {
-  const dragStartHandler = (event: DragStartEvent) => {
+export const getDragHandlers = ({ setActiveItem, data, setData }: GetDragHandlersParam): DragHandlers => {
+  const handleDragStart = (event: DragStartEvent) => {
     updateActiveItem({ event, setActiveItem });
   };
 
-  const dragOverHandler = (event: DragOverEvent) => {
+  const handleDragOver = (event: DragOverEvent) => {
     const dragOverType = getDragOverType(event);
     dispatchDragOverAction({ dragOverType, event, data, setData });
   };
 
-  const dragEndHandler = (event: DragEndEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const dragEndType = getDragEndType(event);
     dispatchDragEndAction({ dragEndType, event, data, setData });
   };
 
-  return { dragStartHandler, dragOverHandler, dragEndHandler };
+  return { handleDragStart, handleDragOver, handleDragEnd };
 };
