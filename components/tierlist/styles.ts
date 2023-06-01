@@ -20,6 +20,18 @@ export const rowsContainer = ({ colors, breakpoints }: MantineTheme): CSSObject 
   },
 });
 
+export const rowButtonsContainerSx = (): CSSObject => ({ background: "black", width: "120px" });
+
+export const rowButtonsSx = ({ fn }: MantineTheme): CSSObject => ({
+  color: "#FFFFFF",
+  ":hover": {
+    background: "none",
+    color: fn.darken("#FFFFFF", 0.3),
+  },
+});
+
+export const rowArrowsContainerSx = (): CSSObject => ({ flexDirection: "column", justifyContent: "space-evenly" });
+
 export const MOBILE_BOTTOM_BAR: PxSize = "200px";
 
 export const sidebarContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({

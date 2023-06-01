@@ -1,8 +1,9 @@
 import { SortableContext } from "@dnd-kit/sortable";
-import { Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
-import { IconChevronDown, IconChevronUp, IconSettings } from "@tabler/icons-react";
+import { ActionIcon, Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
+import { IconChevronDown, IconChevronUp, IconSettingsFilled } from "@tabler/icons-react";
 import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
+import { rowArrowsContainerSx, rowButtonsContainerSx, rowButtonsSx } from "./styles";
 import { PxSize, TierListRowData } from "./types";
 
 type Props = {
@@ -45,13 +46,19 @@ export const TierListRow = ({ data, height, maxHeight }: Props) => {
           ))}
         </Flex>
       </SortableContext>
-      <Flex sx={{ background: "black", width: "120px" }}>
+      <Flex sx={rowButtonsContainerSx}>
         <Center w="50%">
-          <IconSettings color="white" />
+          <ActionIcon sx={rowButtonsSx}>
+            <IconSettingsFilled size={40} />
+          </ActionIcon>
         </Center>
-        <Center w="50%" sx={{ flexDirection: "column", justifyContent: "space-evenly" }}>
-          <IconChevronUp color="white" />
-          <IconChevronDown color="white" />
+        <Center w="50%" sx={rowArrowsContainerSx}>
+          <ActionIcon sx={rowButtonsSx}>
+            <IconChevronUp />
+          </ActionIcon>
+          <ActionIcon sx={rowButtonsSx}>
+            <IconChevronDown />
+          </ActionIcon>
         </Center>
       </Flex>
     </Flex>
