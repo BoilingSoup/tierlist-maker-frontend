@@ -1,10 +1,11 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
+import { arrayMove, arraySwap } from "@dnd-kit/sortable";
 import { Box, Flex } from "@mantine/core";
 import { useFullscreen as useFullScreen, useViewportSize } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-import { append, pxToNumber } from "../../components/common/helpers";
+import { append, findIndexByID, pxToNumber } from "../../components/common/helpers";
 import { useIsDesktopScreen } from "../../components/common/hooks/useIsDesktopScreen";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { initialData } from "../../components/tierlist/constants";
@@ -60,11 +61,36 @@ const Create: NextPage = () => {
   // - responsive images dimensions
 
   const handleMoveRowUp = (rowID: string) => {
-    //
+    const currRowIndex = findIndexByID(data.rows, rowID);
+    if (currRowIndex < 1) {
+      return;
+    }
+
+    const newRowIndex = currRowIndex - 1;
+
+    setData(
+      (prev): TierListData => ({
+        rows: arrayMove(prev.rows, currRowIndex, newRowIndex),
+        sidebar: prev.sidebar,
+      })
+    );
   };
 
   const handleMoveRowDown = (rowID: string) => {
-    //
+    const currRowIndex = findIndexByID(data.rows, rowID);
+    const isUnmovable = currRowIndex === -1 || currRowIndex === data.rows.length - 1;
+    if (isUnmovable) {
+      return;
+    }
+
+    const newRowIndex = currRowIndex + 1;
+
+    setData(
+      (prev): TierListData => ({
+        rows: arrayMove(prev.rows, currRowIndex, newRowIndex),
+        sidebar: prev.sidebar,
+      })
+    );
   };
 
   return (
@@ -82,7 +108,14 @@ const Create: NextPage = () => {
         <Flex sx={createPageMainContainer}>
           <Box sx={rowsContainer}>
             {data.rows.map((row) => (
-              <TierListRow key={row.id} data={row} height={rowHeight} maxHeight={maxHeight} />
+              <TierListRow
+                key={row.id}
+                data={row}
+                height={rowHeight}
+                maxHeight={maxHeight}
+                onMoveUp={handleMoveRowUp}
+                onMoveDown={handleMoveRowDown}
+              />
             ))}
           </Box>
           <Sidebar fullScreen={getFullScreenProp(fullScreen)} images={data.sidebar} onAddImage={handleAddImage} />
