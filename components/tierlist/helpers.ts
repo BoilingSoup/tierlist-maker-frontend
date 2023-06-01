@@ -535,3 +535,48 @@ export const getDragHandlers = ({ setActiveItem, data, setData }: GetDragHandler
 
   return { handleDragStart, handleDragOver, handleDragEnd };
 };
+
+type RowMoveHandlers = {
+  handleMoveRowUp: (rowID: string) => void;
+  handleMoveRowDown: (rowID: string) => void;
+};
+type GetRowMoveHandlersParam = {
+  data: TierListData;
+  setData: Dispatch<SetStateAction<TierListData>>;
+};
+export const getRowMoveHandlers = ({ data, setData }: GetRowMoveHandlersParam): RowMoveHandlers => {
+  const handleMoveRowUp = (rowID: string) => {
+    const currRowIndex = findIndexByID(data.rows, rowID);
+    if (currRowIndex < 1) {
+      return;
+    }
+
+    const newRowIndex = currRowIndex - 1;
+
+    setData(
+      (prev): TierListData => ({
+        rows: arrayMove(prev.rows, currRowIndex, newRowIndex),
+        sidebar: prev.sidebar,
+      })
+    );
+  };
+
+  const handleMoveRowDown = (rowID: string) => {
+    const currRowIndex = findIndexByID(data.rows, rowID);
+    const isUnmovable = currRowIndex === -1 || currRowIndex === data.rows.length - 1;
+    if (isUnmovable) {
+      return;
+    }
+
+    const newRowIndex = currRowIndex + 1;
+
+    setData(
+      (prev): TierListData => ({
+        rows: arrayMove(prev.rows, currRowIndex, newRowIndex),
+        sidebar: prev.sidebar,
+      })
+    );
+  };
+
+  return { handleMoveRowUp, handleMoveRowDown };
+};
