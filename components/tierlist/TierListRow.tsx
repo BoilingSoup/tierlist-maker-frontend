@@ -10,6 +10,8 @@ type Props = {
   data: TierListRowData;
   height: PxSize;
   maxHeight: PxSize;
+  onMoveUp: (rowID: string) => void;
+  onMoveDown: (rowID: string) => void;
 };
 
 const junk = (theme: MantineTheme): CSSObject => ({
@@ -17,7 +19,7 @@ const junk = (theme: MantineTheme): CSSObject => ({
   backgroundImage: `radial-gradient(ellipse, ${theme.colors.dark[9]}, ${theme.fn.lighten(theme.colors.dark[8], 0.03)})`,
 });
 
-export const TierListRow = ({ data, height, maxHeight }: Props) => {
+export const TierListRow = ({ data, height, maxHeight, onMoveUp: handleMoveUp, onMoveDown: handleMoveDown }: Props) => {
   const { id, color, items, label } = data;
   const { setNodeRef } = useDroppableRow(id);
 
@@ -53,10 +55,10 @@ export const TierListRow = ({ data, height, maxHeight }: Props) => {
           </ActionIcon>
         </Center>
         <Center w="50%" sx={rowArrowsContainerSx}>
-          <ActionIcon sx={rowButtonsSx}>
+          <ActionIcon sx={rowButtonsSx} onClick={() => handleMoveUp(id)}>
             <IconChevronUp />
           </ActionIcon>
-          <ActionIcon sx={rowButtonsSx}>
+          <ActionIcon sx={rowButtonsSx} onClick={() => handleMoveDown(id)}>
             <IconChevronDown />
           </ActionIcon>
         </Center>
