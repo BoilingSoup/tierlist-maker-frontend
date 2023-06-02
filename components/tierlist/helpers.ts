@@ -536,15 +536,17 @@ export const getDragHandlers = ({ setActiveItem, data, setData }: GetDragHandler
   return { handleDragStart, handleDragOver, handleDragEnd };
 };
 
-type RowMoveHandlers = {
+type RowHandlers = {
   handleMoveRowUp: (rowID: string) => void;
   handleMoveRowDown: (rowID: string) => void;
+  handleChangeLabel: (param: { rowID: string; label: string }) => void;
+  handleChangeColor: (param: { rowID: string; color: string }) => void;
 };
-type GetRowMoveHandlersParam = {
+type GetRowHandlersParam = {
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
 };
-export const getRowMoveHandlers = ({ data, setData }: GetRowMoveHandlersParam): RowMoveHandlers => {
+export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandlers => {
   const handleMoveRowUp = (rowID: string) => {
     const currRowIndex = findIndexByID(data.rows, rowID);
     if (currRowIndex < 1) {
@@ -578,5 +580,35 @@ export const getRowMoveHandlers = ({ data, setData }: GetRowMoveHandlersParam): 
     );
   };
 
-  return { handleMoveRowUp, handleMoveRowDown };
+  const handleChangeLabel = ({ rowID, label }: { rowID: string; label: string }) => {
+    setData(
+      (prev): TierListData => ({
+        rows: prev.rows.map((row) => {
+          if (row.id !== rowID) {
+            return row;
+          }
+          row.label = label;
+          return row;
+        }),
+        sidebar: prev.sidebar,
+      })
+    );
+  };
+
+  const handleChangeColor = ({ rowID, color }: { rowID: string; color: string }) => {
+    setData(
+      (prev): TierListData => ({
+        rows: prev.rows.map((row) => {
+          if (row.id !== rowID) {
+            return row;
+          }
+          row.color = color;
+          return row;
+        }),
+        sidebar: prev.sidebar,
+      })
+    );
+  };
+
+  return { handleMoveRowUp, handleMoveRowDown, handleChangeLabel, handleChangeColor };
 };
