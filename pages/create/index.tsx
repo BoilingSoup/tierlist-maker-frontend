@@ -9,7 +9,7 @@ import { append, pxToNumber } from "../../components/common/helpers";
 import { useIsDesktopScreen } from "../../components/common/hooks/useIsDesktopScreen";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { initialData } from "../../components/tierlist/constants";
-import { getDragHandlers, getFullScreenProp, getRowMoveHandlers } from "../../components/tierlist/helpers";
+import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../components/tierlist/helpers";
 import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
@@ -33,7 +33,10 @@ const Create: NextPage = () => {
         rows: prev.rows,
       })
     );
-  const { handleMoveRowUp, handleMoveRowDown } = getRowMoveHandlers({ setData, data });
+  const { handleMoveRowUp, handleMoveRowDown, handleChangeLabel, handleChangeColor } = getRowHandlers({
+    setData,
+    data,
+  });
   const { handleDragStart, handleDragOver, handleDragEnd } = getDragHandlers({ data, setData, setActiveItem });
 
   const sensors = useDndSensors();
@@ -83,6 +86,8 @@ const Create: NextPage = () => {
                 maxHeight={maxHeight}
                 onMoveUp={handleMoveRowUp}
                 onMoveDown={handleMoveRowDown}
+                onChangeLabel={handleChangeLabel}
+                onChangeColor={handleChangeColor}
               />
             ))}
           </Box>
