@@ -1,20 +1,10 @@
 import { SortableContext } from "@dnd-kit/sortable";
-import {
-  ActionIcon,
-  Center,
-  ColorInput,
-  CSSObject,
-  DEFAULT_THEME,
-  Flex,
-  MantineTheme,
-  Modal,
-  Space,
-  TextInput,
-} from "@mantine/core";
+import { ActionIcon, Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconSettingsFilled } from "@tabler/icons-react";
 import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
+import { RowSettingsModal } from "./RowSettingsModal";
 import { rowArrowsContainerSx, rowButtonsContainerSx, rowButtonsSx } from "./styles";
 import { PxSize, TierListRowData } from "./types";
 
@@ -49,31 +39,16 @@ export const TierListRow = ({
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Row Settings" centered>
-        <Flex>
-          <TextInput
-            label="Label"
-            value={label}
-            onChange={(e) => handleChangeLabel({ rowID: id, label: e.currentTarget.value })}
-          />
-          <Space w="md" />
-          <ColorInput
-            withPicker={false}
-            withEyeDropper={false}
-            label="Color"
-            value={color}
-            autoFocus={false}
-            onChange={(input) => handleChangeColor({ rowID: id, color: input })}
-            disallowInput
-            swatches={[
-              ...DEFAULT_THEME.colors.red,
-              ...DEFAULT_THEME.colors.green,
-              ...DEFAULT_THEME.colors.blue,
-              ...DEFAULT_THEME.colors.cyan,
-            ]}
-          />
-        </Flex>
-      </Modal>
+      <RowSettingsModal
+        rowID={id}
+        opened={opened}
+        onClose={close}
+        colorValue={color}
+        onChangeColor={handleChangeColor}
+        labelValue={label}
+        onChangeLabel={handleChangeLabel}
+      />
+
       <Flex
         sx={{
           border: "2px solid black",
