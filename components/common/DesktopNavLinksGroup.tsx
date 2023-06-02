@@ -17,47 +17,34 @@ export const DesktopNavLinksGroup = ({ className }: Props) => {
   return (
     <Group className={className}>
       <DesktopNavLink href="/" text="Home" isCurrentPath={pathname === "/"} />
-      <DesktopNavLink
-        href="/browse"
-        text="Browse"
-        isCurrentPath={pathname === "/browse"}
-      />
-      <DesktopNavLink
-        href="/create"
-        text="Create"
-        isCurrentPath={pathname === "/create"}
-      />
-      {isLoading || !user ? (
+      <DesktopNavLink href="/browse" text="Browse" isCurrentPath={pathname === "/browse"} />
+      <DesktopNavLink href="/create" text="Create" isCurrentPath={pathname === "/create"} />
+      {isLoading && (
+        <>
+          <DesktopNavLink href="" text="" isCurrentPath={false} isLoading={isLoading} />
+          <DesktopNavLink href="" text="" isCurrentPath={false} isLoading={isLoading} />
+        </>
+      )}
+      {!isLoading && !user && (
         <>
           <DesktopNavLink
-            href={"/register"}
+            href="/register"
             text="Register"
             isCurrentPath={pathname === "/register"}
             isLoading={isLoading}
           />
-          <DesktopNavLink
-            href="/signin"
-            text="Sign In"
-            isCurrentPath={pathname === "/signin"}
-            isLoading={isLoading}
-          />
+          <DesktopNavLink href="/signin" text="Sign In" isCurrentPath={pathname === "/signin"} isLoading={isLoading} />
         </>
-      ) : (
+      )}
+      {!isLoading && user && (
         <>
           <DesktopNavLink
-            href={"/account/tierlists"}
+            href="/account/tierlists"
             text="Account"
-            isCurrentPath={
-              pathname === "/account/tierlists" ||
-              pathname === "/account/settings"
-            }
+            isCurrentPath={pathname === "/account/tierlists" || pathname === "/account/settings"}
             isLoading={isLoading}
           />
-          <DesktopNavLink
-            text="Sign Out"
-            isLoading={isSigningOut}
-            onClick={signOut}
-          />
+          <DesktopNavLink text="Sign Out" isLoading={isSigningOut} onClick={signOut} />
         </>
       )}
     </Group>
