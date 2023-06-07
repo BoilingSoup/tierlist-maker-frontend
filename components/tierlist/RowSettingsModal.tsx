@@ -1,15 +1,5 @@
-import {
-  Button,
-  ColorInput,
-  CSSObject,
-  DEFAULT_THEME,
-  Divider,
-  Flex,
-  MantineTheme,
-  Modal,
-  TextInput,
-  useMantineTheme,
-} from "@mantine/core";
+import { Button, ColorInput, DEFAULT_THEME, Divider, Flex, Modal, TextInput, useMantineTheme } from "@mantine/core";
+import { CalcSize } from "./types";
 
 type Props = {
   rowID: string;
@@ -45,15 +35,15 @@ export const RowSettingsModal = ({
   onClose: close,
 }: Props) => {
   const theme = useMantineTheme();
+  const width: CalcSize = `calc(50% - ${theme.spacing.md} / 2)`; // 2 items per row, with theme.spacing.md space between them
+
   return (
     <Modal opened={opened} onClose={close} title="Row Settings" centered>
       <Flex w="100%" justify="space-between">
         <TextInput
           label="Label Text"
           value={label}
-          styles={{
-            root: { width: `calc(50% - ${theme.spacing.md} / 2)` },
-          }}
+          styles={{ root: { width } }}
           onChange={(e) => handleChangeLabel({ rowID, label: e.currentTarget.value })}
         />
         <ColorInput
@@ -66,28 +56,18 @@ export const RowSettingsModal = ({
           disallowInput
           swatchesPerRow={swatches.length}
           swatches={swatches}
-          styles={{
-            root: { width: `calc(50% - ${theme.spacing.md} / 2)` },
-          }}
+          styles={{ root: { width } }}
         />
       </Flex>
       <Divider my="md" />
       <Flex w="100%" justify="space-between">
-        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
-          Delete Row
-        </Button>
-        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
-          Clear Row Images
-        </Button>
+        <Button w={width}>Delete Row</Button>
+        <Button w={width}>Clear Row Images</Button>
       </Flex>
       <Divider my="md" />
       <Flex w="100%" justify="space-between">
-        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
-          Add a Row Above
-        </Button>
-        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
-          Add a Row Below
-        </Button>
+        <Button w={width}>Add a Row Above</Button>
+        <Button w={width}>Add a Row Below</Button>
       </Flex>
     </Modal>
   );

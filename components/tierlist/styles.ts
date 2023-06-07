@@ -1,4 +1,11 @@
-import { ButtonStylesParams, CSSObject, ListStylesNames, MantineTheme, Styles } from "@mantine/core";
+import {
+  ButtonStylesParams,
+  CSSObject,
+  ListStylesNames,
+  MantineTheme,
+  Styles,
+  TextInputStylesNames,
+} from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "./types";
 
