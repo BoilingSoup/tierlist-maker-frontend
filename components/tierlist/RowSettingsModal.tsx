@@ -11,6 +11,8 @@ type Props = {
   labelValue: string;
   onChangeLabel: (param: { rowID: string; label: string }) => void;
   onClose: () => void;
+  onAddRowAbove: (rowID: string) => void;
+  onAddRowBelow: (rowID: string) => void;
 };
 
 const swatches = [
@@ -37,6 +39,8 @@ export const RowSettingsModal = ({
   labelValue: label,
   onChangeLabel: handleChangeLabel,
   onClose: close,
+  onAddRowAbove: handleAddRowAbove,
+  onAddRowBelow: handleAddRowBelow,
 }: Props) => {
   const theme = useMantineTheme();
   const width: CalcSize = `calc(50% - ${theme.spacing.md} / 2)`; // 2 items per row, with theme.spacing.md space between them
@@ -65,10 +69,10 @@ export const RowSettingsModal = ({
       </Flex>
       <Divider my="md" color="dark.3" />
       <Flex w="100%" justify="space-between">
-        <Button w={width} leftIcon={<IconPlus size={iconSize} />}>
+        <Button w={width} leftIcon={<IconPlus size={iconSize} />} onClick={() => handleAddRowAbove(rowID)}>
           Add a Row Above
         </Button>
-        <Button w={width} leftIcon={<IconPlus size={iconSize} />}>
+        <Button w={width} leftIcon={<IconPlus size={iconSize} />} onClick={() => handleAddRowBelow(rowID)}>
           Add a Row Below
         </Button>
       </Flex>

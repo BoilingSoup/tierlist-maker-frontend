@@ -33,7 +33,14 @@ const Create: NextPage = () => {
         rows: prev.rows,
       })
     );
-  const { handleMoveRowUp, handleMoveRowDown, handleChangeLabel, handleChangeColor } = getRowHandlers({
+  const {
+    handleMoveRowUp,
+    handleMoveRowDown,
+    handleChangeLabel,
+    handleChangeColor,
+    handleAddRowAbove,
+    handleAddRowBelow,
+  } = getRowHandlers({
     setData,
     data,
   });
@@ -89,6 +96,8 @@ const Create: NextPage = () => {
                 onMoveDown={handleMoveRowDown}
                 onChangeLabel={handleChangeLabel}
                 onChangeColor={handleChangeColor}
+                onAddRowAbove={handleAddRowAbove}
+                onAddRowBelow={handleAddRowBelow}
               />
             ))}
           </Box>

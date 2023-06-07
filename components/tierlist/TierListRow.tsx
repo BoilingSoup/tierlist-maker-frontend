@@ -16,6 +16,8 @@ type Props = {
   onMoveDown: (rowID: string) => void;
   onChangeLabel: (param: { rowID: string; label: string }) => void;
   onChangeColor: (param: { rowID: string; color: string }) => void;
+  onAddRowAbove: (rowID: string) => void;
+  onAddRowBelow: (rowID: string) => void;
 };
 
 const junk = (theme: MantineTheme): CSSObject => ({
@@ -31,6 +33,8 @@ export const TierListRow = ({
   onMoveDown: handleMoveDown,
   onChangeLabel: handleChangeLabel,
   onChangeColor: handleChangeColor,
+  onAddRowAbove: handleAddRowAbove,
+  onAddRowBelow: handleAddRowBelow,
 }: Props) => {
   const { id, color, items, label } = data;
   const { setNodeRef } = useDroppableRow(id);
@@ -47,6 +51,8 @@ export const TierListRow = ({
         onChangeColor={handleChangeColor}
         labelValue={label}
         onChangeLabel={handleChangeLabel}
+        onAddRowAbove={handleAddRowAbove}
+        onAddRowBelow={handleAddRowBelow}
       />
 
       <Flex
