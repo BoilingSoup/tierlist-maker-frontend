@@ -41,6 +41,7 @@ const Create: NextPage = () => {
     handleAddRowAbove,
     handleAddRowBelow,
     handleDeleteRow,
+    handleClearRow,
   } = getRowHandlers({
     setData,
     data,
@@ -69,7 +70,7 @@ const Create: NextPage = () => {
 
   // TODO:
   // - authenticated view (hide save/publish buttons)
-  // - add row button, delete row button, clear row button
+  // - show error when deleting last row
   // - paste event only send network request if text is a valid URL
   // - responsive images dimensions
 
@@ -100,6 +101,7 @@ const Create: NextPage = () => {
                 onAddRowAbove={handleAddRowAbove}
                 onAddRowBelow={handleAddRowBelow}
                 onDeleteRow={handleDeleteRow}
+                onClearRow={handleClearRow}
               />
             ))}
           </Box>
