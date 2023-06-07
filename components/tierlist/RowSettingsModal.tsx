@@ -14,6 +14,7 @@ type Props = {
   onClose: () => void;
   onAddRowAbove: (rowID: string) => void;
   onAddRowBelow: (rowID: string) => void;
+  onDeleteRow: (rowID: string) => void;
 };
 
 const iconSize = 16;
@@ -28,6 +29,7 @@ export const RowSettingsModal = ({
   onClose: close,
   onAddRowAbove: handleAddRowAbove,
   onAddRowBelow: handleAddRowBelow,
+  onDeleteRow: handleDeleteRow,
 }: Props) => {
   const theme = useMantineTheme();
   const width: CalcSize = `calc(50% - ${theme.spacing.md} / 2)`; // 2 items per row, with theme.spacing.md space between them
@@ -65,11 +67,11 @@ export const RowSettingsModal = ({
       </Flex>
       <Divider my="md" color="dark.3" />
       <Flex w="100%" justify="space-between">
-        <Button color="red" w={width} leftIcon={<IconTrash size={iconSize} />}>
+        <Button color="red" w={width} leftIcon={<IconTrash size={iconSize} />} onClick={() => handleDeleteRow(rowID)}>
           Delete Row
         </Button>
         <Button color="orange" w={width} leftIcon={<IconEraser size={iconSize} />}>
-          Clear Row
+          Clear Row Images
         </Button>
       </Flex>
     </Modal>

@@ -40,6 +40,7 @@ const Create: NextPage = () => {
     handleChangeColor,
     handleAddRowAbove,
     handleAddRowBelow,
+    handleDeleteRow,
   } = getRowHandlers({
     setData,
     data,
@@ -98,6 +99,7 @@ const Create: NextPage = () => {
                 onChangeColor={handleChangeColor}
                 onAddRowAbove={handleAddRowAbove}
                 onAddRowBelow={handleAddRowBelow}
+                onDeleteRow={handleDeleteRow}
               />
             ))}
           </Box>
