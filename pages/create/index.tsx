@@ -45,6 +45,7 @@ const Create: NextPage = () => {
 
   const isDesktopScreen = useIsDesktopScreen();
   const amountOfRowsToPerfectlyFitOnScreen = 5;
+
   let maxHeight: PxSize;
   let rowHeight: PxSize;
 
