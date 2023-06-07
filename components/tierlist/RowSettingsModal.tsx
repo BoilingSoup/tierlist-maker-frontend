@@ -1,4 +1,15 @@
-import { ColorInput, DEFAULT_THEME, Flex, Modal, Space, TextInput } from "@mantine/core";
+import {
+  Button,
+  ColorInput,
+  CSSObject,
+  DEFAULT_THEME,
+  Divider,
+  Flex,
+  MantineTheme,
+  Modal,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
 
 type Props = {
   rowID: string;
@@ -10,6 +21,20 @@ type Props = {
   onClose: () => void;
 };
 
+const swatches = [
+  DEFAULT_THEME.colors.red[5],
+  DEFAULT_THEME.colors.orange[5],
+  DEFAULT_THEME.colors.yellow[5],
+  DEFAULT_THEME.colors.lime[5],
+  DEFAULT_THEME.colors.green[5],
+  DEFAULT_THEME.colors.cyan[5],
+  DEFAULT_THEME.colors.blue[5],
+  DEFAULT_THEME.colors.indigo[5],
+  DEFAULT_THEME.colors.grape[5],
+  DEFAULT_THEME.colors.violet[5],
+  DEFAULT_THEME.colors.gray[5],
+];
+
 export const RowSettingsModal = ({
   rowID,
   opened,
@@ -19,30 +44,50 @@ export const RowSettingsModal = ({
   onChangeLabel: handleChangeLabel,
   onClose: close,
 }: Props) => {
+  const theme = useMantineTheme();
   return (
     <Modal opened={opened} onClose={close} title="Row Settings" centered>
-      <Flex>
+      <Flex w="100%" justify="space-between">
         <TextInput
-          label="Label"
+          label="Label Text"
           value={label}
+          styles={{
+            root: { width: `calc(50% - ${theme.spacing.md} / 2)` },
+          }}
           onChange={(e) => handleChangeLabel({ rowID, label: e.currentTarget.value })}
         />
-        <Space w="md" />
         <ColorInput
           withPicker={false}
           withEyeDropper={false}
-          label="Color"
+          label="Label Background"
           value={color}
           autoFocus={false}
           onChange={(input) => handleChangeColor({ rowID, color: input })}
           disallowInput
-          swatches={[
-            ...DEFAULT_THEME.colors.red,
-            ...DEFAULT_THEME.colors.green,
-            ...DEFAULT_THEME.colors.blue,
-            ...DEFAULT_THEME.colors.cyan,
-          ]}
+          swatchesPerRow={swatches.length}
+          swatches={swatches}
+          styles={{
+            root: { width: `calc(50% - ${theme.spacing.md} / 2)` },
+          }}
         />
+      </Flex>
+      <Divider my="md" />
+      <Flex w="100%" justify="space-between">
+        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
+          Delete Row
+        </Button>
+        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
+          Clear Row Images
+        </Button>
+      </Flex>
+      <Divider my="md" />
+      <Flex w="100%" justify="space-between">
+        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
+          Add a Row Above
+        </Button>
+        <Button sx={(theme: MantineTheme): CSSObject => ({ width: `calc(50% - ${theme.spacing.md} / 2)` })}>
+          Add a Row Below
+        </Button>
       </Flex>
     </Modal>
   );

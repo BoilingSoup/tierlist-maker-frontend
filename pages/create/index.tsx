@@ -60,7 +60,7 @@ const Create: NextPage = () => {
 
   // TODO:
   // - authenticated view (hide save/publish buttons)
-  // - Move rows buttons, add row button, delete row button, change row color, change row title
+  // - add row button, delete row button, clear row button
   // - paste event only send network request if text is a valid URL
   // - responsive images dimensions
 
