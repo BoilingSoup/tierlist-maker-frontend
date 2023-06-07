@@ -1,9 +1,24 @@
+import { DEFAULT_THEME } from "@mantine/core";
 import { nanoid } from "nanoid";
 import { TierListData } from "./types";
 
 export const SIDEBAR = "SIDEBAR";
 export const CONTAINER = "CONTAINER";
 export const IMAGE = "IMAGE";
+
+export const SWATCHES = [
+  DEFAULT_THEME.colors.red[5],
+  DEFAULT_THEME.colors.orange[5],
+  DEFAULT_THEME.colors.yellow[3],
+  DEFAULT_THEME.colors.lime[5],
+  DEFAULT_THEME.colors.green[5],
+  DEFAULT_THEME.colors.cyan[5],
+  DEFAULT_THEME.colors.blue[5],
+  DEFAULT_THEME.colors.indigo[5],
+  DEFAULT_THEME.colors.grape[5],
+  DEFAULT_THEME.colors.violet[5],
+  DEFAULT_THEME.colors.gray[5],
+];
 
 export const initialData: TierListData = {
   sidebar: [],

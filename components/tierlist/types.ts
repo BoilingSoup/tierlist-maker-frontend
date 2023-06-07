@@ -69,10 +69,7 @@ export type DragOverType =
   | typeof DRAG_FROM_SIDEBAR_TO_ROW__CONTAINER
   | typeof DRAG_FROM_SIDEBAR_TO_ROW__IMAGE;
 
-export type OverItemEventData =
-  | OverImageEventData
-  | OverRowEventData
-  | OverSidebarEventData;
+export type OverItemEventData = OverImageEventData | OverRowEventData | OverSidebarEventData;
 
 type OverImageEventData = DragOverEvent["over"] & ActiveImageEventData;
 
@@ -116,9 +113,6 @@ type OverSidebarEventData = DragOverEvent["over"] & {
 
 /*************************Drag End Event types*************************/
 
-export type DragEndType =
-  | typeof DRAG_END_WITHIN_ROW
-  | typeof DRAG_END_WITHIN_SIDEBAR
-  | typeof IGNORE_DRAG;
+export type DragEndType = typeof DRAG_END_WITHIN_ROW | typeof DRAG_END_WITHIN_SIDEBAR | typeof IGNORE_DRAG;
 
 /**********************************************************************/

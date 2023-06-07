@@ -1,5 +1,6 @@
-import { Button, ColorInput, DEFAULT_THEME, Divider, Flex, Modal, TextInput, useMantineTheme } from "@mantine/core";
+import { Button, ColorInput, Divider, Flex, Modal, TextInput, useMantineTheme } from "@mantine/core";
 import { IconEraser, IconPlus, IconTrash } from "@tabler/icons-react";
+import { SWATCHES } from "./constants";
 import { getRowSettingsModalStyles } from "./styles";
 import { CalcSize } from "./types";
 
@@ -14,20 +15,6 @@ type Props = {
   onAddRowAbove: (rowID: string) => void;
   onAddRowBelow: (rowID: string) => void;
 };
-
-const swatches = [
-  DEFAULT_THEME.colors.red[5],
-  DEFAULT_THEME.colors.orange[5],
-  DEFAULT_THEME.colors.yellow[5],
-  DEFAULT_THEME.colors.lime[5],
-  DEFAULT_THEME.colors.green[5],
-  DEFAULT_THEME.colors.cyan[5],
-  DEFAULT_THEME.colors.blue[5],
-  DEFAULT_THEME.colors.indigo[5],
-  DEFAULT_THEME.colors.grape[5],
-  DEFAULT_THEME.colors.violet[5],
-  DEFAULT_THEME.colors.gray[5],
-];
 
 const iconSize = 16;
 
@@ -62,8 +49,8 @@ export const RowSettingsModal = ({
           autoFocus={false}
           onChange={(input) => handleChangeColor({ rowID, color: input })}
           disallowInput
-          swatchesPerRow={swatches.length}
-          swatches={swatches}
+          swatchesPerRow={SWATCHES.length}
+          swatches={SWATCHES}
           styles={{ root: { width }, label: { color: "white" } }}
         />
       </Flex>
