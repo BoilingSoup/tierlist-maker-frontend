@@ -152,6 +152,7 @@ export const addFileButtonAreaSx = ({ breakpoints }: MantineTheme): CSSObject =>
   width: "25%",
   [`@media (min-width:${breakpoints.lg})`]: {
     width: "100%",
+    height: "40px",
   },
 });
 
