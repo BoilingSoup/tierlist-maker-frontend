@@ -1,4 +1,5 @@
 import { Button, ColorInput, DEFAULT_THEME, Divider, Flex, Modal, TextInput, useMantineTheme } from "@mantine/core";
+import { IconEraser, IconPlus, IconTrash } from "@tabler/icons-react";
 import { CalcSize } from "./types";
 
 type Props = {
@@ -25,6 +26,8 @@ const swatches = [
   DEFAULT_THEME.colors.gray[5],
 ];
 
+const iconSize = 16;
+
 export const RowSettingsModal = ({
   rowID,
   opened,
@@ -38,12 +41,24 @@ export const RowSettingsModal = ({
   const width: CalcSize = `calc(50% - ${theme.spacing.md} / 2)`; // 2 items per row, with theme.spacing.md space between them
 
   return (
-    <Modal opened={opened} onClose={close} title="Row Settings" centered>
+    <Modal
+      opened={opened}
+      onClose={close}
+      title="Row Settings"
+      centered
+      styles={{
+        content: { background: theme.colors.dark[4] },
+        body: { background: theme.colors.dark[4] },
+        title: { color: "white", fontSize: theme.fontSizes.xl, marginBottom: theme.spacing.md },
+        header: { alignItems: "flex-start", background: theme.colors.dark[4] },
+        close: { color: "white", ":hover": { background: "none" } },
+      }}
+    >
       <Flex w="100%" justify="space-between">
         <TextInput
           label="Label Text"
           value={label}
-          styles={{ root: { width } }}
+          styles={{ root: { width }, label: { color: "white" } }}
           onChange={(e) => handleChangeLabel({ rowID, label: e.currentTarget.value })}
         />
         <ColorInput
@@ -56,18 +71,26 @@ export const RowSettingsModal = ({
           disallowInput
           swatchesPerRow={swatches.length}
           swatches={swatches}
-          styles={{ root: { width } }}
+          styles={{ root: { width }, label: { color: "white" } }}
         />
       </Flex>
-      <Divider my="md" />
+      <Divider my="md" color="dark.3" />
       <Flex w="100%" justify="space-between">
-        <Button w={width}>Delete Row</Button>
-        <Button w={width}>Clear Row Images</Button>
+        <Button w={width} leftIcon={<IconPlus size={iconSize} />}>
+          Add a Row Above
+        </Button>
+        <Button w={width} leftIcon={<IconPlus size={iconSize} />}>
+          Add a Row Below
+        </Button>
       </Flex>
-      <Divider my="md" />
+      <Divider my="md" color="dark.3" />
       <Flex w="100%" justify="space-between">
-        <Button w={width}>Add a Row Above</Button>
-        <Button w={width}>Add a Row Below</Button>
+        <Button color="red" w={width} leftIcon={<IconTrash size={iconSize} />}>
+          Delete Row
+        </Button>
+        <Button color="orange" w={width} leftIcon={<IconEraser size={iconSize} />}>
+          Clear Row
+        </Button>
       </Flex>
     </Modal>
   );
