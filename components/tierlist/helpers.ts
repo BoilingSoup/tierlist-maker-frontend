@@ -547,6 +547,7 @@ type RowHandlers = {
   handleAddRowAbove: (rowID: string) => void;
   handleAddRowBelow: (rowID: string) => void;
   handleDeleteRow: (rowID: string) => void;
+  handleClearRow: (rowID: string) => void;
 };
 type GetRowHandlersParam = {
   data: TierListData;
@@ -593,8 +594,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
           if (row.id !== rowID) {
             return row;
           }
-          row.label = label;
-          return row;
+          return { id: row.id, color: row.color, items: row.items, label };
         }),
         sidebar: prev.sidebar,
       })
@@ -608,8 +608,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
           if (row.id !== rowID) {
             return row;
           }
-          row.color = color;
-          return row;
+          return { id: row.id, color, items: row.items, label: row.label };
         }),
         sidebar: prev.sidebar,
       })
@@ -645,6 +644,22 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     );
   };
 
+  const handleClearRow = (rowID: string) => {
+    const rowIndex = findIndexByID(data.rows, rowID);
+    const rowItems = data.rows[rowIndex].items;
+    setData(
+      (prev): TierListData => ({
+        rows: prev.rows.map((row) => {
+          if (row.id !== rowID) {
+            return row;
+          }
+          return { id: row.id, color: row.color, items: [], label: row.label };
+        }),
+        sidebar: [...prev.sidebar, ...rowItems],
+      })
+    );
+  };
+
   return {
     handleMoveRowUp,
     handleMoveRowDown,
@@ -653,6 +668,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     handleAddRowAbove,
     handleAddRowBelow,
     handleDeleteRow,
+    handleClearRow,
   };
 };
 

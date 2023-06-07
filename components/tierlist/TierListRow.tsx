@@ -19,6 +19,7 @@ type Props = {
   onAddRowAbove: (rowID: string) => void;
   onAddRowBelow: (rowID: string) => void;
   onDeleteRow: (rowID: string) => void;
+  onClearRow: (rowID: string) => void;
 };
 
 const junk = (theme: MantineTheme): CSSObject => ({
@@ -37,6 +38,7 @@ export const TierListRow = ({
   onAddRowAbove: handleAddRowAbove,
   onAddRowBelow: handleAddRowBelow,
   onDeleteRow: handleDeleteRow,
+  onClearRow: handleClearRow,
 }: Props) => {
   const { id, color, items, label } = data;
   const { setNodeRef } = useDroppableRow(id);
@@ -56,6 +58,7 @@ export const TierListRow = ({
         onAddRowAbove={handleAddRowAbove}
         onAddRowBelow={handleAddRowBelow}
         onDeleteRow={handleDeleteRow}
+        onClearRow={handleClearRow}
       />
 
       <Flex
