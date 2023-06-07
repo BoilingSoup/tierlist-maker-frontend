@@ -1,6 +1,5 @@
 import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { DEFAULT_THEME } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { nanoid } from "nanoid";
 import { Dispatch, SetStateAction } from "react";
@@ -18,6 +17,7 @@ import {
   IGNORE_DRAG,
   IMAGE,
   SIDEBAR,
+  SWATCHES,
 } from "./constants";
 import {
   ActiveItem,
@@ -618,7 +618,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
   const handleAddRowAbove = (rowID: string) => {
     const rowsCopy = [...data.rows];
     const insertAtIndex = findIndexByID(rowsCopy, rowID);
-    const newRow: TierListRowData = { id: nanoid(), color: DEFAULT_THEME.colors.red[5], items: [], label: "NEW" };
+    const newRow: TierListRowData = { id: nanoid(), color: randomSwatch(), items: [], label: "NEW" };
     rowsCopy.splice(insertAtIndex, -1, newRow);
 
     setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev.sidebar }));
@@ -627,7 +627,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
   const handleAddRowBelow = (rowID: string) => {
     const rowsCopy = [...data.rows];
     const insertAtIndex = findIndexByID(rowsCopy, rowID) + 1;
-    const newRow: TierListRowData = { id: nanoid(), color: DEFAULT_THEME.colors.red[5], items: [], label: "NEW" };
+    const newRow: TierListRowData = { id: nanoid(), color: randomSwatch(), items: [], label: "NEW" };
     rowsCopy.splice(insertAtIndex, -1, newRow);
 
     setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev.sidebar }));
@@ -642,3 +642,5 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     handleAddRowBelow,
   };
 };
+
+const randomSwatch = () => SWATCHES[Math.floor(Math.random() * SWATCHES.length)];
