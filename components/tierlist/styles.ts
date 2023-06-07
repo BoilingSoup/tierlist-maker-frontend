@@ -3,8 +3,8 @@ import {
   CSSObject,
   ListStylesNames,
   MantineTheme,
+  ModalBaseStylesNames,
   Styles,
-  TextInputStylesNames,
 } from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "./types";
@@ -214,4 +214,16 @@ export const actionButtonsSx = ({ colors, breakpoints }: MantineTheme): CSSObjec
     height: "50%",
     borderRadius: 0,
   },
+});
+
+export const getRowSettingsModalStyles = ({
+  colors,
+  fontSizes,
+  spacing,
+}: MantineTheme): Styles<ModalBaseStylesNames, never> => ({
+  content: { background: colors.dark[4] },
+  body: { background: colors.dark[4] },
+  title: { color: "white", fontSize: fontSizes.xl, marginBottom: spacing.md },
+  header: { alignItems: "flex-start", background: colors.dark[4] },
+  close: { color: "white", ":hover": { background: "none" } },
 });

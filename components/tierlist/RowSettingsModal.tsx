@@ -1,5 +1,6 @@
 import { Button, ColorInput, DEFAULT_THEME, Divider, Flex, Modal, TextInput, useMantineTheme } from "@mantine/core";
 import { IconEraser, IconPlus, IconTrash } from "@tabler/icons-react";
+import { getRowSettingsModalStyles } from "./styles";
 import { CalcSize } from "./types";
 
 type Props = {
@@ -41,25 +42,13 @@ export const RowSettingsModal = ({
   const width: CalcSize = `calc(50% - ${theme.spacing.md} / 2)`; // 2 items per row, with theme.spacing.md space between them
 
   return (
-    <Modal
-      opened={opened}
-      onClose={close}
-      title="Row Settings"
-      centered
-      styles={{
-        content: { background: theme.colors.dark[4] },
-        body: { background: theme.colors.dark[4] },
-        title: { color: "white", fontSize: theme.fontSizes.xl, marginBottom: theme.spacing.md },
-        header: { alignItems: "flex-start", background: theme.colors.dark[4] },
-        close: { color: "white", ":hover": { background: "none" } },
-      }}
-    >
+    <Modal opened={opened} onClose={close} title="Row Settings" centered styles={getRowSettingsModalStyles(theme)}>
       <Flex w="100%" justify="space-between">
         <TextInput
           label="Label Text"
           value={label}
-          styles={{ root: { width }, label: { color: "white" } }}
           onChange={(e) => handleChangeLabel({ rowID, label: e.currentTarget.value })}
+          styles={{ root: { width }, label: { color: "white" } }}
         />
         <ColorInput
           withPicker={false}
