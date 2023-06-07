@@ -1,6 +1,8 @@
 import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
+import { DEFAULT_THEME } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
+import { nanoid } from "nanoid";
 import { Dispatch, SetStateAction } from "react";
 import { append, filterByID, findIndexByID, insertAtIndex } from "../common/helpers";
 import {
@@ -27,6 +29,7 @@ import {
   OverItemEventData,
   SortableImageProps,
   TierListData,
+  TierListRowData,
   UpdateActiveItemParam,
 } from "./types";
 
@@ -541,6 +544,8 @@ type RowHandlers = {
   handleMoveRowDown: (rowID: string) => void;
   handleChangeLabel: (param: { rowID: string; label: string }) => void;
   handleChangeColor: (param: { rowID: string; color: string }) => void;
+  handleAddRowAbove: (rowID: string) => void;
+  handleAddRowBelow: (rowID: string) => void;
 };
 type GetRowHandlersParam = {
   data: TierListData;
@@ -610,5 +615,30 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     );
   };
 
-  return { handleMoveRowUp, handleMoveRowDown, handleChangeLabel, handleChangeColor };
+  const handleAddRowAbove = (rowID: string) => {
+    const rowsCopy = [...data.rows];
+    const insertAtIndex = findIndexByID(rowsCopy, rowID);
+    const newRow: TierListRowData = { id: nanoid(), color: DEFAULT_THEME.colors.red[5], items: [], label: "NEW" };
+    rowsCopy.splice(insertAtIndex, -1, newRow);
+
+    setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev.sidebar }));
+  };
+
+  const handleAddRowBelow = (rowID: string) => {
+    const rowsCopy = [...data.rows];
+    const insertAtIndex = findIndexByID(rowsCopy, rowID) + 1;
+    const newRow: TierListRowData = { id: nanoid(), color: DEFAULT_THEME.colors.red[5], items: [], label: "NEW" };
+    rowsCopy.splice(insertAtIndex, -1, newRow);
+
+    setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev.sidebar }));
+  };
+
+  return {
+    handleMoveRowUp,
+    handleMoveRowDown,
+    handleChangeLabel,
+    handleChangeColor,
+    handleAddRowAbove,
+    handleAddRowBelow,
+  };
 };
