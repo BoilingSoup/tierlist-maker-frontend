@@ -546,6 +546,7 @@ type RowHandlers = {
   handleChangeColor: (param: { rowID: string; color: string }) => void;
   handleAddRowAbove: (rowID: string) => void;
   handleAddRowBelow: (rowID: string) => void;
+  handleDeleteRow: (rowID: string) => void;
 };
 type GetRowHandlersParam = {
   data: TierListData;
@@ -633,6 +634,17 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev.sidebar }));
   };
 
+  const handleDeleteRow = (rowID: string) => {
+    const rowIndex = findIndexByID(data.rows, rowID);
+    const rowItems = data.rows[rowIndex].items;
+    setData(
+      (prev): TierListData => ({
+        rows: prev.rows.filter((row) => row.id !== rowID),
+        sidebar: [...prev.sidebar, ...rowItems],
+      })
+    );
+  };
+
   return {
     handleMoveRowUp,
     handleMoveRowDown,
@@ -640,6 +652,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     handleChangeColor,
     handleAddRowAbove,
     handleAddRowBelow,
+    handleDeleteRow,
   };
 };
 
