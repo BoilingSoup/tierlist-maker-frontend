@@ -12,6 +12,7 @@ type Props = {
   data: TierListRowData;
   height: PxSize;
   maxHeight: PxSize;
+  deletable: boolean;
   onMoveUp: (rowID: string) => void;
   onMoveDown: (rowID: string) => void;
   onChangeLabel: (param: { rowID: string; label: string }) => void;
@@ -31,6 +32,7 @@ export const TierListRow = ({
   data,
   height,
   maxHeight,
+  deletable,
   onMoveUp: handleMoveUp,
   onMoveDown: handleMoveDown,
   onChangeLabel: handleChangeLabel,
@@ -50,6 +52,7 @@ export const TierListRow = ({
       <RowSettingsModal
         rowID={id}
         opened={opened}
+        deletable={deletable}
         onClose={close}
         colorValue={color}
         onChangeColor={handleChangeColor}

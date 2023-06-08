@@ -7,6 +7,7 @@ import { CalcSize } from "./types";
 type Props = {
   rowID: string;
   opened: boolean;
+  deletable: boolean;
   colorValue: string;
   onChangeColor: (param: { rowID: string; color: string }) => void;
   labelValue: string;
@@ -23,6 +24,7 @@ const iconSize = 16;
 export const RowSettingsModal = ({
   rowID,
   opened,
+  deletable,
   colorValue: color,
   onChangeColor: handleChangeColor,
   labelValue: label,
@@ -69,7 +71,13 @@ export const RowSettingsModal = ({
       </Flex>
       <Divider my="md" color="dark.3" />
       <Flex w="100%" justify="space-between">
-        <Button color="red" w={width} leftIcon={<IconTrash size={iconSize} />} onClick={() => handleDeleteRow(rowID)}>
+        <Button
+          color="red"
+          w={width}
+          leftIcon={<IconTrash size={iconSize} />}
+          disabled={deletable}
+          onClick={() => handleDeleteRow(rowID)}
+        >
           Delete Row
         </Button>
         <Button
