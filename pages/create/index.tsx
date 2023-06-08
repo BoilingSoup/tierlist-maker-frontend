@@ -70,7 +70,6 @@ const Create: NextPage = () => {
 
   // TODO:
   // - authenticated view (hide save/publish buttons)
-  // - show error when deleting last row
   // - paste event only send network request if text is a valid URL
   // - responsive images dimensions
 
@@ -94,6 +93,7 @@ const Create: NextPage = () => {
                 data={row}
                 height={rowHeight}
                 maxHeight={maxHeight}
+                deletable={data.rows.length <= 1}
                 onMoveUp={handleMoveRowUp}
                 onMoveDown={handleMoveRowDown}
                 onChangeLabel={handleChangeLabel}
