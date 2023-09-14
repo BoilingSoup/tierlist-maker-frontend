@@ -3,10 +3,7 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
-import {
-  showSomethingWentWrongNotification,
-  showVerifyAccountNotification,
-} from "../../components/common/helpers";
+import { showSomethingWentWrongNotification, showVerifyAccountNotification } from "../../components/common/helpers";
 import { useAuth, UserDataServerResponse } from "../../contexts/AuthProvider";
 import { authClient } from "../../lib/apiClient";
 import { RegisterFormValues } from "../auth/types";
@@ -34,10 +31,7 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
     onError: (e: AxiosError<{ message: string }>) => {
       const errorReceived = e.response?.data.message;
       const emailDuplicateErrMsg = new RegExp(/email is already/i); // Full error: "This email is already in use."
-      if (
-        errorReceived !== undefined &&
-        emailDuplicateErrMsg.test(errorReceived)
-      ) {
+      if (errorReceived !== undefined && emailDuplicateErrMsg.test(errorReceived)) {
         form.setErrors({ email: errorReceived });
         return;
       }
@@ -49,9 +43,6 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
 };
 
 const attemptRegister = async (values: RegisterFormValues) => {
-  const res = await authClient.post<UserDataServerResponse>(
-    "/register",
-    values
-  );
+  const res = await authClient.post<UserDataServerResponse>("/register", values);
   return res.data.data;
 };

@@ -1,10 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { RegisterForm } from "../components/forms/RegisterForm";
-import {
-  registerFormInitialValues,
-  useRegisterFormStore,
-} from "../hooks/store/useRegisterFormStore";
+import { registerFormInitialValues, useRegisterFormStore } from "../hooks/store/useRegisterFormStore";
 import { renderWithContexts } from "../test-utils/render";
 
 jest.mock("next/router", () => ({
@@ -27,8 +24,7 @@ jest.mock("next/router", () => ({
 
 const emailValidationError = /invalid email/i;
 const usernameValidationError = /username must be between 4-20 characters/i;
-const passwordValidationError =
-  /password length must be at least 8 characters/i;
+const passwordValidationError = /password length must be at least 8 characters/i;
 const passwordConfirmationValidationError = /password does not match/i;
 
 const getFormByRole = () => {
@@ -37,10 +33,7 @@ const getFormByRole = () => {
 
 beforeEach(() => {
   // reset zustand state between tests
-  useRegisterFormStore.setState(
-    (state) => ({ ...state, values: { ...registerFormInitialValues } }),
-    true
-  );
+  useRegisterFormStore.setState((state) => ({ ...state, values: { ...registerFormInitialValues } }), true);
 });
 
 describe("Register form", () => {
@@ -76,11 +69,7 @@ describe("Register form", () => {
     const submitBtn = within(form).getByRole("button", {
       name: /register/i,
     });
-    const validationErrors = [
-      emailValidationError,
-      usernameValidationError,
-      passwordValidationError,
-    ];
+    const validationErrors = [emailValidationError, usernameValidationError, passwordValidationError];
 
     await user.click(submitBtn);
 
@@ -250,9 +239,7 @@ describe("Register form", () => {
       await user.keyboard(invalidInput);
       await user.click(form);
 
-      const validationText = within(form).getByText(
-        passwordConfirmationValidationError
-      );
+      const validationText = within(form).getByText(passwordConfirmationValidationError);
       expect(validationText).toBeInTheDocument();
     });
 
@@ -261,8 +248,7 @@ describe("Register form", () => {
       renderWithContexts(<RegisterForm />);
       const form = getFormByRole();
       const passwordInputField = within(form).getByLabelText(/^password/i);
-      const confirmPasswordInputField =
-        within(form).getByLabelText(/^confirm password/i);
+      const confirmPasswordInputField = within(form).getByLabelText(/^confirm password/i);
       const validInput = "validPasswordLength";
 
       await user.click(passwordInputField);
@@ -272,9 +258,7 @@ describe("Register form", () => {
       await user.keyboard(validInput);
       await user.click(form);
 
-      const validationText = within(form).queryByText(
-        passwordConfirmationValidationError
-      );
+      const validationText = within(form).queryByText(passwordConfirmationValidationError);
       expect(validationText).not.toBeInTheDocument();
     });
   });

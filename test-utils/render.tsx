@@ -17,10 +17,7 @@ type ContextsProps = {
   queryClient?: QueryClient;
 };
 
-export const renderWithContexts = (
-  ui: ReactElement,
-  opts?: ContextsProps
-): RenderResult => {
+export const renderWithContexts = (ui: ReactElement, opts?: ContextsProps): RenderResult => {
   const queryClient = opts?.queryClient ?? generateTestQueryClient();
   return render(
     <QueryClientProvider client={queryClient}>

@@ -20,19 +20,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Head>
         <title>{SITE_NAME}</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         <meta name="description" content="......" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico"></link>
       </Head>
 
-      <MantineProvider
-        emotionCache={cssCache}
-        withGlobalStyles
-        withNormalizeCSS
-      >
+      <MantineProvider emotionCache={cssCache} withGlobalStyles withNormalizeCSS>
         <Notifications />
         <AuthProvider>
           <Navbar />

@@ -30,7 +30,7 @@ export const Footer = () => {
             style={{
               display: "inline-block",
               verticalAlign: "middle",
-              marginLeft: "1ch"
+              marginLeft: "1ch",
             }}
           />
         </Text>

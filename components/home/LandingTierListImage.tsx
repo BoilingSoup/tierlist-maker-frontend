@@ -13,15 +13,7 @@ type Props = {
   overlayAlpha: number;
 };
 
-const colors = [
-  "#fe7f7f",
-  "#febe7e",
-  "#fefe7f",
-  "#7fff7f",
-  "#7fbfff",
-  "#7f7fff",
-  "#fe7ffe",
-];
+const colors = ["#fe7f7f", "#febe7e", "#fefe7f", "#7fff7f", "#7fbfff", "#7f7fff", "#fe7ffe"];
 
 export const LandingTierListImage = ({ overlayAlpha }: Props) => {
   return (
@@ -32,12 +24,7 @@ export const LandingTierListImage = ({ overlayAlpha }: Props) => {
           const isLast = index === colors.length - 1;
 
           return (
-            <Flex
-              key={color}
-              sx={
-                isLast ? landingImgLastRowContainerSx : landingImgRowContainerSx
-              }
-            >
+            <Flex key={color} sx={isLast ? landingImgLastRowContainerSx : landingImgRowContainerSx}>
               <Center sx={landingImgColorBoxSx} bg={color}>
                 <Text>hi</Text>
               </Center>

@@ -1,13 +1,5 @@
 import type { NextPage } from "next";
-import {
-  Box,
-  Button,
-  Center,
-  CSSObject,
-  MantineTheme,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { Box, Button, Center, CSSObject, MantineTheme, Text, useMantineTheme } from "@mantine/core";
 import { LandingTierListImage } from "../components/home/LandingTierListImage";
 import {
   landingSectionForegroundSx,
@@ -18,14 +10,9 @@ import Link from "next/link";
 import { RecentTierListCarousel } from "../components/home/RecentTierListCarousel";
 import { useRecentTierList } from "../hooks/api/useRecentTierList";
 import { useViewportSize } from "@mantine/hooks";
-import {
-  convertThemeBreakpointToPx,
-  showSuccessNotification,
-} from "../components/common/helpers";
+import { convertThemeBreakpointToPx } from "../components/common/helpers";
 import { RecentTierListGrid } from "../components/home/RecentTierListGrid";
 import { Footer } from "../components/common/Footer";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useShowAccountVerifiedNotification } from "../components/home/hooks/useShowAccountVerifiedNotification";
 
 // Playground while I tinker with styles.
@@ -75,20 +62,10 @@ const Home: NextPage = () => {
           Recent Tier Lists
         </Text>
         {width < breakpoint && (
-          <RecentTierListCarousel
-            data={data}
-            isError={isError}
-            error={error}
-            isLoading={isLoading}
-          />
+          <RecentTierListCarousel data={data} isError={isError} error={error} isLoading={isLoading} />
         )}
         {width >= breakpoint && (
-          <RecentTierListGrid
-            data={data}
-            isError={isError}
-            error={error}
-            isLoading={isLoading}
-          />
+          <RecentTierListGrid data={data} isError={isError} error={error} isLoading={isLoading} />
         )}
         <Footer />
       </Box>

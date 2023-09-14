@@ -1,11 +1,6 @@
 import { Title, Center, Flex, Text } from "@mantine/core";
 import { NextPage } from "next";
-import {
-  authTitleSx,
-  formContainerSx,
-  formPageContainerSx,
-  oauthContainerSx,
-} from "../../components/forms/styles";
+import { authTitleSx, formContainerSx, formPageContainerSx, oauthContainerSx } from "../../components/forms/styles";
 import { FormPageBackground } from "../../components/forms/FormPageBackground";
 import { FormTabs } from "../../components/forms/FormTabs";
 import { SignInForm } from "../../components/forms/SignInForm";

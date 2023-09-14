@@ -11,14 +11,7 @@ type Props = {
   height?: number;
 };
 
-export const LogoLink = ({
-  src,
-  alt,
-  text,
-  href,
-  width = 40,
-  height = 32,
-}: Props) => {
+export const LogoLink = ({ src, alt, text, href, width = 40, height = 32 }: Props) => {
   return (
     <Link style={homeLinkStyle} href={href} aria-label="Go to home page">
       <Flex sx={logoFlexSx}>

@@ -2,10 +2,7 @@ import { useMantineTheme } from "@mantine/core";
 import { useMutation } from "react-query";
 import { useAuth } from "../../../../contexts/AuthProvider";
 import { authClient } from "../../../../lib/apiClient";
-import {
-  showInfoNotification,
-  showSomethingWentWrongNotification,
-} from "../../../common/helpers";
+import { showInfoNotification, showSomethingWentWrongNotification } from "../../../common/helpers";
 
 export const useResendVerificationEmail = () => {
   const theme = useMantineTheme();
@@ -34,8 +31,6 @@ type SuccessResp = {
 };
 
 const resendVerificationEmail = async () => {
-  const ret = await authClient.post<SuccessResp>(
-    "/email/verification-notification"
-  );
+  const ret = await authClient.post<SuccessResp>("/email/verification-notification");
   return ret.data;
 };

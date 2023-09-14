@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Group,
-  Burger,
-  MediaQuery,
-  Box,
-  useMantineTheme,
-} from "@mantine/core";
+import { Flex, Group, Burger, MediaQuery, Box, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { LOGO_IMG } from "../../config/config";
 import { DesktopNavLinksGroup } from "./DesktopNavLinksGroup";
@@ -38,20 +31,10 @@ export const Navbar = () => {
   return (
     <>
       <Flex sx={navbarSx} px={10}>
-        <LogoLink
-          text="tierlist.lol"
-          src={LOGO_IMG}
-          alt="logo image"
-          href="/"
-        />
+        <LogoLink text="tierlist.lol" src={LOGO_IMG} alt="logo image" href="/" />
         <Group>
           <MediaQuery styles={displayNone} largerThan="md">
-            <Burger
-              color="white"
-              opened={opened}
-              onClick={toggle}
-              aria-label={label}
-            />
+            <Burger color="white" opened={opened} onClick={toggle} aria-label={label} />
           </MediaQuery>
           <MediaQuery styles={displayNone} smallerThan="md">
             <DesktopNavLinksGroup />

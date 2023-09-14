@@ -10,12 +10,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import {
-  IconX,
-  IconCheck,
-  IconPencil,
-  IconPencilOff,
-} from "@tabler/icons-react";
+import { IconX, IconCheck, IconPencil, IconPencilOff } from "@tabler/icons-react";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { SettingSkeleton } from "../SettingSkeleton";
 import {
@@ -44,8 +39,7 @@ export const UsernameForm = () => {
 
   const [active, { toggle, close }] = useDisclosure(false);
   const form = useUsernameForm();
-  const { mutate: updateUsername, isLoading: isMutating } =
-    useUsernameMutation(close);
+  const { mutate: updateUsername, isLoading: isMutating } = useUsernameMutation(close);
 
   const resetAndToggle = () => {
     form.setValues({ username: user?.username });
@@ -84,11 +78,7 @@ export const UsernameForm = () => {
           {userIsLoaded && active && (
             <>
               <Tooltip label="Cancel">
-                <ActionIcon
-                  sx={settingEditIconSx}
-                  onClick={resetAndToggle}
-                  disabled={isMutating}
-                >
+                <ActionIcon sx={settingEditIconSx} onClick={resetAndToggle} disabled={isMutating}>
                   <IconX />
                 </ActionIcon>
               </Tooltip>
@@ -99,9 +89,7 @@ export const UsernameForm = () => {
                   <ActionIcon
                     sx={settingEditIconSx}
                     type="submit"
-                    disabled={
-                      !form.isValid() || form.values.username === user?.username
-                    }
+                    disabled={!form.isValid() || form.values.username === user?.username}
                   >
                     <IconCheck />
                   </ActionIcon>

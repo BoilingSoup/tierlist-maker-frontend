@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  Checkbox,
-  Flex,
-  Loader,
-  Text,
-} from "@mantine/core";
+import { Box, Button, Center, Checkbox, Flex, Loader, Text } from "@mantine/core";
 import Link from "next/link";
 import { ChangeEventHandler, useState } from "react";
 import { useSignInMutation } from "../../hooks/api/useSignInMutation";
@@ -94,13 +86,7 @@ export const SignInForm = () => {
           </Button>
         </Box>
         <Center sx={formControlSx}>
-          <Text
-            span
-            size="xs"
-            underline
-            component={Link}
-            href="/forgot-password"
-          >
+          <Text span size="xs" underline component={Link} href="/forgot-password">
             Forgot your password?
           </Text>
         </Center>

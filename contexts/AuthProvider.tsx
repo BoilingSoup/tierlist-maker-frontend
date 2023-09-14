@@ -1,11 +1,4 @@
-import {
-  useContext,
-  createContext,
-  useState,
-  Dispatch,
-  SetStateAction,
-  ReactNode,
-} from "react";
+import { useContext, createContext, useState, Dispatch, SetStateAction, ReactNode } from "react";
 import { useQuery } from "react-query";
 import { apiClient } from "../lib/apiClient";
 import { queryKeys } from "../lib/queryKeys";
@@ -58,11 +51,7 @@ export const AuthProvider = ({ children }: Props) => {
     },
   });
 
-  return (
-    <AuthContext.Provider value={{ user, setUser, isLoading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, setUser, isLoading }}>{children}</AuthContext.Provider>;
 };
 
 export type UserDataServerResponse = {

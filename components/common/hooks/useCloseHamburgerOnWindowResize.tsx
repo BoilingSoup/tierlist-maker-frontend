@@ -6,11 +6,7 @@ type Param = {
   breakpoint: number;
 };
 
-export const useCloseHamburgerOnWindowResize = ({
-  opened,
-  toggle,
-  breakpoint,
-}: Param) => {
+export const useCloseHamburgerOnWindowResize = ({ opened, toggle, breakpoint }: Param) => {
   const closeIfBigScreen = (event: Event) => {
     const { innerWidth } = event.target as Window;
 

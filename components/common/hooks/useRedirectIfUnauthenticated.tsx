@@ -7,11 +7,7 @@ type Param = {
   redirectTo: string;
 };
 
-export const useRedirectIfUnauthenticated = ({
-  user,
-  isLoading,
-  redirectTo,
-}: Param) => {
+export const useRedirectIfUnauthenticated = ({ user, isLoading, redirectTo }: Param) => {
   const router = useRouter();
 
   if (!isLoading && !user) {
