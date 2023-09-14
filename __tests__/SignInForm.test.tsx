@@ -1,10 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SignInForm } from "../components/forms/SignInForm";
-import {
-  signInFormInitialValues,
-  useSignInFormStore,
-} from "../hooks/store/useSignInFormStore";
+import { signInFormInitialValues, useSignInFormStore } from "../hooks/store/useSignInFormStore";
 import { renderWithContexts } from "../test-utils/render";
 
 jest.mock("next/router", () => ({
@@ -26,8 +23,7 @@ jest.mock("next/router", () => ({
 }));
 
 const emailValidationError = /invalid email/i;
-const passwordValidationError =
-  /password length must be at least 8 characters/i;
+const passwordValidationError = /password length must be at least 8 characters/i;
 
 const getFormByRole = () => {
   return screen.getByRole("form", { name: /sign in form/i });
@@ -35,10 +31,7 @@ const getFormByRole = () => {
 
 beforeEach(() => {
   // reset zustand state between tests
-  useSignInFormStore.setState(
-    (state) => ({ ...state, values: { ...signInFormInitialValues } }),
-    true
-  );
+  useSignInFormStore.setState((state) => ({ ...state, values: { ...signInFormInitialValues } }), true);
 });
 
 describe("Sign in form", () => {

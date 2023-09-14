@@ -1,10 +1,7 @@
 import { useMantineTheme } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "../../components/common/helpers";
+import { showErrorNotification, showSuccessNotification } from "../../components/common/helpers";
 import { authClient } from "../../lib/apiClient";
 import { PasswordResetPayload } from "../auth/types";
 

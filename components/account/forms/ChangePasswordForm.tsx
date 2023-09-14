@@ -1,10 +1,4 @@
-import {
-  Button,
-  Loader,
-  Stack,
-  TextInput,
-  useMantineTheme,
-} from "@mantine/core";
+import { Button, Loader, Stack, TextInput, useMantineTheme } from "@mantine/core";
 import { SettingContainer } from "../SettingContainer";
 import {
   changePasswordButtonWidth,
@@ -21,8 +15,7 @@ export const ChangePasswordForm = () => {
   const theme = useMantineTheme();
 
   const form = useChangePasswordForm();
-  const { mutate: changePassword, isLoading: isMutating } =
-    useChangePasswordMutation(form);
+  const { mutate: changePassword, isLoading: isMutating } = useChangePasswordMutation(form);
 
   return (
     <form onSubmit={form.onSubmit((values) => changePassword(values))}>

@@ -1,18 +1,5 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  MediaQuery,
-  NavLink,
-  Tabs,
-  useMantineTheme,
-} from "@mantine/core";
-import {
-  IconActivity,
-  IconPencil,
-  IconSettings,
-  IconUserPlus,
-} from "@tabler/icons-react";
+import { Box, Divider, Flex, MediaQuery, NavLink, Tabs, useMantineTheme } from "@mantine/core";
+import { IconActivity, IconPencil, IconSettings, IconUserPlus } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
@@ -90,16 +77,10 @@ export const AccountNavShell = ({ children }: Props) => {
             }}
           >
             <Tabs.List>
-              <Tabs.Tab
-                value={"/account/tierlists"}
-                icon={<IconUserPlus size="0.8rem" />}
-              >
+              <Tabs.Tab value={"/account/tierlists"} icon={<IconUserPlus size="0.8rem" />}>
                 {MY_TIER_LISTS_LABEL_TEXT}
               </Tabs.Tab>
-              <Tabs.Tab
-                value={"/account/settings"}
-                icon={<IconPencil size="0.8rem" />}
-              >
+              <Tabs.Tab value={"/account/settings"} icon={<IconPencil size="0.8rem" />}>
                 {ACCOUNT_SETTINGS_LABEL_TEXT}
               </Tabs.Tab>
             </Tabs.List>

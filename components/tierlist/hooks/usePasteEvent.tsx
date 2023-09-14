@@ -13,12 +13,8 @@ export const usePasteEvent = (setData: Param) => {
     if (clipboardText) {
       const handleImageLinks = async () => {
         const checkImage = async (): Promise<boolean> => {
-          const contentType = await fetch(clipboardText).then((res) =>
-            res.headers.get("content-type")
-          );
-          return (
-            typeof contentType === "string" && contentType.includes("image/")
-          );
+          const contentType = await fetch(clipboardText).then((res) => res.headers.get("content-type"));
+          return typeof contentType === "string" && contentType.includes("image/");
         };
 
         const isImage = await checkImage();
@@ -60,10 +56,7 @@ export const usePasteEvent = (setData: Param) => {
         // console.log(img.height);
         // };
         setData((prev) => ({
-          sidebar: [
-            ...prev.sidebar,
-            { id: nanoid(), src: fileReader.result as string },
-          ],
+          sidebar: [...prev.sidebar, { id: nanoid(), src: fileReader.result as string }],
           rows: [...prev.rows],
         }));
       };

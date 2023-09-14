@@ -24,8 +24,7 @@ const ForgotPassword: NextPage = () => {
   useRedirectIfAuthenticated({ user, isLoading, redirectTo: "/" });
 
   const form = useForgotPasswordForm({ enableFloatingLabel: true });
-  const { mutate: sendPasswordResetLink, isLoading: isMutating } =
-    useSendPasswordResetLinkMutation(form);
+  const { mutate: sendPasswordResetLink, isLoading: isMutating } = useSendPasswordResetLinkMutation(form);
 
   return (
     <Center sx={formPageContainerSx}>

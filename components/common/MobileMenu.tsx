@@ -30,25 +30,13 @@ export const MobileMenu = ({ onLinkClick: closeMenu }: Props) => {
   return (
     <Box sx={mobileNavLinksOverlaySx}>
       <Flex sx={mobileNavLinksContainerSx}>
-        <Center
-          sx={getMobileNavLinkSx(currentRoute === "/")}
-          component={Link}
-          href="/"
-        >
+        <Center sx={getMobileNavLinkSx(currentRoute === "/")} component={Link} href="/">
           Home
         </Center>
-        <Center
-          sx={getMobileNavLinkSx(currentRoute === "/browse")}
-          component={Link}
-          href="/browse"
-        >
+        <Center sx={getMobileNavLinkSx(currentRoute === "/browse")} component={Link} href="/browse">
           Browse
         </Center>
-        <Center
-          sx={getMobileNavLinkSx(currentRoute === "/create")}
-          component={Link}
-          href="/create"
-        >
+        <Center sx={getMobileNavLinkSx(currentRoute === "/create")} component={Link} href="/create">
           Create New Tier List
         </Center>
         {isLoading && (
@@ -64,38 +52,23 @@ export const MobileMenu = ({ onLinkClick: closeMenu }: Props) => {
         {isAuthenticated && (
           <>
             <Center
-              sx={getMobileNavLinkSx(
-                currentRoute === "/account/tierlists" ||
-                  currentRoute === "/account/settings"
-              )}
+              sx={getMobileNavLinkSx(currentRoute === "/account/tierlists" || currentRoute === "/account/settings")}
               component={Link}
               href="/account/tierlists"
             >
               Account
             </Center>
-            <Center
-              sx={mobileSignOutButtonSx}
-              component="button"
-              onClick={() => signOut()}
-            >
+            <Center sx={mobileSignOutButtonSx} component="button" onClick={() => signOut()}>
               {isSigningOut ? <Loader color="cyan" size="sm" /> : "Sign Out"}
             </Center>
           </>
         )}
         {isUnauthenticated && (
           <>
-            <Center
-              sx={getMobileNavLinkSx(currentRoute === "/register")}
-              component={Link}
-              href="/register"
-            >
+            <Center sx={getMobileNavLinkSx(currentRoute === "/register")} component={Link} href="/register">
               Register
             </Center>
-            <Center
-              sx={getMobileNavLinkSx(currentRoute === "/signin")}
-              component={Link}
-              href="/signin"
-            >
+            <Center sx={getMobileNavLinkSx(currentRoute === "/signin")} component={Link} href="/signin">
               Sign In
             </Center>
           </>

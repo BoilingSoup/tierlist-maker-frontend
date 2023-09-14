@@ -1,10 +1,4 @@
-import {
-  CSSObject,
-  MantineGradient,
-  MantineTheme,
-  Styles,
-  TextInputStylesNames,
-} from "@mantine/core";
+import { CSSObject, MantineGradient, MantineTheme, Styles, TextInputStylesNames } from "@mantine/core";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
 
 export const backdropBoxSx = (): CSSObject => ({
@@ -16,8 +10,7 @@ export const backdropBoxSx = (): CSSObject => ({
   transform: `rotate(55deg)`,
 });
 
-const FORM_BOX_SHADOW =
-  "0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)";
+const FORM_BOX_SHADOW = "0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)";
 
 export const formPageContainerSx = (): CSSObject => ({
   position: "relative",

@@ -15,9 +15,7 @@ export const validationRules = {
       ? null
       : `Username must be between ${USERNAME_MIN_LENGTH}-${USERNAME_MAX_LENGTH} characters`,
   password: (value: string) =>
-    value?.length >= PASSWORD_MIN_LENGTH
-      ? null
-      : `Password length must be at least ${PASSWORD_MIN_LENGTH} characters`,
+    value?.length >= PASSWORD_MIN_LENGTH ? null : `Password length must be at least ${PASSWORD_MIN_LENGTH} characters`,
   password_confirmation: (value: string, allValues: FormWithPassword) =>
     value === allValues.password ? null : "Password does not match",
 };

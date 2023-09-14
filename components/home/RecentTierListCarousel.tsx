@@ -21,12 +21,7 @@ export const carouselSx = (): CSSObject => ({
   margin: "0 auto",
 });
 
-export const RecentTierListCarousel = ({
-  data,
-  isError,
-  error,
-  isLoading,
-}: Props) => {
+export const RecentTierListCarousel = ({ data, isError, error, isLoading }: Props) => {
   const autoplay = useRef(Autoplay({ delay: 3000 }));
   const wheelGestures = useRef(WheelGesturesPlugin());
 

@@ -21,11 +21,8 @@ export const useFloatingInputLabel = ({ floating }: floatOpt) => {
           : theme.colorScheme === "dark"
           ? theme.colors.dark[3]
           : theme.colors.gray[5],
-        transition:
-          "transform 150ms ease, color 150ms ease, font-size 150ms ease",
-        transform: floating
-          ? `translate(-${theme.spacing.sm}, ${rem(-28)})`
-          : "none",
+        transition: "transform 150ms ease, color 150ms ease, font-size 150ms ease",
+        transform: floating ? `translate(-${theme.spacing.sm}, ${rem(-28)})` : "none",
         fontSize: floating ? theme.fontSizes.xs : theme.fontSizes.sm,
         fontWeight: floating ? 500 : 400,
       },

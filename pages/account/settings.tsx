@@ -1,14 +1,4 @@
-import {
-  Accordion,
-  Container,
-  Divider,
-  Flex,
-  Loader,
-  Skeleton,
-  Stack,
-  Text,
-  useMantineTheme,
-} from "@mantine/core";
+import { Accordion, Container, Divider, Flex, Loader, Skeleton, Stack, Text, useMantineTheme } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import { useState } from "react";
@@ -44,12 +34,9 @@ const Settings: NextPage = () => {
   const userIsLoaded = !isLoading && user !== null;
   const oauthProvider = user?.oauth_provider;
 
-  const [activeAccordionPanel, setActiveAccordionPanel] = useState<string[]>(
-    []
-  );
+  const [activeAccordionPanel, setActiveAccordionPanel] = useState<string[]>([]);
 
-  const { mutate: resendVerification, isLoading: isMutating } =
-    useResendVerificationEmail();
+  const { mutate: resendVerification, isLoading: isMutating } = useResendVerificationEmail();
 
   return (
     <AccountNavShell>
@@ -84,23 +71,14 @@ const Settings: NextPage = () => {
                   </Text>
                 </Flex>
               )}
-              {userIsLoaded && !user.email_verified && !isMutating && (
-                <Text span>Resend Verification Email</Text>
-              )}
-              {userIsLoaded && !user.email_verified && isMutating && (
-                <Loader size="xs" color="cyan" />
-              )}
+              {userIsLoaded && !user.email_verified && !isMutating && <Text span>Resend Verification Email</Text>}
+              {userIsLoaded && !user.email_verified && isMutating && <Loader size="xs" color="cyan" />}
             </SettingSubmitButton>
           </SettingContainer>
         </Stack>
 
         {isLoading ? (
-          <Skeleton
-            my="xl"
-            h={accordionCollapsedHeight}
-            w="100%"
-            sx={settingSkeletonSx}
-          />
+          <Skeleton my="xl" h={accordionCollapsedHeight} w="100%" sx={settingSkeletonSx} />
         ) : (
           <Accordion
             my="xl"

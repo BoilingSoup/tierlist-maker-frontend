@@ -14,9 +14,5 @@ export const SettingSubmitButton = (props: Props) => {
     return <Skeleton h={props.h} w={props.w} sx={settingSkeletonSx} />;
   }
 
-  return (
-    <Button {...(({ skeleton, ...buttonProps }: Props) => buttonProps)(props)}>
-      {props.children}
-    </Button>
-  );
+  return <Button {...(({ skeleton, ...buttonProps }: Props) => buttonProps)(props)}>{props.children}</Button>;
 };

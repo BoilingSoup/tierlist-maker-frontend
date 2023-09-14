@@ -1,10 +1,6 @@
 import { UseFormReturnType } from "@mantine/form";
 import { Dispatch, SetStateAction } from "react";
-import {
-  FancyInputBaseProps,
-  FancyInputExtendedProps,
-  FancyInputProps,
-} from "../../components/forms/types";
+import { FancyInputBaseProps, FancyInputExtendedProps, FancyInputProps } from "../../components/forms/types";
 
 export type FormParam = {
   enableFloatingLabel: boolean;
@@ -71,11 +67,7 @@ type HandlerParam<T extends string, F extends InputsFocusState> = {
 
 // Update the input field's focus state, then call its onBlur handler (provided by Mantine's useForm)
 const blurHandler =
-  <T extends string, F extends InputsFocusState>({
-    inputField,
-    setInputsFocusState,
-    form,
-  }: HandlerParam<T, F>) =>
+  <T extends string, F extends InputsFocusState>({ inputField, setInputsFocusState, form }: HandlerParam<T, F>) =>
   () => {
     setInputsFocusState((prev): F => ({ ...prev, [inputField]: false }));
     form.getInputProps<T>(inputField).onBlur();
@@ -83,11 +75,7 @@ const blurHandler =
 
 // Update the input field's focus state, then call onFocus handler (provided by Mantine's useForm)
 const focusHandler =
-  <T extends string, F extends InputsFocusState>({
-    inputField,
-    setInputsFocusState,
-    form,
-  }: HandlerParam<T, F>) =>
+  <T extends string, F extends InputsFocusState>({ inputField, setInputsFocusState, form }: HandlerParam<T, F>) =>
   () => {
     setInputsFocusState((prev): F => ({ ...prev, [inputField]: true }));
     form.getInputProps<T>(inputField).onFocus();

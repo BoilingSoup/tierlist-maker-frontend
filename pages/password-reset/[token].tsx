@@ -22,8 +22,7 @@ import { usePasswordResetForm } from "../../hooks/auth/usePasswordResetFrom";
 const PasswordReset: NextPage = () => {
   const { token, email } = useQueryParams(["token", "email"]);
   const form = usePasswordResetForm({ enableFloatingLabel: true });
-  const { mutate: passwordReset, isLoading: isMutating } =
-    usePasswordResetMutation();
+  const { mutate: passwordReset, isLoading: isMutating } = usePasswordResetMutation();
 
   return (
     <Center sx={formPageContainerSx}>
@@ -35,12 +34,7 @@ const PasswordReset: NextPage = () => {
         }}
       >
         <Title sx={authTitleSx}>Reset Password</Title>
-        <form
-          style={formStyle}
-          onSubmit={form.onSubmit((values) =>
-            passwordReset({ ...values, token, email })
-          )}
-        >
+        <form style={formStyle} onSubmit={form.onSubmit((values) => passwordReset({ ...values, token, email }))}>
           <Flex sx={formContentsContainerSx}>
             <Box sx={formControlSx}>
               <FancyInput

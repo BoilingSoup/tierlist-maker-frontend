@@ -23,11 +23,7 @@ export const CarouselSlide = ({ data }: Prop) => {
 
   return (
     <Carousel.Slide sx={carouselSlideSx}>
-      <Image
-        src={thumbnail}
-        alt="tier list thumbnail"
-        radius={CAROUSEL_THUMBNAIL_BORDER_RADIUS}
-      />
+      <Image src={thumbnail} alt="tier list thumbnail" radius={CAROUSEL_THUMBNAIL_BORDER_RADIUS} />
       <Stack sx={carouselSlideStackSx}>
         <Text>{creator.username}</Text>
         <Text>{created_at}</Text>

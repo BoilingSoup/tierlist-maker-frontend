@@ -10,10 +10,8 @@ export type FancyInputBaseProps = Omit<
 
 // This is the main public prop type definition used in FancyInput.tsx
 // floating prop is optional
-export type FancyInputProps = FancyInputBaseProps &
-  Partial<Record<typeof propKey, boolean>>; // i.e. floating prop is optional
+export type FancyInputProps = FancyInputBaseProps & Partial<Record<typeof propKey, boolean>>; // i.e. floating prop is optional
 
 // This is an internal type definition used by getter functions when floating prop is set to true.
 // floating prop is not optional here because the getter knows that it's enabled.
-export type FancyInputExtendedProps = FancyInputBaseProps &
-  Record<typeof propKey, boolean>;
+export type FancyInputExtendedProps = FancyInputBaseProps & Record<typeof propKey, boolean>;
