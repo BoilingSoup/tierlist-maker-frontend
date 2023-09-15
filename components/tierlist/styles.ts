@@ -93,6 +93,7 @@ export const scrollContainerSx = ({ breakpoints }: MantineTheme): CSSObject => (
 
 export const imagesFlexContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   display: "flex",
+  gap: "0.3ch",
   height: "96%",
   width: "96%",
   alignItems: "center",
