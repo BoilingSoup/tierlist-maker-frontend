@@ -20,10 +20,12 @@ export const createPageMainContainer = ({ breakpoints }: MantineTheme): CSSObjec
 
 export const rowsContainer = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
+  height: `calc(100vh - ${NAVBAR_HEIGHT} - ${MOBILE_BOTTOM_BAR})`,
   backgroundColor: colors.dark[7],
   overflow: "auto",
   [`@media (min-width: ${breakpoints.lg})`]: {
     width: "75%",
+    height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   },
 });
 

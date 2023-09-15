@@ -54,11 +54,14 @@ const Create: NextPage = () => {
 
   const isDesktopScreen = useIsDesktopScreen();
   let minHeight: PxSize;
+  const rowsToFitPerfectlyOnScreen = 5;
 
   if (isDesktopScreen) {
-    minHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / data.rows.length}px`;
+    minHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / rowsToFitPerfectlyOnScreen}px`;
   } else {
-    minHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / data.rows.length}px`;
+    minHeight = `${
+      (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / rowsToFitPerfectlyOnScreen
+    }px`;
   }
 
   // TODO:
