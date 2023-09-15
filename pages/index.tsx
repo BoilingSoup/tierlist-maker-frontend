@@ -49,7 +49,7 @@ const Home: NextPage = () => {
       </Box>
       <Center sx={landingSectionForegroundSx}>
         <Text component="h2" sx={landingSectionTextSx}>
-          A no BS open-source tier list maker.
+          A No-BS Tier List Maker
           <br />
           Get started now!
         </Text>

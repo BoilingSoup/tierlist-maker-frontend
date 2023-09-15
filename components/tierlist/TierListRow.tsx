@@ -25,9 +25,16 @@ type Props = {
 const junk = (theme: MantineTheme): CSSObject => ({
   width: "100%",
   backgroundImage: `radial-gradient(ellipse, ${theme.colors.dark[9]}, ${theme.fn.lighten(theme.colors.dark[8], 0.03)})`,
+  margin: "0.1ch",
   display: "flex",
+  gap: "0.1ch",
   flexWrap: "wrap",
   height: "auto",
+  [`@media (min-width: ${theme.breakpoints.md})`]: {
+    alignItems: "center",
+    margin: "0.3ch",
+    gap: "0.3ch",
+  },
 });
 
 export const TierListRow = ({
