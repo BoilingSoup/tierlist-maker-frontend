@@ -20,10 +20,12 @@ export const createPageMainContainer = ({ breakpoints }: MantineTheme): CSSObjec
 
 export const rowsContainer = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
+  height: `calc(100vh - ${NAVBAR_HEIGHT} - ${MOBILE_BOTTOM_BAR})`,
   backgroundColor: colors.dark[7],
   overflow: "auto",
   [`@media (min-width: ${breakpoints.lg})`]: {
     width: "75%",
+    height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   },
 });
 
@@ -130,7 +132,7 @@ export const imageAreaInfoListSx = (): CSSObject => ({
   },
 });
 
-export const sidebarImageContainerSx = ({ colors }: MantineTheme): CSSObject => ({
+export const sidebarImageContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   flexShrink: 0,
   width: "100px",
   height: "100px",
@@ -141,6 +143,14 @@ export const sidebarImageContainerSx = ({ colors }: MantineTheme): CSSObject => 
   ":focus-visible": {
     outline: `none`,
     border: `4px solid ${colors.blue[6]}`,
+  },
+  [`@media (max-width:${breakpoints.sm})`]: {
+    width: "80px",
+    height: "80px",
+  },
+  [`@media (max-width:${breakpoints.xs})`]: {
+    width: "50px",
+    height: "50px",
   },
 });
 

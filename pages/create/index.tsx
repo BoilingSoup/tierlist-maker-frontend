@@ -53,25 +53,20 @@ const Create: NextPage = () => {
   const [animateChildren] = useAutoAnimate();
 
   const isDesktopScreen = useIsDesktopScreen();
-  const amountOfRowsToPerfectlyFitOnScreen = 5;
-
-  let maxHeight: PxSize;
-  let rowHeight: PxSize;
+  let minHeight: PxSize;
+  const rowsToFitPerfectlyOnScreen = 5;
 
   if (isDesktopScreen) {
-    maxHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / amountOfRowsToPerfectlyFitOnScreen}px`;
-    rowHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / data.rows.length}px`;
+    minHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / rowsToFitPerfectlyOnScreen}px`;
   } else {
-    maxHeight = `${
-      (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / amountOfRowsToPerfectlyFitOnScreen
+    minHeight = `${
+      (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / rowsToFitPerfectlyOnScreen
     }px`;
-    rowHeight = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / data.rows.length}px`;
   }
 
   // TODO:
   // - authenticated view (hide save/publish buttons)
   // - paste event only send network request if text is a valid URL
-  // - responsive images dimensions
 
   return (
     <>
@@ -91,8 +86,7 @@ const Create: NextPage = () => {
               <TierListRow
                 key={row.id}
                 data={row}
-                height={rowHeight}
-                maxHeight={maxHeight}
+                minHeight={minHeight}
                 deletable={data.rows.length <= 1}
                 onMoveUp={handleMoveRowUp}
                 onMoveDown={handleMoveRowDown}

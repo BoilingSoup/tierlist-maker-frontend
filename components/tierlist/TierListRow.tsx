@@ -10,8 +10,7 @@ import { PxSize, TierListRowData } from "./types";
 
 type Props = {
   data: TierListRowData;
-  height: PxSize;
-  maxHeight: PxSize;
+  minHeight: PxSize;
   deletable: boolean;
   onMoveUp: (rowID: string) => void;
   onMoveDown: (rowID: string) => void;
@@ -26,12 +25,14 @@ type Props = {
 const junk = (theme: MantineTheme): CSSObject => ({
   width: "100%",
   backgroundImage: `radial-gradient(ellipse, ${theme.colors.dark[9]}, ${theme.fn.lighten(theme.colors.dark[8], 0.03)})`,
+  display: "flex",
+  flexWrap: "wrap",
+  height: "auto",
 });
 
 export const TierListRow = ({
   data,
-  height,
-  maxHeight,
+  minHeight,
   deletable,
   onMoveUp: handleMoveUp,
   onMoveDown: handleMoveDown,
@@ -67,12 +68,13 @@ export const TierListRow = ({
       <Flex
         sx={{
           border: "2px solid black",
-          height: `clamp(100px, ${height}, ${maxHeight})`,
+          minHeight,
         }}
       >
         <Center
           sx={{
-            width: `clamp(100px, ${height}, ${maxHeight})`,
+            minWidth: "100px",
+            width: minHeight,
             backgroundColor: color,
             color: "black",
             fontSize: "clamp(2rem, 6vw, 3rem)",
