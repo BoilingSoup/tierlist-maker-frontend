@@ -2,6 +2,8 @@ import { DEFAULT_THEME } from "@mantine/core";
 import { nanoid } from "nanoid";
 import { TierListData } from "./types";
 
+export const DOM_TO_PNG_ID = "PNG";
+
 export const SIDEBAR = "SIDEBAR";
 export const CONTAINER = "CONTAINER";
 export const IMAGE = "IMAGE";

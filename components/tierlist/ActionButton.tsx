@@ -4,7 +4,7 @@ import { actionButtonsSx } from "./styles";
 type Props = {
   icon: JSX.Element;
   text: string;
-  onClick?: () => Promise<void>;
+  onClick?: () => any;
 };
 
 export const ActionButton = ({ icon, text, onClick: clickHandler }: Props) => {
