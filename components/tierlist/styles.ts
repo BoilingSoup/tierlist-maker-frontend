@@ -9,7 +9,7 @@ import {
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "./types";
 
-export const createPageMainContainer = ({ breakpoints }: MantineTheme): CSSObject => ({
+export const createPageMainContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   flexDirection: "column",
   width: "100%",
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
@@ -18,7 +18,7 @@ export const createPageMainContainer = ({ breakpoints }: MantineTheme): CSSObjec
   },
 });
 
-export const rowsContainer = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
+export const rowsContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
   height: `calc(100vh - ${NAVBAR_HEIGHT} - ${MOBILE_BOTTOM_BAR})`,
   backgroundColor: colors.dark[7],
