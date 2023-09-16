@@ -14,7 +14,7 @@ import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../components/tierlist/Sidebar";
-import { createPageMainContainer, MOBILE_BOTTOM_BAR, rowsContainer } from "../../components/tierlist/styles";
+import { createPageMainContainerSx, MOBILE_BOTTOM_BAR, rowsContainerSx } from "../../components/tierlist/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState, ClientSideImage, PxSize, TierListData } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
@@ -80,8 +80,8 @@ const Create: NextPage = () => {
         onDragEnd={handleDragEnd}
         sensors={sensors}
       >
-        <Flex sx={createPageMainContainer}>
-          <Box sx={rowsContainer} ref={animateChildren}>
+        <Flex sx={createPageMainContainerSx}>
+          <Box sx={rowsContainerSx} ref={animateChildren}>
             {data.rows.map((row) => (
               <TierListRow
                 key={row.id}
