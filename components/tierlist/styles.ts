@@ -133,25 +133,16 @@ export const imageAreaInfoListSx = (): CSSObject => ({
   },
 });
 
-export const sidebarImageContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
+export const sidebarImageContainerSx = ({ colors }: MantineTheme): CSSObject => ({
   flexShrink: 0,
-  width: "100px",
-  height: "100px",
+  width: "clamp(50px, 12vw, 200px)",
+  height: "clamp(50px, 12vw, 200px)",
   overflow: "hidden",
-  border: "2px solid white",
-  margin: "1px",
+  margin: "2px",
   touchAction: "none",
   ":focus-visible": {
     outline: `none`,
     border: `4px solid ${colors.blue[6]}`,
-  },
-  [`@media (max-width:${breakpoints.sm})`]: {
-    width: "80px",
-    height: "80px",
-  },
-  [`@media (max-width:${breakpoints.xs})`]: {
-    width: "50px",
-    height: "50px",
   },
 });
 

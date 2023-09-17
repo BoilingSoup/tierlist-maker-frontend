@@ -9,7 +9,7 @@ type Props = {
 export const OverlayImage = ({ img }: Props) => {
   return (
     <Center sx={sidebarImageContainerSx}>
-      <Image src={img.src} sx={{ height: "auto", width: "100px" }} />
+      <Image src={img.src} sx={{ width: "100%", objectFit: "cover" }} />
     </Center>
   );
 };
