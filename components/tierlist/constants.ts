@@ -52,6 +52,7 @@ export const initialData: TierListData = {
     { id: nanoid(), color: "#fefe7f", label: "B", items: [] },
     { id: nanoid(), color: "#7fff7f", label: "C", items: [] },
     { id: nanoid(), color: "#7fbfff", label: "D", items: [] },
+    { id: nanoid(), color: DEFAULT_THEME.colors.grape[5], label: "F", items: [] },
   ],
 };
 
@@ -71,7 +72,7 @@ export const DRAG_FROM_ROW_TO_ROW__IMAGE = "DRAG_FROM_ROW_TO_ROW__IMAGE";
 
 export const DRAG_FROM_ROW_TO_ROW__CONTAINER = "DRAG_FROM_ROW_TO_ROW__CONTAINER";
 
-// These constants represnet the dragEnd event's possible branching conditions.
+// These constants represent the dragEnd event's possible branching conditions.
 
 export const DRAG_END_WITHIN_ROW = "DRAG_END_WITHIN_ROW";
 

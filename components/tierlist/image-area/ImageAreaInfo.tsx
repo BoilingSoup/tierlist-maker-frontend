@@ -9,6 +9,7 @@ import {
 
 export const ImageAreaInfo = () => {
   const isDesktopScreen = useIsDesktopScreen();
+  console.log(isDesktopScreen);
 
   return (
     <Center sx={imageAreaInfoContainerSx}>

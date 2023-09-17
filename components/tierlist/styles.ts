@@ -6,6 +6,7 @@ import {
   ModalBaseStylesNames,
   Styles,
 } from "@mantine/core";
+import { ImageSize, MAX_IMAGE_SIZE } from "../../hooks/store/useResponsiveImagesStore";
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "./types";
 
@@ -133,18 +134,22 @@ export const imageAreaInfoListSx = (): CSSObject => ({
   },
 });
 
-export const sidebarImageContainerSx = ({ colors }: MantineTheme): CSSObject => ({
-  flexShrink: 0,
-  width: "clamp(50px, 12vw, 200px)",
-  height: "clamp(50px, 12vw, 200px)",
-  overflow: "hidden",
-  margin: "2px",
-  touchAction: "none",
-  ":focus-visible": {
-    outline: `none`,
-    border: `4px solid ${colors.blue[6]}`,
-  },
-});
+export const getSidebarImageContainerSx =
+  (size: ImageSize) =>
+  ({ colors }: MantineTheme): CSSObject => ({
+    flexShrink: 0,
+    width: size,
+    height: size,
+    maxHeight: MAX_IMAGE_SIZE,
+    maxWidth: MAX_IMAGE_SIZE,
+    overflow: "hidden",
+    margin: "2px",
+    touchAction: "none",
+    ":focus-visible": {
+      outline: `none`,
+      border: `4px solid ${colors.blue[6]}`,
+    },
+  });
 
 export const imageAreaInfoListStyles: Styles<ListStylesNames, Record<string, any>> = {
   itemWrapper: { marginTop: "30px" },

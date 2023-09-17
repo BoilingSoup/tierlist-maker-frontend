@@ -1,17 +1,20 @@
 import { SortableContext } from "@dnd-kit/sortable";
 import { ActionIcon, Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconSettingsFilled } from "@tabler/icons-react";
 import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
+import { ROWS_TO_FIT_PERFECTLY_ON_SCREEN, useResponsiveImageSize } from "../../hooks/store/useResponsiveImagesStore";
+import { pxToNumber } from "../common/helpers";
+import { NAVBAR_HEIGHT } from "../common/styles";
 import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
 import { RowSettingsModal } from "./RowSettingsModal";
-import { rowArrowsContainerSx, rowButtonsContainerSx, rowButtonsSx } from "./styles";
-import { PxSize, TierListRowData } from "./types";
+import { MOBILE_BOTTOM_BAR, rowArrowsContainerSx, rowButtonsContainerSx, rowButtonsSx } from "./styles";
+import { TierListRowData } from "./types";
 
 type Props = {
   data: TierListRowData;
-  minHeight: PxSize;
+  // minHeight: PxSize;
   deletable: boolean;
   onMoveUp: (rowID: string) => void;
   onMoveDown: (rowID: string) => void;
@@ -40,7 +43,7 @@ const junk = (theme: MantineTheme): CSSObject => ({
 
 export const TierListRow = ({
   data,
-  minHeight,
+  // minHeight,
   deletable,
   onMoveUp: handleMoveUp,
   onMoveDown: handleMoveDown,
@@ -57,6 +60,9 @@ export const TierListRow = ({
   const [opened, { open, close }] = useDisclosure(false);
 
   const isExporting = useIsExportingStore((state) => state.value);
+
+  const size = useResponsiveImageSize((state) => state.size);
+  const { height: viewportHeight } = useViewportSize();
 
   return (
     <>
@@ -76,15 +82,20 @@ export const TierListRow = ({
       />
 
       <Flex
-        sx={{
+        sx={(theme) => ({
           border: "2px solid black",
-          minHeight,
-        }}
+          minHeight: (viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
+          [`@media (max-width: ${theme.breakpoints.md})`]: {
+            minHeight:
+              (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) /
+              ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
+          },
+        })}
       >
         <Center
           sx={{
             minWidth: "100px",
-            width: minHeight,
+            width: size,
             backgroundColor: color,
             color: "black",
             fontSize: "clamp(2rem, 6vw, 3rem)",
