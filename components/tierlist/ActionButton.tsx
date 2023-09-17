@@ -11,7 +11,17 @@ export const ActionButton = ({ icon, text, onClick: clickHandler }: Props) => {
   return (
     <Center component="button" sx={actionButtonsSx} onClick={clickHandler}>
       {icon}
-      <Text>{text}</Text>
+      <Text
+        weight={"bolder"}
+        sx={(theme) => ({
+          textTransform: "uppercase",
+          [`@media (min-width: ${theme.breakpoints.sm})`]: {
+            marginLeft: "1ch",
+          },
+        })}
+      >
+        {text}
+      </Text>
     </Center>
   );
 };
