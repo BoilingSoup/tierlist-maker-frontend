@@ -169,7 +169,7 @@ export const addFileButtonSx = ({ colors, breakpoints }: MantineTheme): CSSObjec
   background: colors.dark[6],
   border: `1px solid ${colors.dark[3]}`,
   ":hover": {
-    background: colors.dark[5],
+    background: colors.dark[7],
   },
   [`@media (min-width:${breakpoints.lg})`]: {
     border: 0,
@@ -206,12 +206,12 @@ export const actionButtonsSx = ({ colors, breakpoints }: MantineTheme): CSSObjec
   width: "25%",
   height: "100%",
   color: "white",
-  backgroundColor: colors.dark[8],
+  backgroundColor: colors.dark[6],
   border: `2px solid ${colors.dark[4]}`,
   borderRadius: "3px",
   cursor: "pointer",
   ":hover": {
-    background: `${colors.dark[6]}`,
+    background: `${colors.dark[8]}`,
   },
   [`@media (min-width:${breakpoints.sm})`]: {
     flexDirection: "row",
