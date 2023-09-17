@@ -2,6 +2,7 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { ActionIcon, Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconSettingsFilled } from "@tabler/icons-react";
+import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
 import { RowSettingsModal } from "./RowSettingsModal";
@@ -55,6 +56,8 @@ export const TierListRow = ({
 
   const [opened, { open, close }] = useDisclosure(false);
 
+  const isExporting = useIsExportingStore((state) => state.value);
+
   return (
     <>
       <RowSettingsModal
@@ -97,21 +100,23 @@ export const TierListRow = ({
             ))}
           </Flex>
         </SortableContext>
-        <Flex sx={rowButtonsContainerSx}>
-          <Center w="50%">
-            <ActionIcon sx={rowButtonsSx} onClick={open}>
-              <IconSettingsFilled size={40} />
-            </ActionIcon>
-          </Center>
-          <Center w="50%" sx={rowArrowsContainerSx}>
-            <ActionIcon sx={rowButtonsSx} onClick={() => handleMoveUp(id)}>
-              <IconChevronUp />
-            </ActionIcon>
-            <ActionIcon sx={rowButtonsSx} onClick={() => handleMoveDown(id)}>
-              <IconChevronDown />
-            </ActionIcon>
-          </Center>
-        </Flex>
+        {!isExporting && (
+          <Flex sx={rowButtonsContainerSx}>
+            <Center w="50%">
+              <ActionIcon sx={rowButtonsSx} onClick={open}>
+                <IconSettingsFilled size={40} />
+              </ActionIcon>
+            </Center>
+            <Center w="50%" sx={rowArrowsContainerSx}>
+              <ActionIcon sx={rowButtonsSx} onClick={() => handleMoveUp(id)}>
+                <IconChevronUp />
+              </ActionIcon>
+              <ActionIcon sx={rowButtonsSx} onClick={() => handleMoveDown(id)}>
+                <IconChevronDown />
+              </ActionIcon>
+            </Center>
+          </Flex>
+        )}
       </Flex>
     </>
   );

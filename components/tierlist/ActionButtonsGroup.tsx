@@ -6,12 +6,15 @@ import { actionButtonsGroupSx } from "./styles";
 import { FullScreenProp } from "./types";
 import DomToImage from "dom-to-image";
 import { saveAs } from "file-saver";
+import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 
 type Props = {
   fullScreen: FullScreenProp;
 };
 
 export const ActionButtonsGroup = ({ fullScreen }: Props) => {
+  const setIsExporting = useIsExportingStore((state) => state.setValue);
+
   const { state: isFullScreen, toggle: toggleFullScreen } = fullScreen;
 
   const fullScreenIcon = isFullScreen ? <IconMaximizeOff size={23} /> : <IconMaximize size={23} />;
@@ -19,9 +22,12 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
   const handleExportPng = () => {
     const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
 
-    DomToImage.toBlob(div).then((blob) => {
-      saveAs(blob, "tierlist.png"); // TODO: better dynamic naming ?
-    });
+    setIsExporting(true); // hide toolbar arrow buttons, gear icon, etc. while converting to png
+    DomToImage.toBlob(div)
+      .then((blob) => {
+        saveAs(blob, "tierlist.png"); // TODO: better dynamic naming ?
+      })
+      .finally(() => setIsExporting(false)); // show toolbars again
   };
 
   return (
