@@ -10,11 +10,13 @@ import "../public/global.css";
 import { AuthProvider } from "../contexts/AuthProvider";
 import { Notifications } from "@mantine/notifications";
 import { useFormSmartReset } from "../hooks/store/useFormSmartReset";
+import { useCalculateResponsiveImageSize } from "../hooks/store/useResponsiveImagesStore";
 
 export const cssCache = createEmotionCache({ key: "mantine" });
 
 function MyApp({ Component, pageProps }: AppProps) {
   useFormSmartReset();
+  useCalculateResponsiveImageSize();
 
   return (
     <QueryClientProvider client={queryClient}>
