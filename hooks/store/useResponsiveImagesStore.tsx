@@ -27,25 +27,25 @@ export const useResponsiveImageSize = create<ResponsiveImageSize>((set) => ({
 export const useCalculateResponsiveImageSize = () => {
   const setSize = useResponsiveImageSize((state) => state.set);
 
-  const updateCalculation = () => () => {
-    const [viewportHeight, viewportWidth] = [window.innerHeight, window.innerWidth];
-    const shrinkImagesBasedOnScreenWidthIfViewportWidthIsSmallerThan = 1400;
-
-    let size: ImageSize;
-
-    if (viewportWidth > shrinkImagesBasedOnScreenWidthIfViewportWidthIsSmallerThan) {
-      size = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN}px`;
-    } else {
-      size = `${
-        viewportWidth / 1.4 / ROWS_TO_FIT_PERFECTLY_ON_SCREEN
-        // TODO: get rid of magic # 1.4
-      }px`;
-    }
-
-    setSize(size);
-  };
-
   useEffect(() => {
+    const updateCalculation = () => () => {
+      const [viewportHeight, viewportWidth] = [window.innerHeight, window.innerWidth];
+      const shrinkImagesBasedOnScreenWidthIfViewportWidthIsSmallerThan = 1400;
+
+      let size: ImageSize;
+
+      if (viewportWidth > shrinkImagesBasedOnScreenWidthIfViewportWidthIsSmallerThan) {
+        size = `${(viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN}px`;
+      } else {
+        size = `${
+          viewportWidth / 1.4 / ROWS_TO_FIT_PERFECTLY_ON_SCREEN
+          // TODO: get rid of magic # 1.4
+        }px`;
+      }
+
+      setSize(size);
+    };
+
     const cb = updateCalculation();
 
     window.addEventListener("load", cb);

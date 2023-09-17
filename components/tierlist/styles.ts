@@ -135,11 +135,11 @@ export const imageAreaInfoListSx = (): CSSObject => ({
 });
 
 export const getSidebarImageContainerSx =
-  (height: ImageSize) =>
+  (size: ImageSize) =>
   ({ colors }: MantineTheme): CSSObject => ({
     flexShrink: 0,
-    width: height,
-    height,
+    width: size,
+    height: size,
     maxHeight: MAX_IMAGE_SIZE,
     maxWidth: MAX_IMAGE_SIZE,
     overflow: "hidden",
