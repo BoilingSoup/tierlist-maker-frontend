@@ -51,7 +51,6 @@ const Create: NextPage = () => {
 
   // TODO:
   // - authenticated view (hide save/publish buttons)
-  // - paste event only send network request if text is a valid URL
 
   return (
     <>
