@@ -3,9 +3,10 @@ import { ActionIcon, Center, CSSObject, Flex, MantineTheme } from "@mantine/core
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconSettingsFilled } from "@tabler/icons-react";
 import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
-import { ROWS_TO_FIT_PERFECTLY_ON_SCREEN, useResponsiveImageSize } from "../../hooks/store/useResponsiveImagesStore";
+import { useResponsiveImageSize } from "../../hooks/store/useResponsiveImagesStore";
 import { pxToNumber } from "../common/helpers";
 import { NAVBAR_HEIGHT } from "../common/styles";
+import { ROWS_TO_FIT_PERFECTLY_ON_SCREEN } from "./constants";
 import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
 import { RowSettingsModal } from "./RowSettingsModal";
@@ -14,7 +15,6 @@ import { TierListRowData } from "./types";
 
 type Props = {
   data: TierListRowData;
-  // minHeight: PxSize;
   deletable: boolean;
   onMoveUp: (rowID: string) => void;
   onMoveDown: (rowID: string) => void;
