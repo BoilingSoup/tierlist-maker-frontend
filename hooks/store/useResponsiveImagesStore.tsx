@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { pxToNumber } from "../../components/common/helpers";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
+import { DEFAULT_IMAGE_SIZE, ROWS_TO_FIT_PERFECTLY_ON_SCREEN } from "../../components/tierlist/constants";
 import { PxSize } from "../../components/tierlist/types";
 
 export type ImageSize = PxSize | `clamp(${string}, ${string}, ${string})`;
@@ -10,10 +11,6 @@ type ResponsiveImageSize = {
   size: ImageSize;
   set: (size: ImageSize) => void;
 };
-
-export const MAX_IMAGE_SIZE: PxSize = "200px";
-export const DEFAULT_IMAGE_SIZE: PxSize = "80px";
-export const ROWS_TO_FIT_PERFECTLY_ON_SCREEN = 6;
 
 /**
  * Store dynamic height in this store with window.addEventListener('resive' ...) at root level of app.

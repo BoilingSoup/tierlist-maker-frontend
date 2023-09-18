@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { useIsDesktopScreen } from "../../common/hooks/useIsDesktopScreen";
 import { addFileButtonStyles, addFileButtonSx, addFileButtonTextSx } from "../styles";
 import { ClientSideImage } from "../types";
+import { compressImage } from "../helpers";
 
 type Props = {
   onAddImage: (images: ClientSideImage[]) => void;
@@ -14,15 +15,27 @@ export const AddFileButton = ({ onAddImage: setImageSources }: Props) => {
   const resetRef = useRef<() => void>(null);
   const isDesktopScreen = useIsDesktopScreen();
 
-  const addFileHandler = (files: File[]) => {
-    const newImages: ClientSideImage[] = files.map((file) => ({
-      id: nanoid(),
-      src: URL.createObjectURL(file),
-    }));
-    setImageSources(newImages);
+  const addFileHandler = async (files: File[]) => {
+    try {
+      const compressedImages: Promise<ClientSideImage>[] = files.map(async (file) => {
+        const compressed = await compressImage(file);
 
-    if (resetRef.current !== null) {
-      resetRef.current();
+        return {
+          id: nanoid(),
+          src: URL.createObjectURL(compressed),
+        };
+      });
+
+      // TODO: write to IDB ...
+
+      const newImages = await Promise.all(compressedImages);
+      setImageSources(newImages);
+
+      if (resetRef.current !== null) {
+        resetRef.current();
+      }
+    } catch (e) {
+      // TODO: handle error
     }
   };
 

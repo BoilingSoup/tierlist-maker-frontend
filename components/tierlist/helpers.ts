@@ -3,7 +3,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { useFullscreen } from "@mantine/hooks";
 import { nanoid } from "nanoid";
 import { Dispatch, SetStateAction } from "react";
-import { append, filterByID, findIndexByID, insertAtIndex } from "../common/helpers";
+import { append, filterByID, findIndexByID, insertAtIndex, pxToNumber } from "../common/helpers";
 import {
   CONTAINER,
   DRAG_END_WITHIN_ROW,
@@ -16,6 +16,7 @@ import {
   DRAG_FROM_SIDEBAR_TO_ROW__IMAGE,
   IGNORE_DRAG,
   IMAGE,
+  MAX_IMAGE_SIZE,
   SIDEBAR,
   SWATCHES,
 } from "./constants";
@@ -32,6 +33,7 @@ import {
   TierListRowData,
   UpdateActiveItemParam,
 } from "./types";
+import imageCompression from "browser-image-compression";
 
 /** Converts value of useFullscreen() to prop used in components */
 export const getFullScreenProp = (fullScreen: ReturnType<typeof useFullscreen>): FullScreenProp => ({
@@ -673,3 +675,13 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
 };
 
 const randomSwatch = () => SWATCHES[Math.floor(Math.random() * SWATCHES.length)];
+
+export const compressImage = async (file: File) => {
+  const compressionOpts = {
+    maxSizeMB: 1,
+    maxWidthOrHeight: pxToNumber(MAX_IMAGE_SIZE),
+    useWebWorker: true,
+  };
+
+  return await imageCompression(file, compressionOpts);
+};

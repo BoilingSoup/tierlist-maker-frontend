@@ -1,7 +1,7 @@
 import { useWindowEvent } from "@mantine/hooks";
-import imageCompression from "browser-image-compression";
 import { nanoid } from "nanoid";
 import { Dispatch, SetStateAction } from "react";
+import { compressImage } from "../helpers";
 import { TierListData } from "../types";
 
 type Param = Dispatch<SetStateAction<TierListData>>;
@@ -25,12 +25,7 @@ export const usePasteEvent = (setData: Param) => {
     }
 
     try {
-      const compressionOpts = {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 200,
-        useWebWorker: true,
-      };
-      const compressedFile = await imageCompression(file, compressionOpts);
+      const compressedFile = await compressImage(file);
 
       const fileReader = new FileReader();
 
