@@ -6,6 +6,7 @@ import {
   ModalBaseStylesNames,
   Styles,
 } from "@mantine/core";
+import { CSSProperties } from "react";
 import { ImageSize, MAX_IMAGE_SIZE } from "../../hooks/store/useResponsiveImagesStore";
 import { NAVBAR_HEIGHT } from "../common/styles";
 import { PxSize } from "./types";
@@ -234,4 +235,20 @@ export const getRowSettingsModalStyles = ({
   title: { color: "white", fontSize: fontSizes.xl, marginBottom: spacing.md },
   header: { alignItems: "flex-start", background: colors.dark[4] },
   close: { color: "white", ":hover": { background: "none" } },
+});
+
+export const modalStyles: Styles<ModalBaseStylesNames, never> = {
+  content: {
+    background: "transparent",
+  },
+  overlay: { background: "rgba(0, 0, 0, 0.92)" },
+};
+
+export const exportedImageStyle: CSSProperties = { width: "80%", display: "block", margin: "auto" };
+
+export const modalButtonsContainerSx = ({ spacing }: MantineTheme) => ({
+  width: "80%",
+  margin: `${spacing.sm} auto 0 auto`,
+  justifyContent: "flex-end",
+  gap: spacing.xs,
 });
