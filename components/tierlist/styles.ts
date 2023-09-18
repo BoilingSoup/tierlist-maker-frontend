@@ -7,8 +7,9 @@ import {
   Styles,
 } from "@mantine/core";
 import { CSSProperties } from "react";
-import { ImageSize, MAX_IMAGE_SIZE } from "../../hooks/store/useResponsiveImagesStore";
+import { ImageSize } from "../../hooks/store/useResponsiveImagesStore";
 import { NAVBAR_HEIGHT } from "../common/styles";
+import { MAX_IMAGE_SIZE } from "./constants";
 import { PxSize } from "./types";
 
 export const createPageMainContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
@@ -244,10 +245,16 @@ export const modalStyles: Styles<ModalBaseStylesNames, never> = {
   overlay: { background: "rgba(0, 0, 0, 0.92)" },
 };
 
-export const exportedImageStyle: CSSProperties = { width: "80%", display: "block", margin: "auto" };
+const previewWidth = "80%";
+export const exportedImageStyle: CSSProperties = {
+  width: previewWidth,
+  maxHeight: "80vh",
+  display: "block",
+  margin: "auto",
+};
 
 export const modalButtonsContainerSx = ({ spacing }: MantineTheme) => ({
-  width: "80%",
+  width: previewWidth,
   margin: `${spacing.sm} auto 0 auto`,
   justifyContent: "flex-end",
   gap: spacing.xs,
