@@ -22,6 +22,7 @@ const Create: NextPage = () => {
   const fullScreen = useFullScreen();
 
   const [data, setData] = useLocallyStoredTierList();
+  usePasteEvent(setData);
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
@@ -48,7 +49,6 @@ const Create: NextPage = () => {
   const { handleDragStart, handleDragOver, handleDragEnd } = getDragHandlers({ data, setData, setActiveItem });
 
   const sensors = useDndSensors();
-  usePasteEvent(setData);
   const [animateChildren] = useAutoAnimate();
 
   // TODO:

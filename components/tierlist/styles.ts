@@ -68,6 +68,8 @@ export const imageAreaMaxBoundsSx = ({ breakpoints }: MantineTheme): CSSObject =
   },
 });
 
+export const IMAGE_AREA_CONTAINER_WIDTH = "92%";
+
 export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   position: "absolute",
   top: "50%",
@@ -79,7 +81,7 @@ export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSS
   borderRadius: "8px",
   [`@media (min-width:${breakpoints.lg})`]: {
     height: "94%",
-    width: "92%",
+    width: IMAGE_AREA_CONTAINER_WIDTH,
     flexDirection: "column",
   },
 });
