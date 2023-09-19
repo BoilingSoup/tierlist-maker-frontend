@@ -25,7 +25,6 @@ export const AddFileButton = ({ onAddImage: setData }: Props) => {
 
   const addFileHandler = async (files: File[]) => {
     try {
-      // TODO: abstract compression away into setData
       const compressedImages: Promise<ClientSideImage>[] = files.map(async (file) => {
         const compressed = await compressImage(file);
 
@@ -44,7 +43,7 @@ export const AddFileButton = ({ onAddImage: setData }: Props) => {
         resetRef.current();
       }
     } catch (e) {
-      // TODO: handle error
+      //
     }
   };
 
