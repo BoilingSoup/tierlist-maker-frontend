@@ -6,9 +6,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import { append } from "../../components/common/helpers";
-import { DOM_TO_PNG_ID, initialData } from "../../components/tierlist/constants";
+import { DOM_TO_PNG_ID } from "../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../components/tierlist/helpers";
 import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
+import { useLocallyStoredTierList } from "../../components/tierlist/hooks/useLocallyStoredTierList";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../components/tierlist/Sidebar";
@@ -20,7 +21,8 @@ import { SITE_NAME } from "../../config/config";
 const Create: NextPage = () => {
   const fullScreen = useFullScreen();
 
-  const [data, setData] = useState<TierListData>(initialData);
+  const [data, setData] = useLocallyStoredTierList();
+
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
   const handleAddImage = (newImage: ClientSideImage[]) =>

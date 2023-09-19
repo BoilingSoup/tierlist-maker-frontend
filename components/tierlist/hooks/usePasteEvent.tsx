@@ -1,10 +1,10 @@
 import { useWindowEvent } from "@mantine/hooks";
 import { nanoid } from "nanoid";
-import { Dispatch, SetStateAction } from "react";
 import { compressImage } from "../helpers";
 import { TierListData } from "../types";
 
-type Param = Dispatch<SetStateAction<TierListData>>;
+type Arg = (prev: TierListData) => TierListData;
+type Param = (fn: Arg) => Promise<void>;
 
 export const usePasteEvent = (setData: Param) => {
   useWindowEvent("paste", async (e: Event) => {
@@ -25,6 +25,7 @@ export const usePasteEvent = (setData: Param) => {
     }
 
     try {
+      // TODO: abstract the compression away into the setData function - useLocallyStoredTierList hook
       const compressedFile = await compressImage(file);
 
       const fileReader = new FileReader();
@@ -36,8 +37,6 @@ export const usePasteEvent = (setData: Param) => {
         if (!isExpectedImgSrcData) {
           return;
         }
-
-        // write to IDB ...
 
         setData((prev) => ({
           sidebar: [...prev.sidebar, { id: nanoid(), src: data }],
