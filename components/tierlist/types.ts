@@ -1,5 +1,6 @@
 import { DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { Dispatch, SetStateAction } from "react";
+import { array, object, string } from "valibot";
 import {
   CONTAINER,
   DRAG_END_WITHIN_ROW,
@@ -24,6 +25,29 @@ export type TierListData = {
   sidebar: ClientSideImage[];
   rows: TierListRowData[];
 };
+
+// validation schema like zod
+export const TierListSchema = object({
+  sidebar: array(
+    object({
+      id: string(),
+      src: string(),
+    })
+  ),
+  rows: array(
+    object({
+      id: string(),
+      label: string(),
+      color: string(),
+      items: array(
+        object({
+          id: string(),
+          src: string(),
+        })
+      ),
+    })
+  ),
+});
 
 export type TierListRowData = {
   id: string;

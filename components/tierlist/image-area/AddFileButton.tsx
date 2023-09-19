@@ -11,25 +11,34 @@ type Props = {
   onAddImage: (images: ClientSideImage[]) => void;
 };
 
-export const AddFileButton = ({ onAddImage: setImageSources }: Props) => {
+const toBase64 = (file: File) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+
+export const AddFileButton = ({ onAddImage: setData }: Props) => {
   const resetRef = useRef<() => void>(null);
   const isDesktopScreen = useIsDesktopScreen();
 
   const addFileHandler = async (files: File[]) => {
     try {
+      // TODO: abstract compression away into setData
       const compressedImages: Promise<ClientSideImage>[] = files.map(async (file) => {
         const compressed = await compressImage(file);
 
+        const base64img = await toBase64(compressed);
+
         return {
           id: nanoid(),
-          src: URL.createObjectURL(compressed),
+          src: base64img as string,
         };
       });
 
-      // TODO: write to IDB ...
-
       const newImages = await Promise.all(compressedImages);
-      setImageSources(newImages);
+      setData(newImages);
 
       if (resetRef.current !== null) {
         resetRef.current();

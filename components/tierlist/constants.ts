@@ -60,6 +60,40 @@ export const initialData: TierListData = {
   ],
 };
 
+export const initialState: TierListData = {
+  sidebar: [],
+  rows: [
+    {
+      id: nanoid(),
+      color: "#fe7f7f",
+      label: "S",
+      items: [
+        // {
+        //   id: nanoid(),
+        //   src: "https://www.memeatlas.com/images/pepeThumbnails/pepe-fat-head-mouth-open-thumbnail.jpg",
+        // },
+        // {
+        //   id: nanoid(),
+        //   src: "https://www.memeatlas.com/images/pepeThumbnails/pepe-guy-fieri-shirt-thumbnail.png",
+        // },
+        // {
+        //   id: nanoid(),
+        //   src: "https://www.memeatlas.com/images/pepeThumbnails/pepe-drinks-tea-thumbnail.png",
+        // },
+        // {
+        //   id: nanoid(),
+        //   src: "https://www.memeatlas.com/images/pepeThumbnails/pepe-3d-hissing-thumbnail.png",
+        // },
+      ],
+    },
+    { id: nanoid(), color: "#febe7e", label: "A", items: [] },
+    { id: nanoid(), color: "#fefe7f", label: "B", items: [] },
+    { id: nanoid(), color: "#7fff7f", label: "C", items: [] },
+    { id: nanoid(), color: "#7fbfff", label: "D", items: [] },
+    { id: nanoid(), color: DEFAULT_THEME.colors.grape[5], label: "F", items: [] },
+  ],
+};
+
 /*************************Drag Event Constants*************************/
 
 // These constants represent the dragOver event's possible branching conditions.
