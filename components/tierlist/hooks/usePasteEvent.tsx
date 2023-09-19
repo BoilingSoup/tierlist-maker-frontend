@@ -25,7 +25,6 @@ export const usePasteEvent = (setData: Param) => {
     }
 
     try {
-      // TODO: abstract the compression away into the setData function - useLocallyStoredTierList hook
       const compressedFile = await compressImage(file);
 
       const fileReader = new FileReader();

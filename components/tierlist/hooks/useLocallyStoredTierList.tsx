@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { TierListData, TierListSchema } from "../types";
 import { get, set } from "idb-keyval";
 import { parse } from "valibot";
-import { initialState } from "../constants";
+import { INITIAL_STATE } from "../constants";
 
 const LOCAL_TIERLIST_IDB = "lt";
 
 export const useLocallyStoredTierList = () => {
-  const [data, _setData] = useState<TierListData>(initialState);
+  const [data, _setData] = useState<TierListData>(INITIAL_STATE);
 
   useEffect(() => {
     async function getData(): Promise<TierListData | never> {
