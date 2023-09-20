@@ -11,8 +11,9 @@ import {
 } from "@mantine/core";
 import { CSSProperties } from "react";
 import { ImageSize } from "../../hooks/store/useResponsiveImagesStore";
+import { pxToNumber } from "../common/helpers";
 import { NAVBAR_HEIGHT } from "../common/styles";
-import { MAX_IMAGE_SIZE } from "./constants";
+import { MAX_IMAGE_SIZE, ROWS_TO_FIT_PERFECTLY_ON_SCREEN } from "./constants";
 import { PxSize } from "./types";
 
 export const createPageMainContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
@@ -292,6 +293,7 @@ const wiggle = keyframes`
 export const imageDeleteBtnSx = ({ colors }: MantineTheme): CSSObject => ({
   color: "white",
   position: "absolute",
+  zIndex: 9999,
   height: "20%",
   width: "20%",
   minWidth: "20px",
@@ -304,5 +306,40 @@ export const imageDeleteBtnSx = ({ colors }: MantineTheme): CSSObject => ({
   animation: `${wiggle} 100ms ease-in-out infinite alternate`,
   ":hover": {
     background: colors.red[6],
+  },
+});
+
+export const rowContainerSx =
+  (viewportHeight: number) =>
+  ({ breakpoints }: MantineTheme) => ({
+    border: "2px solid black",
+    minHeight: (viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
+    [`@media (max-width: ${breakpoints.md})`]: {
+      minHeight:
+        (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
+    },
+  });
+
+export const rowLabelContainerSx = (size: ImageSize, color: string) => (): CSSObject => ({
+  minWidth: "100px",
+  width: size,
+  backgroundColor: color,
+  color: "black",
+  fontSize: "clamp(2rem, 6vw, 3rem)",
+  borderRight: "2px solid black",
+});
+
+export const rowImagesContainerSx = ({ colors, fn, breakpoints }: MantineTheme): CSSObject => ({
+  width: "100%",
+  backgroundImage: `radial-gradient(ellipse, ${colors.dark[9]}, ${fn.lighten(colors.dark[8], 0.03)})`,
+  margin: "0.1ch",
+  display: "flex",
+  gap: "0.1ch",
+  flexWrap: "wrap",
+  height: "auto",
+  [`@media (min-width: ${breakpoints.md})`]: {
+    alignItems: "center",
+    margin: "0.3ch",
+    gap: "0.3ch",
   },
 });

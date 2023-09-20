@@ -5,7 +5,6 @@ import { useFullscreen as useFullScreen } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useReducer, useState } from "react";
-import { append } from "../../components/common/helpers";
 import { DOM_TO_PNG_ID } from "../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../components/tierlist/helpers";
 import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
@@ -15,7 +14,7 @@ import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage"
 import { Sidebar } from "../../components/tierlist/Sidebar";
 import { createPageMainContainerSx, rowsContainerSx } from "../../components/tierlist/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
-import { ActiveItemState, ClientSideImage, TierListData } from "../../components/tierlist/types";
+import { ActiveItemState } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
 
 const Create: NextPage = () => {
@@ -26,13 +25,6 @@ const Create: NextPage = () => {
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
-  const handleAddImage = (newImage: ClientSideImage[]) =>
-    setData(
-      (prev): TierListData => ({
-        sidebar: append(prev.sidebar, ...newImage),
-        rows: prev.rows,
-      })
-    );
   const {
     handleMoveRowUp,
     handleMoveRowDown,
@@ -42,6 +34,10 @@ const Create: NextPage = () => {
     handleAddRowBelow,
     handleDeleteRow,
     handleClearRow,
+    handleDeleteImage,
+    handleAddImage,
+    handleMoveAllImages,
+    handleDeleteAllImages,
   } = getRowHandlers({
     setData,
     data,
@@ -55,6 +51,10 @@ const Create: NextPage = () => {
 
   // TODO:
   // - authenticated view (hide save/publish buttons)
+  // - reset button to reset to initial state (not same as delete all)
+  // - css, hide delete X buttons when exporting
+  // - mobile css for delete/move all stuff
+  // - server-side saving
 
   return (
     <>
@@ -85,6 +85,7 @@ const Create: NextPage = () => {
                   onAddRowBelow={handleAddRowBelow}
                   onDeleteRow={handleDeleteRow}
                   onClearRow={handleClearRow}
+                  onDeleteImage={handleDeleteImage}
                 />
               ))}
             </Box>
@@ -95,6 +96,9 @@ const Create: NextPage = () => {
             fullScreen={getFullScreenProp(fullScreen)}
             images={data.sidebar}
             onAddImage={handleAddImage}
+            onDeleteImage={handleDeleteImage}
+            onDeleteAllImages={handleDeleteAllImages}
+            onMoveAllImages={handleMoveAllImages}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

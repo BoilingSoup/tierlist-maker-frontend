@@ -12,10 +12,22 @@ type Props = {
   onToggleDelete: DispatchWithoutAction;
   images: ClientSideImage[];
   onAddImage: (images: ClientSideImage[]) => void;
+  onDeleteImage: (droppableID: string, imgID: string) => void;
+  onDeleteAllImages: () => void;
+  onMoveAllImages: () => void;
   fullScreen: FullScreenProp;
 };
 
-export const Sidebar = ({ isDeleting, onToggleDelete: toggle, images, onAddImage: setImages, fullScreen }: Props) => {
+export const Sidebar = ({
+  isDeleting,
+  onToggleDelete: toggle,
+  images,
+  onAddImage: setImages,
+  fullScreen,
+  onDeleteImage: handleDeleteImage,
+  onMoveAllImages: handleMoveAllImages,
+  onDeleteAllImages: handleDeleteAllImages,
+}: Props) => {
   const transitionDuration = 115; // ms
 
   const { deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions({
@@ -23,10 +35,6 @@ export const Sidebar = ({ isDeleting, onToggleDelete: toggle, images, onAddImage
     duration: transitionDuration,
   });
 
-  // TODO: implement click on X button
-
-  // TODO: implement move all to sidebar
-  // TODO: implement delete all
   return (
     <Flex sx={sidebarContainerSx}>
       <Center sx={modAllImagesContainerSx}>
@@ -39,7 +47,7 @@ export const Sidebar = ({ isDeleting, onToggleDelete: toggle, images, onAddImage
           timingFunction="ease"
         >
           {(styles) => (
-            <Button color="red.9" style={styles} leftIcon={<IconTrash size={20} />}>
+            <Button color="red.9" style={styles} leftIcon={<IconTrash size={20} />} onClick={handleDeleteAllImages}>
               Delete All
             </Button>
           )}
@@ -53,13 +61,13 @@ export const Sidebar = ({ isDeleting, onToggleDelete: toggle, images, onAddImage
           timingFunction="ease"
         >
           {(styles) => (
-            <Button style={styles} color="gray.7" leftIcon={<IconArrowRight />}>
+            <Button style={styles} color="gray.7" leftIcon={<IconArrowRight />} onClick={handleMoveAllImages}>
               Move All to Sidebar
             </Button>
           )}
         </Transition>
       </Center>
-      <ImageArea images={images} onAddImage={setImages} isDeleting={isDeleting} />
+      <ImageArea images={images} onAddImage={setImages} isDeleting={isDeleting} onDelete={handleDeleteImage} />
       <ActionButtonsGroup fullScreen={fullScreen} />
     </Flex>
   );
