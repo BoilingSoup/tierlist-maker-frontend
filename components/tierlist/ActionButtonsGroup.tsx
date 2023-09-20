@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const ActionButtonsGroup = ({ fullScreen }: Props) => {
-  const setHideToolbars = useIsExportingStore((state) => state.setValue);
+  const setIsExporting = useIsExportingStore((state) => state.setValue);
 
   const [opened, { open, close }] = useDisclosure(false);
   const [setClickable1, setClickable2] = useClickOutModal(close); // custom styled modal is hard to "click-out" of. I can fight the CSS or use this hook to tweak the click out behavior to how it should be... hook is easier.
@@ -33,14 +33,13 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
     const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
     open();
 
-    setHideToolbars(true); // hide toolbar arrow buttons, gear icon, etc. while converting to png
+    setIsExporting(true); // hide toolbar arrow buttons, gear icon, etc. while converting to png
 
     DomToImage.toPng(div)
       .then((dataUrl) => {
         setImgSrc(dataUrl);
       })
       .finally(() => {
-        setHideToolbars(false);
         setIsLoading(false);
       });
   };
@@ -50,7 +49,7 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
 
     const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
 
-    setHideToolbars(true);
+    setIsExporting(true);
 
     DomToImage.toBlob(div)
       .then((blob) => {
@@ -58,7 +57,6 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
       })
       .finally(() => {
         setIsDownloading(false);
-        setHideToolbars(false);
       });
   };
 
@@ -67,9 +65,21 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
 
   const isDesktop = useIsDesktopScreen();
 
+  const handleCloseModal = () => {
+    setIsExporting(false);
+    close();
+  };
+
   return (
     <>
-      <Modal opened={opened} onClose={close} centered size="auto" withCloseButton={false} styles={modalStyles}>
+      <Modal
+        opened={opened}
+        onClose={handleCloseModal}
+        centered
+        size="auto"
+        withCloseButton={false}
+        styles={modalStyles}
+      >
         {!isLoading && <img ref={setClickable1} src={imgSrc} style={exportedImageStyle} />}
         {isLoading ? (
           <Loader />
@@ -78,7 +88,7 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
             <Button ref={setClickable2} size={isDesktop ? "xl" : "md"} color="lime.9" onClick={handleDownloadImage}>
               {!isDownloading ? "Download" : <Loader color="gray.0" />}
             </Button>
-            <Button size={isDesktop ? "xl" : "md"} color="dark.4" onClick={close}>
+            <Button size={isDesktop ? "xl" : "md"} color="dark.4" onClick={handleCloseModal}>
               Close
             </Button>
           </Flex>

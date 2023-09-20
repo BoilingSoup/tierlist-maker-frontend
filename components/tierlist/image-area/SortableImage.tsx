@@ -1,6 +1,7 @@
 import { CSS } from "@dnd-kit/utilities";
 import { Center, CloseButton, Transition } from "@mantine/core";
 import { CSSProperties } from "react";
+import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
 import { useResponsiveImageSize } from "../../../hooks/store/useResponsiveImagesStore";
 import { useSortableImage } from "../hooks/useSortableImage";
 import { getSidebarImageContainerSx, imageDeleteBtnSx } from "../styles";
@@ -26,6 +27,8 @@ export const SortableImage = ({ img, containerID, isDeleting, onDelete: handleDe
 
   const size = useResponsiveImageSize((state) => state.size);
 
+  const hideDeleteButtons = useIsExportingStore((state) => state.value);
+
   return (
     <Center
       key={img.id}
@@ -35,16 +38,18 @@ export const SortableImage = ({ img, containerID, isDeleting, onDelete: handleDe
       {...attributes}
       style={style}
     >
-      <Transition mounted={isDeleting} transition="fade">
-        {(style) => (
-          <CloseButton
-            style={style}
-            sx={imageDeleteBtnSx}
-            size="xl"
-            onClick={() => handleDeleteImage(containerID, img.id)}
-          />
-        )}
-      </Transition>
+      {!hideDeleteButtons && (
+        <Transition mounted={isDeleting} transition="fade">
+          {(style) => (
+            <CloseButton
+              style={style}
+              sx={imageDeleteBtnSx}
+              size="xl"
+              onClick={() => handleDeleteImage(containerID, img.id)}
+            />
+          )}
+        </Transition>
+      )}
       <img src={img.src} style={{ width: "100%", objectFit: "cover" }} />
     </Center>
   );
