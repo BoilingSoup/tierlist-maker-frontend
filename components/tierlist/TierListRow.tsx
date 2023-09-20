@@ -1,21 +1,26 @@
 import { SortableContext } from "@dnd-kit/sortable";
-import { ActionIcon, Center, CSSObject, Flex, MantineTheme } from "@mantine/core";
+import { ActionIcon, Center, Flex } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconSettingsFilled } from "@tabler/icons-react";
 import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 import { useResponsiveImageSize } from "../../hooks/store/useResponsiveImagesStore";
-import { pxToNumber } from "../common/helpers";
-import { NAVBAR_HEIGHT } from "../common/styles";
-import { ROWS_TO_FIT_PERFECTLY_ON_SCREEN } from "./constants";
 import { useDroppableRow } from "./hooks/useDroppableRow";
 import { SortableImage } from "./image-area/SortableImage";
 import { RowSettingsModal } from "./RowSettingsModal";
-import { MOBILE_BOTTOM_BAR, rowArrowsContainerSx, rowButtonsContainerSx, rowButtonsSx } from "./styles";
+import {
+  rowArrowsContainerSx,
+  rowButtonsContainerSx,
+  rowButtonsSx,
+  rowContainerSx,
+  rowImagesContainerSx,
+  rowLabelContainerSx,
+} from "./styles";
 import { TierListRowData } from "./types";
 
 type Props = {
   data: TierListRowData;
   deletable: boolean;
+  isDeleting: boolean;
   onMoveUp: (rowID: string) => void;
   onMoveDown: (rowID: string) => void;
   onChangeLabel: (param: { rowID: string; label: string }) => void;
@@ -24,27 +29,14 @@ type Props = {
   onAddRowBelow: (rowID: string) => void;
   onDeleteRow: (rowID: string) => void;
   onClearRow: (rowID: string) => void;
+  onDeleteImage: (droppableID: string, imgID: string) => void;
 };
-
-const junk = (theme: MantineTheme): CSSObject => ({
-  width: "100%",
-  backgroundImage: `radial-gradient(ellipse, ${theme.colors.dark[9]}, ${theme.fn.lighten(theme.colors.dark[8], 0.03)})`,
-  margin: "0.1ch",
-  display: "flex",
-  gap: "0.1ch",
-  flexWrap: "wrap",
-  height: "auto",
-  [`@media (min-width: ${theme.breakpoints.md})`]: {
-    alignItems: "center",
-    margin: "0.3ch",
-    gap: "0.3ch",
-  },
-});
 
 export const TierListRow = ({
   data,
-  // minHeight,
   deletable,
+  isDeleting,
+  onDeleteImage: handleDeleteImage,
   onMoveUp: handleMoveUp,
   onMoveDown: handleMoveDown,
   onChangeLabel: handleChangeLabel,
@@ -81,33 +73,18 @@ export const TierListRow = ({
         onClearRow={handleClearRow}
       />
 
-      <Flex
-        sx={(theme) => ({
-          border: "2px solid black",
-          minHeight: (viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
-          [`@media (max-width: ${theme.breakpoints.md})`]: {
-            minHeight:
-              (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) /
-              ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
-          },
-        })}
-      >
-        <Center
-          sx={{
-            minWidth: "100px",
-            width: size,
-            backgroundColor: color,
-            color: "black",
-            fontSize: "clamp(2rem, 6vw, 3rem)",
-            borderRight: "2px solid black",
-          }}
-        >
-          {label}
-        </Center>
+      <Flex sx={rowContainerSx(viewportHeight)}>
+        <Center sx={rowLabelContainerSx(size, color)}>{label}</Center>
         <SortableContext items={items.map((item) => item.id)}>
-          <Flex sx={junk} ref={setNodeRef}>
+          <Flex sx={rowImagesContainerSx} ref={setNodeRef}>
             {items.map((item) => (
-              <SortableImage key={item.id} img={item} containerID={data.id} />
+              <SortableImage
+                key={item.id}
+                img={item}
+                containerID={data.id}
+                isDeleting={isDeleting}
+                onDelete={handleDeleteImage}
+              />
             ))}
           </Flex>
         </SortableContext>

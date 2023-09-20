@@ -16,6 +16,7 @@ import {
   DRAG_FROM_SIDEBAR_TO_ROW__IMAGE,
   IGNORE_DRAG,
   IMAGE,
+  INITIAL_STATE,
   MAX_IMAGE_SIZE,
   SIDEBAR,
   SWATCHES,
@@ -550,6 +551,10 @@ type RowHandlers = {
   handleAddRowBelow: (rowID: string) => void;
   handleDeleteRow: (rowID: string) => void;
   handleClearRow: (rowID: string) => void;
+  handleAddImage: (newImage: ClientSideImage[]) => void;
+  handleDeleteImage: (droppableID: string, imgID: string) => void;
+  handleDeleteAllImages: () => void;
+  handleMoveAllImages: () => void;
 };
 type GetRowHandlersParam = {
   data: TierListData;
@@ -662,6 +667,62 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     );
   };
 
+  const handleAddImage = (newImage: ClientSideImage[]) =>
+    setData(
+      (prev): TierListData => ({
+        sidebar: append(prev.sidebar, ...newImage),
+        rows: prev.rows,
+      })
+    );
+
+  const handleDeleteImage = (droppableID: string, imgID: string) => {
+    const droppableIndex = findIndexByID(data.rows, droppableID);
+    const isRow = droppableIndex !== -1;
+
+    setData(
+      (prev): TierListData => ({
+        rows: isRow
+          ? prev.rows.map((row) => {
+              if (row.id !== row.id) {
+                return row;
+              }
+              return {
+                id: row.id,
+                color: row.color,
+                items: row.items.filter((item) => item.id !== imgID),
+                label: row.label,
+              };
+            })
+          : prev.rows,
+        sidebar: isRow ? prev.sidebar : prev.sidebar.filter((item) => item.id !== imgID),
+      })
+    );
+  };
+
+  const handleDeleteAllImages = () => {
+    setData((prev) => ({
+      rows: prev.rows.map((row) => ({ id: row.id, color: row.color, items: [], label: row.label })),
+      sidebar: [],
+    }));
+  };
+
+  const handleMoveAllImages = () => {
+    setData((prev) => {
+      const allRowImages: ClientSideImage[] = [];
+      const blankRows: TierListRowData[] = [];
+
+      prev.rows.forEach((row) => {
+        row.items.forEach((item) => allRowImages.push(item));
+        blankRows.push({ id: row.id, color: row.color, items: [], label: row.label });
+      });
+
+      return {
+        rows: blankRows,
+        sidebar: [...prev.sidebar, ...allRowImages],
+      };
+    });
+  };
+
   return {
     handleMoveRowUp,
     handleMoveRowDown,
@@ -671,6 +732,10 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     handleAddRowBelow,
     handleDeleteRow,
     handleClearRow,
+    handleDeleteImage,
+    handleDeleteAllImages,
+    handleMoveAllImages,
+    handleAddImage,
   };
 };
 

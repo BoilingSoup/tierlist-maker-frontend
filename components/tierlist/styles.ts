@@ -1,15 +1,19 @@
 import {
   ButtonStylesParams,
   CSSObject,
+  keyframes,
   ListStylesNames,
   MantineTheme,
   ModalBaseStylesNames,
   Styles,
+  SwitchStylesNames,
+  SwitchStylesParams,
 } from "@mantine/core";
 import { CSSProperties } from "react";
 import { ImageSize } from "../../hooks/store/useResponsiveImagesStore";
+import { pxToNumber } from "../common/helpers";
 import { NAVBAR_HEIGHT } from "../common/styles";
-import { MAX_IMAGE_SIZE } from "./constants";
+import { MAX_IMAGE_SIZE, ROWS_TO_FIT_PERFECTLY_ON_SCREEN } from "./constants";
 import { PxSize } from "./types";
 
 export const createPageMainContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
@@ -68,6 +72,8 @@ export const imageAreaMaxBoundsSx = ({ breakpoints }: MantineTheme): CSSObject =
   },
 });
 
+const IMAGE_AREA_CONTAINER_WIDTH = "92%";
+
 export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   position: "absolute",
   top: "50%",
@@ -79,7 +85,7 @@ export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSS
   borderRadius: "8px",
   [`@media (min-width:${breakpoints.lg})`]: {
     height: "94%",
-    width: "92%",
+    width: IMAGE_AREA_CONTAINER_WIDTH,
     flexDirection: "column",
   },
 });
@@ -139,6 +145,7 @@ export const imageAreaInfoListSx = (): CSSObject => ({
 export const getSidebarImageContainerSx =
   (size: ImageSize) =>
   ({ colors }: MantineTheme): CSSObject => ({
+    position: "relative",
     flexShrink: 0,
     width: size,
     height: size,
@@ -253,9 +260,86 @@ export const exportedImageStyle: CSSProperties = {
   margin: "auto",
 };
 
-export const modalButtonsContainerSx = ({ spacing }: MantineTheme) => ({
+export const modalButtonsContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
   width: previewWidth,
   margin: `${spacing.sm} auto 0 auto`,
   justifyContent: "flex-end",
   gap: spacing.xs,
+});
+
+export const modAllImagesContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
+  width: IMAGE_AREA_CONTAINER_WIDTH,
+  height: "40px",
+  margin: "auto",
+  marginTop: spacing.lg,
+  justifyContent: "space-between",
+});
+
+export const switchStyles: Styles<SwitchStylesNames, SwitchStylesParams> = {
+  thumb: { background: "rgb(180, 0, 0)" },
+  label: { color: "white", fontWeight: "bold" },
+};
+
+const wiggle = keyframes`
+  from {
+    transform: rotateZ(4deg);
+  }
+
+  to {
+    transform: rotateZ(-4deg)
+  }
+`;
+
+export const imageDeleteBtnSx = ({ colors }: MantineTheme): CSSObject => ({
+  color: "white",
+  position: "absolute",
+  zIndex: 9999,
+  height: "20%",
+  width: "20%",
+  minWidth: "20px",
+  minHeight: "20px",
+  borderRadius: "9999px",
+  backgroundColor: "red",
+  top: 0,
+  right: 0,
+  border: "1px solid pink",
+  animation: `${wiggle} 100ms ease-in-out infinite alternate`,
+  ":hover": {
+    background: colors.red[6],
+  },
+});
+
+export const rowContainerSx =
+  (viewportHeight: number) =>
+  ({ breakpoints }: MantineTheme) => ({
+    border: "2px solid black",
+    minHeight: (viewportHeight - pxToNumber(NAVBAR_HEIGHT)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
+    [`@media (max-width: ${breakpoints.md})`]: {
+      minHeight:
+        (viewportHeight - pxToNumber(NAVBAR_HEIGHT) - pxToNumber(MOBILE_BOTTOM_BAR)) / ROWS_TO_FIT_PERFECTLY_ON_SCREEN,
+    },
+  });
+
+export const rowLabelContainerSx = (size: ImageSize, color: string) => (): CSSObject => ({
+  minWidth: "100px",
+  width: size,
+  backgroundColor: color,
+  color: "black",
+  fontSize: "clamp(2rem, 6vw, 3rem)",
+  borderRight: "2px solid black",
+});
+
+export const rowImagesContainerSx = ({ colors, fn, breakpoints }: MantineTheme): CSSObject => ({
+  width: "100%",
+  backgroundImage: `radial-gradient(ellipse, ${colors.dark[9]}, ${fn.lighten(colors.dark[8], 0.03)})`,
+  margin: "0.1ch",
+  display: "flex",
+  gap: "0.1ch",
+  flexWrap: "wrap",
+  height: "auto",
+  [`@media (min-width: ${breakpoints.md})`]: {
+    alignItems: "center",
+    margin: "0.3ch",
+    gap: "0.3ch",
+  },
 });
