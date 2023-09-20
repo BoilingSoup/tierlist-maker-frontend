@@ -1,6 +1,7 @@
 import {
   ButtonStylesParams,
   CSSObject,
+  keyframes,
   ListStylesNames,
   MantineTheme,
   ModalBaseStylesNames,
@@ -143,6 +144,7 @@ export const imageAreaInfoListSx = (): CSSObject => ({
 export const getSidebarImageContainerSx =
   (size: ImageSize) =>
   ({ colors }: MantineTheme): CSSObject => ({
+    position: "relative",
     flexShrink: 0,
     width: size,
     height: size,
@@ -257,14 +259,14 @@ export const exportedImageStyle: CSSProperties = {
   margin: "auto",
 };
 
-export const modalButtonsContainerSx = ({ spacing }: MantineTheme) => ({
+export const modalButtonsContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
   width: previewWidth,
   margin: `${spacing.sm} auto 0 auto`,
   justifyContent: "flex-end",
   gap: spacing.xs,
 });
 
-export const modAllImagesContainerSx = ({ spacing }: MantineTheme) => ({
+export const modAllImagesContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
   width: IMAGE_AREA_CONTAINER_WIDTH,
   height: "40px",
   margin: "auto",
@@ -276,3 +278,31 @@ export const switchStyles: Styles<SwitchStylesNames, SwitchStylesParams> = {
   thumb: { background: "rgb(180, 0, 0)" },
   label: { color: "white", fontWeight: "bold" },
 };
+
+const wiggle = keyframes`
+  from {
+    transform: rotateZ(4deg);
+  }
+
+  to {
+    transform: rotateZ(-4deg)
+  }
+`;
+
+export const imageDeleteBtnSx = ({ colors }: MantineTheme): CSSObject => ({
+  color: "white",
+  position: "absolute",
+  height: "20%",
+  width: "20%",
+  minWidth: "20px",
+  minHeight: "20px",
+  borderRadius: "9999px",
+  backgroundColor: "red",
+  top: 0,
+  right: 0,
+  border: "1px solid pink",
+  animation: `${wiggle} 100ms ease-in-out infinite alternate`,
+  ":hover": {
+    background: colors.red[6],
+  },
+});

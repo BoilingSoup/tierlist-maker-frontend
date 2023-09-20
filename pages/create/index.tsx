@@ -4,7 +4,7 @@ import { Box, Flex } from "@mantine/core";
 import { useFullscreen as useFullScreen } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { append } from "../../components/common/helpers";
 import { DOM_TO_PNG_ID } from "../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../components/tierlist/helpers";
@@ -51,6 +51,8 @@ const Create: NextPage = () => {
   const sensors = useDndSensors();
   const [animateChildren] = useAutoAnimate();
 
+  const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
+
   // TODO:
   // - authenticated view (hide save/publish buttons)
 
@@ -74,6 +76,7 @@ const Create: NextPage = () => {
                   key={row.id}
                   data={row}
                   deletable={data.rows.length <= 1}
+                  isDeleting={deleteIsToggled}
                   onMoveUp={handleMoveRowUp}
                   onMoveDown={handleMoveRowDown}
                   onChangeLabel={handleChangeLabel}
@@ -86,7 +89,13 @@ const Create: NextPage = () => {
               ))}
             </Box>
           </Box>
-          <Sidebar fullScreen={getFullScreenProp(fullScreen)} images={data.sidebar} onAddImage={handleAddImage} />
+          <Sidebar
+            isDeleting={deleteIsToggled}
+            onToggleDelete={toggleDelete}
+            fullScreen={getFullScreenProp(fullScreen)}
+            images={data.sidebar}
+            onAddImage={handleAddImage}
+          />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>
       </DndContext>

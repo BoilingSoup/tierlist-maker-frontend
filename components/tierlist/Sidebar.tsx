@@ -1,6 +1,6 @@
 import { Button, Center, Flex, Switch, Transition } from "@mantine/core";
 import { IconArrowRight, IconTrash } from "@tabler/icons-react";
-import { ChangeEventHandler } from "react";
+import { DispatchWithoutAction } from "react";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
 import { ImageArea } from "./image-area/ImageArea";
@@ -8,24 +8,29 @@ import { modAllImagesContainerSx, sidebarContainerSx, switchStyles } from "./sty
 import { ClientSideImage, FullScreenProp } from "./types";
 
 type Props = {
+  isDeleting: boolean;
+  onToggleDelete: DispatchWithoutAction;
   images: ClientSideImage[];
   onAddImage: (images: ClientSideImage[]) => void;
   fullScreen: FullScreenProp;
 };
 
-export const Sidebar = ({ images, onAddImage: setImages, fullScreen }: Props) => {
+export const Sidebar = ({ isDeleting, onToggleDelete: toggle, images, onAddImage: setImages, fullScreen }: Props) => {
   const transitionDuration = 115; // ms
-  const { checked, setChecked, deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions(transitionDuration);
 
-  const handleToggle: ChangeEventHandler = (event) => {
-    const target = event.target as HTMLInputElement;
-    setChecked(target.checked);
-  };
+  const { deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions({
+    checked: isDeleting,
+    duration: transitionDuration,
+  });
 
+  // TODO: implement click on X button
+
+  // TODO: implement move all to sidebar
+  // TODO: implement delete all
   return (
     <Flex sx={sidebarContainerSx}>
       <Center sx={modAllImagesContainerSx}>
-        <Switch checked={checked} onChange={handleToggle} label="Toggle Delete" color="red" styles={switchStyles} />
+        <Switch checked={isDeleting} onChange={toggle} label="Toggle Delete" color="red" styles={switchStyles} />
         <Transition
           mounted={deleteAllVisible}
           transition="fade"
@@ -35,7 +40,7 @@ export const Sidebar = ({ images, onAddImage: setImages, fullScreen }: Props) =>
         >
           {(styles) => (
             <Button color="red.9" style={styles} leftIcon={<IconTrash size={20} />}>
-              Delete all
+              Delete All
             </Button>
           )}
         </Transition>
@@ -49,12 +54,12 @@ export const Sidebar = ({ images, onAddImage: setImages, fullScreen }: Props) =>
         >
           {(styles) => (
             <Button style={styles} color="gray.7" leftIcon={<IconArrowRight />}>
-              Move all to sidebar
+              Move All to Sidebar
             </Button>
           )}
         </Transition>
       </Center>
-      <ImageArea images={images} onAddImage={setImages} />
+      <ImageArea images={images} onAddImage={setImages} isDeleting={isDeleting} />
       <ActionButtonsGroup fullScreen={fullScreen} />
     </Flex>
   );

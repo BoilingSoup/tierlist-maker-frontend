@@ -36,8 +36,8 @@ export const useLocallyStoredTierList = () => {
       newState = arg(data);
     }
 
-    await set(LOCAL_TIERLIST_IDB, newState);
-    _setData(newState);
+    _setData(newState); // set state first makes drop animation smooth
+    await set(LOCAL_TIERLIST_IDB, newState); // and then, write to IDB
   }
 
   return [data, setData] as const;

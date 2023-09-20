@@ -16,6 +16,7 @@ import { TierListRowData } from "./types";
 type Props = {
   data: TierListRowData;
   deletable: boolean;
+  isDeleting: boolean;
   onMoveUp: (rowID: string) => void;
   onMoveDown: (rowID: string) => void;
   onChangeLabel: (param: { rowID: string; label: string }) => void;
@@ -43,8 +44,8 @@ const junk = (theme: MantineTheme): CSSObject => ({
 
 export const TierListRow = ({
   data,
-  // minHeight,
   deletable,
+  isDeleting,
   onMoveUp: handleMoveUp,
   onMoveDown: handleMoveDown,
   onChangeLabel: handleChangeLabel,
@@ -107,7 +108,7 @@ export const TierListRow = ({
         <SortableContext items={items.map((item) => item.id)}>
           <Flex sx={junk} ref={setNodeRef}>
             {items.map((item) => (
-              <SortableImage key={item.id} img={item} containerID={data.id} />
+              <SortableImage key={item.id} img={item} containerID={data.id} isDeleting={isDeleting} />
             ))}
           </Flex>
         </SortableContext>

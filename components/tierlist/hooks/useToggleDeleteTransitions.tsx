@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import { DispatchWithoutAction, useEffect, useState } from "react";
 
-export const useToggleDeleteTransitions = (duration: number) => {
-  const [checked, setChecked] = useState(false);
+type Param = {
+  checked: boolean;
+  // toggle: DispatchWithoutAction;
+  duration: number;
+};
+
+export const useToggleDeleteTransitions = ({ checked, duration }: Param) => {
+  // const [checked, setChecked] = useState(false);
 
   const [deleteAllVisible, setDeleteAllBtnVisible] = useState(false);
   const [moveAllVisible, setMoveAllBtnVisible] = useState(true);
@@ -21,5 +27,5 @@ export const useToggleDeleteTransitions = (duration: number) => {
     return () => clearTimeout(timer);
   }, [checked]);
 
-  return { checked, setChecked, deleteAllVisible, moveAllVisible };
+  return { checked, deleteAllVisible, moveAllVisible };
 };

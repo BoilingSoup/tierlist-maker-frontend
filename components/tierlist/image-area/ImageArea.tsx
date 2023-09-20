@@ -13,9 +13,10 @@ import { useDroppableSidebar } from "../hooks/useDroppableSidebar";
 type Props = {
   images: ClientSideImage[];
   onAddImage: (images: ClientSideImage[]) => void;
+  isDeleting: boolean;
 };
 
-export const ImageArea = ({ images, onAddImage: setImages }: Props) => {
+export const ImageArea = ({ images, onAddImage: setImages, isDeleting }: Props) => {
   const { setNodeRef } = useDroppableSidebar();
 
   const noImages = !images.length;
@@ -27,7 +28,7 @@ export const ImageArea = ({ images, onAddImage: setImages }: Props) => {
           {noImages && <ImageAreaInfo />}
 
           {images.map((img) => (
-            <SortableImage key={img.id} img={img} containerID={SIDEBAR} />
+            <SortableImage key={img.id} img={img} containerID={SIDEBAR} isDeleting={isDeleting} />
           ))}
         </ImageAreaScrollContainer>
       </SortableContext>
