@@ -5,6 +5,8 @@ import {
   MantineTheme,
   ModalBaseStylesNames,
   Styles,
+  SwitchStylesNames,
+  SwitchStylesParams,
 } from "@mantine/core";
 import { CSSProperties } from "react";
 import { ImageSize } from "../../hooks/store/useResponsiveImagesStore";
@@ -68,7 +70,7 @@ export const imageAreaMaxBoundsSx = ({ breakpoints }: MantineTheme): CSSObject =
   },
 });
 
-export const IMAGE_AREA_CONTAINER_WIDTH = "92%";
+const IMAGE_AREA_CONTAINER_WIDTH = "92%";
 
 export const imageAreaContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   position: "absolute",
@@ -261,3 +263,16 @@ export const modalButtonsContainerSx = ({ spacing }: MantineTheme) => ({
   justifyContent: "flex-end",
   gap: spacing.xs,
 });
+
+export const modAllImagesContainerSx = ({ spacing }: MantineTheme) => ({
+  width: IMAGE_AREA_CONTAINER_WIDTH,
+  height: "40px",
+  margin: "auto",
+  marginTop: spacing.lg,
+  justifyContent: "space-between",
+});
+
+export const switchStyles: Styles<SwitchStylesNames, SwitchStylesParams> = {
+  thumb: { background: "rgb(180, 0, 0)" },
+  label: { color: "white", fontWeight: "bold" },
+};
