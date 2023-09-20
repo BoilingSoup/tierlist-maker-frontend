@@ -52,7 +52,6 @@ const Create: NextPage = () => {
   // TODO:
   // - authenticated view (hide save/publish buttons)
   // - reset button to reset to initial state (not same as delete all)
-  // - css, hide delete X buttons when exporting
   // - mobile css for delete/move all stuff
   // - server-side saving
 
