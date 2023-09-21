@@ -1,4 +1,5 @@
 import { Center, Text } from "@mantine/core";
+import { useAuth } from "../../contexts/AuthProvider";
 import { actionButtonsSx } from "./styles";
 
 type Props = {
@@ -8,8 +9,10 @@ type Props = {
 };
 
 export const ActionButton = ({ icon, text, onClick: clickHandler }: Props) => {
+  const { user } = useAuth();
+
   return (
-    <Center component="button" sx={actionButtonsSx} onClick={clickHandler}>
+    <Center component="button" sx={actionButtonsSx(user)} onClick={clickHandler}>
       {icon}
       <Text
         weight={"bolder"}

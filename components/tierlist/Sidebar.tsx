@@ -70,7 +70,7 @@ export const Sidebar = ({
               leftIcon={isDesktop ? <IconArrowRight /> : <IconArrowDown />}
               onClick={handleMoveAllImages}
             >
-              Move All to {isDesktop ? "Sidebar" : "Bottom bar"}
+              Move All to {isDesktop ? "Sidebar" : "Bottom Bar"}
             </Button>
           )}
         </Transition>

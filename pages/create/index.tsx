@@ -50,7 +50,6 @@ const Create: NextPage = () => {
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
   // TODO:
-  // - authenticated view (hide save/publish buttons)
   // - server-side saving
 
   return (
