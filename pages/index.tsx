@@ -17,10 +17,11 @@ import { useShowAccountVerifiedNotification } from "../components/home/hooks/use
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
-const junk2 = ({ colors, fn }: MantineTheme): CSSObject => ({
+const junk2 = ({ colors }: MantineTheme): CSSObject => ({
   // height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   width: "100%",
-  background: `radial-gradient(ellipse, ${fn.darken(colors.cyan[9], 0.9)}, ${fn.darken(colors.cyan[9], 1)})`,
+  // background: `radial-gradient(ellipse, ${fn.darken(colors.cyan[9], 0.9)}, ${fn.darken(colors.cyan[9], 1)})`,
+  background: `radial-gradient(ellipse at top, rgb(30, 30, 30), ${colors.dark[9]})`,
   overflow: "hidden",
   // paddingBottom: "140px",
 });

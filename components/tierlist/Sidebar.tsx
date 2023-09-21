@@ -1,6 +1,7 @@
 import { Button, Center, Flex, Switch, Transition } from "@mantine/core";
-import { IconArrowRight, IconTrash } from "@tabler/icons-react";
+import { IconArrowDown, IconArrowRight, IconTrash } from "@tabler/icons-react";
 import { DispatchWithoutAction } from "react";
+import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
 import { ImageArea } from "./image-area/ImageArea";
@@ -35,6 +36,8 @@ export const Sidebar = ({
     duration: transitionDuration,
   });
 
+  const isDesktop = useIsDesktopScreen();
+
   return (
     <Flex sx={sidebarContainerSx}>
       <Center sx={modAllImagesContainerSx}>
@@ -61,8 +64,13 @@ export const Sidebar = ({
           timingFunction="ease"
         >
           {(styles) => (
-            <Button style={styles} color="gray.7" leftIcon={<IconArrowRight />} onClick={handleMoveAllImages}>
-              Move All to Sidebar
+            <Button
+              style={styles}
+              color="gray.7"
+              leftIcon={isDesktop ? <IconArrowRight /> : <IconArrowDown />}
+              onClick={handleMoveAllImages}
+            >
+              Move All to {isDesktop ? "Sidebar" : "Bottom bar"}
             </Button>
           )}
         </Transition>
