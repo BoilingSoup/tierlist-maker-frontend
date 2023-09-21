@@ -10,6 +10,7 @@ import {
   SwitchStylesParams,
 } from "@mantine/core";
 import { CSSProperties } from "react";
+import { User } from "../../contexts/AuthProvider";
 import { ImageSize } from "../../hooks/store/useResponsiveImagesStore";
 import { pxToNumber } from "../common/helpers";
 import { NAVBAR_HEIGHT } from "../common/styles";
@@ -203,35 +204,38 @@ export const addFileButtonTextSx = ({ breakpoints, fontSizes }: MantineTheme): C
 export const actionButtonsGroupSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
   height: "50px",
+  alignItems: "center",
   flexWrap: "wrap",
   [`@media (min-width:${breakpoints.lg})`]: {
     height: "15%",
   },
 });
 
-export const actionButtonsSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
-  flexDirection: "column",
-  fontSize: "0.6rem",
-  width: "25%",
-  height: "100%",
-  color: "white",
-  backgroundColor: colors.dark[6],
-  border: `2px solid ${colors.dark[4]}`,
-  borderRadius: "3px",
-  cursor: "pointer",
-  ":hover": {
-    background: `${colors.dark[8]}`,
-  },
-  [`@media (min-width:${breakpoints.sm})`]: {
-    flexDirection: "row",
-    fontSize: "0.9rem",
-  },
-  [`@media (min-width:${breakpoints.lg})`]: {
-    width: "50%",
-    height: "50%",
-    borderRadius: 0,
-  },
-});
+export const actionButtonsSx =
+  (user: User) =>
+  ({ colors, breakpoints }: MantineTheme): CSSObject => ({
+    flexDirection: "column",
+    fontSize: "0.6rem",
+    width: user ? "25%" : "50%",
+    height: "100%",
+    color: "white",
+    backgroundColor: colors.dark[6],
+    border: `2px solid ${colors.dark[4]}`,
+    borderRadius: "3px",
+    cursor: "pointer",
+    ":hover": {
+      background: `${colors.dark[8]}`,
+    },
+    [`@media (min-width:${breakpoints.sm})`]: {
+      flexDirection: "row",
+      fontSize: "0.9rem",
+    },
+    [`@media (min-width:${breakpoints.lg})`]: {
+      width: "50%",
+      height: user ? "50%" : "100%",
+      borderRadius: 0,
+    },
+  });
 
 export const getRowSettingsModalStyles = ({
   colors,

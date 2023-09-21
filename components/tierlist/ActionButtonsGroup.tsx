@@ -11,12 +11,15 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { useClickOutModal } from "./hooks/useClickOutModal";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
+import { useAuth } from "../../contexts/AuthProvider";
 
 type Props = {
   fullScreen: FullScreenProp;
 };
 
 export const ActionButtonsGroup = ({ fullScreen }: Props) => {
+  const { user } = useAuth();
+
   const setIsExporting = useIsExportingStore((state) => state.setValue);
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -97,8 +100,12 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
       <Flex sx={actionButtonsGroupSx}>
         <ActionButton icon={<IconDownload size={23} />} text="Export PNG" onClick={handleExportPreview} />
         <ActionButton icon={fullScreenIcon} text="Full Screen" onClick={toggleFullScreen} />
-        <ActionButton icon={<IconDeviceFloppy size={23} />} text="Save" />
-        <ActionButton icon={<IconWorldUpload size={23} />} text="Publish" />
+        {user !== null && (
+          <>
+            <ActionButton icon={<IconDeviceFloppy size={23} />} text="Save" />
+            <ActionButton icon={<IconWorldUpload size={23} />} text="Publish" />
+          </>
+        )}
       </Flex>
     </>
   );
