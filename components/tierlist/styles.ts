@@ -48,7 +48,7 @@ export const rowButtonsSx = ({ fn }: MantineTheme): CSSObject => ({
 
 export const rowArrowsContainerSx = (): CSSObject => ({ flexDirection: "column", justifyContent: "space-evenly" });
 
-export const MOBILE_BOTTOM_BAR: PxSize = "200px";
+export const MOBILE_BOTTOM_BAR: PxSize = "220px";
 
 export const sidebarContainerSx = ({ colors, breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
@@ -267,12 +267,17 @@ export const modalButtonsContainerSx = ({ spacing }: MantineTheme): CSSObject =>
   gap: spacing.xs,
 });
 
-export const modAllImagesContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
+export const modAllImagesContainerSx = ({ spacing, breakpoints }: MantineTheme): CSSObject => ({
   width: IMAGE_AREA_CONTAINER_WIDTH,
   height: "40px",
   margin: "auto",
-  marginTop: spacing.lg,
   justifyContent: "space-between",
+  marginTop: spacing.sm,
+  marginBottom: spacing.sm,
+  [`@media (min-width: ${breakpoints.lg})`]: {
+    marginTop: spacing.lg,
+    marginBottom: 0,
+  },
 });
 
 export const switchStyles: Styles<SwitchStylesNames, SwitchStylesParams> = {
