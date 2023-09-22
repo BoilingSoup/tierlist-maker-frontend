@@ -2,10 +2,13 @@ import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useFullscreen } from "@mantine/hooks";
 import { nanoid } from "nanoid";
+import { saveAs } from "file-saver";
+import DomToImage from "dom-to-image";
 import { Dispatch, SetStateAction } from "react";
 import { append, filterByID, findIndexByID, insertAtIndex, pxToNumber } from "../common/helpers";
 import {
   CONTAINER,
+  DOM_TO_PNG_ID,
   DRAG_END_WITHIN_ROW,
   DRAG_END_WITHIN_SIDEBAR,
   DRAG_FROM_ROW_TO_ROW__CONTAINER,
@@ -16,7 +19,6 @@ import {
   DRAG_FROM_SIDEBAR_TO_ROW__IMAGE,
   IGNORE_DRAG,
   IMAGE,
-  INITIAL_STATE,
   MAX_IMAGE_SIZE,
   SIDEBAR,
   SWATCHES,
@@ -749,4 +751,55 @@ export const compressImage = async (file: File) => {
   };
 
   return await imageCompression(file, compressionOpts);
+};
+
+type GetImageHandlersParam = {
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setIsExporting: (newValue: boolean) => void;
+  setIsDownloading: Dispatch<SetStateAction<boolean>>;
+  setImgSrc: Dispatch<SetStateAction<string>>;
+  openModal: () => void;
+};
+
+export const getImageHandlers = ({
+  setIsLoading,
+  setIsExporting,
+  setIsDownloading,
+  setImgSrc,
+  openModal,
+}: GetImageHandlersParam) => {
+  const handleExportPreview = () => {
+    setIsLoading(true);
+
+    const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
+    openModal();
+
+    setIsExporting(true); // toolbars/delete buttons are hidden while exporting. Don't want those in the screenshot.
+
+    DomToImage.toPng(div)
+      .then((dataUrl) => {
+        setImgSrc(dataUrl);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleDownloadImage = () => {
+    setIsDownloading(true);
+
+    const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
+
+    setIsExporting(true);
+
+    DomToImage.toBlob(div)
+      .then((blob) => {
+        saveAs(blob, `tierlist.png`);
+      })
+      .finally(() => {
+        setIsDownloading(false);
+      });
+  };
+
+  return { handleExportPreview, handleDownloadImage };
 };

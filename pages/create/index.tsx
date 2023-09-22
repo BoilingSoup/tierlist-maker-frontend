@@ -49,9 +49,6 @@ const Create: NextPage = () => {
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
-  // TODO:
-  // - server-side saving
-
   return (
     <>
       <Head>

@@ -4,14 +4,14 @@ import { get, set } from "idb-keyval";
 import { parse } from "valibot";
 import { INITIAL_STATE } from "../constants";
 
-const LOCAL_TIERLIST_IDB = "lt";
+const LOCAL_TIERLIST_IDB_KEY = "lt";
 
 export const useLocallyStoredTierList = () => {
   const [data, _setData] = useState<TierListData>(INITIAL_STATE);
 
   useEffect(() => {
     async function getData(): Promise<TierListData | never> {
-      const storedData = await get(LOCAL_TIERLIST_IDB);
+      const storedData = await get(LOCAL_TIERLIST_IDB_KEY);
       return parse(TierListSchema, storedData) as TierListData; // throws error if it doesn't satisfy schema
     }
 
@@ -36,8 +36,8 @@ export const useLocallyStoredTierList = () => {
       newState = arg(data);
     }
 
-    _setData(newState); // set state first makes drop animation smooth
-    await set(LOCAL_TIERLIST_IDB, newState); // and then, write to IDB
+    _setData(newState); // set state first; makes drop animation smooth
+    await set(LOCAL_TIERLIST_IDB_KEY, newState); // and then, write to IDB
   }
 
   return [data, setData] as const;

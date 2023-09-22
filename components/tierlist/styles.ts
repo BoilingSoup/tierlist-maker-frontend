@@ -272,13 +272,14 @@ export const modalButtonsContainerSx = ({ spacing }: MantineTheme): CSSObject =>
 });
 
 export const modAllImagesContainerSx = ({ spacing, breakpoints }: MantineTheme): CSSObject => ({
-  width: IMAGE_AREA_CONTAINER_WIDTH,
+  width: "98%",
   height: "40px",
   margin: "auto",
   justifyContent: "space-between",
   marginTop: spacing.sm,
   marginBottom: spacing.sm,
   [`@media (min-width: ${breakpoints.lg})`]: {
+    width: IMAGE_AREA_CONTAINER_WIDTH,
     marginTop: spacing.lg,
     marginBottom: 0,
   },
