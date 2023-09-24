@@ -8,6 +8,7 @@ import {
   Styles,
   SwitchStylesNames,
   SwitchStylesParams,
+  TextInputStylesNames,
 } from "@mantine/core";
 import { CSSProperties } from "react";
 import { User } from "../../contexts/AuthProvider";
@@ -352,4 +353,22 @@ export const rowImagesContainerSx = ({ colors, fn, breakpoints }: MantineTheme):
     margin: "0.3ch",
     gap: "0.3ch",
   },
+});
+
+export const saveModalStyles: Styles<ModalBaseStylesNames, never> = (theme: MantineTheme) => ({
+  title: { fontWeight: "bolder" },
+  root: { background: theme.colors.dark[7] },
+  header: { background: theme.colors.dark[7], color: "white" },
+  body: { background: theme.colors.dark[7] },
+});
+
+export const titleInputStyles: Styles<TextInputStylesNames, Record<string, any>> = (theme: MantineTheme) => ({
+  label: { color: "white", fontWeight: "bolder" },
+  input: { backgroundColor: theme.colors.dark[4], border: "none", color: "white" },
+});
+
+export const descriptionInputStyles: Styles<TextInputStylesNames, Record<string, any>> = (theme: MantineTheme) => ({
+  root: { marginTop: theme.spacing.sm },
+  label: { color: "white", fontWeight: "bolder" },
+  input: { backgroundColor: theme.colors.dark[4], border: "none", color: "white" },
 });

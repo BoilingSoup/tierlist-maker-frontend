@@ -12,6 +12,8 @@ export const SIDEBAR = "SIDEBAR";
 export const CONTAINER = "CONTAINER";
 export const IMAGE = "IMAGE";
 
+export const LOCAL_TIERLIST_IDB_KEY = "lt";
+
 export const SWATCHES = [
   DEFAULT_THEME.colors.red[5],
   DEFAULT_THEME.colors.orange[5],

@@ -11,24 +11,24 @@ import { SIDEBAR } from "../constants";
 import { useDroppableSidebar } from "../hooks/useDroppableSidebar";
 
 type Props = {
-  images: ClientSideImage[];
+  sidebarImages: ClientSideImage[];
   onAddImage: (images: ClientSideImage[]) => void;
   isDeleting: boolean;
   onDelete: (droppableID: string, imgID: string) => void;
 };
 
-export const ImageArea = ({ images, onAddImage: setImages, isDeleting, onDelete: handleDeleteImage }: Props) => {
+export const ImageArea = ({ sidebarImages, onAddImage: setImages, isDeleting, onDelete: handleDeleteImage }: Props) => {
   const { setNodeRef } = useDroppableSidebar();
 
-  const noImages = !images.length;
+  const noSidebarImages = !sidebarImages.length;
 
   return (
     <ImageAreaContainer>
-      <SortableContext items={images.map((img) => img.id)}>
+      <SortableContext items={sidebarImages.map((img) => img.id)}>
         <ImageAreaScrollContainer setNodeRef={setNodeRef}>
-          {noImages && <ImageAreaInfo />}
+          {noSidebarImages && <ImageAreaInfo />}
 
-          {images.map((img) => (
+          {sidebarImages.map((img) => (
             <SortableImage
               key={img.id}
               img={img}

@@ -13,9 +13,10 @@ import { getImageHandlers } from "./helpers";
 
 type Props = {
   fullScreen: FullScreenProp;
+  onSave: () => void;
 };
 
-export const ActionButtonsGroup = ({ fullScreen }: Props) => {
+export const ActionButtonsGroup = ({ fullScreen, onSave: handleSave }: Props) => {
   const { user } = useAuth();
 
   const setIsExporting = useIsExportingStore((state) => state.setValue);
@@ -77,7 +78,7 @@ export const ActionButtonsGroup = ({ fullScreen }: Props) => {
         <ActionButton icon={fullScreenIcon} text="Full Screen" onClick={toggleFullScreen} />
         {user !== null && (
           <>
-            <ActionButton icon={<IconDeviceFloppy size={23} />} text="Save" />
+            <ActionButton icon={<IconDeviceFloppy size={23} />} text="Save" onClick={handleSave} />
             <ActionButton icon={<IconWorldUpload size={23} />} text="Publish" />
           </>
         )}

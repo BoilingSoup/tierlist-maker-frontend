@@ -11,12 +11,14 @@ import { AuthProvider } from "../contexts/AuthProvider";
 import { Notifications } from "@mantine/notifications";
 import { useFormSmartReset } from "../hooks/store/useFormSmartReset";
 import { useCalculateResponsiveImageSize } from "../hooks/store/useResponsiveImagesStore";
+import { usePrefetchLocalTierList } from "../components/tierlist/hooks/usePrefetchLocalTierList";
 
 export const cssCache = createEmotionCache({ key: "mantine" });
 
 function MyApp({ Component, pageProps }: AppProps) {
   useFormSmartReset();
   useCalculateResponsiveImageSize();
+  usePrefetchLocalTierList();
 
   return (
     <QueryClientProvider client={queryClient}>

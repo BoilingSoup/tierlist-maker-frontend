@@ -26,39 +26,39 @@ class AxiosClient {
     this.csrfClient = axios.create(axiosOpts(BASE_URL));
   }
 
-  public async get<ResponseType>(url: string) {
+  public async get<TResponse>(url: string) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
-    return this.axiosInstance.get<ResponseType>(url);
+    return this.axiosInstance.get<TResponse>(url);
   }
 
-  public async post<ResponseType>(url: string, data?: any) {
+  public async post<TResponse>(url: string, data?: any) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
-    return this.axiosInstance.post<ResponseType>(url, data);
+    return this.axiosInstance.post<TResponse>(url, data);
   }
 
-  public async put<ResponseType>(url: string, data?: any) {
+  public async put<TResponse>(url: string, data?: any) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
-    return this.axiosInstance.put<ResponseType>(url, data);
+    return this.axiosInstance.put<TResponse>(url, data);
   }
 
-  public async patch<ResponseType>(url: string, data?: any) {
+  public async patch<TResponse>(url: string, data?: any) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
-    return this.axiosInstance.patch<ResponseType>(url, data);
+    return this.axiosInstance.patch<TResponse>(url, data);
   }
 
-  public async delete<ResponseType>(url: string) {
+  public async delete<TResponse>(url: string) {
     if (!this.csrfToken) {
       await this.getCsrfToken();
     }
-    return this.axiosInstance.delete<ResponseType>(url);
+    return this.axiosInstance.delete<TResponse>(url);
   }
 
   private get csrfToken() {
