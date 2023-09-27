@@ -93,7 +93,7 @@ function reconstructPayload({
   return payload;
 }
 
-export type SaveTierListResponse = {
+type SaveTierListResponse = {
   id: string;
   title: string;
   description?: string;
@@ -104,7 +104,7 @@ export type SaveTierListResponse = {
   updated_at: string;
 };
 
-export type SaveTierListPayload = {
+type SaveTierListPayload = {
   title: string;
   data: TierListData;
   thumbnail?: string;

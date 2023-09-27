@@ -2,8 +2,7 @@ import { Button, Center, Flex, Loader, Modal, Switch, Textarea, TextInput, Trans
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowDown, IconArrowRight, IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
 import { DispatchWithoutAction, FormEvent, useState } from "react";
-import { SaveTierListPayload, useCreateTierListMutation } from "../../hooks/api/useCreateTierListMutation";
-import { useUploadImagesMutation } from "../../hooks/api/useUploadImagesMutation";
+import { useCreateTierListMutation } from "../../hooks/api/useCreateTierListMutation";
 import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
@@ -64,7 +63,6 @@ export const Sidebar = ({
     placeholder: titlePlaceholder,
     description,
   });
-  // const { mutate: uploadImages } = useUploadImagesMutation();
 
   const setHideToolbars = useIsExportingStore((state) => state.setValue);
 
@@ -72,21 +70,7 @@ export const Sidebar = ({
     e.preventDefault();
 
     const [fd, metaData] = await generateFormData({ setHideToolbars, data });
-
     createTierListMutation({ formData: fd, metadata: metaData });
-
-    // TODO: upload images and thumbnail
-    // - show progress %
-
-    // TODO: update data with remote src links
-    const payload: SaveTierListPayload = {
-      title: title.trim() === "" ? titlePlaceholder : title.trim(),
-      data,
-      description: description.trim(),
-      thumbnail: "https://trollolol.jpg",
-    };
-
-    // mutate(payload);
   };
 
   return (
