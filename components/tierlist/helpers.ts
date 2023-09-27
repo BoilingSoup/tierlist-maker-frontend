@@ -2,10 +2,13 @@ import { DragEndEvent, DragOverEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { useFullscreen } from "@mantine/hooks";
 import { nanoid } from "nanoid";
+import { saveAs } from "file-saver";
+import DomToImage from "dom-to-image";
 import { Dispatch, SetStateAction } from "react";
 import { append, filterByID, findIndexByID, insertAtIndex, pxToNumber } from "../common/helpers";
 import {
   CONTAINER,
+  DOM_TO_PNG_ID,
   DRAG_END_WITHIN_ROW,
   DRAG_END_WITHIN_SIDEBAR,
   DRAG_FROM_ROW_TO_ROW__CONTAINER,
@@ -16,7 +19,6 @@ import {
   DRAG_FROM_SIDEBAR_TO_ROW__IMAGE,
   IGNORE_DRAG,
   IMAGE,
-  INITIAL_STATE,
   MAX_IMAGE_SIZE,
   SIDEBAR,
   SWATCHES,
@@ -33,8 +35,10 @@ import {
   TierListData,
   TierListRowData,
   UpdateActiveItemParam,
+  UploadParam,
 } from "./types";
 import imageCompression from "browser-image-compression";
+import { THUMBNAIL_WIDTH } from "../../config/config";
 
 /** Converts value of useFullscreen() to prop used in components */
 export const getFullScreenProp = (fullScreen: ReturnType<typeof useFullscreen>): FullScreenProp => ({
@@ -667,13 +671,14 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     );
   };
 
-  const handleAddImage = (newImage: ClientSideImage[]) =>
+  const handleAddImage = (newImage: ClientSideImage[]) => {
     setData(
       (prev): TierListData => ({
         sidebar: append(prev.sidebar, ...newImage),
         rows: prev.rows,
       })
     );
+  };
 
   const handleDeleteImage = (droppableID: string, imgID: string) => {
     const droppableIndex = findIndexByID(data.rows, droppableID);
@@ -741,12 +746,140 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
 
 const randomSwatch = () => SWATCHES[Math.floor(Math.random() * SWATCHES.length)];
 
-export const compressImage = async (file: File) => {
+export const compressImage = async (file: File, maxDimension?: number) => {
   const compressionOpts = {
-    maxSizeMB: 1,
-    maxWidthOrHeight: pxToNumber(MAX_IMAGE_SIZE),
+    maxSizeMB: 0.9,
+    maxWidthOrHeight: maxDimension ?? pxToNumber(MAX_IMAGE_SIZE),
     useWebWorker: true,
   };
 
   return await imageCompression(file, compressionOpts);
 };
+
+type GetImageHandlersParam = {
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
+  setIsExporting: (newValue: boolean) => void;
+  setIsDownloading: Dispatch<SetStateAction<boolean>>;
+  setImgSrc: Dispatch<SetStateAction<string>>;
+  openModal: () => void;
+};
+
+export const getImageHandlers = ({
+  setIsLoading,
+  setIsExporting,
+  setIsDownloading,
+  setImgSrc,
+  openModal,
+}: GetImageHandlersParam) => {
+  const handleExportPreview = () => {
+    setIsLoading(true);
+
+    const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
+    openModal();
+
+    setIsExporting(true); // toolbars/delete buttons are hidden while exporting. Don't want those in the screenshot.
+
+    DomToImage.toPng(div)
+      .then((dataUrl) => {
+        setImgSrc(dataUrl);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleDownloadImage = () => {
+    setIsDownloading(true);
+
+    const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
+
+    setIsExporting(true);
+
+    DomToImage.toBlob(div)
+      .then((blob) => {
+        saveAs(blob, `tierlist.png`);
+      })
+      .finally(() => {
+        setIsDownloading(false);
+      });
+  };
+
+  return { handleExportPreview, handleDownloadImage };
+};
+
+function padTwoDigits(num: number) {
+  return num.toString().padStart(2, "0");
+}
+
+export function dateInYyyyMmDdHhMmSs(date: Date, dateDiveder: string = "-") {
+  // :::: Exmple Usage ::::
+  // The function takes a Date object as a parameter and formats the date as YYYY-MM-DD hh:mm:ss.
+  // 👇️ 2023-04-11 16:21:23 (yyyy-mm-dd hh:mm:ss)
+  //console.log(dateInYyyyMmDdHhMmSs(new Date()));
+
+  //  👇️️ 2025-05-04 05:24:07 (yyyy-mm-dd hh:mm:ss)
+  // console.log(dateInYyyyMmDdHhMmSs(new Date('May 04, 2025 05:24:07')));
+  // Date divider
+  // 👇️ 01/04/2023 10:20:07 (MM/DD/YYYY hh:mm:ss)
+  // console.log(dateInYyyyMmDdHhMmSs(new Date(), "/"));
+  return (
+    [date.getFullYear(), padTwoDigits(date.getMonth() + 1), padTwoDigits(date.getDate())].join(dateDiveder) +
+    " " +
+    [padTwoDigits(date.getHours()), padTwoDigits(date.getMinutes()), padTwoDigits(date.getSeconds())].join(":")
+  );
+}
+
+export async function generateFormData({
+  data,
+  setHideToolbars,
+}: {
+  data: TierListData;
+  setHideToolbars: (v: boolean) => void;
+}): Promise<[FormData, UploadParam["metaData"]]> {
+  // images must be uploaded as FormData, a flat data structure.
+  const fd = new FormData();
+
+  // metadata of the flattened TierListData so responses can be reconstructed back into an object after files are uploaded
+  const lengths: UploadParam["metaData"]["lengths"] = {
+    thumbnail: 1,
+    sidebar: data.sidebar.length,
+  };
+  const order: UploadParam["metaData"]["order"] = ["thumbnail", "sidebar"];
+
+  // 2 different Blob types and they're causing conflict. Using any[] instead
+  let images: any[] = [];
+
+  const div = document.getElementById(DOM_TO_PNG_ID)! as HTMLDivElement;
+
+  setHideToolbars(true);
+  images.push(
+    DomToImage.toBlob(div)
+      .then((blob) => {
+        return compressImage(new File([blob], "blob", { type: "image/jpeg" }), THUMBNAIL_WIDTH);
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setHideToolbars(false))
+  );
+
+  data.sidebar.forEach((el) => images.push(fetch(el.src).then((res) => res.blob())));
+
+  for (let row of data.rows) {
+    lengths[row.id] = row.items.length;
+    order.push(row.id);
+
+    for (let img of row.items) {
+      images.push(fetch(img.src).then((res) => res.blob()));
+    }
+  }
+
+  images = await Promise.all(images);
+
+  const LARAVEL_MULTI_FILE_INPUT_SUFFIX = "[]"; // Laravel looks for suffix "[]" in the input name to run multi file validations
+  const FORM_DATA_KEY = "image" + LARAVEL_MULTI_FILE_INPUT_SUFFIX;
+
+  for (let i = 0; i < images.length; ++i) {
+    fd.append(FORM_DATA_KEY, images[i]);
+  }
+
+  return [fd, { lengths, order }];
+}

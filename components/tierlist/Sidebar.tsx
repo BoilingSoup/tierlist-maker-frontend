@@ -1,17 +1,29 @@
-import { Button, Center, Flex, Switch, Transition } from "@mantine/core";
-import { IconArrowDown, IconArrowRight, IconTrash } from "@tabler/icons-react";
-import { DispatchWithoutAction } from "react";
+import { Button, Center, Flex, Loader, Modal, Switch, Textarea, TextInput, Transition } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconArrowDown, IconArrowRight, IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
+import { DispatchWithoutAction, FormEvent, useState } from "react";
+import { SaveTierListPayload, useCreateTierListMutation } from "../../hooks/api/useCreateTierListMutation";
+import { useUploadImagesMutation } from "../../hooks/api/useUploadImagesMutation";
+import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
+import { dateInYyyyMmDdHhMmSs, generateFormData } from "./helpers";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
 import { ImageArea } from "./image-area/ImageArea";
-import { modAllImagesContainerSx, sidebarContainerSx, switchStyles } from "./styles";
-import { ClientSideImage, FullScreenProp } from "./types";
+import {
+  descriptionInputStyles,
+  modAllImagesContainerSx,
+  saveModalStyles,
+  sidebarContainerSx,
+  switchStyles,
+  titleInputStyles,
+} from "./styles";
+import { ClientSideImage, FullScreenProp, TierListData } from "./types";
 
 type Props = {
   isDeleting: boolean;
   onToggleDelete: DispatchWithoutAction;
-  images: ClientSideImage[];
+  data: TierListData;
   onAddImage: (images: ClientSideImage[]) => void;
   onDeleteImage: (droppableID: string, imgID: string) => void;
   onDeleteAllImages: () => void;
@@ -22,7 +34,7 @@ type Props = {
 export const Sidebar = ({
   isDeleting,
   onToggleDelete: toggle,
-  images,
+  data,
   onAddImage: setImages,
   fullScreen,
   onDeleteImage: handleDeleteImage,
@@ -30,53 +42,117 @@ export const Sidebar = ({
   onDeleteAllImages: handleDeleteAllImages,
 }: Props) => {
   const transitionDuration = 115; // ms
-
   const { deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions({
     checked: isDeleting,
     duration: transitionDuration,
   });
 
   const isDesktop = useIsDesktopScreen();
+  const [opened, { open, close }] = useDisclosure();
+
+  const handleOpenSaveMenu = () => {
+    open();
+    setTitlePlaceholder(`Untitled - ${dateInYyyyMmDdHhMmSs(new Date())}`);
+  };
+
+  const [title, setTitle] = useState("");
+  const [titlePlaceholder, setTitlePlaceholder] = useState("");
+  const [description, setDescription] = useState("");
+
+  const { mutate: createTierListMutation, isLoading: isMutating } = useCreateTierListMutation({
+    title,
+    placeholder: titlePlaceholder,
+    description,
+  });
+  // const { mutate: uploadImages } = useUploadImagesMutation();
+
+  const setHideToolbars = useIsExportingStore((state) => state.setValue);
+
+  const handleSave = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const [fd, metaData] = await generateFormData({ setHideToolbars, data });
+
+    createTierListMutation({ formData: fd, metadata: metaData });
+
+    // TODO: upload images and thumbnail
+    // - show progress %
+
+    // TODO: update data with remote src links
+    const payload: SaveTierListPayload = {
+      title: title.trim() === "" ? titlePlaceholder : title.trim(),
+      data,
+      description: description.trim(),
+      thumbnail: "https://trollolol.jpg",
+    };
+
+    // mutate(payload);
+  };
 
   return (
-    <Flex sx={sidebarContainerSx}>
-      <Center sx={modAllImagesContainerSx}>
-        <Switch checked={isDeleting} onChange={toggle} label="Toggle Delete" color="red" styles={switchStyles} />
-        <Transition
-          mounted={deleteAllVisible}
-          transition="fade"
-          duration={transitionDuration}
-          exitDuration={transitionDuration}
-          timingFunction="ease"
-        >
-          {(styles) => (
-            <Button color="red.9" style={styles} leftIcon={<IconTrash size={20} />} onClick={handleDeleteAllImages}>
-              Delete All
-            </Button>
-          )}
-        </Transition>
+    <>
+      <Modal centered opened={opened} onClose={close} title="Save to Account" styles={saveModalStyles}>
+        <form onSubmit={handleSave}>
+          <TextInput
+            label="Title"
+            placeholder={titlePlaceholder}
+            styles={titleInputStyles}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <Textarea
+            label="Description (optional)"
+            styles={descriptionInputStyles}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <Button type="submit" leftIcon={!isMutating && <IconDeviceFloppy />} display="block" mt="lg" ml="auto">
+            {isMutating ? <Loader size={23} color="gray.0" /> : "SAVE"}
+          </Button>
+        </form>
+      </Modal>
+      <Flex sx={sidebarContainerSx}>
+        <Center sx={modAllImagesContainerSx}>
+          <Switch checked={isDeleting} onChange={toggle} label="Toggle Delete" color="red" styles={switchStyles} />
+          <Transition
+            mounted={deleteAllVisible}
+            transition="fade"
+            duration={transitionDuration}
+            exitDuration={transitionDuration}
+            timingFunction="ease"
+          >
+            {(styles) => (
+              <Button color="red.9" style={styles} leftIcon={<IconTrash size={20} />} onClick={handleDeleteAllImages}>
+                Delete All
+              </Button>
+            )}
+          </Transition>
 
-        <Transition
-          mounted={moveAllVisible}
-          transition="fade"
-          duration={transitionDuration}
-          exitDuration={transitionDuration}
-          timingFunction="ease"
-        >
-          {(styles) => (
-            <Button
-              style={styles}
-              color="gray.7"
-              leftIcon={isDesktop ? <IconArrowRight /> : <IconArrowDown />}
-              onClick={handleMoveAllImages}
-            >
-              Move All to {isDesktop ? "Sidebar" : "Bottom Bar"}
-            </Button>
-          )}
-        </Transition>
-      </Center>
-      <ImageArea images={images} onAddImage={setImages} isDeleting={isDeleting} onDelete={handleDeleteImage} />
-      <ActionButtonsGroup fullScreen={fullScreen} />
-    </Flex>
+          <Transition
+            mounted={moveAllVisible}
+            transition="fade"
+            duration={transitionDuration}
+            exitDuration={transitionDuration}
+            timingFunction="ease"
+          >
+            {(styles) => (
+              <Button
+                style={styles}
+                color="gray.7"
+                leftIcon={isDesktop ? <IconArrowRight /> : <IconArrowDown />}
+                onClick={handleMoveAllImages}
+              >
+                Move All to {isDesktop ? "Sidebar" : "Bottom Bar"}
+              </Button>
+            )}
+          </Transition>
+        </Center>
+        <ImageArea
+          sidebarImages={data.sidebar}
+          onAddImage={setImages}
+          isDeleting={isDeleting}
+          onDelete={handleDeleteImage}
+        />
+        <ActionButtonsGroup onSave={handleOpenSaveMenu} fullScreen={fullScreen} />
+      </Flex>
+    </>
   );
 };

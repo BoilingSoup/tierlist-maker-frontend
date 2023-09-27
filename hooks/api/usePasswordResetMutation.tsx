@@ -9,7 +9,7 @@ export const usePasswordResetMutation = () => {
   const theme = useMantineTheme();
   const router = useRouter();
 
-  return useMutation((values: PasswordResetPayload) => passwordReset(values), {
+  return useMutation(passwordReset, {
     onSuccess: () => {
       showSuccessNotification({
         theme,

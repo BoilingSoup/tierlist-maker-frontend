@@ -19,7 +19,7 @@ export const useRegisterMutation = ({ form, setDisableSubmit }: Param) => {
   const router = useRouter();
   const theme = useMantineTheme();
 
-  return useMutation((values: RegisterFormValues) => attemptRegister(values), {
+  return useMutation(attemptRegister, {
     onSuccess: (userData) => {
       setDisableSubmit(true);
       setUser(userData);

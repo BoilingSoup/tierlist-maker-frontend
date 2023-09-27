@@ -10,7 +10,7 @@ export const useSendPasswordResetLinkMutation = (form: ReturnType<typeof useForg
   const theme = useMantineTheme();
   const router = useRouter();
 
-  return useMutation((values: ForgotPasswordFormValues) => sendPasswordResetLink(values), {
+  return useMutation(sendPasswordResetLink, {
     onSuccess: () => {
       showSuccessNotification({
         theme,
