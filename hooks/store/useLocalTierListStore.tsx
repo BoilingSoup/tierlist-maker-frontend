@@ -8,15 +8,15 @@ type SetDataArg = TierListData | ((prev: TierListData) => TierListData);
 type TierListStore = {
   data: TierListData;
   setData: (arg: SetDataArg) => Promise<void>;
+  reset: () => void;
 };
 
 // Save local TierListData state in a global zustand store.
-// It is also saved to IndexedDB wen setData(...) is called.
+// It is also saved to IndexedDB when setData(...) is called.
 export const useLocalTierListStore = create<TierListStore>((set) => ({
   data: INITIAL_STATE,
   setData: async (arg: SetDataArg) => {
     if (typeof arg !== "function") {
-      // console.log("is function");
       set({ data: arg });
       await setIDB(LOCAL_TIERLIST_IDB_KEY, arg);
     } else {
@@ -26,5 +26,9 @@ export const useLocalTierListStore = create<TierListStore>((set) => ({
         return { data: newData };
       });
     }
+  },
+  reset: () => {
+    set({ data: INITIAL_STATE });
+    setIDB(LOCAL_TIERLIST_IDB_KEY, INITIAL_STATE);
   },
 }));

@@ -3,9 +3,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconArrowDown, IconArrowRight, IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
 import { DispatchWithoutAction, FormEvent, useState } from "react";
 import { SaveTierListPayload, useCreateTierListMutation } from "../../hooks/api/useCreateTierListMutation";
+import { useUploadImagesMutation } from "../../hooks/api/useUploadImagesMutation";
+import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
-import { dateInYyyyMmDdHhMmSs } from "./helpers";
+import { dateInYyyyMmDdHhMmSs, generateFormData } from "./helpers";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
 import { ImageArea } from "./image-area/ImageArea";
 import {
@@ -57,11 +59,26 @@ export const Sidebar = ({
   const [titlePlaceholder, setTitlePlaceholder] = useState("");
   const [description, setDescription] = useState("");
 
-  const { mutate, isLoading: isMutating } = useCreateTierListMutation();
+  const { mutate: createTierListMutation, isLoading: isMutating } = useCreateTierListMutation({
+    title,
+    placeholder: titlePlaceholder,
+    description,
+  });
+  // const { mutate: uploadImages } = useUploadImagesMutation();
 
-  const handleSave = (e: FormEvent) => {
+  const setHideToolbars = useIsExportingStore((state) => state.setValue);
+
+  const handleSave = async (e: FormEvent) => {
     e.preventDefault();
 
+    const [fd, metaData] = await generateFormData({ setHideToolbars, data });
+
+    createTierListMutation({ formData: fd, metadata: metaData });
+
+    // TODO: upload images and thumbnail
+    // - show progress %
+
+    // TODO: update data with remote src links
     const payload: SaveTierListPayload = {
       title: title.trim() === "" ? titlePlaceholder : title.trim(),
       data,
@@ -69,7 +86,7 @@ export const Sidebar = ({
       thumbnail: "https://trollolol.jpg",
     };
 
-    mutate(payload);
+    // mutate(payload);
   };
 
   return (

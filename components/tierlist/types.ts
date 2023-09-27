@@ -140,3 +140,11 @@ type OverSidebarEventData = DragOverEvent["over"] & {
 export type DragEndType = typeof DRAG_END_WITHIN_ROW | typeof DRAG_END_WITHIN_SIDEBAR | typeof IGNORE_DRAG;
 
 /**********************************************************************/
+
+export type UploadParam = {
+  formData: FormData;
+  metaData: {
+    lengths: { thumbnail: number; sidebar: number; [key: string]: number };
+    order: string[];
+  };
+};

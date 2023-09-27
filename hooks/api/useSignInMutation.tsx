@@ -22,7 +22,7 @@ export const useSignInMutation = ({ setDisableSubmit }: Param) => {
   const router = useRouter();
   const theme = useMantineTheme();
 
-  return useMutation((values: SignInFormValues & { remember: boolean }) => attemptSignIn(values), {
+  return useMutation(attemptSignIn, {
     onSuccess: (userData) => {
       setDisableSubmit(true);
       setUser(userData);
