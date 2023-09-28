@@ -364,11 +364,25 @@ export const saveModalStyles: Styles<ModalBaseStylesNames, never> = (theme: Mant
 
 export const titleInputStyles: Styles<TextInputStylesNames, Record<string, any>> = (theme: MantineTheme) => ({
   label: { color: "white", fontWeight: "bolder" },
-  input: { backgroundColor: theme.colors.dark[4], border: "none", color: "white" },
+  input: {
+    backgroundColor: theme.colors.dark[4],
+    border: "none",
+    color: "white",
+    ":disabled": {
+      background: theme.colors.dark[5],
+    },
+  },
 });
 
 export const descriptionInputStyles: Styles<TextInputStylesNames, Record<string, any>> = (theme: MantineTheme) => ({
   root: { marginTop: theme.spacing.sm },
   label: { color: "white", fontWeight: "bolder" },
-  input: { backgroundColor: theme.colors.dark[4], border: "none", color: "white" },
+  input: {
+    backgroundColor: theme.colors.dark[4],
+    border: "none",
+    color: "white",
+    ":disabled": {
+      background: theme.colors.dark[5],
+    },
+  },
 });

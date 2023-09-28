@@ -31,11 +31,11 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
 
       setTimeout(() => {
         router.push(`/tierlist/${response.id}`); // route.push() takes some time to download the necessary data for the route
-        
+
         tween(requestProgress, COMPLETE_PROGRESS, 50, (value) => {
           setRequestProgress(value);
-        })
-        
+        });
+
         setTimeout(() => resetLocalTierList(), 5000); // grace period 5s to reset local tierlist AFTER route view has changed
       }, 200);
     },
@@ -170,7 +170,7 @@ async function uploadImages({ data, setHideToolbars, requestProgress, setRequest
 
       const newValue = Math.min(Math.round((e.event.loaded / e.event.total) * 100), PRE_POST_REQUEST_MAX_PROGRESS);
 
-      tween(requestProgress, newValue, 100, (value) => {
+      tween(requestProgress, newValue, 400, (value) => {
         setRequestProgress(value);
       });
     },
