@@ -1,4 +1,4 @@
-import { Button, Center, Flex, Loader, Modal, Switch, Textarea, TextInput, Transition } from "@mantine/core";
+import { Button, Center, Flex, Loader, Modal, Progress, Switch, Textarea, TextInput, Transition } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowDown, IconArrowRight, IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
 import { DispatchWithoutAction, FormEvent, useState } from "react";
@@ -6,7 +6,7 @@ import { useCreateTierListMutation } from "../../hooks/api/useCreateTierListMuta
 import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
-import { dateInYyyyMmDdHhMmSs, generateFormData } from "./helpers";
+import { dateInYyyyMmDdHhMmSs } from "./helpers";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
 import { ImageArea } from "./image-area/ImageArea";
 import {
@@ -58,20 +58,22 @@ export const Sidebar = ({
   const [titlePlaceholder, setTitlePlaceholder] = useState("");
   const [description, setDescription] = useState("");
 
-  const { mutate: createTierListMutation, isLoading: isMutating } = useCreateTierListMutation({
-    title,
-    placeholder: titlePlaceholder,
-    description,
-  });
+  const [{ mutate: createTierListMutation, isLoading: isUploading }, { isLoading: isSaving, isSuccess }] =
+    useCreateTierListMutation({
+      title,
+      placeholder: titlePlaceholder,
+      description,
+    });
 
   const setHideToolbars = useIsExportingStore((state) => state.setValue);
+  const [requestProgress, setRequestProgress] = useState(0);
 
   const handleSave = async (e: FormEvent) => {
     e.preventDefault();
-
-    const [fd, metaData] = await generateFormData({ setHideToolbars, data });
-    createTierListMutation({ formData: fd, metadata: metaData });
+    createTierListMutation({ setHideToolbars, data, requestProgress, setRequestProgress });
   };
+
+  const showProgressBar = isUploading || isSaving || isSuccess;
 
   return (
     <>
@@ -82,15 +84,29 @@ export const Sidebar = ({
             placeholder={titlePlaceholder}
             styles={titleInputStyles}
             onChange={(e) => setTitle(e.target.value)}
+            disabled={showProgressBar}
           />
           <Textarea
             label="Description (optional)"
             styles={descriptionInputStyles}
             onChange={(e) => setDescription(e.target.value)}
+            disabled={showProgressBar}
           />
-          <Button type="submit" leftIcon={!isMutating && <IconDeviceFloppy />} display="block" mt="lg" ml="auto">
-            {isMutating ? <Loader size={23} color="gray.0" /> : "SAVE"}
-          </Button>
+          <Flex justify="space-between" gap="lg">
+            <Center w="calc(100% - 100px)">
+              {showProgressBar && <Progress h={7} w="100%" mt="lg" striped animate value={requestProgress} />}
+            </Center>
+            <Button
+              type="submit"
+              leftIcon={!isUploading && <IconDeviceFloppy />}
+              display="block"
+              mt="lg"
+              w="100px"
+              disabled={showProgressBar}
+            >
+              {isUploading ? <Loader size={23} color="gray.0" /> : "SAVE"}
+            </Button>
+          </Flex>
         </form>
       </Modal>
       <Flex sx={sidebarContainerSx}>

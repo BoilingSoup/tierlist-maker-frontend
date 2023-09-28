@@ -3,6 +3,13 @@ import { useMutation } from "react-query";
 import { TierListData } from "../../components/tierlist/types";
 import { apiClient } from "../../lib/apiClient";
 import { useLocalTierListStore } from "../store/useLocalTierListStore";
+import { generateFormData } from "../../components/tierlist/helpers";
+import { Dispatch, SetStateAction } from "react";
+
+const PRE_POST_REQUEST_MAX_PROGRESS = 66;
+const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 82;
+const ALMOST_COMPLETE_PROGRESS = 90;
+const COMPLETE_PROGRESS = 100;
 
 type Param = {
   title: string;
@@ -16,25 +23,45 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
 
   const router = useRouter();
 
-  const { mutate: createTierListMutation } = useMutation(createTierList, {
-    onSuccess: (data) => {
-      router.push(`/tierlist/${data.id}`);
-      resetLocalTierList();
+  const createTierListMutation = useMutation(createTierListRequest, {
+    onSuccess: ({ response, requestProgress, setRequestProgress }) => {
+      tween(requestProgress, ALMOST_COMPLETE_PROGRESS, 100, (value) => {
+        setRequestProgress(value);
+      });
+
+      setTimeout(() => {
+        router.push(`/tierlist/${response.id}`); // route.push() takes some time to download the necessary data for the route
+        
+        tween(requestProgress, COMPLETE_PROGRESS, 50, (value) => {
+          setRequestProgress(value);
+        })
+        
+        setTimeout(() => resetLocalTierList(), 5000); // grace period 5s to reset local tierlist AFTER route view has changed
+      }, 200);
     },
   });
 
-  return useMutation(uploadImages, {
-    onSuccess: (response, { metadata }) => {
+  const uploadImagesMutation = useMutation(uploadImages, {
+    onSuccess: ({ response, metadata, requestProgress, setRequestProgress }) => {
       const payload = reconstructPayload({ response, metadata, description, placeholder, tierListData, title });
 
-      createTierListMutation(payload);
+      tween(requestProgress, POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS, 100, (value) => {
+        setRequestProgress(value);
+      });
+
+      createTierListMutation.mutate({ payload, requestProgress, setRequestProgress });
     },
   });
+
+  return [uploadImagesMutation, createTierListMutation] as const;
 };
 
 type ReconstructDeps = {
   response: UploadResponse;
-  metadata: UploadParam["metadata"];
+  metadata: {
+    lengths: { thumbnail: number; sidebar: number; [key: string]: number };
+    order: string[];
+  };
   title: string;
   placeholder: string;
   tierListData: TierListData;
@@ -51,8 +78,8 @@ function reconstructPayload({
   placeholder,
   tierListData,
   description,
-}: ReconstructDeps): SaveTierListPayload {
-  const payload: SaveTierListPayload = {
+}: ReconstructDeps): SaveTierListParam["payload"] {
+  const payload: SaveTierListParam["payload"] = {
     title: title.trim() === "" ? placeholder : title.trim(),
     data: JSON.parse(JSON.stringify(tierListData)) as TierListData,
     thumbnail: undefined,
@@ -104,16 +131,20 @@ type SaveTierListResponse = {
   updated_at: string;
 };
 
-type SaveTierListPayload = {
-  title: string;
-  data: TierListData;
-  thumbnail?: string;
-  description?: string;
+type SaveTierListParam = {
+  payload: {
+    title: string;
+    data: TierListData;
+    thumbnail?: string;
+    description?: string;
+  };
+  requestProgress: number;
+  setRequestProgress: Dispatch<SetStateAction<number>>;
 };
 
-async function createTierList(data: SaveTierListPayload) {
-  const res = await apiClient.post<SaveTierListResponse>("/tierlist", data);
-  return res.data;
+async function createTierListRequest({ payload, requestProgress, setRequestProgress }: SaveTierListParam) {
+  const res = await apiClient.post<SaveTierListResponse>("/tierlist", payload);
+  return { response: res.data, requestProgress, setRequestProgress };
 }
 
 type UploadResponse = {
@@ -121,25 +152,49 @@ type UploadResponse = {
 };
 
 type UploadParam = {
-  formData: FormData;
-  readonly metadata: {
-    lengths: { thumbnail: number; sidebar: number; [key: string]: number };
-    order: (keyof UploadParam["metadata"]["lengths"])[];
-  };
+  data: TierListData;
+  setHideToolbars: (v: boolean) => void;
+  requestProgress: number;
+  setRequestProgress: Dispatch<SetStateAction<number>>;
 };
 
-async function uploadImages({ formData: data }: UploadParam) {
-  const res = await apiClient.post<UploadResponse>("/image", data, {
+async function uploadImages({ data, setHideToolbars, requestProgress, setRequestProgress }: UploadParam) {
+  const [formData, metadata] = await generateFormData({ setHideToolbars, data });
+
+  const res = await apiClient.post<UploadResponse>("/image", formData, {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress: (e) => {
       if (!e.event.lengthComputable) {
         return;
       }
 
-      // TODO: show tweened progress animation while uploading
-      console.log(`${Math.min(Math.round((e.event.loaded / e.event.total) * 100), 94)}%`);
+      const newValue = Math.min(Math.round((e.event.loaded / e.event.total) * 100), PRE_POST_REQUEST_MAX_PROGRESS);
+
+      tween(requestProgress, newValue, 100, (value) => {
+        setRequestProgress(value);
+      });
     },
   });
 
-  return res.data;
+  return { response: res.data, metadata: metadata, requestProgress, setRequestProgress };
+}
+
+function tween(startValue: number, endValue: number, duration: number, callback: (value: number) => void): void {
+  const frameRate = 60; // Assuming 60 frames per second
+  const totalFrames = (duration / 1000) * frameRate; // Calculate the total number of frames
+  let currentFrame = 0;
+
+  function update() {
+    if (currentFrame <= totalFrames) {
+      const progress = currentFrame / totalFrames;
+      const interpolatedValue = startValue + (endValue - startValue) * progress;
+      callback(interpolatedValue);
+      currentFrame++;
+      requestAnimationFrame(update);
+    } else {
+      callback(endValue);
+    }
+  }
+
+  update();
 }

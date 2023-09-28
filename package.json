@@ -30,6 +30,7 @@
     "embla-carousel-wheel-gestures": "^3.0.0",
     "file-saver": "^2.0.5",
     "idb-keyval": "^6.2.1",
+    "motion": "^10.16.4",
     "nanoid": "^4.0.2",
     "next": "13.2.1",
     "react": "18.2.0",
