@@ -74,10 +74,11 @@ export const Sidebar = ({
   };
 
   const showProgressBar = isUploading || isSaving || isSuccess;
+  const modalTitle = showProgressBar ? "Saving..." : "Save to Account";
 
   return (
     <>
-      <Modal centered opened={opened} onClose={close} title="Save to Account" styles={saveModalStyles}>
+      <Modal centered opened={opened} onClose={close} title={modalTitle} styles={saveModalStyles}>
         <form onSubmit={handleSave}>
           <TextInput
             label="Title"
