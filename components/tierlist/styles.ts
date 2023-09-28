@@ -357,15 +357,15 @@ export const rowImagesContainerSx = ({ colors, fn, breakpoints }: MantineTheme):
 
 export const saveModalStyles: Styles<ModalBaseStylesNames, never> = (theme: MantineTheme) => ({
   title: { fontWeight: "bolder" },
-  root: { background: theme.colors.dark[7] },
-  header: { background: theme.colors.dark[7], color: "white" },
-  body: { background: theme.colors.dark[7] },
+  root: { background: theme.colors.dark[4] },
+  header: { background: theme.colors.dark[4], color: "white" },
+  body: { background: theme.colors.dark[4] },
 });
 
 export const titleInputStyles: Styles<TextInputStylesNames, Record<string, any>> = (theme: MantineTheme) => ({
   label: { color: "white", fontWeight: "bolder" },
   input: {
-    backgroundColor: theme.colors.dark[4],
+    backgroundColor: theme.colors.dark[6],
     border: "none",
     color: "white",
     ":disabled": {
@@ -378,7 +378,7 @@ export const descriptionInputStyles: Styles<TextInputStylesNames, Record<string,
   root: { marginTop: theme.spacing.sm },
   label: { color: "white", fontWeight: "bolder" },
   input: {
-    backgroundColor: theme.colors.dark[4],
+    backgroundColor: theme.colors.dark[6],
     border: "none",
     color: "white",
     ":disabled": {
