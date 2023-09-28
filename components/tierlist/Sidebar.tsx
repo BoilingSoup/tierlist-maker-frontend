@@ -98,13 +98,14 @@ export const Sidebar = ({
             </Center>
             <Button
               type="submit"
-              leftIcon={!isUploading && <IconDeviceFloppy />}
+              leftIcon={!showProgressBar && <IconDeviceFloppy />}
               display="block"
               mt="lg"
               w="100px"
               disabled={showProgressBar}
+              sx={(theme) => ({ ":disabled": { backgroundColor: theme.colors.gray[8] } })}
             >
-              {isUploading ? <Loader size={23} color="gray.0" /> : "SAVE"}
+              {showProgressBar ? <Loader size={23} color="gray.0" /> : "SAVE"}
             </Button>
           </Flex>
         </form>
