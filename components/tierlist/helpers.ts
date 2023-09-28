@@ -840,11 +840,11 @@ export async function generateFormData({
   const fd = new FormData();
 
   // metadata of the flattened TierListData so responses can be reconstructed back into an object after files are uploaded
-  const lengths: UploadParam["metaData"]["lengths"] = {
+  const lengths: { thumbnail: number; sidebar: number; [key: string]: number } = {
     thumbnail: 1,
     sidebar: data.sidebar.length,
   };
-  const order: UploadParam["metaData"]["order"] = ["thumbnail", "sidebar"];
+  const order: string[] = ["thumbnail", "sidebar"];
 
   // 2 different Blob types and they're causing conflict. Using any[] instead
   let images: any[] = [];
