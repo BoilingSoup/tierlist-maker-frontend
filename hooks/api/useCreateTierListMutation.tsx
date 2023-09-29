@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
-import { TierListData } from "../../components/tierlist/types";
+import { SaveTierListResponse, TierListData } from "../../components/tierlist/types";
 import { apiClient } from "../../lib/apiClient";
 import { useLocalTierListStore } from "../store/useLocalTierListStore";
-import { generateFormData } from "../../components/tierlist/helpers";
+import { generateFormData, hashString } from "../../components/tierlist/helpers";
 import { Dispatch, SetStateAction } from "react";
+import { useServerTierListStore } from "../store/useServerTierListStore";
 
-const PRE_POST_REQUEST_MAX_PROGRESS = 66;
-const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 82;
+const PRE_POST_REQUEST_MAX_PROGRESS = 53;
+const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
 const ALMOST_COMPLETE_PROGRESS = 90;
 const COMPLETE_PROGRESS = 100;
 
@@ -20,11 +21,15 @@ type Param = {
 export const useCreateTierListMutation = ({ title, placeholder, description }: Param) => {
   const resetLocalTierList = useLocalTierListStore((state) => state.reset);
   const tierListData = useLocalTierListStore((state) => state.data);
+  const addToCache = useServerTierListStore((state) => state.add);
 
   const router = useRouter();
 
   const createTierListMutation = useMutation(createTierListRequest, {
-    onSuccess: ({ response, requestProgress, setRequestProgress }) => {
+    onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
+      const dataHash = await hashString(response.id);
+      addToCache({ uuid: response.id, response, dataHash });
+
       tween(requestProgress, ALMOST_COMPLETE_PROGRESS, 100, (value) => {
         setRequestProgress(value);
       });
@@ -119,17 +124,6 @@ function reconstructPayload({
 
   return payload;
 }
-
-type SaveTierListResponse = {
-  id: string;
-  title: string;
-  description?: string;
-  data: string; // serialized TierListData
-  thumbnail: string;
-  is_public: boolean;
-  created_at: string;
-  updated_at: string;
-};
 
 type SaveTierListParam = {
   payload: {

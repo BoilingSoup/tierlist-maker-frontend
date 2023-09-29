@@ -39,6 +39,7 @@ import {
 } from "./types";
 import imageCompression from "browser-image-compression";
 import { THUMBNAIL_WIDTH } from "../../config/config";
+import { SetDataArg } from "../../hooks/store/types";
 
 /** Converts value of useFullscreen() to prop used in components */
 export const getFullScreenProp = (fullScreen: ReturnType<typeof useFullscreen>): FullScreenProp => ({
@@ -523,24 +524,35 @@ type DragHandlers = {
   handleDragOver: (event: DragOverEvent) => void;
   handleDragEnd: (event: DragEndEvent) => void;
 };
-type GetDragHandlersParam = {
+
+export type GetDragHandlersParam = {
   setActiveItem: Dispatch<SetStateAction<ActiveItemState>>;
-  data: TierListData;
+  data: TierListData | undefined; // TODO: discriminated union would be better for these conditional types
   setData: Dispatch<SetStateAction<TierListData>>;
+  disabled?: boolean;
 };
-export const getDragHandlers = ({ setActiveItem, data, setData }: GetDragHandlersParam): DragHandlers => {
+
+export const getDragHandlers = ({ setActiveItem, data, setData, disabled }: GetDragHandlersParam): DragHandlers => {
+  if (disabled) {
+    return {
+      handleDragStart(event: DragStartEvent) {},
+      handleDragOver(event: DragOverEvent) {},
+      handleDragEnd(event: DragEndEvent) {},
+    };
+  }
+
   const handleDragStart = (event: DragStartEvent) => {
     updateActiveItem({ event, setActiveItem });
   };
 
   const handleDragOver = (event: DragOverEvent) => {
     const dragOverType = getDragOverType(event);
-    dispatchDragOverAction({ dragOverType, event, data, setData });
+    dispatchDragOverAction({ dragOverType, event, data: data!, setData });
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const dragEndType = getDragEndType(event);
-    dispatchDragEndAction({ dragEndType, event, data, setData });
+    dispatchDragEndAction({ dragEndType, event, data: data!, setData });
   };
 
   return { handleDragStart, handleDragOver, handleDragEnd };
@@ -560,11 +572,31 @@ type RowHandlers = {
   handleDeleteAllImages: () => void;
   handleMoveAllImages: () => void;
 };
-type GetRowHandlersParam = {
-  data: TierListData;
-  setData: Dispatch<SetStateAction<TierListData>>;
+
+export type GetRowHandlersParam = {
+  data: TierListData | undefined;
+  setData: (arg: SetDataArg) => Promise<void> | Dispatch<SetStateAction<TierListData | undefined>>;
+  disabled?: boolean;
 };
-export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandlers => {
+
+export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam): RowHandlers => {
+  if (disabled || data === undefined) {
+    return {
+      handleMoveRowUp: (rowID: string) => {},
+      handleMoveRowDown: (rowID: string) => {},
+      handleChangeLabel: (param: { rowID: string; label: string }) => {},
+      handleChangeColor: (param: { rowID: string; color: string }) => {},
+      handleAddRowAbove: (rowID: string) => {},
+      handleAddRowBelow: (rowID: string) => {},
+      handleDeleteRow: (rowID: string) => {},
+      handleClearRow: (rowID: string) => {},
+      handleAddImage: (newImage: ClientSideImage[]) => {},
+      handleDeleteImage: (droppableID: string, imgID: string) => {},
+      handleDeleteAllImages: () => {},
+      handleMoveAllImages: () => {},
+    };
+  }
+
   const handleMoveRowUp = (rowID: string) => {
     const currRowIndex = findIndexByID(data.rows, rowID);
     if (currRowIndex < 1) {
@@ -574,9 +606,9 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     const newRowIndex = currRowIndex - 1;
 
     setData(
-      (prev): TierListData => ({
-        rows: arrayMove(prev.rows, currRowIndex, newRowIndex),
-        sidebar: prev.sidebar,
+      (prev: TierListData): TierListData => ({
+        rows: arrayMove(prev!.rows, currRowIndex, newRowIndex),
+        sidebar: prev!.sidebar,
       })
     );
   };
@@ -592,8 +624,8 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
 
     setData(
       (prev): TierListData => ({
-        rows: arrayMove(prev.rows, currRowIndex, newRowIndex),
-        sidebar: prev.sidebar,
+        rows: arrayMove(prev!.rows, currRowIndex, newRowIndex),
+        sidebar: prev!.sidebar,
       })
     );
   };
@@ -601,13 +633,13 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
   const handleChangeLabel = ({ rowID, label }: { rowID: string; label: string }) => {
     setData(
       (prev): TierListData => ({
-        rows: prev.rows.map((row) => {
+        rows: prev!.rows.map((row) => {
           if (row.id !== rowID) {
             return row;
           }
           return { id: row.id, color: row.color, items: row.items, label };
         }),
-        sidebar: prev.sidebar,
+        sidebar: prev!.sidebar,
       })
     );
   };
@@ -615,13 +647,13 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
   const handleChangeColor = ({ rowID, color }: { rowID: string; color: string }) => {
     setData(
       (prev): TierListData => ({
-        rows: prev.rows.map((row) => {
+        rows: prev!.rows.map((row) => {
           if (row.id !== rowID) {
             return row;
           }
           return { id: row.id, color, items: row.items, label: row.label };
         }),
-        sidebar: prev.sidebar,
+        sidebar: prev!.sidebar,
       })
     );
   };
@@ -632,7 +664,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     const newRow: TierListRowData = { id: nanoid(), color: randomSwatch(), items: [], label: "NEW" };
     rowsCopy.splice(insertAtIndex, -1, newRow);
 
-    setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev.sidebar }));
+    setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev!.sidebar }));
   };
 
   const handleAddRowBelow = (rowID: string) => {
@@ -641,7 +673,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     const newRow: TierListRowData = { id: nanoid(), color: randomSwatch(), items: [], label: "NEW" };
     rowsCopy.splice(insertAtIndex, -1, newRow);
 
-    setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev.sidebar }));
+    setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev!.sidebar }));
   };
 
   const handleDeleteRow = (rowID: string) => {
@@ -649,8 +681,8 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     const rowItems = data.rows[rowIndex].items;
     setData(
       (prev): TierListData => ({
-        rows: prev.rows.filter((row) => row.id !== rowID),
-        sidebar: [...prev.sidebar, ...rowItems],
+        rows: prev!.rows.filter((row) => row.id !== rowID),
+        sidebar: [...prev!.sidebar, ...rowItems],
       })
     );
   };
@@ -660,13 +692,13 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     const rowItems = data.rows[rowIndex].items;
     setData(
       (prev): TierListData => ({
-        rows: prev.rows.map((row) => {
+        rows: prev!.rows.map((row) => {
           if (row.id !== rowID) {
             return row;
           }
           return { id: row.id, color: row.color, items: [], label: row.label };
         }),
-        sidebar: [...prev.sidebar, ...rowItems],
+        sidebar: [...prev!.sidebar, ...rowItems],
       })
     );
   };
@@ -674,8 +706,8 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
   const handleAddImage = (newImage: ClientSideImage[]) => {
     setData(
       (prev): TierListData => ({
-        sidebar: append(prev.sidebar, ...newImage),
-        rows: prev.rows,
+        sidebar: append(prev!.sidebar, ...newImage),
+        rows: prev!.rows,
       })
     );
   };
@@ -687,7 +719,7 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
     setData(
       (prev): TierListData => ({
         rows: isRow
-          ? prev.rows.map((row) => {
+          ? prev!.rows.map((row) => {
               if (row.id !== row.id) {
                 return row;
               }
@@ -698,15 +730,15 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
                 label: row.label,
               };
             })
-          : prev.rows,
-        sidebar: isRow ? prev.sidebar : prev.sidebar.filter((item) => item.id !== imgID),
+          : prev!.rows,
+        sidebar: isRow ? prev!.sidebar : prev!.sidebar.filter((item) => item.id !== imgID),
       })
     );
   };
 
   const handleDeleteAllImages = () => {
     setData((prev) => ({
-      rows: prev.rows.map((row) => ({ id: row.id, color: row.color, items: [], label: row.label })),
+      rows: prev!.rows.map((row) => ({ id: row.id, color: row.color, items: [], label: row.label })),
       sidebar: [],
     }));
   };
@@ -716,14 +748,14 @@ export const getRowHandlers = ({ data, setData }: GetRowHandlersParam): RowHandl
       const allRowImages: ClientSideImage[] = [];
       const blankRows: TierListRowData[] = [];
 
-      prev.rows.forEach((row) => {
+      prev!.rows.forEach((row) => {
         row.items.forEach((item) => allRowImages.push(item));
         blankRows.push({ id: row.id, color: row.color, items: [], label: row.label });
       });
 
       return {
         rows: blankRows,
-        sidebar: [...prev.sidebar, ...allRowImages],
+        sidebar: [...prev!.sidebar, ...allRowImages],
       };
     });
   };
@@ -882,4 +914,16 @@ export async function generateFormData({
   }
 
   return [fd, { lengths, order }];
+}
+
+export async function hashString(input: string) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+
+  // Convert the hashBuffer to a hexadecimal string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+
+  return hashHex;
 }

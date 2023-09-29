@@ -2,8 +2,7 @@ import { create } from "zustand";
 import { INITIAL_STATE, LOCAL_TIERLIST_IDB_KEY } from "../../components/tierlist/constants";
 import { TierListData } from "../../components/tierlist/types";
 import { set as setIDB } from "idb-keyval";
-
-type SetDataArg = TierListData | ((prev: TierListData) => TierListData);
+import { SetDataArg } from "./types";
 
 type TierListStore = {
   data: TierListData;
