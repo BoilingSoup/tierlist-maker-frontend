@@ -30,7 +30,7 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
 
   const createTierListMutation = useMutation(createTierListRequest, {
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
-      const dataHash = await hashString(response.id);
+      const dataHash = await hashString(response.data);
       addToCache({ uuid: response.id, response, dataHash });
 
       tween(requestProgress, ALMOST_COMPLETE_PROGRESS, 100, (value) => {
