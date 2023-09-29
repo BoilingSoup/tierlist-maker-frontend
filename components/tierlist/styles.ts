@@ -386,3 +386,8 @@ export const descriptionInputStyles: Styles<TextInputStylesNames, Record<string,
     },
   },
 });
+
+export const tierListSkeletonSx = (theme: MantineTheme) => ({
+  "&::before": { background: theme.colors.dark[6] },
+  "&::after": { background: theme.colors.dark[8] },
+});

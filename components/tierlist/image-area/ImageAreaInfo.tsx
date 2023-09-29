@@ -19,7 +19,7 @@ export const ImageAreaInfo = () => {
         <>
           <br />
           <List sx={imageAreaInfoListSx} styles={imageAreaInfoListStyles}>
-            <List.Item>Copy/Paste images or URLs</List.Item>
+            <List.Item>Copy/Paste images</List.Item>
             <List.Item>Use the button below to add files</List.Item>
           </List>
         </>
