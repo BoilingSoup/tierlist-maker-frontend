@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { SaveTierListResponse, TierListData, TierListSchema } from "../../components/tierlist/types";
 import { apiClient } from "../../lib/apiClient";
@@ -8,6 +8,7 @@ import { showSomethingWentWrongNotification } from "../../components/common/help
 import { useMantineTheme } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useServerTierListStore } from "../store/useServerTierListStore";
+import { hashString } from "../../components/tierlist/helpers";
 
 // Checks cache first to avoid unnecessary queries.
 // Using a zustand store because cache has additional derived data that is only relevant on the client.
@@ -17,7 +18,55 @@ export const useGetTierList = (uuid: string | undefined) => {
 
   const [data, setData] = useState<TierListData>();
 
+  const cacheHit = useCheckServerCache({ uuid, setData });
+  const enabled = uuid !== undefined && !cacheHit;
+
+  const addToCache = useServerTierListStore((state) => state.add);
+
+  const queryObj = useQuery(queryKeys.tierList(uuid!), getTierList(uuid!), {
+    cacheTime: 0, // get latest data from server every time
+    staleTime: 0,
+    enabled,
+    onSuccess: async (response) => {
+      try {
+        const tierListData = parse(TierListSchema, JSON.parse(response.data)); // throws error if it doesn't satisfy schema
+        const dataHash = await hashString(response.data);
+
+        addToCache({ response, uuid: response.id, dataHash });
+        setData(tierListData);
+      } catch (e) {
+        showSomethingWentWrongNotification(theme);
+        router.push("/");
+      }
+    },
+    onError: () => {
+      router.push("/404");
+    },
+  });
+
+  const currentHash = useCurrentHash(data);
+
+  return { data, setData, queryObj, currentHash };
+};
+
+function getTierList(id: string) {
+  return async function () {
+    const res = await apiClient.get<SaveTierListResponse>(`/tierlist/${id}`);
+    return res.data;
+  };
+}
+
+type CheckServerCacheParam = {
+  uuid: string | undefined;
+  setData: Dispatch<SetStateAction<TierListData | undefined>>;
+};
+
+const useCheckServerCache = ({ uuid, setData }: CheckServerCacheParam): boolean => {
+  const router = useRouter();
+  const theme = useMantineTheme();
+
   const serverCache = useServerTierListStore((state) => state.responses);
+
   const [cacheHit, setCacheHit] = useState(true);
 
   useEffect(() => {
@@ -44,31 +93,16 @@ export const useGetTierList = (uuid: string | undefined) => {
     }
   }, [uuid]);
 
-  const enabled = uuid !== undefined && !cacheHit;
-  const queryObj = useQuery(queryKeys.tierList(uuid!), getTierList(uuid!), {
-    cacheTime: 0, // get latest data from server every time
-    staleTime: 0,
-    enabled,
-    onSuccess: (response) => {
-      try {
-        const tierListData = parse(TierListSchema, JSON.parse(response.data)); // throws error if it doesn't satisfy schema
-        setData(tierListData);
-      } catch (e) {
-        showSomethingWentWrongNotification(theme);
-        router.push("/");
-      }
-    },
-    onError: () => {
-      router.push("/404");
-    },
-  });
-
-  return { data, setData, queryObj };
+  return cacheHit;
 };
 
-function getTierList(id: string) {
-  return async function () {
-    const res = await apiClient.get<SaveTierListResponse>(`/tierlist/${id}`);
-    return res.data;
-  };
-}
+/**
+ * Computes hash of the current tierlist on the client. Hash is recalculated as changes are made.
+ */
+const useCurrentHash = (data: TierListData | undefined) => {
+  return useQuery([data], () => hashString(JSON.stringify(data)), {
+    enabled: data !== undefined,
+    cacheTime: 0,
+    staleTime: 0,
+  });
+};

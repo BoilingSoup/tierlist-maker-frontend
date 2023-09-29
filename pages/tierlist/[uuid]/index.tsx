@@ -31,8 +31,9 @@ const TierList: NextPage = () => {
     data,
     setData,
     queryObj: { isLoading },
+    currentHash: { data: currentHash },
   } = useGetTierList(uuid);
-  console.log(data);
+  console.log(currentHash);
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
   const {
