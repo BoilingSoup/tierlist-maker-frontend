@@ -1,9 +1,7 @@
 import { CSSObject } from "@mantine/core";
 import { Carousel, CarouselProps } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 import { CAROUSEL_SLIDE_SIZE } from "./styles";
-import { AxiosError } from "axios";
 import { CarouselSlide } from "./CarouselSlide";
 import { TierListDisplayData } from "../../lib/types/tierlist";
 import { useRef } from "react";

@@ -148,3 +148,14 @@ export type UploadParam = {
     order: string[];
   };
 };
+
+export type SaveTierListResponse = {
+  id: string;
+  title: string;
+  data: string; // serialized TierListData
+  description: string | null;
+  thumbnail: string;
+  is_public: boolean;
+  created_at: string;
+  updated_at: string;
+};
