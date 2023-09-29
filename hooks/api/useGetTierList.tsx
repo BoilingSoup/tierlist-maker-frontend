@@ -18,10 +18,15 @@ export const useGetTierList = (uuid: string | undefined) => {
   const [data, setData] = useState<TierListData>();
 
   const serverCache = useServerTierListStore((state) => state.responses);
-  const [cacheHit, setCacheHit] = useState(false);
+  const [cacheHit, setCacheHit] = useState(true);
 
   useEffect(() => {
-    if (uuid !== undefined && serverCache[uuid] !== undefined) {
+    if (uuid === undefined) {
+      return;
+    }
+    const cached = serverCache[uuid];
+
+    if (cached !== undefined) {
       setCacheHit(true);
 
       try {
@@ -32,6 +37,10 @@ export const useGetTierList = (uuid: string | undefined) => {
         showSomethingWentWrongNotification(theme);
         router.push("/");
       }
+
+      return;
+    } else {
+      setCacheHit(false);
     }
   }, [uuid]);
 

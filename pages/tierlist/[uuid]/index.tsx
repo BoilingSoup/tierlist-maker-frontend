@@ -1,6 +1,6 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Box, Flex } from "@mantine/core";
+import { Box, Flex, Skeleton } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -17,7 +17,7 @@ import {
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
 import { OverlayImage } from "../../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../../components/tierlist/Sidebar";
-import { createPageMainContainerSx, rowsContainerSx } from "../../../components/tierlist/styles";
+import { createPageMainContainerSx, rowsContainerSx, tierListSkeletonSx } from "../../../components/tierlist/styles";
 import { TierListRow } from "../../../components/tierlist/TierListRow";
 import { ActiveItemState } from "../../../components/tierlist/types";
 import { SITE_NAME } from "../../../config/config";
@@ -27,7 +27,12 @@ const TierList: NextPage = () => {
   const router = useRouter();
   const uuid = router.query.uuid as string | undefined;
 
-  const { data, setData, queryObj } = useGetTierList(uuid);
+  const {
+    data,
+    setData,
+    queryObj: { isLoading },
+  } = useGetTierList(uuid);
+  console.log(data);
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
   const {
@@ -74,6 +79,7 @@ const TierList: NextPage = () => {
       >
         <Flex sx={createPageMainContainerSx}>
           <Box sx={rowsContainerSx}>
+            {isLoading && <Skeleton w="100%" h="100%" sx={tierListSkeletonSx} />}
             <Box ref={animateChildren} id={DOM_TO_PNG_ID} bg="dark.7">
               {data?.rows.map((row) => (
                 <TierListRow

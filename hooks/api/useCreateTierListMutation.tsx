@@ -6,6 +6,8 @@ import { useLocalTierListStore } from "../store/useLocalTierListStore";
 import { generateFormData, hashString } from "../../components/tierlist/helpers";
 import { Dispatch, SetStateAction } from "react";
 import { useServerTierListStore } from "../store/useServerTierListStore";
+import { showSomethingWentWrongNotification } from "../../components/common/helpers";
+import { useMantineTheme } from "@mantine/core";
 
 const PRE_POST_REQUEST_MAX_PROGRESS = 53;
 const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
@@ -24,6 +26,7 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
   const addToCache = useServerTierListStore((state) => state.add);
 
   const router = useRouter();
+  const theme = useMantineTheme();
 
   const createTierListMutation = useMutation(createTierListRequest, {
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
@@ -44,6 +47,11 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
         setTimeout(() => resetLocalTierList(), 5000); // grace period 5s to reset local tierlist AFTER route view has changed
       }, 200);
     },
+    onError: () => {
+      // TODO: should delete images if upload succeeds, but save JSON to db fails..
+
+      showSomethingWentWrongNotification(theme);
+    },
   });
 
   const uploadImagesMutation = useMutation(uploadImages, {
@@ -55,6 +63,9 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
       });
 
       createTierListMutation.mutate({ payload, requestProgress, setRequestProgress });
+    },
+    onError: () => {
+      showSomethingWentWrongNotification(theme);
     },
   });
 
