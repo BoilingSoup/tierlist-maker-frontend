@@ -32,7 +32,7 @@ export const logoFlexSx = (): CSSObject => ({
 });
 
 export const desktopNavLinkBoxSx = (): CSSObject => ({
-  width: "105px",
+  width: "120px",
 });
 
 const navTextCSS: CSSObject = {

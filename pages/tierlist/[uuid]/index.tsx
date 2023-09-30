@@ -21,48 +21,41 @@ import { createPageMainContainerSx, rowsContainerSx, tierListSkeletonSx } from "
 import { TierListRow } from "../../../components/tierlist/TierListRow";
 import { ActiveItemState } from "../../../components/tierlist/types";
 import { SITE_NAME } from "../../../config/config";
+import { useConfirmationOnExitIfUnsavedChanges } from "../../../hooks/api/useConfirmationOnExitIfUnsavedChanges";
 import { useGetTierList } from "../../../hooks/api/useGetTierList";
 
 const TierList: NextPage = () => {
   const router = useRouter();
   const uuid = router.query.uuid as string | undefined;
 
+  const fullScreen = useFullscreen();
+  const sensors = useDndSensors();
+  const [animateChildren] = useAutoAnimate();
+
   const {
     data,
     setData,
     queryObj: { isLoading },
+    diff,
   } = useGetTierList(uuid);
-  console.log(data);
+
+  useConfirmationOnExitIfUnsavedChanges(diff);
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
-  const {
-    handleMoveRowUp,
-    handleMoveRowDown,
-    handleChangeLabel,
-    handleChangeColor,
-    handleAddRowAbove,
-    handleAddRowBelow,
-    handleDeleteRow,
-    handleClearRow,
-    handleDeleteImage,
-    handleAddImage,
-    handleMoveAllImages,
-    handleDeleteAllImages,
-  } = getRowHandlers({
+
+  const rowHandler = getRowHandlers({
     setData: setData as GetRowHandlersParam["setData"],
     data,
     disabled: data === undefined,
   });
-  const { handleDragStart, handleDragOver, handleDragEnd } = getDragHandlers({
+
+  const dragHandler = getDragHandlers({
     data,
     setData: setData as GetDragHandlersParam["setData"],
     setActiveItem,
     disabled: data === undefined,
   });
 
-  const fullScreen = useFullscreen();
-  const sensors = useDndSensors();
-  const [animateChildren] = useAutoAnimate();
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
   return (
@@ -72,9 +65,9 @@ const TierList: NextPage = () => {
       </Head>
       <DndContext
         id={SITE_NAME}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
+        onDragStart={dragHandler.start}
+        onDragOver={dragHandler.over}
+        onDragEnd={dragHandler.end}
         sensors={sensors}
       >
         <Flex sx={createPageMainContainerSx}>
@@ -87,15 +80,15 @@ const TierList: NextPage = () => {
                   data={row}
                   deletable={data.rows.length <= 1}
                   isDeleting={deleteIsToggled}
-                  onMoveUp={handleMoveRowUp}
-                  onMoveDown={handleMoveRowDown}
-                  onChangeLabel={handleChangeLabel}
-                  onChangeColor={handleChangeColor}
-                  onAddRowAbove={handleAddRowAbove}
-                  onAddRowBelow={handleAddRowBelow}
-                  onDeleteRow={handleDeleteRow}
-                  onClearRow={handleClearRow}
-                  onDeleteImage={handleDeleteImage}
+                  onMoveUp={rowHandler.moveRowUp}
+                  onMoveDown={rowHandler.moveRowDown}
+                  onChangeLabel={rowHandler.changeLabel}
+                  onChangeColor={rowHandler.changeColor}
+                  onAddRowAbove={rowHandler.addRowAbove}
+                  onAddRowBelow={rowHandler.addRowBelow}
+                  onDeleteRow={rowHandler.deleteRow}
+                  onClearRow={rowHandler.clearRow}
+                  onDeleteImage={rowHandler.deleteImage}
                 />
               ))}
             </Box>
@@ -105,10 +98,10 @@ const TierList: NextPage = () => {
             onToggleDelete={toggleDelete}
             fullScreen={getFullScreenProp(fullScreen)}
             data={data || { sidebar: [], rows: [] }}
-            onAddImage={handleAddImage}
-            onDeleteImage={handleDeleteImage}
-            onDeleteAllImages={handleDeleteAllImages}
-            onMoveAllImages={handleMoveAllImages}
+            onAddImage={rowHandler.addImage}
+            onDeleteImage={rowHandler.deleteImage}
+            onDeleteAllImages={rowHandler.deleteAllImages}
+            onMoveAllImages={rowHandler.moveAllImages}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>
