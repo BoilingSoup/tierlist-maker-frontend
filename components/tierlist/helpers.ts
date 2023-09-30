@@ -918,18 +918,6 @@ export async function generateFormData({
   return [fd, { lengths, order }];
 }
 
-export async function hashString(input: string) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(input);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-
-  // Convert the hashBuffer to a hexadecimal string
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
-
-  return hashHex;
-}
-
 export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
   let out: DiffData = { isChanged: false, metadata: { added: [], deleted: [] } };
 
