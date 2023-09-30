@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 import { SaveTierListResponse, TierListData } from "../../components/tierlist/types";
 import { apiClient } from "../../lib/apiClient";
 import { useLocalTierListStore } from "../store/useLocalTierListStore";
-import { generateFormData, hashString } from "../../components/tierlist/helpers";
+import { generateFormData } from "../../components/tierlist/helpers";
 import { Dispatch, SetStateAction } from "react";
 import { useServerTierListStore } from "../store/useServerTierListStore";
 import { showSomethingWentWrongNotification } from "../../components/common/helpers";
@@ -30,8 +30,7 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
 
   const createTierListMutation = useMutation(createTierListRequest, {
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
-      const dataHash = await hashString(response.data);
-      addToCache({ uuid: response.id, response, dataHash });
+      addToCache({ uuid: response.id, response });
 
       tween(requestProgress, ALMOST_COMPLETE_PROGRESS, 100, (value) => {
         setRequestProgress(value);
