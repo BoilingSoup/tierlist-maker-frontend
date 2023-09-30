@@ -1,12 +1,17 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Box, Flex } from "@mantine/core";
-import { useFullscreen as useFullScreen } from "@mantine/hooks";
+import { useDisclosure, useFullscreen as useFullScreen } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useReducer, useState } from "react";
+import { FormEvent, useReducer, useState } from "react";
 import { DOM_TO_PNG_ID } from "../../components/tierlist/constants";
-import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../components/tierlist/helpers";
+import {
+  dateInYyyyMmDdHhMmSs,
+  getDragHandlers,
+  getFullScreenProp,
+  getRowHandlers,
+} from "../../components/tierlist/helpers";
 import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
@@ -15,6 +20,8 @@ import { createPageMainContainerSx, rowsContainerSx } from "../../components/tie
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
+import { useCreateTierListMutation } from "../../hooks/api/useCreateTierListMutation";
+import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
 import { useLocalTierListStore } from "../../hooks/store/useLocalTierListStore";
 
 const Create: NextPage = () => {
@@ -39,6 +46,38 @@ const Create: NextPage = () => {
   const dragHandler = getDragHandlers({ data, setData, setActiveItem });
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
+
+  //
+  ////
+  const [title, setTitle] = useState("");
+  const [titlePlaceholder, setTitlePlaceholder] = useState("");
+  const [description, setDescription] = useState("");
+
+  const setHideToolbars = useIsExportingStore((state) => state.setValue);
+  const [requestProgress, setRequestProgress] = useState(0);
+
+  const handleOpenSaveMenu = () => {
+    open();
+    setTitlePlaceholder(`Untitled - ${dateInYyyyMmDdHhMmSs(new Date())}`);
+  };
+
+  const [{ mutate: createTierListMutation, isLoading: isUploading }, { isLoading: isSaving, isSuccess }] =
+    useCreateTierListMutation({
+      title,
+      placeholder: titlePlaceholder,
+      description,
+    });
+
+  const handleSave = (e: FormEvent) => {
+    e.preventDefault();
+    createTierListMutation({ setHideToolbars, data, requestProgress, setRequestProgress });
+  };
+
+  const showProgressBar = isUploading || isSaving || isSuccess;
+
+  const modalTitle = showProgressBar ? "Saving..." : "Save to Account";
+
+  const [opened, { open, close }] = useDisclosure();
 
   return (
     <>
@@ -83,6 +122,16 @@ const Create: NextPage = () => {
             onDeleteImage={rowHandler.deleteImage}
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
+            onOpenSaveMenu={handleOpenSaveMenu}
+            onChangeTitle={(e) => setTitle(e.target.value)}
+            onChangeDescription={(e) => setDescription(e.target.value)}
+            onSave={handleSave}
+            saveModalTitle={modalTitle}
+            titlePlaceholder={titlePlaceholder}
+            showProgressBar={showProgressBar}
+            requestProgress={requestProgress}
+            saveMenuIsOpen={opened}
+            onCloseSaveMenu={close}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

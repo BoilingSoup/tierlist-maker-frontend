@@ -387,7 +387,20 @@ export const descriptionInputStyles: Styles<TextInputStylesNames, Record<string,
   },
 });
 
-export const tierListSkeletonSx = (theme: MantineTheme) => ({
+export const tierListSkeletonSx = (theme: MantineTheme): CSSObject => ({
   "&::before": { background: theme.colors.dark[6] },
   "&::after": { background: theme.colors.dark[8] },
+});
+
+const submitSaveButtonWidth = "100px";
+
+export const submitSaveButtonSx = (theme: MantineTheme): CSSObject => ({
+  display: "block",
+  width: submitSaveButtonWidth,
+  marginTop: theme.spacing.lg,
+  ":disabled": { backgroundColor: theme.colors.gray[8] },
+});
+
+export const uploadProgressContainerSx = (): CSSObject => ({
+  width: `calc(100% - ${submitSaveButtonSx})`,
 });
