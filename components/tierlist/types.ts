@@ -159,3 +159,27 @@ export type SaveTierListResponse = {
   created_at: string;
   updated_at: string;
 };
+
+type AddedImage =
+  | {
+      location: "sidebar";
+      index: number;
+    }
+  | {
+      location: "row";
+      rowID: string;
+      index: number;
+    };
+
+export type DiffData = {
+  isChanged: boolean;
+  metadata: {
+    deleted: string[];
+    added: AddedImage[];
+  };
+};
+
+export type DiffParam = {
+  clientData: TierListData | undefined;
+  serverData: TierListData | undefined;
+};

@@ -19,6 +19,8 @@ import { useLocalTierListStore } from "../../hooks/store/useLocalTierListStore";
 
 const Create: NextPage = () => {
   const fullScreen = useFullScreen();
+  const sensors = useDndSensors();
+  const [animateChildren] = useAutoAnimate();
 
   const [data, setData] = [
     useLocalTierListStore((state) => state.data),
@@ -29,27 +31,12 @@ const Create: NextPage = () => {
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
-  const {
-    handleMoveRowUp,
-    handleMoveRowDown,
-    handleChangeLabel,
-    handleChangeColor,
-    handleAddRowAbove,
-    handleAddRowBelow,
-    handleDeleteRow,
-    handleClearRow,
-    handleDeleteImage,
-    handleAddImage,
-    handleMoveAllImages,
-    handleDeleteAllImages,
-  } = getRowHandlers({
+  const rowHandler = getRowHandlers({
     setData,
     data,
   });
-  const { handleDragStart, handleDragOver, handleDragEnd } = getDragHandlers({ data, setData, setActiveItem });
 
-  const sensors = useDndSensors();
-  const [animateChildren] = useAutoAnimate();
+  const dragHandler = getDragHandlers({ data, setData, setActiveItem });
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
@@ -60,9 +47,9 @@ const Create: NextPage = () => {
       </Head>
       <DndContext
         id={SITE_NAME}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
+        onDragStart={dragHandler.start}
+        onDragOver={dragHandler.over}
+        onDragEnd={dragHandler.end}
         sensors={sensors}
       >
         <Flex sx={createPageMainContainerSx}>
@@ -74,15 +61,15 @@ const Create: NextPage = () => {
                   data={row}
                   deletable={data.rows.length <= 1}
                   isDeleting={deleteIsToggled}
-                  onMoveUp={handleMoveRowUp}
-                  onMoveDown={handleMoveRowDown}
-                  onChangeLabel={handleChangeLabel}
-                  onChangeColor={handleChangeColor}
-                  onAddRowAbove={handleAddRowAbove}
-                  onAddRowBelow={handleAddRowBelow}
-                  onDeleteRow={handleDeleteRow}
-                  onClearRow={handleClearRow}
-                  onDeleteImage={handleDeleteImage}
+                  onMoveUp={rowHandler.moveRowUp}
+                  onMoveDown={rowHandler.moveRowDown}
+                  onChangeLabel={rowHandler.changeLabel}
+                  onChangeColor={rowHandler.changeColor}
+                  onAddRowAbove={rowHandler.addRowAbove}
+                  onAddRowBelow={rowHandler.addRowBelow}
+                  onDeleteRow={rowHandler.deleteRow}
+                  onClearRow={rowHandler.clearRow}
+                  onDeleteImage={rowHandler.deleteImage}
                 />
               ))}
             </Box>
@@ -92,10 +79,10 @@ const Create: NextPage = () => {
             onToggleDelete={toggleDelete}
             fullScreen={getFullScreenProp(fullScreen)}
             data={data}
-            onAddImage={handleAddImage}
-            onDeleteImage={handleDeleteImage}
-            onDeleteAllImages={handleDeleteAllImages}
-            onMoveAllImages={handleMoveAllImages}
+            onAddImage={rowHandler.addImage}
+            onDeleteImage={rowHandler.deleteImage}
+            onDeleteAllImages={rowHandler.deleteAllImages}
+            onMoveAllImages={rowHandler.moveAllImages}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

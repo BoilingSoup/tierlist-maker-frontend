@@ -8,7 +8,7 @@ import { showSomethingWentWrongNotification } from "../../components/common/help
 import { useMantineTheme } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useServerTierListStore } from "../store/useServerTierListStore";
-import { hashString } from "../../components/tierlist/helpers";
+import { checkForDiff } from "../../components/tierlist/helpers";
 
 // Checks cache first to avoid unnecessary queries.
 // Using a zustand store because cache has additional derived data that is only relevant on the client.
@@ -18,21 +18,17 @@ export const useGetTierList = (uuid: string | undefined) => {
 
   const [data, setData] = useState<TierListData>();
 
-  const cacheHit = useCheckServerCache({ uuid, setData });
+  const { cacheHit, serverData, setServerData } = useCheckServerCacheStore({ uuid, setData });
+
   const enabled = uuid !== undefined && !cacheHit;
-
-  const addToCache = useServerTierListStore((state) => state.add);
-
   const queryObj = useQuery(queryKeys.tierList(uuid!), getTierList(uuid!), {
     cacheTime: 0, // get latest data from server every time
     staleTime: 0,
     enabled,
-    onSuccess: async (response) => {
+    onSuccess: (response) => {
       try {
         const tierListData = parse(TierListSchema, JSON.parse(response.data)); // throws error if it doesn't satisfy schema
-        const dataHash = await hashString(response.data);
-
-        addToCache({ response, uuid: response.id, dataHash });
+        setServerData(tierListData);
         setData(tierListData);
       } catch (e) {
         showSomethingWentWrongNotification(theme);
@@ -44,9 +40,9 @@ export const useGetTierList = (uuid: string | undefined) => {
     },
   });
 
-  const currentHash = useCurrentHash(data);
+  const diff = checkForDiff({ clientData: data, serverData });
 
-  return { data, setData, queryObj, currentHash };
+  return { data, setData, queryObj, diff };
 };
 
 function getTierList(id: string) {
@@ -61,48 +57,35 @@ type CheckServerCacheParam = {
   setData: Dispatch<SetStateAction<TierListData | undefined>>;
 };
 
-const useCheckServerCache = ({ uuid, setData }: CheckServerCacheParam): boolean => {
-  const router = useRouter();
+const useCheckServerCacheStore = ({ uuid, setData }: CheckServerCacheParam) => {
   const theme = useMantineTheme();
-
-  const serverCache = useServerTierListStore((state) => state.responses);
+  const router = useRouter();
 
   const [cacheHit, setCacheHit] = useState(true);
+
+  const serverCacheStore = useServerTierListStore((state) => state.responses);
+  const [serverData, setServerData] = useState<TierListData>();
 
   useEffect(() => {
     if (uuid === undefined) {
       return;
     }
-    const cached = serverCache[uuid];
+    const cached = serverCacheStore[uuid];
 
     if (cached !== undefined) {
       setCacheHit(true);
-
       try {
-        const tierListData = parse(TierListSchema, JSON.parse(serverCache[uuid].response.data));
+        const tierListData = parse(TierListSchema, JSON.parse(serverCacheStore[uuid].response.data));
+        setServerData(tierListData);
         setData(tierListData);
       } catch (e) {
-        // TODO: double check. should never get here, but check if this is appropriate handling.
         showSomethingWentWrongNotification(theme);
         router.push("/");
       }
-
-      return;
     } else {
       setCacheHit(false);
     }
   }, [uuid]);
 
-  return cacheHit;
-};
-
-/**
- * Computes hash of the current tierlist on the client. Hash is recalculated as changes are made.
- */
-const useCurrentHash = (data: TierListData | undefined) => {
-  return useQuery([data], () => hashString(JSON.stringify(data)), {
-    enabled: data !== undefined,
-    cacheTime: 0,
-    staleTime: 0,
-  });
+  return { cacheHit, serverData, setServerData };
 };

@@ -27,6 +27,8 @@ import {
   ActiveItem,
   ActiveItemState,
   ClientSideImage,
+  DiffData,
+  DiffParam,
   DragEndType,
   DragOverType,
   FullScreenProp,
@@ -520,9 +522,9 @@ const dispatchDragEndAction = ({ dragEndType, event, data, setData }: DispatchDr
 };
 
 type DragHandlers = {
-  handleDragStart: (event: DragStartEvent) => void;
-  handleDragOver: (event: DragOverEvent) => void;
-  handleDragEnd: (event: DragEndEvent) => void;
+  start: (event: DragStartEvent) => void;
+  over: (event: DragOverEvent) => void;
+  end: (event: DragEndEvent) => void;
 };
 
 export type GetDragHandlersParam = {
@@ -535,9 +537,9 @@ export type GetDragHandlersParam = {
 export const getDragHandlers = ({ setActiveItem, data, setData, disabled }: GetDragHandlersParam): DragHandlers => {
   if (disabled) {
     return {
-      handleDragStart(event: DragStartEvent) {},
-      handleDragOver(event: DragOverEvent) {},
-      handleDragEnd(event: DragEndEvent) {},
+      start(event: DragStartEvent) {},
+      over(event: DragOverEvent) {},
+      end(event: DragEndEvent) {},
     };
   }
 
@@ -555,22 +557,22 @@ export const getDragHandlers = ({ setActiveItem, data, setData, disabled }: GetD
     dispatchDragEndAction({ dragEndType, event, data: data!, setData });
   };
 
-  return { handleDragStart, handleDragOver, handleDragEnd };
+  return { start: handleDragStart, over: handleDragOver, end: handleDragEnd };
 };
 
 type RowHandlers = {
-  handleMoveRowUp: (rowID: string) => void;
-  handleMoveRowDown: (rowID: string) => void;
-  handleChangeLabel: (param: { rowID: string; label: string }) => void;
-  handleChangeColor: (param: { rowID: string; color: string }) => void;
-  handleAddRowAbove: (rowID: string) => void;
-  handleAddRowBelow: (rowID: string) => void;
-  handleDeleteRow: (rowID: string) => void;
-  handleClearRow: (rowID: string) => void;
-  handleAddImage: (newImage: ClientSideImage[]) => void;
-  handleDeleteImage: (droppableID: string, imgID: string) => void;
-  handleDeleteAllImages: () => void;
-  handleMoveAllImages: () => void;
+  moveRowUp: (rowID: string) => void;
+  moveRowDown: (rowID: string) => void;
+  changeLabel: (param: { rowID: string; label: string }) => void;
+  changeColor: (param: { rowID: string; color: string }) => void;
+  addRowAbove: (rowID: string) => void;
+  addRowBelow: (rowID: string) => void;
+  deleteRow: (rowID: string) => void;
+  clearRow: (rowID: string) => void;
+  addImage: (newImage: ClientSideImage[]) => void;
+  deleteImage: (droppableID: string, imgID: string) => void;
+  deleteAllImages: () => void;
+  moveAllImages: () => void;
 };
 
 export type GetRowHandlersParam = {
@@ -582,22 +584,22 @@ export type GetRowHandlersParam = {
 export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam): RowHandlers => {
   if (disabled || data === undefined) {
     return {
-      handleMoveRowUp: (rowID: string) => {},
-      handleMoveRowDown: (rowID: string) => {},
-      handleChangeLabel: (param: { rowID: string; label: string }) => {},
-      handleChangeColor: (param: { rowID: string; color: string }) => {},
-      handleAddRowAbove: (rowID: string) => {},
-      handleAddRowBelow: (rowID: string) => {},
-      handleDeleteRow: (rowID: string) => {},
-      handleClearRow: (rowID: string) => {},
-      handleAddImage: (newImage: ClientSideImage[]) => {},
-      handleDeleteImage: (droppableID: string, imgID: string) => {},
-      handleDeleteAllImages: () => {},
-      handleMoveAllImages: () => {},
+      moveRowUp: (rowID: string) => {},
+      moveRowDown: (rowID: string) => {},
+      changeLabel: (param: { rowID: string; label: string }) => {},
+      changeColor: (param: { rowID: string; color: string }) => {},
+      addRowAbove: (rowID: string) => {},
+      addRowBelow: (rowID: string) => {},
+      deleteRow: (rowID: string) => {},
+      clearRow: (rowID: string) => {},
+      addImage: (newImage: ClientSideImage[]) => {},
+      deleteImage: (droppableID: string, imgID: string) => {},
+      deleteAllImages: () => {},
+      moveAllImages: () => {},
     };
   }
 
-  const handleMoveRowUp = (rowID: string) => {
+  const moveRowUp = (rowID: string) => {
     const currRowIndex = findIndexByID(data.rows, rowID);
     if (currRowIndex < 1) {
       return;
@@ -613,7 +615,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleMoveRowDown = (rowID: string) => {
+  const moveRowDown = (rowID: string) => {
     const currRowIndex = findIndexByID(data.rows, rowID);
     const isUnmovable = currRowIndex === -1 || currRowIndex === data.rows.length - 1;
     if (isUnmovable) {
@@ -630,7 +632,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleChangeLabel = ({ rowID, label }: { rowID: string; label: string }) => {
+  const changeLabel = ({ rowID, label }: { rowID: string; label: string }) => {
     setData(
       (prev): TierListData => ({
         rows: prev!.rows.map((row) => {
@@ -644,7 +646,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleChangeColor = ({ rowID, color }: { rowID: string; color: string }) => {
+  const changeColor = ({ rowID, color }: { rowID: string; color: string }) => {
     setData(
       (prev): TierListData => ({
         rows: prev!.rows.map((row) => {
@@ -658,7 +660,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleAddRowAbove = (rowID: string) => {
+  const addRowAbove = (rowID: string) => {
     const rowsCopy = [...data.rows];
     const insertAtIndex = findIndexByID(rowsCopy, rowID);
     const newRow: TierListRowData = { id: nanoid(), color: randomSwatch(), items: [], label: "NEW" };
@@ -667,7 +669,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev!.sidebar }));
   };
 
-  const handleAddRowBelow = (rowID: string) => {
+  const addRowBelow = (rowID: string) => {
     const rowsCopy = [...data.rows];
     const insertAtIndex = findIndexByID(rowsCopy, rowID) + 1;
     const newRow: TierListRowData = { id: nanoid(), color: randomSwatch(), items: [], label: "NEW" };
@@ -676,7 +678,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     setData((prev): TierListData => ({ rows: rowsCopy, sidebar: prev!.sidebar }));
   };
 
-  const handleDeleteRow = (rowID: string) => {
+  const deleteRow = (rowID: string) => {
     const rowIndex = findIndexByID(data.rows, rowID);
     const rowItems = data.rows[rowIndex].items;
     setData(
@@ -687,7 +689,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleClearRow = (rowID: string) => {
+  const clearRow = (rowID: string) => {
     const rowIndex = findIndexByID(data.rows, rowID);
     const rowItems = data.rows[rowIndex].items;
     setData(
@@ -703,7 +705,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleAddImage = (newImage: ClientSideImage[]) => {
+  const addImage = (newImage: ClientSideImage[]) => {
     setData(
       (prev): TierListData => ({
         sidebar: append(prev!.sidebar, ...newImage),
@@ -712,7 +714,7 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleDeleteImage = (droppableID: string, imgID: string) => {
+  const deleteImage = (droppableID: string, imgID: string) => {
     const droppableIndex = findIndexByID(data.rows, droppableID);
     const isRow = droppableIndex !== -1;
 
@@ -736,14 +738,14 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
     );
   };
 
-  const handleDeleteAllImages = () => {
+  const deleteAllImages = () => {
     setData((prev) => ({
       rows: prev!.rows.map((row) => ({ id: row.id, color: row.color, items: [], label: row.label })),
       sidebar: [],
     }));
   };
 
-  const handleMoveAllImages = () => {
+  const moveAllImages = () => {
     setData((prev) => {
       const allRowImages: ClientSideImage[] = [];
       const blankRows: TierListRowData[] = [];
@@ -761,18 +763,18 @@ export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam)
   };
 
   return {
-    handleMoveRowUp,
-    handleMoveRowDown,
-    handleChangeLabel,
-    handleChangeColor,
-    handleAddRowAbove,
-    handleAddRowBelow,
-    handleDeleteRow,
-    handleClearRow,
-    handleDeleteImage,
-    handleDeleteAllImages,
-    handleMoveAllImages,
-    handleAddImage,
+    moveRowUp,
+    moveRowDown,
+    changeLabel,
+    changeColor,
+    addRowAbove,
+    addRowBelow,
+    deleteRow,
+    clearRow,
+    deleteImage,
+    deleteAllImages,
+    moveAllImages,
+    addImage,
   };
 };
 
@@ -926,4 +928,78 @@ export async function hashString(input: string) {
   const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
 
   return hashHex;
+}
+
+export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
+  let out: DiffData = { isChanged: false, metadata: { added: [], deleted: [] } };
+
+  const dataNotReady = serverData === undefined || clientData === undefined;
+  if (dataNotReady) {
+    return out;
+  }
+
+  const clientImages: Record<string, boolean> = {};
+
+  for (let i = 0; i < clientData.sidebar.length; ++i) {
+    const image = clientData.sidebar[i];
+
+    if (image.src.startsWith("data:")) {
+      out.isChanged = true;
+      out.metadata.added.push({ location: "sidebar", index: i });
+    } else {
+      clientImages[image.src] = true;
+    }
+  }
+
+  for (let clientRow of clientData.rows) {
+    const items = clientRow.items;
+
+    for (let i = 0; i < items.length; ++i) {
+      const image = items[i];
+
+      if (image.src.startsWith("data:")) {
+        out.isChanged = true;
+        out.metadata.added.push({ location: "row", rowID: clientRow.id, index: i });
+      } else {
+        clientImages[image.src] = true;
+      }
+    }
+  }
+
+  for (let serverSidebarImage of serverData.sidebar) {
+    const serverSrc = serverSidebarImage.src;
+
+    if (!clientImages[serverSrc]) {
+      out.isChanged = true;
+      out.metadata.deleted.push(serverSrc);
+    }
+  }
+
+  for (let serverRow of serverData.rows) {
+    for (let serverRowImage of serverRow.items) {
+      const serverSrc = serverRowImage.src;
+
+      if (!clientImages[serverSrc]) {
+        out.isChanged = true;
+        out.metadata.deleted.push(serverSrc);
+      }
+    }
+  }
+
+  // Not 10000% accurate, out.isChanged will be false if the user
+  // swaps image positions and the lengths of containers do not change.
+  // But it's good enough for most scenarios.
+  if (clientData.sidebar.length !== serverData.sidebar.length) {
+    out.isChanged = true;
+  }
+  if (clientData.rows.length !== serverData.rows.length) {
+    out.isChanged = true;
+  }
+  for (let i = 0; i < clientData.rows.length; ++i) {
+    if (clientData.rows[i].items.length !== serverData.rows[i].items.length) {
+      out.isChanged = true;
+    }
+  }
+
+  return out;
 }
