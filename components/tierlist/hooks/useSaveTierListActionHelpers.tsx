@@ -1,5 +1,48 @@
+import { useDisclosure } from "@mantine/hooks";
 import { TierListData } from "../types";
 
 export const useSaveTierListActionHelpers = (data: TierListData) => {
-  // TODO: make this hook.. but might need to refactor sidebar/actionbuttons group first. They are too tied to Create functionality.
+  // const {
+  //   title,
+  //   handleChangeTitle: changeTitle,
+  //   titlePlaceholder,
+  //   setTitlePlaceholder,
+  //   description,
+  //   handleChangeDescription: changeDescription,
+  // } = useTierListInfo();
+
+  // const {
+  //   opened: modalOpened,
+  //   close: closeModal,
+  //   handleOpenSaveMenu: openSaveMenu,
+  // } = useHandleOpenSaveMenu(setTitlePlaceholder);
+
+  // const {
+  //   requestProgress,
+  //   isLoading,
+  //   handleSave: save,
+  // } = useCreateTierListMutationHelpers({
+  //   title,
+  //   titlePlaceholder,
+  //   description,
+  //   data,
+  // });
+
+  // const modalTitle = isLoading ? "Saving..." : "Save to Account";
+
+  const [opened, { open, close }] = useDisclosure();
+
+  return {
+    // openSaveMenu,
+    // changeTitle,
+    // changeDescription,
+    save: open,
+    isSaving: opened,
+    // modalTitle,
+    // titlePlaceholder,
+    // showProgressBar: isLoading,
+    // requestProgress,
+    // modalOpened,
+    // closeModal,
+  };
 };

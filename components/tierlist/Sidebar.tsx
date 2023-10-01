@@ -1,23 +1,15 @@
-import { Button, Center, Flex, Loader, Modal, Progress, Switch, Textarea, TextInput, Transition } from "@mantine/core";
-import { IconArrowDown, IconArrowRight, IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
-import { ChangeEvent, ChangeEventHandler, DispatchWithoutAction, FormEvent } from "react";
+import { Button, Center, Flex, Switch, Transition } from "@mantine/core";
+import { IconArrowDown, IconArrowRight, IconTrash } from "@tabler/icons-react";
+import { DispatchWithoutAction } from "react";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
 import { ImageArea } from "./image-area/ImageArea";
-import {
-  descriptionInputStyles,
-  modAllImagesContainerSx,
-  saveModalStyles,
-  sidebarContainerSx,
-  submitSaveButtonSx,
-  switchStyles,
-  titleInputStyles,
-  uploadProgressContainerSx,
-} from "./styles";
+import { modAllImagesContainerSx, sidebarContainerSx, switchStyles } from "./styles";
 import { ClientSideImage, FullScreenProp, TierListData } from "./types";
 
 type Props = {
+  fullScreen: FullScreenProp;
   isDeleting: boolean;
   onToggleDelete: DispatchWithoutAction;
   data: TierListData;
@@ -25,17 +17,7 @@ type Props = {
   onDeleteImage: (droppableID: string, imgID: string) => void;
   onDeleteAllImages: () => void;
   onMoveAllImages: () => void;
-  onOpenSaveMenu: () => void;
-  onChangeTitle: ChangeEventHandler<HTMLInputElement>;
-  onChangeDescription: ChangeEventHandler<HTMLTextAreaElement>;
-  onSave: (e: FormEvent) => void;
-  fullScreen: FullScreenProp;
-  saveModalTitle: string;
-  titlePlaceholder: string;
-  showProgressBar: boolean;
-  requestProgress: number;
-  saveMenuIsOpen: boolean;
-  onCloseSaveMenu: () => void;
+  onClickSave: () => void;
 };
 
 export const Sidebar = ({
@@ -47,16 +29,7 @@ export const Sidebar = ({
   onDeleteImage: handleDeleteImage,
   onMoveAllImages: handleMoveAllImages,
   onDeleteAllImages: handleDeleteAllImages,
-  onOpenSaveMenu: handleOpenSaveMenu,
-  onChangeTitle: handleChangeTitle,
-  onChangeDescription: handleChangeDescription,
-  onSave: handleSave,
-  saveModalTitle,
-  titlePlaceholder,
-  showProgressBar,
-  requestProgress,
-  saveMenuIsOpen,
-  onCloseSaveMenu: handleCloseSaveMenu,
+  onClickSave: handleClickSave,
 }: Props) => {
   const transitionDuration = 115; // ms
   const { deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions({
@@ -68,17 +41,6 @@ export const Sidebar = ({
 
   return (
     <>
-      <SaveImageModal
-        opened={saveMenuIsOpen}
-        title={saveModalTitle}
-        titlePlaceholder={titlePlaceholder}
-        showProgressBar={showProgressBar}
-        requestProgress={requestProgress}
-        onSave={handleSave}
-        onClose={handleCloseSaveMenu}
-        onChangeDescription={handleChangeDescription}
-        onChangeTitle={handleChangeTitle}
-      />
       <Flex sx={sidebarContainerSx}>
         <Center sx={modAllImagesContainerSx}>
           <Switch checked={isDeleting} onChange={toggle} label="Toggle Delete" color="red" styles={switchStyles} />
@@ -121,65 +83,8 @@ export const Sidebar = ({
           isDeleting={isDeleting}
           onDelete={handleDeleteImage}
         />
-        <ActionButtonsGroup onSave={handleOpenSaveMenu} fullScreen={fullScreen} />
+        <ActionButtonsGroup onSave={handleClickSave} fullScreen={fullScreen} />
       </Flex>
     </>
-  );
-};
-
-type SaveImageModalProps = {
-  opened: boolean;
-  onClose: () => void;
-  title: string;
-  titlePlaceholder: string;
-  requestProgress: number;
-  showProgressBar: boolean;
-  onSave: (e: FormEvent) => void;
-  onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
-  onChangeDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-};
-
-const SaveImageModal = ({
-  opened,
-  title,
-  titlePlaceholder,
-  requestProgress,
-  showProgressBar,
-  onClose: handleClose,
-  onSave: handleSave,
-  onChangeTitle: handleChangeTitle,
-  onChangeDescription: handleChangeDescription,
-}: SaveImageModalProps) => {
-  return (
-    <Modal centered opened={opened} onClose={handleClose} title={title} styles={saveModalStyles}>
-      <form onSubmit={handleSave}>
-        <TextInput
-          label="Title"
-          placeholder={titlePlaceholder}
-          styles={titleInputStyles}
-          onChange={handleChangeTitle}
-          disabled={showProgressBar}
-        />
-        <Textarea
-          label="Description (optional)"
-          styles={descriptionInputStyles}
-          onChange={handleChangeDescription}
-          disabled={showProgressBar}
-        />
-        <Flex justify="space-between" gap="lg">
-          <Center sx={uploadProgressContainerSx}>
-            {showProgressBar && <Progress h={7} w="100%" mt="lg" striped animate value={requestProgress} />}
-          </Center>
-          <Button
-            type="submit"
-            leftIcon={!showProgressBar && <IconDeviceFloppy />}
-            disabled={showProgressBar}
-            sx={submitSaveButtonSx}
-          >
-            {showProgressBar ? <Loader size={23} color="gray.0" /> : "SAVE"}
-          </Button>
-        </Flex>
-      </form>
-    </Modal>
   );
 };

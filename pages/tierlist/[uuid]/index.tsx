@@ -1,6 +1,6 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Box, Flex, Skeleton } from "@mantine/core";
+import { Box, Center, Flex, Skeleton } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -78,6 +78,20 @@ const TierList: NextPage = () => {
         onDragEnd={dragHandler.end}
         sensors={sensors}
       >
+        {saveTierListHelpers.isSaving && (
+          <Center
+            sx={() => ({
+              zIndex: 9000,
+              color: "white",
+              height: "100%",
+              width: "100%",
+              position: "absolute",
+              background: "rgba(0, 0, 0, 0.6)",
+            })}
+          >
+            hello
+          </Center>
+        )}
         <Flex sx={createPageMainContainerSx}>
           <Box sx={rowsContainerSx}>
             {isLoading && <Skeleton sx={tierListSkeletonSx} />}
@@ -110,16 +124,7 @@ const TierList: NextPage = () => {
             onDeleteImage={rowHandler.deleteImage}
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
-            onOpenSaveMenu={saveTierListHelpers.openSaveMenu}
-            onChangeTitle={saveTierListHelpers.changeTitle}
-            onChangeDescription={saveTierListHelpers.changeDescription}
-            onSave={saveTierListHelpers.save}
-            saveModalTitle={saveTierListHelpers.modalTitle}
-            titlePlaceholder={saveTierListHelpers.titlePlaceholder}
-            showProgressBar={saveTierListHelpers.showProgressBar}
-            requestProgress={saveTierListHelpers.requestProgress}
-            saveMenuIsOpen={saveTierListHelpers.modalOpened}
-            onCloseSaveMenu={saveTierListHelpers.closeModal}
+            onClickSave={saveTierListHelpers.save}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>
