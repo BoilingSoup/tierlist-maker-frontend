@@ -12,7 +12,11 @@ import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../components/tierlist/Sidebar";
-import { createPageMainContainerSx, rowsContainerSx } from "../../components/tierlist/styles";
+import {
+  autoAnimateRowContainerSx,
+  createPageMainContainerSx,
+  rowsContainerSx,
+} from "../../components/tierlist/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
@@ -52,7 +56,7 @@ const Create: NextPage = () => {
       >
         <Flex sx={createPageMainContainerSx}>
           <Box sx={rowsContainerSx}>
-            <Box ref={animateChildren} id={DOM_TO_PNG_ID} bg="dark.7">
+            <Box ref={animateChildren} id={DOM_TO_PNG_ID} sx={autoAnimateRowContainerSx}>
               {data.rows.map((row) => (
                 <TierListRow
                   key={row.id}

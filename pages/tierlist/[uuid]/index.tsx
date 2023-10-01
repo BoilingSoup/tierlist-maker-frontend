@@ -17,9 +17,14 @@ import {
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
 import { OverlayImage } from "../../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../../components/tierlist/Sidebar";
-import { createPageMainContainerSx, rowsContainerSx, tierListSkeletonSx } from "../../../components/tierlist/styles";
+import {
+  autoAnimateRowContainerSx,
+  createPageMainContainerSx,
+  rowsContainerSx,
+  tierListSkeletonSx,
+} from "../../../components/tierlist/styles";
 import { TierListRow } from "../../../components/tierlist/TierListRow";
-import { ActiveItemState } from "../../../components/tierlist/types";
+import { ActiveItemState, TierListData } from "../../../components/tierlist/types";
 import { SITE_NAME } from "../../../config/config";
 import { useConfirmationOnExitIfUnsavedChanges } from "../../../hooks/api/useConfirmationOnExitIfUnsavedChanges";
 import { useGetTierList } from "../../../hooks/api/useGetTierList";
@@ -58,6 +63,8 @@ const TierList: NextPage = () => {
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
+  const saveTierListHelpers = useSaveTierListActionHelpers(data);
+
   return (
     <>
       <Head>
@@ -72,8 +79,8 @@ const TierList: NextPage = () => {
       >
         <Flex sx={createPageMainContainerSx}>
           <Box sx={rowsContainerSx}>
-            {isLoading && <Skeleton w="100%" h="100%" sx={tierListSkeletonSx} />}
-            <Box ref={animateChildren} id={DOM_TO_PNG_ID} bg="dark.7">
+            {isLoading && <Skeleton sx={tierListSkeletonSx} />}
+            <Box ref={animateChildren} id={DOM_TO_PNG_ID} sx={autoAnimateRowContainerSx}>
               {data?.rows.map((row) => (
                 <TierListRow
                   key={row.id}
@@ -97,11 +104,21 @@ const TierList: NextPage = () => {
             isDeleting={deleteIsToggled}
             onToggleDelete={toggleDelete}
             fullScreen={getFullScreenProp(fullScreen)}
-            data={data || { sidebar: [], rows: [] }}
+            data={data}
             onAddImage={rowHandler.addImage}
             onDeleteImage={rowHandler.deleteImage}
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
+            onOpenSaveMenu={saveTierListHelpers.openSaveMenu}
+            onChangeTitle={saveTierListHelpers.changeTitle}
+            onChangeDescription={saveTierListHelpers.changeDescription}
+            onSave={saveTierListHelpers.save}
+            saveModalTitle={saveTierListHelpers.modalTitle}
+            titlePlaceholder={saveTierListHelpers.titlePlaceholder}
+            showProgressBar={saveTierListHelpers.showProgressBar}
+            requestProgress={saveTierListHelpers.requestProgress}
+            saveMenuIsOpen={saveTierListHelpers.modalOpened}
+            onCloseSaveMenu={saveTierListHelpers.closeModal}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

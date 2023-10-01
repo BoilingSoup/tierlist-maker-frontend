@@ -16,15 +16,14 @@ export const useGetTierList = (uuid: string | undefined) => {
   const theme = useMantineTheme();
   const router = useRouter();
 
-  const [data, setData] = useState<TierListData>();
+  const [data, setData] = useState<TierListData>({ sidebar: [], rows: [] });
 
   const { cacheHit, serverData, setServerData } = useCheckServerCacheStore({ uuid, setData });
 
-  const enabled = uuid !== undefined && !cacheHit;
   const queryObj = useQuery(queryKeys.tierList(uuid!), getTierList(uuid!), {
-    cacheTime: 0, // get latest data from server every time
+    enabled: uuid !== undefined && !cacheHit,
+    cacheTime: 0,
     staleTime: 0,
-    enabled,
     onSuccess: (response) => {
       try {
         const tierListData = parse(TierListSchema, JSON.parse(response.data)); // throws error if it doesn't satisfy schema
@@ -54,7 +53,7 @@ function getTierList(id: string) {
 
 type CheckServerCacheParam = {
   uuid: string | undefined;
-  setData: Dispatch<SetStateAction<TierListData | undefined>>;
+  setData: Dispatch<SetStateAction<TierListData>>;
 };
 
 const useCheckServerCacheStore = ({ uuid, setData }: CheckServerCacheParam) => {
