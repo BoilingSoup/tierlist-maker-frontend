@@ -28,7 +28,26 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
   const router = useRouter();
   const theme = useMantineTheme();
 
-  const createTierListMutation = useMutation(createTierListRequest, {
+  const { mutate: createTierListMutation, isLoading: isUploading } = useMutation(uploadImages, {
+    onSuccess: ({ response, metadata, requestProgress, setRequestProgress }) => {
+      const payload = reconstructPayload({ response, metadata, description, placeholder, tierListData, title });
+
+      tween(requestProgress, POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS, 100, (value) => {
+        setRequestProgress(value);
+      });
+
+      postTierListJSONMutation({ payload, requestProgress, setRequestProgress });
+    },
+    onError: () => {
+      showSomethingWentWrongNotification(theme);
+    },
+  });
+
+  const {
+    mutate: postTierListJSONMutation,
+    isLoading: isSaving,
+    isSuccess,
+  } = useMutation(createTierListRequest, {
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
       addToCache({ uuid: response.id, response });
 
@@ -53,22 +72,9 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
     },
   });
 
-  const uploadImagesMutation = useMutation(uploadImages, {
-    onSuccess: ({ response, metadata, requestProgress, setRequestProgress }) => {
-      const payload = reconstructPayload({ response, metadata, description, placeholder, tierListData, title });
+  const isLoading = isUploading || isSaving || isSuccess;
 
-      tween(requestProgress, POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS, 100, (value) => {
-        setRequestProgress(value);
-      });
-
-      createTierListMutation.mutate({ payload, requestProgress, setRequestProgress });
-    },
-    onError: () => {
-      showSomethingWentWrongNotification(theme);
-    },
-  });
-
-  return [uploadImagesMutation, createTierListMutation] as const;
+  return { createTierListMutation, isLoading };
 };
 
 type ReconstructDeps = {
