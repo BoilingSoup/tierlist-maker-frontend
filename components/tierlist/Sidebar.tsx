@@ -1,25 +1,15 @@
-import { Button, Center, Flex, Loader, Modal, Progress, Switch, Textarea, TextInput, Transition } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconArrowDown, IconArrowRight, IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
-import { DispatchWithoutAction, FormEvent, useState } from "react";
-import { useCreateTierListMutation } from "../../hooks/api/useCreateTierListMutation";
-import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
+import { Button, Center, Flex, Switch, Transition } from "@mantine/core";
+import { IconArrowDown, IconArrowRight, IconTrash } from "@tabler/icons-react";
+import { DispatchWithoutAction } from "react";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
-import { dateInYyyyMmDdHhMmSs } from "./helpers";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
 import { ImageArea } from "./image-area/ImageArea";
-import {
-  descriptionInputStyles,
-  modAllImagesContainerSx,
-  saveModalStyles,
-  sidebarContainerSx,
-  switchStyles,
-  titleInputStyles,
-} from "./styles";
+import { modAllImagesContainerSx, sidebarContainerSx, switchStyles } from "./styles";
 import { ClientSideImage, FullScreenProp, TierListData } from "./types";
 
 type Props = {
+  fullScreen: FullScreenProp;
   isDeleting: boolean;
   onToggleDelete: DispatchWithoutAction;
   data: TierListData;
@@ -27,7 +17,7 @@ type Props = {
   onDeleteImage: (droppableID: string, imgID: string) => void;
   onDeleteAllImages: () => void;
   onMoveAllImages: () => void;
-  fullScreen: FullScreenProp;
+  onClickSave: () => void;
 };
 
 export const Sidebar = ({
@@ -39,6 +29,7 @@ export const Sidebar = ({
   onDeleteImage: handleDeleteImage,
   onMoveAllImages: handleMoveAllImages,
   onDeleteAllImages: handleDeleteAllImages,
+  onClickSave: handleClickSave,
 }: Props) => {
   const transitionDuration = 115; // ms
   const { deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions({
@@ -47,70 +38,9 @@ export const Sidebar = ({
   });
 
   const isDesktop = useIsDesktopScreen();
-  const [opened, { open, close }] = useDisclosure();
-
-  const handleOpenSaveMenu = () => {
-    open();
-    setTitlePlaceholder(`Untitled - ${dateInYyyyMmDdHhMmSs(new Date())}`);
-  };
-
-  const [title, setTitle] = useState("");
-  const [titlePlaceholder, setTitlePlaceholder] = useState("");
-  const [description, setDescription] = useState("");
-
-  const [{ mutate: createTierListMutation, isLoading: isUploading }, { isLoading: isSaving, isSuccess }] =
-    useCreateTierListMutation({
-      title,
-      placeholder: titlePlaceholder,
-      description,
-    });
-
-  const setHideToolbars = useIsExportingStore((state) => state.setValue);
-  const [requestProgress, setRequestProgress] = useState(0);
-
-  const handleSave = async (e: FormEvent) => {
-    e.preventDefault();
-    createTierListMutation({ setHideToolbars, data, requestProgress, setRequestProgress });
-  };
-
-  const showProgressBar = isUploading || isSaving || isSuccess;
-  const modalTitle = showProgressBar ? "Saving..." : "Save to Account";
 
   return (
     <>
-      <Modal centered opened={opened} onClose={close} title={modalTitle} styles={saveModalStyles}>
-        <form onSubmit={handleSave}>
-          <TextInput
-            label="Title"
-            placeholder={titlePlaceholder}
-            styles={titleInputStyles}
-            onChange={(e) => setTitle(e.target.value)}
-            disabled={showProgressBar}
-          />
-          <Textarea
-            label="Description (optional)"
-            styles={descriptionInputStyles}
-            onChange={(e) => setDescription(e.target.value)}
-            disabled={showProgressBar}
-          />
-          <Flex justify="space-between" gap="lg">
-            <Center w="calc(100% - 100px)">
-              {showProgressBar && <Progress h={7} w="100%" mt="lg" striped animate value={requestProgress} />}
-            </Center>
-            <Button
-              type="submit"
-              leftIcon={!showProgressBar && <IconDeviceFloppy />}
-              display="block"
-              mt="lg"
-              w="100px"
-              disabled={showProgressBar}
-              sx={(theme) => ({ ":disabled": { backgroundColor: theme.colors.gray[8] } })}
-            >
-              {showProgressBar ? <Loader size={23} color="gray.0" /> : "SAVE"}
-            </Button>
-          </Flex>
-        </form>
-      </Modal>
       <Flex sx={sidebarContainerSx}>
         <Center sx={modAllImagesContainerSx}>
           <Switch checked={isDeleting} onChange={toggle} label="Toggle Delete" color="red" styles={switchStyles} />
@@ -153,7 +83,7 @@ export const Sidebar = ({
           isDeleting={isDeleting}
           onDelete={handleDeleteImage}
         />
-        <ActionButtonsGroup onSave={handleOpenSaveMenu} fullScreen={fullScreen} />
+        <ActionButtonsGroup onSave={handleClickSave} fullScreen={fullScreen} />
       </Flex>
     </>
   );

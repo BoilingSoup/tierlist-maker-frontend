@@ -1,6 +1,6 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Box, Flex, Skeleton } from "@mantine/core";
+import { Box, Center, Flex, Skeleton } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -15,9 +15,15 @@ import {
   GetRowHandlersParam,
 } from "../../../components/tierlist/helpers";
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
+import { useSaveTierListActionHelpers } from "../../../components/tierlist/hooks/useSaveTierListActionHelpers";
 import { OverlayImage } from "../../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../../components/tierlist/Sidebar";
-import { createPageMainContainerSx, rowsContainerSx, tierListSkeletonSx } from "../../../components/tierlist/styles";
+import {
+  autoAnimateRowContainerSx,
+  createPageMainContainerSx,
+  rowsContainerSx,
+  tierListSkeletonSx,
+} from "../../../components/tierlist/styles";
 import { TierListRow } from "../../../components/tierlist/TierListRow";
 import { ActiveItemState } from "../../../components/tierlist/types";
 import { SITE_NAME } from "../../../config/config";
@@ -58,6 +64,8 @@ const TierList: NextPage = () => {
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
+  const saveTierListHelpers = useSaveTierListActionHelpers(data);
+
   return (
     <>
       <Head>
@@ -70,10 +78,24 @@ const TierList: NextPage = () => {
         onDragEnd={dragHandler.end}
         sensors={sensors}
       >
+        {saveTierListHelpers.isSaving && (
+          <Center
+            sx={() => ({
+              zIndex: 9000,
+              color: "white",
+              height: "100%",
+              width: "100%",
+              position: "absolute",
+              background: "rgba(0, 0, 0, 0.6)",
+            })}
+          >
+            hello
+          </Center>
+        )}
         <Flex sx={createPageMainContainerSx}>
           <Box sx={rowsContainerSx}>
-            {isLoading && <Skeleton w="100%" h="100%" sx={tierListSkeletonSx} />}
-            <Box ref={animateChildren} id={DOM_TO_PNG_ID} bg="dark.7">
+            {isLoading && <Skeleton sx={tierListSkeletonSx} />}
+            <Box ref={animateChildren} id={DOM_TO_PNG_ID} sx={autoAnimateRowContainerSx}>
               {data?.rows.map((row) => (
                 <TierListRow
                   key={row.id}
@@ -97,11 +119,12 @@ const TierList: NextPage = () => {
             isDeleting={deleteIsToggled}
             onToggleDelete={toggleDelete}
             fullScreen={getFullScreenProp(fullScreen)}
-            data={data || { sidebar: [], rows: [] }}
+            data={data}
             onAddImage={rowHandler.addImage}
             onDeleteImage={rowHandler.deleteImage}
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
+            onClickSave={saveTierListHelpers.save}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>
