@@ -404,7 +404,7 @@ export const submitSaveButtonSx = ({ colors, spacing }: MantineTheme): CSSObject
 });
 
 export const uploadProgressContainerSx = (): CSSObject => ({
-  width: `calc(100% - ${submitSaveButtonSx})`,
+  width: `calc(100% - ${submitSaveButtonWidth})`,
 });
 
 export const autoAnimateRowContainerSx = ({ colors }: MantineTheme): CSSObject => ({

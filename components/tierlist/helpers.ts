@@ -529,7 +529,7 @@ type DragHandlers = {
 
 export type GetDragHandlersParam = {
   setActiveItem: Dispatch<SetStateAction<ActiveItemState>>;
-  data: TierListData | undefined; // TODO: discriminated union would be better for these conditional types
+  data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
   disabled?: boolean;
 };
@@ -576,13 +576,13 @@ type RowHandlers = {
 };
 
 export type GetRowHandlersParam = {
-  data: TierListData | undefined;
-  setData: (arg: SetDataArg) => Promise<void> | Dispatch<SetStateAction<TierListData | undefined>>;
+  data: TierListData;
+  setData: ((arg: SetDataArg) => Promise<void>) | ((arg: SetDataArg) => void);
   disabled?: boolean;
 };
 
 export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam): RowHandlers => {
-  if (disabled || data === undefined) {
+  if (disabled) {
     return {
       moveRowUp: (rowID: string) => {},
       moveRowDown: (rowID: string) => {},

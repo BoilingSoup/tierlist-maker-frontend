@@ -1,10 +1,11 @@
 import { useWindowEvent } from "@mantine/hooks";
 import { nanoid } from "nanoid";
+import { Dispatch, SetStateAction } from "react";
 import { compressImage } from "../helpers";
 import { TierListData } from "../types";
 
 type Arg = (prev: TierListData) => TierListData;
-type Param = (fn: Arg) => Promise<void>;
+type Param = ((fn: Arg) => Promise<void>) | Dispatch<SetStateAction<TierListData>>;
 
 export const usePasteEvent = (setData: Param) => {
   useWindowEvent("paste", async (e: Event) => {
