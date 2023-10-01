@@ -15,6 +15,7 @@ import {
   GetRowHandlersParam,
 } from "../../../components/tierlist/helpers";
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
+import { useSaveTierListActionHelpers } from "../../../components/tierlist/hooks/useSaveTierListActionHelpers";
 import { OverlayImage } from "../../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../../components/tierlist/Sidebar";
 import {
@@ -24,7 +25,7 @@ import {
   tierListSkeletonSx,
 } from "../../../components/tierlist/styles";
 import { TierListRow } from "../../../components/tierlist/TierListRow";
-import { ActiveItemState, TierListData } from "../../../components/tierlist/types";
+import { ActiveItemState } from "../../../components/tierlist/types";
 import { SITE_NAME } from "../../../config/config";
 import { useConfirmationOnExitIfUnsavedChanges } from "../../../hooks/api/useConfirmationOnExitIfUnsavedChanges";
 import { useGetTierList } from "../../../hooks/api/useGetTierList";
