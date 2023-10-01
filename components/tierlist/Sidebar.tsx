@@ -1,6 +1,6 @@
 import { Button, Center, Flex, Loader, Modal, Progress, Switch, Textarea, TextInput, Transition } from "@mantine/core";
 import { IconArrowDown, IconArrowRight, IconDeviceFloppy, IconTrash } from "@tabler/icons-react";
-import { ChangeEventHandler, DispatchWithoutAction, FormEvent } from "react";
+import { ChangeEvent, ChangeEventHandler, DispatchWithoutAction, FormEvent } from "react";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { ActionButtonsGroup } from "./ActionButtonsGroup";
 import { useToggleDeleteTransitions } from "./hooks/useToggleDeleteTransitions";
@@ -68,42 +68,17 @@ export const Sidebar = ({
 
   return (
     <>
-      <Modal
-        centered
+      <SaveImageModal
         opened={saveMenuIsOpen}
-        onClose={handleCloseSaveMenu}
         title={saveModalTitle}
-        styles={saveModalStyles}
-      >
-        <form onSubmit={handleSave}>
-          <TextInput
-            label="Title"
-            placeholder={titlePlaceholder}
-            styles={titleInputStyles}
-            onChange={handleChangeTitle}
-            disabled={showProgressBar}
-          />
-          <Textarea
-            label="Description (optional)"
-            styles={descriptionInputStyles}
-            onChange={handleChangeDescription}
-            disabled={showProgressBar}
-          />
-          <Flex justify="space-between" gap="lg">
-            <Center sx={uploadProgressContainerSx}>
-              {showProgressBar && <Progress h={7} w="100%" mt="lg" striped animate value={requestProgress} />}
-            </Center>
-            <Button
-              type="submit"
-              leftIcon={!showProgressBar && <IconDeviceFloppy />}
-              disabled={showProgressBar}
-              sx={submitSaveButtonSx}
-            >
-              {showProgressBar ? <Loader size={23} color="gray.0" /> : "SAVE"}
-            </Button>
-          </Flex>
-        </form>
-      </Modal>
+        titlePlaceholder={titlePlaceholder}
+        showProgressBar={showProgressBar}
+        requestProgress={requestProgress}
+        onSave={handleSave}
+        onClose={handleCloseSaveMenu}
+        onChangeDescription={handleChangeDescription}
+        onChangeTitle={handleChangeTitle}
+      />
       <Flex sx={sidebarContainerSx}>
         <Center sx={modAllImagesContainerSx}>
           <Switch checked={isDeleting} onChange={toggle} label="Toggle Delete" color="red" styles={switchStyles} />
@@ -149,5 +124,62 @@ export const Sidebar = ({
         <ActionButtonsGroup onSave={handleOpenSaveMenu} fullScreen={fullScreen} />
       </Flex>
     </>
+  );
+};
+
+type SaveImageModalProps = {
+  opened: boolean;
+  onClose: () => void;
+  title: string;
+  titlePlaceholder: string;
+  requestProgress: number;
+  showProgressBar: boolean;
+  onSave: (e: FormEvent) => void;
+  onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChangeDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+};
+
+const SaveImageModal = ({
+  opened,
+  title,
+  titlePlaceholder,
+  requestProgress,
+  showProgressBar,
+  onClose: handleClose,
+  onSave: handleSave,
+  onChangeTitle: handleChangeTitle,
+  onChangeDescription: handleChangeDescription,
+}: SaveImageModalProps) => {
+  return (
+    <Modal centered opened={opened} onClose={handleClose} title={title} styles={saveModalStyles}>
+      <form onSubmit={handleSave}>
+        <TextInput
+          label="Title"
+          placeholder={titlePlaceholder}
+          styles={titleInputStyles}
+          onChange={handleChangeTitle}
+          disabled={showProgressBar}
+        />
+        <Textarea
+          label="Description (optional)"
+          styles={descriptionInputStyles}
+          onChange={handleChangeDescription}
+          disabled={showProgressBar}
+        />
+        <Flex justify="space-between" gap="lg">
+          <Center sx={uploadProgressContainerSx}>
+            {showProgressBar && <Progress h={7} w="100%" mt="lg" striped animate value={requestProgress} />}
+          </Center>
+          <Button
+            type="submit"
+            leftIcon={!showProgressBar && <IconDeviceFloppy />}
+            disabled={showProgressBar}
+            sx={submitSaveButtonSx}
+          >
+            {showProgressBar ? <Loader size={23} color="gray.0" /> : "SAVE"}
+          </Button>
+        </Flex>
+      </form>
+    </Modal>
   );
 };
