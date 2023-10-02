@@ -8,8 +8,10 @@ import { Dispatch, SetStateAction } from "react";
 import { useServerTierListStore } from "../store/useServerTierListStore";
 import { showSomethingWentWrongNotification } from "../../components/common/helpers";
 import { useMantineTheme } from "@mantine/core";
+import { UploadResponse } from "./types";
+import { tween, upload } from "./helpers";
 
-const PRE_POST_REQUEST_MAX_PROGRESS = 53;
+// const PRE_POST_REQUEST_MAX_PROGRESS = 53;
 const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
 const ALMOST_COMPLETE_PROGRESS = 90;
 const COMPLETE_PROGRESS = 100;
@@ -66,8 +68,6 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
       }, 200);
     },
     onError: () => {
-      // TODO: should delete images if upload succeeds, but save JSON to db fails..
-
       showSomethingWentWrongNotification(theme);
     },
   });
@@ -157,10 +157,6 @@ async function createTierListRequest({ payload, requestProgress, setRequestProgr
   return { response: res.data, requestProgress, setRequestProgress };
 }
 
-type UploadResponse = {
-  data: string[];
-};
-
 type UploadParam = {
   data: TierListData;
   setHideToolbars: (v: boolean) => void;
@@ -171,40 +167,7 @@ type UploadParam = {
 async function uploadImages({ data, setHideToolbars, requestProgress, setRequestProgress }: UploadParam) {
   const [formData, metadata] = await generateFormData({ setHideToolbars, data });
 
-  const res = await apiClient.post<UploadResponse>("/image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-    onUploadProgress: (e) => {
-      if (!e.event.lengthComputable) {
-        return;
-      }
-
-      const newValue = Math.min(Math.round((e.event.loaded / e.event.total) * 100), PRE_POST_REQUEST_MAX_PROGRESS);
-
-      tween(requestProgress, newValue, 400, (value) => {
-        setRequestProgress(value);
-      });
-    },
-  });
+  const res = await upload({ formData, requestProgress, setRequestProgress });
 
   return { response: res.data, metadata: metadata, requestProgress, setRequestProgress };
-}
-
-function tween(startValue: number, endValue: number, duration: number, callback: (value: number) => void): void {
-  const frameRate = 60; // Assuming 60 frames per second
-  const totalFrames = (duration / 1000) * frameRate; // Calculate the total number of frames
-  let currentFrame = 0;
-
-  function update() {
-    if (currentFrame <= totalFrames) {
-      const progress = currentFrame / totalFrames;
-      const interpolatedValue = startValue + (endValue - startValue) * progress;
-      callback(interpolatedValue);
-      currentFrame++;
-      requestAnimationFrame(update);
-    } else {
-      callback(endValue);
-    }
-  }
-
-  update();
 }

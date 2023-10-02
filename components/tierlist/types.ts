@@ -152,7 +152,7 @@ export type UploadParam = {
 export type SaveTierListResponse = {
   id: string;
   title: string;
-  data: string; // serialized TierListData
+  data: TierListData | string; // idk why tf axios sometimes parses and sometimes doesn't
   description: string | null;
   thumbnail: string;
   is_public: boolean;
@@ -174,7 +174,6 @@ type AddedImage =
 export type DiffData = {
   isChanged: boolean;
   metadata: {
-    deleted: string[];
     added: AddedImage[];
   };
 };

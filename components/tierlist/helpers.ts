@@ -529,7 +529,7 @@ type DragHandlers = {
 
 export type GetDragHandlersParam = {
   setActiveItem: Dispatch<SetStateAction<ActiveItemState>>;
-  data: TierListData | undefined; // TODO: discriminated union would be better for these conditional types
+  data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
   disabled?: boolean;
 };
@@ -576,13 +576,13 @@ type RowHandlers = {
 };
 
 export type GetRowHandlersParam = {
-  data: TierListData | undefined;
-  setData: (arg: SetDataArg) => Promise<void> | Dispatch<SetStateAction<TierListData | undefined>>;
+  data: TierListData;
+  setData: ((arg: SetDataArg) => Promise<void>) | ((arg: SetDataArg) => void);
   disabled?: boolean;
 };
 
 export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam): RowHandlers => {
-  if (disabled || data === undefined) {
+  if (disabled) {
     return {
       moveRowUp: (rowID: string) => {},
       moveRowDown: (rowID: string) => {},
@@ -919,7 +919,7 @@ export async function generateFormData({
 }
 
 export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
-  let out: DiffData = { isChanged: false, metadata: { added: [], deleted: [] } };
+  let out: DiffData = { isChanged: false, metadata: { added: [] } };
 
   const dataNotReady = serverData === undefined || clientData === undefined;
   if (dataNotReady) {
@@ -959,7 +959,6 @@ export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
 
     if (!clientImages[serverSrc]) {
       out.isChanged = true;
-      out.metadata.deleted.push(serverSrc);
     }
   }
 
@@ -969,7 +968,6 @@ export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
 
       if (!clientImages[serverSrc]) {
         out.isChanged = true;
-        out.metadata.deleted.push(serverSrc);
       }
     }
   }
@@ -979,13 +977,13 @@ export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
   // But it's good enough for most scenarios.
   if (clientData.sidebar.length !== serverData.sidebar.length) {
     out.isChanged = true;
-  }
-  if (clientData.rows.length !== serverData.rows.length) {
+  } else if (clientData.rows.length !== serverData.rows.length) {
     out.isChanged = true;
-  }
-  for (let i = 0; i < clientData.rows.length; ++i) {
-    if (clientData.rows[i].items.length !== serverData.rows[i].items.length) {
-      out.isChanged = true;
+  } else {
+    for (let i = 0; i < clientData.rows.length; ++i) {
+      if (clientData.rows[i].items.length !== serverData.rows[i].items.length) {
+        out.isChanged = true;
+      }
     }
   }
 

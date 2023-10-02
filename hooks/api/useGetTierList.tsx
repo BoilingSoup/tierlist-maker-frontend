@@ -26,7 +26,12 @@ export const useGetTierList = (uuid: string | undefined) => {
     staleTime: 0,
     onSuccess: (response) => {
       try {
-        const tierListData = parse(TierListSchema, JSON.parse(response.data)); // throws error if it doesn't satisfy schema
+        let tierListData: TierListData;
+        if (typeof response.data === "string") {
+          tierListData = parse(TierListSchema, JSON.parse(response.data)); // throws error if it doesn't satisfy schema
+        } else {
+          tierListData = response.data;
+        }
         setServerData(tierListData);
         setData(tierListData);
       } catch (e) {
@@ -74,7 +79,14 @@ const useCheckServerCacheStore = ({ uuid, setData }: CheckServerCacheParam) => {
     if (cached !== undefined) {
       setCacheHit(true);
       try {
-        const tierListData = parse(TierListSchema, JSON.parse(serverCacheStore[uuid].response.data));
+        let tierListData: TierListData;
+
+        if (typeof cached.response.data === "string") {
+          tierListData = parse(TierListSchema, JSON.parse(cached.response.data));
+        } else {
+          tierListData = cached.response.data;
+        }
+
         setServerData(tierListData);
         setData(tierListData);
       } catch (e) {
@@ -84,7 +96,7 @@ const useCheckServerCacheStore = ({ uuid, setData }: CheckServerCacheParam) => {
     } else {
       setCacheHit(false);
     }
-  }, [uuid]);
+  }, [uuid, serverCacheStore]);
 
   return { cacheHit, serverData, setServerData };
 };

@@ -1,21 +1,16 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Box, Center, Flex, Skeleton } from "@mantine/core";
+import { Box, Center, Flex, Progress, Skeleton, Text, useMantineTheme } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { NAVBAR_HEIGHT } from "../../../components/common/styles";
 import { DOM_TO_PNG_ID } from "../../../components/tierlist/constants";
-import {
-  getDragHandlers,
-  GetDragHandlersParam,
-  getFullScreenProp,
-  getRowHandlers,
-  GetRowHandlersParam,
-} from "../../../components/tierlist/helpers";
+import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../../components/tierlist/helpers";
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
-import { useSaveTierListActionHelpers } from "../../../components/tierlist/hooks/useSaveTierListActionHelpers";
+import { usePasteEvent } from "../../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../../components/tierlist/Sidebar";
 import {
@@ -29,6 +24,8 @@ import { ActiveItemState } from "../../../components/tierlist/types";
 import { SITE_NAME } from "../../../config/config";
 import { useConfirmationOnExitIfUnsavedChanges } from "../../../hooks/api/useConfirmationOnExitIfUnsavedChanges";
 import { useGetTierList } from "../../../hooks/api/useGetTierList";
+import { useSaveTierListMutation } from "../../../hooks/api/useSaveTierListMutation";
+import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
 
 const TierList: NextPage = () => {
   const router = useRouter();
@@ -45,26 +42,63 @@ const TierList: NextPage = () => {
     diff,
   } = useGetTierList(uuid);
 
+  usePasteEvent(setData);
+
   useConfirmationOnExitIfUnsavedChanges(diff);
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
   const rowHandler = getRowHandlers({
-    setData: setData as GetRowHandlersParam["setData"],
+    setData: setData,
     data,
     disabled: data === undefined,
   });
 
   const dragHandler = getDragHandlers({
     data,
-    setData: setData as GetDragHandlersParam["setData"],
+    setData: setData,
     setActiveItem,
     disabled: data === undefined,
   });
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
-  const saveTierListHelpers = useSaveTierListActionHelpers(data);
+  // const saveTierListHelpers = useSaveTierListActionHelpers(data);
+  const [isSaving, setIsSaving] = useState(false);
+  const { mutate: saveTierListMutation } = useSaveTierListMutation();
+
+  const setHideToolbars = useIsExportingStore((state) => state.setValue);
+  const [requestProgress, setRequestProgress] = useState(0);
+  const theme = useMantineTheme();
+
+  const handleSave = () => {
+    setIsSaving(true);
+
+    if (uuid === undefined) {
+      return;
+    }
+
+    saveTierListMutation({
+      data,
+      setData,
+      diffMetadata: diff.metadata,
+      setHideToolbars,
+      setIsSaving,
+      requestProgress,
+      setRequestProgress,
+      theme,
+      router,
+      uuid,
+    });
+  };
+
+  useEffect(() => {
+    const debug = (e: KeyboardEvent) => {
+      if (e.key === "Enter") setIsSaving(false);
+    };
+    window.addEventListener("keydown", debug);
+    return () => window.removeEventListener("keydown", debug);
+  });
 
   return (
     <>
@@ -78,18 +112,20 @@ const TierList: NextPage = () => {
         onDragEnd={dragHandler.end}
         sensors={sensors}
       >
-        {saveTierListHelpers.isSaving && (
+        {isSaving && (
           <Center
-            sx={() => ({
+            sx={(theme) => ({
               zIndex: 9000,
               color: "white",
-              height: "100%",
+              height: `calc(100% - ${NAVBAR_HEIGHT})`,
               width: "100%",
               position: "absolute",
               background: "rgba(0, 0, 0, 0.6)",
+              flexDirection: "column",
             })}
           >
-            hello
+            <Text mb={20}>Saving...</Text>
+            <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
           </Center>
         )}
         <Flex sx={createPageMainContainerSx}>
@@ -124,7 +160,7 @@ const TierList: NextPage = () => {
             onDeleteImage={rowHandler.deleteImage}
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
-            onClickSave={saveTierListHelpers.save}
+            onClickSave={handleSave}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>
