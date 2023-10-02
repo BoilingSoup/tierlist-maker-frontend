@@ -68,8 +68,6 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
       }, 200);
     },
     onError: () => {
-      // TODO: should delete images if upload succeeds, but save JSON to db fails..
-
       showSomethingWentWrongNotification(theme);
     },
   });

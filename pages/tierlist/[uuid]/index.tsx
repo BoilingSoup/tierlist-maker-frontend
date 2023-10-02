@@ -1,11 +1,12 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Box, Center, Flex, Skeleton } from "@mantine/core";
+import { Box, Center, Flex, Progress, Skeleton, Text, useMantineTheme } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useReducer, useState } from "react";
+import { NAVBAR_HEIGHT } from "../../../components/common/styles";
 import { DOM_TO_PNG_ID } from "../../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../../components/tierlist/helpers";
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
@@ -68,10 +69,27 @@ const TierList: NextPage = () => {
 
   const setHideToolbars = useIsExportingStore((state) => state.setValue);
   const [requestProgress, setRequestProgress] = useState(0);
+  const theme = useMantineTheme();
 
   const handleSave = () => {
     setIsSaving(true);
-    saveTierListMutation({ data, diffMetadata: diff.metadata, setHideToolbars, requestProgress, setRequestProgress });
+
+    if (uuid === undefined) {
+      return;
+    }
+
+    saveTierListMutation({
+      data,
+      setData,
+      diffMetadata: diff.metadata,
+      setHideToolbars,
+      setIsSaving,
+      requestProgress,
+      setRequestProgress,
+      theme,
+      router,
+      uuid,
+    });
   };
 
   useEffect(() => {
@@ -96,16 +114,18 @@ const TierList: NextPage = () => {
       >
         {isSaving && (
           <Center
-            sx={() => ({
+            sx={(theme) => ({
               zIndex: 9000,
               color: "white",
-              height: "100%",
+              height: `calc(100% - ${NAVBAR_HEIGHT})`,
               width: "100%",
               position: "absolute",
               background: "rgba(0, 0, 0, 0.6)",
+              flexDirection: "column",
             })}
           >
-            hello
+            <Text mb={20}>Saving...</Text>
+            <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
           </Center>
         )}
         <Flex sx={createPageMainContainerSx}>
