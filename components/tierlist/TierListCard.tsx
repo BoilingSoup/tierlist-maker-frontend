@@ -6,7 +6,7 @@ type Props = {
   tierList: UserTierListsResponse["data"][number];
 };
 
-export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, ref) => {
+export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, observerRef) => {
   const theme = useMantineTheme();
 
   // TODO: tierListResponse should return user_id
@@ -20,6 +20,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, ref
   //   - this is in useCreateTierListSomething... just writing it here because I encountered it while testing.
   return (
     <Box
+      ref={observerRef}
       sx={(theme) => ({
         width: "90%",
         maxWidth: "600px",
@@ -34,6 +35,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, ref
     >
       <TextInput
         value={tierList.title}
+        readOnly
         styles={{
           input: {
             color: "white",
@@ -65,7 +67,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, ref
             <Button w="100%" color="gray.8">
               View
             </Button>
-            <Button color="gray.8">Copy</Button>
+            {/* <Button color="gray.8">Copy</Button> */}
             <Button color="gray.7">Edit Info</Button>
           </Stack>
         </Flex>
