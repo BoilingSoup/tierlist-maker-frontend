@@ -182,3 +182,24 @@ export type DiffParam = {
   clientData: TierListData | undefined;
   serverData: TierListData | undefined;
 };
+
+export type PaginationMetadata = {
+  path: string;
+  per_page: number;
+  next_cursor: null | string;
+  next_page_url: null | string;
+  prev_cursor: null | string;
+  prev_page_url: null | string;
+};
+
+export type UserTierListsResponse = PaginationMetadata & {
+  data: Array<{
+    id: string;
+    title: string;
+    description: null | string;
+    thumbnail: string;
+    is_public: boolean;
+    created_at: string;
+    updated_at: string;
+  }>;
+};

@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { SaveTierListResponse, TierListData } from "../../components/tierlist/types";
 import { apiClient } from "../../lib/apiClient";
 import { useLocalTierListStore } from "../store/useLocalTierListStore";
@@ -10,6 +10,8 @@ import { showSomethingWentWrongNotification } from "../../components/common/help
 import { useMantineTheme } from "@mantine/core";
 import { UploadResponse } from "./types";
 import { tween, upload } from "./helpers";
+import { useAuth } from "../../contexts/AuthProvider";
+import { queryKeys } from "../../lib/queryKeys";
 
 // const PRE_POST_REQUEST_MAX_PROGRESS = 53;
 const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
@@ -45,6 +47,10 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
     },
   });
 
+  const { user } = useAuth();
+  let userID = user?.id;
+  const queryClient = useQueryClient();
+
   const {
     mutate: postTierListJSONMutation,
     isLoading: isSaving,
@@ -52,6 +58,12 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
   } = useMutation(createTierListRequest, {
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
       addToCache({ uuid: response.id, response });
+
+      if (userID !== undefined) {
+        console.log("hello invalidating queries", userID, queryKeys.userTierLists(userID));
+        // TODO: refetch recent tier lists if is_public
+        queryClient.refetchQueries(queryKeys.userTierLists(userID));
+      }
 
       tween(requestProgress, ALMOST_COMPLETE_PROGRESS, 100, (value) => {
         setRequestProgress(value);
