@@ -12,23 +12,28 @@ import { useServerTierListStore } from "../store/useServerTierListStore";
 import { Dispatch, SetStateAction } from "react";
 import { parse } from "valibot";
 
+const DONE = 100; //100%
+
 export const useSaveTierListMutation = () => {
   const theme = useMantineTheme();
   const addToCache = useServerTierListStore((state) => state.add);
 
   return useMutation(handleDiffMetadata, {
     onSuccess: (res, { requestProgress, setRequestProgress, setData, setIsSaving }) => {
-      const DONE = 100; //100%
+      function resetStates() {
+        return setTimeout(() => {
+          setIsSaving(false);
+          setRequestProgress(0);
+        }, 500);
+      }
 
-      tween(requestProgress, DONE, 100, (value) => {
+      const duration = 80; //ms
+      tween(requestProgress, DONE, duration, (value) => {
         setRequestProgress(value);
         if (value !== DONE) {
           return;
         }
-        setTimeout(() => {
-          setIsSaving(false);
-          setRequestProgress(0);
-        }, 1000);
+        resetStates();
       });
 
       try {
@@ -39,16 +44,14 @@ export const useSaveTierListMutation = () => {
         } else {
           tierListData = res.data;
         }
+
         addToCache({ uuid: res.id, response: res });
         setData(tierListData);
       } catch (e) {
         console.error(e);
         showSomethingWentWrongNotification(theme);
       } finally {
-        setTimeout(() => {
-          setIsSaving(false);
-          setRequestProgress(0);
-        }, 1000);
+        resetStates();
       }
     },
     onError: (_, { setIsSaving, setRequestProgress }) => {
@@ -56,7 +59,7 @@ export const useSaveTierListMutation = () => {
         setIsSaving(false);
         setRequestProgress(0);
         showSomethingWentWrongNotification(theme);
-      }, 1000);
+      }, 500);
     },
   });
 };
@@ -68,7 +71,7 @@ type HandleDiffMetadataParam = {
   setData: Dispatch<SetStateAction<TierListData>>;
   setIsSaving: Dispatch<SetStateAction<boolean>>;
   requestProgress: number;
-  setRequestProgress: (v: number) => void;
+  setRequestProgress: Dispatch<SetStateAction<number>>;
   theme: MantineTheme;
   router: NextRouter;
   uuid: string;
@@ -84,38 +87,90 @@ async function handleDiffMetadata({
   router,
   uuid,
 }: HandleDiffMetadataParam) {
-  const payload = { data: JSON.parse(JSON.stringify(data)) as TierListData };
+  let payload = { data: JSON.parse(JSON.stringify(data)) as TierListData };
 
   if (added.length > 0) {
-    const formData = await generateFormData({ data, added });
-    const res = await upload({ formData, requestProgress, setRequestProgress });
-    const srcs = res.data.data;
+    const srcs = await uploadNewImages({ data, added, requestProgress, setRequestProgress });
 
-    for (let i = 0; i < srcs.length; ++i) {
-      const metaData = added[i];
-      const imgSrc = srcs[i];
+    payload = replacePayloadSrcs({ payload, added, srcs });
+  }
 
-      switch (metaData.location) {
-        case "sidebar":
-          payload.data.sidebar[metaData.index].src = imgSrc;
-          break;
+  await overwriteNewThumbnail({ theme, router, uuid, requestProgress, setRequestProgress, setHideToolbars });
 
-        case "row":
-          const rowID = metaData.rowID;
-          const rowIndex = payload.data.rows.findIndex((row) => row.id === rowID);
-          payload.data.rows[rowIndex].items[metaData.index].src = imgSrc;
-          break;
+  return await saveTierList({ uuid, payload });
+}
 
-        default:
-          break;
-      }
+type UploadNewImagesParam = {
+  data: TierListData;
+  added: DiffData["metadata"]["added"];
+  requestProgress: number;
+  setRequestProgress: Dispatch<SetStateAction<number>>;
+};
+
+async function uploadNewImages({
+  data,
+  added,
+  requestProgress,
+  setRequestProgress,
+}: UploadNewImagesParam): Promise<string[]> {
+  const formData = await generateFormData({ data, added });
+  const res = await upload({ formData, requestProgress, setRequestProgress });
+  const srcs = res.data.data;
+
+  return srcs;
+}
+
+type ReplacePayloadSrcsParam = {
+  srcs: string[];
+  payload: { data: TierListData };
+  added: DiffData["metadata"]["added"];
+};
+
+function replacePayloadSrcs({ srcs, payload, added }: ReplacePayloadSrcsParam) {
+  const copy = JSON.parse(JSON.stringify(payload)) as ReplacePayloadSrcsParam["payload"];
+
+  for (let i = 0; i < srcs.length; ++i) {
+    const metaData = added[i];
+    const imgSrc = srcs[i];
+
+    switch (metaData.location) {
+      case "sidebar":
+        copy.data.sidebar[metaData.index].src = imgSrc;
+        break;
+
+      case "row":
+        const rowID = metaData.rowID;
+        const rowIndex = payload.data.rows.findIndex((row) => row.id === rowID);
+        payload.data.rows[rowIndex].items[metaData.index].src = imgSrc;
+        break;
+
+      default:
+        break;
     }
   }
 
+  return copy;
+}
+
+type OverwriteNewThumbnailParam = {
+  router: NextRouter;
+  setHideToolbars: (v: boolean) => void;
+  theme: MantineTheme;
+  uuid: string;
+  requestProgress: number;
+  setRequestProgress: Dispatch<SetStateAction<number>>;
+};
+
+async function overwriteNewThumbnail({
+  router,
+  theme,
+  setHideToolbars,
+  uuid,
+  requestProgress,
+  setRequestProgress,
+}: OverwriteNewThumbnailParam) {
   const replaceThumbnailFormData = await generateReplaceThumbnailFormData({ router, setHideToolbars, theme });
   await replaceThumbnail({ uuid, formData: replaceThumbnailFormData, requestProgress, setRequestProgress });
-
-  return await saveTierList({ uuid, payload });
 }
 
 type GenerateFormDataParam = {

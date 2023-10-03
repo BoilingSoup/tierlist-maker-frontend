@@ -1,48 +1,48 @@
-import { useDisclosure } from "@mantine/hooks";
-import { TierListData } from "../types";
+import { useMantineTheme } from "@mantine/core";
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useSaveTierListMutation } from "../../../hooks/api/useSaveTierListMutation";
+import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
+import { DiffData, TierListData } from "../types";
 
-export const useSaveTierListActionHelpers = (data: TierListData) => {
-  // const {
-  //   title,
-  //   handleChangeTitle: changeTitle,
-  //   titlePlaceholder,
-  //   setTitlePlaceholder,
-  //   description,
-  //   handleChangeDescription: changeDescription,
-  // } = useTierListInfo();
+type Param = {
+  uuid: string | undefined;
+  data: TierListData;
+  setData: Dispatch<SetStateAction<TierListData>>;
+  diff: DiffData;
+};
 
-  // const {
-  //   opened: modalOpened,
-  //   close: closeModal,
-  //   handleOpenSaveMenu: openSaveMenu,
-  // } = useHandleOpenSaveMenu(setTitlePlaceholder);
+export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff }: Param) => {
+  const theme = useMantineTheme();
+  const router = useRouter();
 
-  // const {
-  //   requestProgress,
-  //   isLoading,
-  //   handleSave: save,
-  // } = useCreateTierListMutationHelpers({
-  //   title,
-  //   titlePlaceholder,
-  //   description,
-  //   data,
-  // });
+  const [isSaving, setIsSaving] = useState(false);
+  const setHideToolbars = useIsExportingStore((state) => state.setValue);
 
-  // const modalTitle = isLoading ? "Saving..." : "Save to Account";
+  const [requestProgress, setRequestProgress] = useState(0);
 
-  const [opened, { open, close }] = useDisclosure();
+  const { mutate: saveTierListMutation } = useSaveTierListMutation();
 
-  return {
-    // openSaveMenu,
-    // changeTitle,
-    // changeDescription,
-    save: open,
-    isSaving: opened,
-    // modalTitle,
-    // titlePlaceholder,
-    // showProgressBar: isLoading,
-    // requestProgress,
-    // modalOpened,
-    // closeModal,
+  const handleSave = () => {
+    setIsSaving(true);
+
+    if (uuid === undefined) {
+      return;
+    }
+
+    saveTierListMutation({
+      data,
+      setData,
+      diffMetadata: diff.metadata,
+      setHideToolbars,
+      setIsSaving,
+      requestProgress,
+      setRequestProgress,
+      theme,
+      router,
+      uuid,
+    });
   };
+
+  return { isSaving, handleSave, requestProgress };
 };

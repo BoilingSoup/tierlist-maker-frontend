@@ -1,12 +1,11 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Box, Center, Flex, Progress, Skeleton, Text, useMantineTheme } from "@mantine/core";
+import { Box, Center, Flex, Progress, Skeleton, Text } from "@mantine/core";
 import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useReducer, useState } from "react";
-import { NAVBAR_HEIGHT } from "../../../components/common/styles";
 import { DOM_TO_PNG_ID } from "../../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../../components/tierlist/helpers";
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
@@ -25,8 +24,7 @@ import { ActiveItemState } from "../../../components/tierlist/types";
 import { SITE_NAME } from "../../../config/config";
 import { useConfirmationOnExitIfUnsavedChanges } from "../../../hooks/api/useConfirmationOnExitIfUnsavedChanges";
 import { useGetTierList } from "../../../hooks/api/useGetTierList";
-import { useSaveTierListMutation } from "../../../hooks/api/useSaveTierListMutation";
-import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
+import { useSaveTierListActionHelpers } from "../../../components/tierlist/hooks/useSaveTierListActionHelpers";
 
 const TierList: NextPage = () => {
   const router = useRouter();
@@ -64,34 +62,7 @@ const TierList: NextPage = () => {
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
-  // const saveTierListHelpers = useSaveTierListActionHelpers(data);
-  const [isSaving, setIsSaving] = useState(false);
-  const { mutate: saveTierListMutation } = useSaveTierListMutation();
-
-  const setHideToolbars = useIsExportingStore((state) => state.setValue);
-  const [requestProgress, setRequestProgress] = useState(0);
-  const theme = useMantineTheme();
-
-  const handleSave = () => {
-    setIsSaving(true);
-
-    if (uuid === undefined) {
-      return;
-    }
-
-    saveTierListMutation({
-      data,
-      setData,
-      diffMetadata: diff.metadata,
-      setHideToolbars,
-      setIsSaving,
-      requestProgress,
-      setRequestProgress,
-      theme,
-      router,
-      uuid,
-    });
-  };
+  const { isSaving, handleSave, requestProgress } = useSaveTierListActionHelpers({ data, setData, diff, uuid });
 
   return (
     <>
