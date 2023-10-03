@@ -410,3 +410,13 @@ export const uploadProgressContainerSx = (): CSSObject => ({
 export const autoAnimateRowContainerSx = ({ colors }: MantineTheme): CSSObject => ({
   background: colors.dark[7],
 });
+
+export const savingOverlayContainerSx = (): CSSObject => ({
+  zIndex: 9000,
+  color: "white",
+  height: `calc(100% - ${NAVBAR_HEIGHT})`,
+  width: "100%",
+  position: "absolute",
+  background: "rgba(0, 0, 0, 0.6)",
+  flexDirection: "column",
+});
