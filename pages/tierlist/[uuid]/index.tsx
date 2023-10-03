@@ -5,7 +5,7 @@ import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import { NAVBAR_HEIGHT } from "../../../components/common/styles";
 import { DOM_TO_PNG_ID } from "../../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../../components/tierlist/helpers";
@@ -17,6 +17,7 @@ import {
   autoAnimateRowContainerSx,
   createPageMainContainerSx,
   rowsContainerSx,
+  savingOverlayContainerSx,
   tierListSkeletonSx,
 } from "../../../components/tierlist/styles";
 import { TierListRow } from "../../../components/tierlist/TierListRow";
@@ -92,14 +93,6 @@ const TierList: NextPage = () => {
     });
   };
 
-  useEffect(() => {
-    const debug = (e: KeyboardEvent) => {
-      if (e.key === "Enter") setIsSaving(false);
-    };
-    window.addEventListener("keydown", debug);
-    return () => window.removeEventListener("keydown", debug);
-  });
-
   return (
     <>
       <Head>
@@ -113,17 +106,7 @@ const TierList: NextPage = () => {
         sensors={sensors}
       >
         {isSaving && (
-          <Center
-            sx={(theme) => ({
-              zIndex: 9000,
-              color: "white",
-              height: `calc(100% - ${NAVBAR_HEIGHT})`,
-              width: "100%",
-              position: "absolute",
-              background: "rgba(0, 0, 0, 0.6)",
-              flexDirection: "column",
-            })}
-          >
+          <Center sx={savingOverlayContainerSx}>
             <Text mb={20}>Saving...</Text>
             <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
           </Center>
