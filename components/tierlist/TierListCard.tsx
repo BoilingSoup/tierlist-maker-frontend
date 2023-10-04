@@ -1,102 +1,112 @@
-import { Box, Button, Flex, Image, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
-import { IconEye, IconPencil } from "@tabler/icons-react";
+import { Box, Button, Flex, Image, Stack, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import { IconDeviceFloppy, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
 import Link from "next/link";
-import { forwardRef } from "react";
-import { tierListCardContainerSx, tierListCardDescriptionSx } from "./styles";
+import { forwardRef, useReducer, useRef } from "react";
+import { useAuth } from "../../contexts/AuthProvider";
+import { capitalizeSentences, titleCase } from "./helpers";
+import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
+import {
+  tierListCardButtonsContainerSx,
+  tierListCardButtonSx,
+  tierListCardContainerSx,
+  getTierListCardDescriptionStyles,
+  tierListCardImageContainerSx,
+  tierListCardImageSx,
+} from "./styles";
 import { UserTierListsResponse } from "./types";
 
 type Props = {
   tierList: UserTierListsResponse["data"][number];
 };
 
-function titleCase(title: string): string {
-  const words = title.split(" ");
-  const capitalized = words.map((word) => word[0].toUpperCase() + word.slice(1));
-  return capitalized.join(" ");
-}
-
-function capitalizeSentences(text: string): string {
-  const punctuationRegex = new RegExp(/[.|!|?]/);
-
-  const sentences = text.split(punctuationRegex);
-  const capitalizedArr = sentences.map((sentence) => sentence[0].toUpperCase() + sentence.slice(1));
-  const capitalizedStr = capitalizedArr.join(" ");
-
-  const lastCharIsPunctuation = punctuationRegex.test(capitalizedStr[capitalizedStr.length - 1]);
-
-  return lastCharIsPunctuation ? capitalizedStr : capitalizedStr + ".";
-}
-
 export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, observerRef) => {
+  const { user } = useAuth();
   const theme = useMantineTheme();
 
-  // TODO: tierListResponse should return user_id
-  // if user_id === useAuth user.id
-  // show edit forms, delete, etc.
-  //  - reuse in browse page
-  //
+  const [isEditing, toggle] = useReducer((prev) => !prev, false);
+
+  const handleCancel = () => {
+    toggle();
+  };
+
+  const handleDelete = () => {
+    toggle();
+  };
+
+  const handleSave = () => {
+    toggle();
+  };
+
+  const mantineImageRootRef = useRef<HTMLDivElement>(null);
+  useCenterThumbnailIfSmall({ ref: mantineImageRootRef, tierList });
+
   return (
-    <Box ref={observerRef} sx={tierListCardContainerSx}>
+    <Box ref={observerRef} sx={tierListCardContainerSx(isEditing)}>
       <TextInput
         value={titleCase(tierList.title)}
+        disabled={!isEditing}
         styles={{
           input: {
             color: "white",
-            background: theme.colors.dark[6],
-            border: "none",
+            width: `calc(100% - ${theme.spacing.lg} - ${theme.spacing.lg})`,
+            background: theme.colors.dark[4],
             fontSize: theme.fontSizes.xl,
-            padding: `${theme.spacing.lg} 0 0 ${theme.spacing.lg}`,
+            padding: `${theme.spacing.lg} 0 ${theme.spacing.lg} ${theme.spacing.lg}`,
             fontWeight: "bold",
             height: "40px",
+            margin: theme.spacing.lg,
+            ":disabled": {
+              color: "white",
+              background: theme.colors.dark[6],
+              border: "none",
+              cursor: "initial",
+            },
           },
         }}
       />
-      <Box sx={{ height: "100%", margin: theme.spacing.lg }}>
+      <Box sx={{ height: "100%", margin: `0 ${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.lg}` }}>
         <Flex sx={(theme) => ({ alignItems: "center", gap: theme.spacing.lg })}>
-          <Box
-            sx={{
-              width: "300px",
-              height: "200px",
-              minWidth: "300px", // child image with objectFit: contain is effecting size unless I explicitly set min/max dimensions
-              minHeight: "200px",
-              maxWidth: "300px",
-              maxHeight: "200px",
-              overflow: "hidden",
-            }}
-          >
-            <Image src={tierList.thumbnail} sx={{ width: "300px", height: "200px", objectFit: "contain" }} />
+          <Box sx={tierListCardImageContainerSx}>
+            <Image ref={mantineImageRootRef} src={tierList.thumbnail} sx={tierListCardImageSx} />
           </Box>
-          <Stack w="100%" h="200px" sx={{ gap: theme.spacing.sm, justifyContent: "center" }}>
-            <Button
-              component={Link}
-              href={`/tierlist/${tierList.id}`}
-              color="gray.8"
-              leftIcon={<IconEye />}
-              sx={(theme) => ({
-                ":hover": {
-                  backgroundColor: theme.colors.dark[3],
-                },
-              })}
-            >
-              View
-            </Button>
-            <Button
-              color="gray.7"
-              leftIcon={<IconPencil />}
-              sx={(theme) => ({
-                ":hover": {
-                  backgroundColor: theme.colors.dark[3],
-                },
-              })}
-            >
-              Edit
-            </Button>
+          <Stack sx={tierListCardButtonsContainerSx}>
+            {isEditing ? (
+              <>
+                <Button onClick={handleSave} color="blue.8" leftIcon={<IconDeviceFloppy />} sx={tierListCardButtonSx}>
+                  Save
+                </Button>
+                <Button onClick={handleCancel} color="gray.8" leftIcon={<IconX />} sx={tierListCardButtonSx}>
+                  Cancel
+                </Button>
+                <Button onClick={handleDelete} color="red.8" leftIcon={<IconTrash />} sx={tierListCardButtonSx}>
+                  Delete
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={toggle} color="gray.8" leftIcon={<IconPencil />} sx={tierListCardButtonSx}>
+                  Edit
+                </Button>
+                <Button
+                  component={Link}
+                  href={`/tierlist/${tierList.id}`}
+                  color="gray.8"
+                  leftIcon={<IconEye />}
+                  sx={tierListCardButtonSx}
+                >
+                  View
+                </Button>
+              </>
+            )}
           </Stack>
         </Flex>
         {tierList.description && (
-          <Text c="dimmed" sx={tierListCardDescriptionSx}>
-            {capitalizeSentences(tierList.description)}
-          </Text>
+          <Textarea
+            c="dimmed"
+            disabled={!isEditing}
+            styles={getTierListCardDescriptionStyles(theme)}
+            value={capitalizeSentences(tierList.description)}
+          />
         )}
       </Box>
     </Box>

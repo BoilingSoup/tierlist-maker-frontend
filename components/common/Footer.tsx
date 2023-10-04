@@ -17,7 +17,7 @@ export const Footer = () => {
         &copy; 2023 tierlist.lol &nbsp;&nbsp;{" "}
         <Text
           component="a"
-          href="https://github.com/tierlistlol"
+          href="https://github.com/boilingsoup"
           target="_blank"
           sx={{
             ":hover": {

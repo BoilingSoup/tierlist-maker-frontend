@@ -1,11 +1,13 @@
-import { Center, Flex, Loader, Skeleton, Text } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import type { NextPage } from "next";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
-import { tierListCardSkeletonSx } from "../../components/tierlist/styles";
+import { tierListCardsContainerSx } from "../../components/tierlist/styles";
+import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollLoading";
+import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
 
 const TierLists: NextPage = () => {
   const { user, isLoading: isLoadingUser } = useAuth();
@@ -19,28 +21,11 @@ const TierLists: NextPage = () => {
 
   const isNotReady = isLoadingUser || isLoadingTierLists;
 
-  const tierListCardsSkeleton = new Array(6)
-    .fill(undefined)
-    .map((_, i) => <Skeleton key={i} sx={tierListCardSkeletonSx} />);
-
   return (
     <AccountNavShell>
-      <Flex
-        sx={(theme) => ({
-          width: "100%",
-          color: "white",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          gap: theme.spacing.lg,
-          ":first-of-type": {
-            marginTop: theme.spacing.xl,
-          },
-          ":last-child": {
-            marginBottom: theme.spacing.xl,
-          },
-        })}
-      >
-        {isNotReady && tierListCardsSkeleton}
+      <Flex sx={tierListCardsContainerSx}>
+        {isNotReady && <TierListCardsSkeleton count={6} />}
+
         {pages?.map((pg, i) => {
           const isLastPage = pages.length - 1 === i;
 
@@ -53,19 +38,7 @@ const TierLists: NextPage = () => {
           });
         })}
       </Flex>
-      {isFetchingNextPage && (
-        <Center
-          sx={(theme) => ({
-            marginTop: `calc(${theme.spacing.xl} + ${theme.spacing.lg})`,
-            marginBottom: `calc(${theme.spacing.xl} + ${theme.spacing.lg})`,
-          })}
-        >
-          <Loader size="xl" variant="bars" />
-          <Text ml="xl" color="gray.0" size="xl">
-            Loading...
-          </Text>
-        </Center>
-      )}
+      {isFetchingNextPage && <InfiniteScrollLoading />}
     </AccountNavShell>
   );
 };

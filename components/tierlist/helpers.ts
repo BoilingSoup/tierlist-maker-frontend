@@ -989,3 +989,21 @@ export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
 
   return out;
 }
+
+export function titleCase(title: string): string {
+  const words = title.split(" ");
+  const capitalized = words.map((word) => word[0].toUpperCase() + word.slice(1));
+  return capitalized.join(" ");
+}
+
+export function capitalizeSentences(text: string): string {
+  const punctuationRegex = new RegExp(/[.|!|?]/);
+
+  const sentences = text.split(punctuationRegex);
+  const capitalizedArr = sentences.map((sentence) => sentence[0].toUpperCase() + sentence.slice(1));
+  const capitalizedStr = capitalizedArr.join(" ");
+
+  const lastCharIsPunctuation = punctuationRegex.test(capitalizedStr[capitalizedStr.length - 1]);
+
+  return lastCharIsPunctuation ? capitalizedStr : capitalizedStr + ".";
+}
