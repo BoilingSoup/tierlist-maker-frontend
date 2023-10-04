@@ -12,4 +12,7 @@ export const queryKeys = {
   tierList(id: string) {
     return [TIER_LIST, id];
   },
+  userTierLists(userID: string) {
+    return [userID];
+  },
 };

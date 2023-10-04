@@ -10,6 +10,10 @@ import { showSomethingWentWrongNotification } from "../../components/common/help
 import { useMantineTheme } from "@mantine/core";
 import { UploadResponse } from "./types";
 import { tween, upload } from "./helpers";
+import { useAuth } from "../../contexts/AuthProvider";
+import { queryKeys } from "../../lib/queryKeys";
+import { useRefetchQueries } from "./useRefetchQueries";
+import { useResetQueries } from "./useResetQueries";
 
 // const PRE_POST_REQUEST_MAX_PROGRESS = 53;
 const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
@@ -45,6 +49,11 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
     },
   });
 
+  const { user } = useAuth();
+  let userID = user?.id;
+  const refetchQueries = useRefetchQueries();
+  const resetQueries = useResetQueries();
+
   const {
     mutate: postTierListJSONMutation,
     isLoading: isSaving,
@@ -52,6 +61,12 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
   } = useMutation(createTierListRequest, {
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
       addToCache({ uuid: response.id, response });
+
+      if (userID !== undefined) {
+        // TODO: refetch recent tier lists if is_public
+        resetQueries(queryKeys.userTierLists(userID));
+        refetchQueries(queryKeys.userTierLists(userID));
+      }
 
       tween(requestProgress, ALMOST_COMPLETE_PROGRESS, 100, (value) => {
         setRequestProgress(value);
