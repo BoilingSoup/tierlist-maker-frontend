@@ -62,14 +62,16 @@ const Create: NextPage = () => {
       >
         <SaveImageModal
           opened={createTierListHelpers.modalOpened}
-          title={createTierListHelpers.modalTitle}
-          titlePlaceholder={createTierListHelpers.titlePlaceholder}
           showProgressBar={createTierListHelpers.showProgressBar}
           requestProgress={createTierListHelpers.requestProgress}
+          modalTitle={createTierListHelpers.modalTitle}
+          tierListTitle={createTierListHelpers.tierListTitle}
+          titlePlaceholder={createTierListHelpers.titlePlaceholder}
+          onChangeTitle={createTierListHelpers.changeTitle}
+          description={createTierListHelpers.description}
+          onChangeDescription={createTierListHelpers.changeDescription}
           onSave={createTierListHelpers.save}
           onClose={createTierListHelpers.closeModal}
-          onChangeDescription={createTierListHelpers.changeDescription}
-          onChangeTitle={createTierListHelpers.changeTitle}
         />
         <Flex sx={createPageMainContainerSx}>
           <Box sx={rowsContainerSx}>
@@ -116,10 +118,12 @@ export default Create;
 type SaveImageModalProps = {
   opened: boolean;
   onClose: () => void;
-  title: string;
+  modalTitle: string;
+  tierListTitle: string;
   titlePlaceholder: string;
   requestProgress: number;
   showProgressBar: boolean;
+  description: string;
   onSave: (e: FormEvent) => void;
   onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
   onChangeDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -127,7 +131,7 @@ type SaveImageModalProps = {
 
 const SaveImageModal = ({
   opened,
-  title,
+  modalTitle,
   titlePlaceholder,
   requestProgress,
   showProgressBar,
@@ -135,9 +139,16 @@ const SaveImageModal = ({
   onSave: handleSave,
   onChangeTitle: handleChangeTitle,
   onChangeDescription: handleChangeDescription,
+  description,
+  tierListTitle,
 }: SaveImageModalProps) => {
+  const titleTooLong = tierListTitle.length > 80;
+  const descriptionTooLong = description.length > 100;
+
+  const invalidForm = titleTooLong || descriptionTooLong;
+
   return (
-    <Modal centered opened={opened} onClose={handleClose} title={title} styles={saveModalStyles}>
+    <Modal centered opened={opened} onClose={handleClose} title={modalTitle} styles={saveModalStyles}>
       <form onSubmit={handleSave}>
         <TextInput
           label="Title"
@@ -145,12 +156,15 @@ const SaveImageModal = ({
           styles={titleInputStyles}
           onChange={handleChangeTitle}
           disabled={showProgressBar}
+          error={titleTooLong && "Title must be 80 chars or less"}
         />
         <Textarea
           label="Description (optional)"
           styles={descriptionInputStyles}
           onChange={handleChangeDescription}
           disabled={showProgressBar}
+          value={description}
+          error={descriptionTooLong && "Description must be 100 chars or less"}
         />
         <Flex justify="space-between" gap="lg">
           <Center sx={uploadProgressContainerSx}>
@@ -159,7 +173,7 @@ const SaveImageModal = ({
           <Button
             type="submit"
             leftIcon={!showProgressBar && <IconDeviceFloppy />}
-            disabled={showProgressBar}
+            disabled={showProgressBar || invalidForm}
             sx={submitSaveButtonSx}
           >
             {showProgressBar ? <Loader size={23} color="gray.0" /> : "SAVE"}
