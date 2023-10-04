@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Image, Stack, Textarea, TextInput, useMantineTheme } from "@mantine/core";
 import { IconDeviceFloppy, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
 import Link from "next/link";
-import { forwardRef, useReducer, useRef } from "react";
+import { forwardRef, useReducer, useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthProvider";
 import { capitalizeSentences, titleCase } from "./helpers";
 import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
@@ -25,6 +25,9 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
 
   const [isEditing, toggle] = useReducer((prev) => !prev, false);
 
+  const [title, setTitle] = useState(tierList.title);
+  const [description, setDescription] = useState(tierList.description ?? "");
+
   const handleCancel = () => {
     toggle();
   };
@@ -43,7 +46,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   return (
     <Box ref={observerRef} sx={tierListCardContainerSx(isEditing)}>
       <TextInput
-        value={titleCase(tierList.title)}
+        value={titleCase(title)}
         disabled={!isEditing}
         styles={{
           input: {
@@ -51,18 +54,20 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             width: `calc(100% - ${theme.spacing.lg} - ${theme.spacing.lg})`,
             background: theme.colors.dark[4],
             fontSize: theme.fontSizes.xl,
-            padding: `${theme.spacing.lg} 0 ${theme.spacing.lg} ${theme.spacing.lg}`,
             fontWeight: "bold",
             height: "40px",
+            textAlign: "center",
             margin: theme.spacing.lg,
             ":disabled": {
               color: "white",
               background: theme.colors.dark[6],
               border: "none",
               cursor: "initial",
+              padding: 0,
             },
           },
         }}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <Box sx={{ height: "100%", margin: `0 ${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.lg}` }}>
         <Flex sx={(theme) => ({ alignItems: "center", gap: theme.spacing.lg })}>
@@ -100,12 +105,13 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             )}
           </Stack>
         </Flex>
-        {tierList.description && (
+        {(tierList.description || isEditing) && (
           <Textarea
             c="dimmed"
             disabled={!isEditing}
             styles={getTierListCardDescriptionStyles(theme)}
-            value={capitalizeSentences(tierList.description)}
+            value={description ? capitalizeSentences(description) : ""}
+            placeholder={"Description..."}
           />
         )}
       </Box>
