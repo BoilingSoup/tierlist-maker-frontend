@@ -426,15 +426,17 @@ const tierListCardContainerWidth: CSSObject = {
   maxWidth: "600px",
 };
 
-export const tierListCardContainerSx = ({ colors, radius }: MantineTheme): CSSObject => ({
-  ...tierListCardContainerWidth,
-  background: colors.dark[6],
-  borderRadius: radius.sm,
-  transition: "transform 100ms ease",
-  ":hover": {
-    transform: "scale(1.02)",
-  },
-});
+export const tierListCardContainerSx =
+  (isEditing: boolean) =>
+  ({ colors, radius }: MantineTheme): CSSObject => ({
+    ...tierListCardContainerWidth,
+    background: colors.dark[6],
+    borderRadius: radius.sm,
+    transition: "transform 100ms ease",
+    ":hover": {
+      transform: isEditing ? "" : "scale(1.02)",
+    },
+  });
 
 export const tierListCardSkeletonSx = ({ colors }: MantineTheme): CSSObject => ({
   ...tierListCardContainerWidth,
@@ -460,5 +462,30 @@ export const tierListCardsContainerSx = ({ spacing }: MantineTheme): CSSObject =
   },
   ":last-child": {
     marginBottom: spacing.xl,
+  },
+});
+
+export const tierListCardImageContainerSx: CSSObject = {
+  width: "300px",
+  height: "200px",
+  minWidth: "300px", // child image with objectFit: contain is effecting size unless I explicitly set min/max dimensions
+  minHeight: "200px",
+  maxWidth: "300px",
+  maxHeight: "200px",
+  overflow: "hidden",
+};
+
+export const tierListCardImageSx: CSSObject = { width: "300px", height: "200px", objectFit: "contain" };
+
+export const tierListCardButtonsContainerSx = ({ spacing }: MantineTheme) => ({
+  width: "100%",
+  height: "200px",
+  gap: spacing.sm,
+  justifyContent: "center",
+});
+
+export const tierListCardButtonSx = ({ colors }: MantineTheme) => ({
+  ":hover": {
+    backgroundColor: colors.dark[3],
   },
 });
