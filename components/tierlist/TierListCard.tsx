@@ -1,14 +1,15 @@
-import { Box, Button, Flex, Image, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { Box, Button, Flex, Image, Stack, Textarea, TextInput, useMantineTheme } from "@mantine/core";
 import { IconDeviceFloppy, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
 import Link from "next/link";
-import { forwardRef, useReducer, useState } from "react";
+import { forwardRef, useReducer, useRef } from "react";
 import { useAuth } from "../../contexts/AuthProvider";
 import { capitalizeSentences, titleCase } from "./helpers";
+import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
 import {
   tierListCardButtonsContainerSx,
   tierListCardButtonSx,
   tierListCardContainerSx,
-  tierListCardDescriptionSx,
+  getTierListCardDescriptionStyles,
   tierListCardImageContainerSx,
   tierListCardImageSx,
 } from "./styles";
@@ -36,6 +37,9 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
     toggle();
   };
 
+  const mantineImageRootRef = useRef<HTMLDivElement>(null);
+  useCenterThumbnailIfSmall({ ref: mantineImageRootRef, tierList });
+
   return (
     <Box ref={observerRef} sx={tierListCardContainerSx(isEditing)}>
       <TextInput
@@ -44,11 +48,13 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
         styles={{
           input: {
             color: "white",
+            width: `calc(100% - ${theme.spacing.lg} - ${theme.spacing.lg})`,
             background: theme.colors.dark[4],
             fontSize: theme.fontSizes.xl,
             padding: `${theme.spacing.lg} 0 ${theme.spacing.lg} ${theme.spacing.lg}`,
             fontWeight: "bold",
             height: "40px",
+            margin: theme.spacing.lg,
             ":disabled": {
               color: "white",
               background: theme.colors.dark[6],
@@ -61,7 +67,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
       <Box sx={{ height: "100%", margin: `0 ${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.lg}` }}>
         <Flex sx={(theme) => ({ alignItems: "center", gap: theme.spacing.lg })}>
           <Box sx={tierListCardImageContainerSx}>
-            <Image src={tierList.thumbnail} sx={tierListCardImageSx} />
+            <Image ref={mantineImageRootRef} src={tierList.thumbnail} sx={tierListCardImageSx} />
           </Box>
           <Stack sx={tierListCardButtonsContainerSx}>
             {isEditing ? (
@@ -95,9 +101,12 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
           </Stack>
         </Flex>
         {tierList.description && (
-          <Text c="dimmed" sx={tierListCardDescriptionSx}>
-            {capitalizeSentences(tierList.description)}
-          </Text>
+          <Textarea
+            c="dimmed"
+            disabled={!isEditing}
+            styles={getTierListCardDescriptionStyles(theme)}
+            value={capitalizeSentences(tierList.description)}
+          />
         )}
       </Box>
     </Box>

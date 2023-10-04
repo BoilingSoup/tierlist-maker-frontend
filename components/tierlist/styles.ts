@@ -445,10 +445,22 @@ export const tierListCardSkeletonSx = ({ colors }: MantineTheme): CSSObject => (
   "&::after": { background: colors.dark[8] },
 });
 
-export const tierListCardDescriptionSx = ({ spacing }: MantineTheme): CSSObject => ({
-  marginTop: spacing.lg,
-  overflow: "hidden",
-  textOverflow: "ellipsis",
+type TextInputStyles = Styles<TextInputStylesNames, Record<string, undefined>>;
+
+export const getTierListCardDescriptionStyles = (theme: MantineTheme): TextInputStyles => ({
+  root: { marginTop: theme.spacing.lg, padding: 0 },
+  input: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    background: theme.colors.dark[4],
+    color: "white",
+    ":disabled": {
+      padding: 0,
+      background: theme.colors.dark[6],
+      cursor: "initial",
+      border: "none",
+    },
+  },
 });
 
 export const tierListCardsContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
