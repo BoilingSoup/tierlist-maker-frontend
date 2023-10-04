@@ -2,12 +2,30 @@ import { Box, Button, Flex, Image, Stack, Text, TextInput, useMantineTheme } fro
 import { IconEye, IconPencil } from "@tabler/icons-react";
 import Link from "next/link";
 import { forwardRef } from "react";
-import { tierListCardContainerSx } from "./styles";
+import { tierListCardContainerSx, tierListCardDescriptionSx } from "./styles";
 import { UserTierListsResponse } from "./types";
 
 type Props = {
   tierList: UserTierListsResponse["data"][number];
 };
+
+function titleCase(title: string): string {
+  const words = title.split(" ");
+  const capitalized = words.map((word) => word[0].toUpperCase() + word.slice(1));
+  return capitalized.join(" ");
+}
+
+function capitalizeSentences(text: string): string {
+  const punctuationRegex = new RegExp(/[.|!|?]/);
+
+  const sentences = text.split(punctuationRegex);
+  const capitalizedArr = sentences.map((sentence) => sentence[0].toUpperCase() + sentence.slice(1));
+  const capitalizedStr = capitalizedArr.join(" ");
+
+  const lastCharIsPunctuation = punctuationRegex.test(capitalizedStr[capitalizedStr.length - 1]);
+
+  return lastCharIsPunctuation ? capitalizedStr : capitalizedStr + ".";
+}
 
 export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, observerRef) => {
   const theme = useMantineTheme();
@@ -20,7 +38,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   return (
     <Box ref={observerRef} sx={tierListCardContainerSx}>
       <TextInput
-        value={tierList.title}
+        value={titleCase(tierList.title)}
         styles={{
           input: {
             color: "white",
@@ -49,19 +67,35 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             <Image src={tierList.thumbnail} sx={{ width: "300px", height: "200px", objectFit: "contain" }} />
           </Box>
           <Stack w="100%" h="200px" sx={{ gap: theme.spacing.sm, justifyContent: "center" }}>
-            <Button component={Link} href={`/tierlist/${tierList.id}`} w="100%" color="gray.8" leftIcon={<IconEye />}>
+            <Button
+              component={Link}
+              href={`/tierlist/${tierList.id}`}
+              color="gray.8"
+              leftIcon={<IconEye />}
+              sx={(theme) => ({
+                ":hover": {
+                  backgroundColor: theme.colors.dark[3],
+                },
+              })}
+            >
               View
             </Button>
-            <Button color="gray.7" leftIcon={<IconPencil />}>
-              Edit Info
+            <Button
+              color="gray.7"
+              leftIcon={<IconPencil />}
+              sx={(theme) => ({
+                ":hover": {
+                  backgroundColor: theme.colors.dark[3],
+                },
+              })}
+            >
+              Edit
             </Button>
           </Stack>
         </Flex>
         {tierList.description && (
-          <Text sx={(theme) => ({ marginTop: theme.spacing.md, overflow: "hidden", textOverflow: "ellipsis" })}>
-            <strong style={{ textDecoration: "underline" }}>Description</strong>
-            <br />
-            {tierList.description}
+          <Text c="dimmed" sx={tierListCardDescriptionSx}>
+            {capitalizeSentences(tierList.description)}
           </Text>
         )}
       </Box>
