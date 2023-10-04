@@ -15,10 +15,6 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   // show edit forms, delete, etc.
   //  - reuse in browse page
   //
-  //
-  //
-  // TODO: disable create modal submit when title or description is too long
-  //   - this is in useCreateTierListSomething... just writing it here because I encountered it while testing.
   return (
     <Box
       ref={observerRef}
@@ -68,7 +64,6 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             <Button component={Link} href={`/tierlist/${tierList.id}`} w="100%" color="gray.8">
               View
             </Button>
-            {/* <Button color="gray.8">Copy</Button> */}
             <Button color="gray.7">Edit Info</Button>
           </Stack>
         </Flex>
