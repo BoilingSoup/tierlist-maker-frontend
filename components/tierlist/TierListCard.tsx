@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Image, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
 import Link from "next/link";
 import { forwardRef } from "react";
+import { tierListCardContainerSx } from "./styles";
 import { UserTierListsResponse } from "./types";
 
 type Props = {
@@ -16,20 +17,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   //  - reuse in browse page
   //
   return (
-    <Box
-      ref={observerRef}
-      sx={(theme) => ({
-        width: "90%",
-        maxWidth: "600px",
-        // height: "300px",
-        background: theme.colors.dark[6],
-        borderRadius: theme.radius.sm,
-        transition: "transform 100ms ease",
-        ":hover": {
-          transform: "scale(1.02)",
-        },
-      })}
-    >
+    <Box ref={observerRef} sx={tierListCardContainerSx}>
       <TextInput
         value={tierList.title}
         readOnly

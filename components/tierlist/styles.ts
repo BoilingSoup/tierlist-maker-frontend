@@ -420,3 +420,25 @@ export const savingOverlayContainerSx = (): CSSObject => ({
   background: "rgba(0, 0, 0, 0.6)",
   flexDirection: "column",
 });
+
+const tierListCardContainerWidth: CSSObject = {
+  width: "90%",
+  maxWidth: "600px",
+};
+
+export const tierListCardContainerSx = (theme: MantineTheme): CSSObject => ({
+  ...tierListCardContainerWidth,
+  background: theme.colors.dark[6],
+  borderRadius: theme.radius.sm,
+  transition: "transform 100ms ease",
+  ":hover": {
+    transform: "scale(1.02)",
+  },
+});
+
+export const tierListCardSkeletonSx = ({ colors }: MantineTheme): CSSObject => ({
+  ...tierListCardContainerWidth,
+  height: "300px",
+  "&::before": { background: colors.dark[5] },
+  "&::after": { background: colors.dark[8] },
+});
