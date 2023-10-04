@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import { PxSize, TierListData } from "./types";
 
 export const DOM_TO_PNG_ID = "PNG";
+export const PORTAL_TARGET_ID = "portal";
 
 export const MAX_IMAGE_SIZE: PxSize = "200px";
 export const DEFAULT_IMAGE_SIZE: PxSize = "80px";

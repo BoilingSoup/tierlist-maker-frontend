@@ -83,3 +83,5 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
     </Box>
   );
 });
+
+TierListCard.displayName = "TierListCard";

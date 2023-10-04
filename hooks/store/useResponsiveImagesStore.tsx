@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { create } from "zustand";
 import { pxToNumber } from "../../components/common/helpers";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
@@ -24,8 +24,8 @@ export const useResponsiveImageSize = create<ResponsiveImageSize>((set) => ({
 export const useCalculateResponsiveImageSize = () => {
   const setSize = useResponsiveImageSize((state) => state.set);
 
-  useEffect(() => {
-    const updateCalculation = () => () => {
+  useLayoutEffect(() => {
+    const updateCalculation = () => {
       const [viewportHeight, viewportWidth] = [window.innerHeight, window.innerWidth];
       const shrinkImagesBasedOnScreenWidthIfViewportWidthIsSmallerThan = 1400;
 
@@ -43,13 +43,12 @@ export const useCalculateResponsiveImageSize = () => {
       setSize(size);
     };
 
-    const cb = updateCalculation();
+    updateCalculation();
+    const cb = updateCalculation;
 
-    window.addEventListener("load", cb);
     window.addEventListener("resize", cb);
 
     return () => {
-      window.removeEventListener("load", cb);
       window.removeEventListener("resize", cb);
     };
   }, []);

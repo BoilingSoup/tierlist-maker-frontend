@@ -6,7 +6,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useReducer, useState } from "react";
-import { DOM_TO_PNG_ID } from "../../../components/tierlist/constants";
+import { DOM_TO_PNG_ID, PORTAL_TARGET_ID } from "../../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../../components/tierlist/helpers";
 import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../../components/tierlist/hooks/usePasteEvent";
@@ -81,7 +81,7 @@ const TierList: NextPage = () => {
             <Text mb={20}>Saving...</Text>
             <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
           </Center>,
-          document.getElementById("portal")!
+          document.getElementById(PORTAL_TARGET_ID)!
         )}
       <DndContext
         id={SITE_NAME}
