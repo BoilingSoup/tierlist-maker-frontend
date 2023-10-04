@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Stack, TextInput, useMantineTheme } from "@mantine/core";
+import { Box, Button, Flex, Image, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
 import Link from "next/link";
 import { forwardRef } from "react";
 import { UserTierListsResponse } from "./types";
@@ -73,11 +73,11 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
           </Stack>
         </Flex>
         {tierList.description && (
-          <p>
+          <Text sx={(theme) => ({ marginTop: theme.spacing.md, overflow: "hidden", textOverflow: "ellipsis" })}>
             <strong style={{ textDecoration: "underline" }}>Description</strong>
             <br />
             {tierList.description}
-          </p>
+          </Text>
         )}
       </Box>
     </Box>

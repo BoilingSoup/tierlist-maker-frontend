@@ -7,7 +7,7 @@ import { TierListData } from "../types";
 
 export const useCreateTierListActionHelpers = (data: TierListData) => {
   const {
-    title,
+    title: tierListTitle,
     handleChangeTitle: changeTitle,
     titlePlaceholder,
     setTitlePlaceholder,
@@ -26,7 +26,7 @@ export const useCreateTierListActionHelpers = (data: TierListData) => {
     isLoading,
     handleSave: save,
   } = useCreateTierListMutationHelpers({
-    title,
+    title: tierListTitle,
     titlePlaceholder,
     description,
     data,
@@ -40,6 +40,8 @@ export const useCreateTierListActionHelpers = (data: TierListData) => {
     changeDescription,
     save,
     modalTitle,
+    tierListTitle,
+    description,
     titlePlaceholder,
     showProgressBar: isLoading,
     requestProgress,
