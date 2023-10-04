@@ -13,14 +13,26 @@ const TierLists: NextPage = () => {
 
   const {
     lastTierListRef,
-    query: { data, isLoading },
+    query: { data, isLoading: isLoadingTierLists },
   } = useGetInfiniteUserTierLists();
   const pages = data?.pages;
 
+  const isNotReady = isLoadingUser || isLoadingTierLists;
+
+  const tierListCardsSkeleton = new Array(6).fill(undefined).map(() => (
+    <Skeleton
+      sx={({ colors }) => ({
+        width: "90%",
+        maxWidth: "600px",
+        height: "300px",
+        "&::before": { background: colors.dark[5] },
+        "&::after": { background: colors.dark[8] },
+      })}
+    />
+  ));
+
   return (
     <AccountNavShell>
-      {isLoading && <Skeleton sx={tierListSkeletonSx} />}
-
       <Flex
         sx={(theme) => ({
           width: "100%",
@@ -36,6 +48,7 @@ const TierLists: NextPage = () => {
           },
         })}
       >
+        {isNotReady && tierListCardsSkeleton}
         {pages?.map((pg, i) => {
           const isLastPage = pages.length - 1 === i;
 
