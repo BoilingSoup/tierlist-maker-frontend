@@ -11,29 +11,28 @@ import { NextRouter } from "next/router";
 import { useServerTierListStore } from "../store/useServerTierListStore";
 import { Dispatch, SetStateAction } from "react";
 import { parse } from "valibot";
+import { queryKeys } from "../../lib/queryKeys";
+import { useAuth } from "../../contexts/AuthProvider";
+import { useRefetchQueries } from "./useRefetchQueries";
+import { useResetQueries } from "./useResetQueries";
 
 const DONE = 100; //100%
 
 export const useSaveTierListMutation = () => {
+  const { user } = useAuth();
   const theme = useMantineTheme();
   const addToCache = useServerTierListStore((state) => state.add);
 
-  return useMutation(handleDiffMetadata, {
-    onSuccess: (res, { requestProgress, setRequestProgress, setData, setIsSaving }) => {
-      function resetStates() {
-        return setTimeout(() => {
-          setIsSaving(false);
-          setRequestProgress(0);
-        }, 500);
-      }
+  const userID = user ? user.id : "";
 
+  const refetchQueries = useRefetchQueries();
+  const resetQueries = useResetQueries();
+
+  return useMutation(handleDiffMetadata, {
+    onSuccess: (res, { requestProgress, setRequestProgress, setData }) => {
       const duration = 80; //ms
       tween(requestProgress, DONE, duration, (value) => {
         setRequestProgress(value);
-        if (value !== DONE) {
-          return;
-        }
-        resetStates();
       });
 
       try {
@@ -50,8 +49,6 @@ export const useSaveTierListMutation = () => {
       } catch (e) {
         console.error(e);
         showSomethingWentWrongNotification(theme);
-      } finally {
-        resetStates();
       }
     },
     onError: (_, { setIsSaving, setRequestProgress }) => {
@@ -59,6 +56,15 @@ export const useSaveTierListMutation = () => {
         setIsSaving(false);
         setRequestProgress(0);
         showSomethingWentWrongNotification(theme);
+      }, 500);
+    },
+    onSettled: (_, __, { setIsSaving, setRequestProgress }) => {
+      resetQueries(queryKeys.userTierLists(userID));
+      refetchQueries(queryKeys.userTierLists(userID));
+
+      setTimeout(() => {
+        setIsSaving(false);
+        setRequestProgress(0);
       }, 500);
     },
   });
@@ -90,6 +96,7 @@ async function handleDiffMetadata({
   let payload = { data: JSON.parse(JSON.stringify(data)) as TierListData };
 
   if (added.length > 0) {
+    console.log("uploading");
     const srcs = await uploadNewImages({ data, added, requestProgress, setRequestProgress });
 
     payload = replacePayloadSrcs({ payload, added, srcs });
@@ -140,8 +147,8 @@ function replacePayloadSrcs({ srcs, payload, added }: ReplacePayloadSrcsParam) {
 
       case "row":
         const rowID = metaData.rowID;
-        const rowIndex = payload.data.rows.findIndex((row) => row.id === rowID);
-        payload.data.rows[rowIndex].items[metaData.index].src = imgSrc;
+        const rowIndex = copy.data.rows.findIndex((row) => row.id === rowID);
+        copy.data.rows[rowIndex].items[metaData.index].src = imgSrc;
         break;
 
       default:

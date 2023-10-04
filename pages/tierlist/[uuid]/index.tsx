@@ -25,6 +25,8 @@ import { SITE_NAME } from "../../../config/config";
 import { useConfirmationOnExitIfUnsavedChanges } from "../../../hooks/api/useConfirmationOnExitIfUnsavedChanges";
 import { useGetTierList } from "../../../hooks/api/useGetTierList";
 import { useSaveTierListActionHelpers } from "../../../components/tierlist/hooks/useSaveTierListActionHelpers";
+import { createPortal } from "react-dom";
+import { useIsMounted } from "../../../components/common/hooks/useIsMounted";
 
 const TierList: NextPage = () => {
   const router = useRouter();
@@ -64,11 +66,23 @@ const TierList: NextPage = () => {
 
   const { isSaving, handleSave, requestProgress } = useSaveTierListActionHelpers({ data, setData, diff, uuid });
 
+  const isMounted = useIsMounted();
+  const showSaveOverlay = isSaving && isMounted;
+
   return (
     <>
       <Head>
         <title>Create Tier List</title>
       </Head>
+
+      {showSaveOverlay &&
+        createPortal(
+          <Center sx={savingOverlayContainerSx}>
+            <Text mb={20}>Saving...</Text>
+            <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
+          </Center>,
+          document.getElementById("portal")!
+        )}
       <DndContext
         id={SITE_NAME}
         onDragStart={dragHandler.start}
@@ -76,12 +90,6 @@ const TierList: NextPage = () => {
         onDragEnd={dragHandler.end}
         sensors={sensors}
       >
-        {isSaving && (
-          <Center sx={savingOverlayContainerSx}>
-            <Text mb={20}>Saving...</Text>
-            <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
-          </Center>
-        )}
         <Flex sx={createPageMainContainerSx}>
           <Box sx={rowsContainerSx}>
             {isLoading && <Skeleton sx={tierListSkeletonSx} />}

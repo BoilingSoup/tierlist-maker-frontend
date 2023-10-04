@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Image, Stack, TextInput, useMantineTheme } from "@mantine/core";
+import Link from "next/link";
 import { forwardRef } from "react";
 import { UserTierListsResponse } from "./types";
 
@@ -12,9 +13,9 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   // TODO: tierListResponse should return user_id
   // if user_id === useAuth user.id
   // show edit forms, delete, etc.
+  //  - reuse in browse page
   //
   //
-  // reuse in browse page
   //
   // TODO: disable create modal submit when title or description is too long
   //   - this is in useCreateTierListSomething... just writing it here because I encountered it while testing.
@@ -64,7 +65,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             <Image src={tierList.thumbnail} sx={{ width: "300px", height: "200px", objectFit: "contain" }} />
           </Box>
           <Stack w="100%" h="200px" sx={{ gap: theme.spacing.sm, justifyContent: "center" }}>
-            <Button w="100%" color="gray.8">
+            <Button component={Link} href={`/tierlist/${tierList.id}`} w="100%" color="gray.8">
               View
             </Button>
             {/* <Button color="gray.8">Copy</Button> */}
