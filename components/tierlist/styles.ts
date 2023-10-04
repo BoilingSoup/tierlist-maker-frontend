@@ -448,3 +448,17 @@ export const tierListCardDescriptionSx = ({ spacing }: MantineTheme): CSSObject 
   overflow: "hidden",
   textOverflow: "ellipsis",
 });
+
+export const tierListCardsContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
+  width: "100%",
+  color: "white",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  gap: spacing.lg,
+  ":first-of-type": {
+    marginTop: spacing.xl,
+  },
+  ":last-child": {
+    marginBottom: spacing.xl,
+  },
+});
