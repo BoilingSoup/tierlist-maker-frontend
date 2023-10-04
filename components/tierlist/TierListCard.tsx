@@ -26,7 +26,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   const [isEditing, toggle] = useReducer((prev) => !prev, false);
 
   const [title, setTitle] = useState(tierList.title);
-  const [description, setDescription] = useState(tierList.description ?? "");
+  const [description, setDescription] = useState(tierList.description ? capitalizeSentences(tierList.description) : "");
 
   const handleCancel = () => {
     toggle();
@@ -110,8 +110,9 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             c="dimmed"
             disabled={!isEditing}
             styles={getTierListCardDescriptionStyles(theme)}
-            value={description ? capitalizeSentences(description) : ""}
+            value={description ?? ""}
             placeholder={"Description..."}
+            onChange={(e) => setDescription(e.target.value)}
           />
         )}
       </Box>
