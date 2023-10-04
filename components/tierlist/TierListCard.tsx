@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Image, Stack, Text, TextInput, useMantineTheme } from "@mantine/core";
+import { IconEye, IconPencil } from "@tabler/icons-react";
 import Link from "next/link";
 import { forwardRef } from "react";
 import { tierListCardContainerSx } from "./styles";
@@ -20,7 +21,6 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
     <Box ref={observerRef} sx={tierListCardContainerSx}>
       <TextInput
         value={tierList.title}
-        readOnly
         styles={{
           input: {
             color: "white",
@@ -49,10 +49,12 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             <Image src={tierList.thumbnail} sx={{ width: "300px", height: "200px", objectFit: "contain" }} />
           </Box>
           <Stack w="100%" h="200px" sx={{ gap: theme.spacing.sm, justifyContent: "center" }}>
-            <Button component={Link} href={`/tierlist/${tierList.id}`} w="100%" color="gray.8">
+            <Button component={Link} href={`/tierlist/${tierList.id}`} w="100%" color="gray.8" leftIcon={<IconEye />}>
               View
             </Button>
-            <Button color="gray.7">Edit Info</Button>
+            <Button color="gray.7" leftIcon={<IconPencil />}>
+              Edit Info
+            </Button>
           </Stack>
         </Flex>
         {tierList.description && (
