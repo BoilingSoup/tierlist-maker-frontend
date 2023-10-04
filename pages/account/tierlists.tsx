@@ -1,11 +1,11 @@
-import { Flex, Skeleton } from "@mantine/core";
+import { Center, Flex, Loader, Skeleton, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
-import { tierListCardSkeletonSx, tierListSkeletonSx } from "../../components/tierlist/styles";
+import { tierListCardSkeletonSx } from "../../components/tierlist/styles";
 
 const TierLists: NextPage = () => {
   const { user, isLoading: isLoadingUser } = useAuth();
@@ -13,7 +13,7 @@ const TierLists: NextPage = () => {
 
   const {
     lastTierListRef,
-    query: { data, isLoading: isLoadingTierLists },
+    query: { data, isLoading: isLoadingTierLists, isFetchingNextPage },
   } = useGetInfiniteUserTierLists();
   const pages = data?.pages;
 
@@ -51,6 +51,19 @@ const TierLists: NextPage = () => {
           });
         })}
       </Flex>
+      {isFetchingNextPage && (
+        <Center
+          sx={(theme) => ({
+            marginTop: `calc(${theme.spacing.xl} + ${theme.spacing.lg})`,
+            marginBottom: `calc(${theme.spacing.xl} + ${theme.spacing.lg})`,
+          })}
+        >
+          <Loader size="xl" variant="bars" />
+          <Text ml="xl" color="gray.0" size="xl">
+            Loading...
+          </Text>
+        </Center>
+      )}
     </AccountNavShell>
   );
 };
