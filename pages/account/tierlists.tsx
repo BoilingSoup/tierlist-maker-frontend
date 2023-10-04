@@ -5,7 +5,7 @@ import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useR
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
-import { tierListSkeletonSx } from "../../components/tierlist/styles";
+import { tierListCardSkeletonSx, tierListSkeletonSx } from "../../components/tierlist/styles";
 
 const TierLists: NextPage = () => {
   const { user, isLoading: isLoadingUser } = useAuth();
@@ -19,17 +19,7 @@ const TierLists: NextPage = () => {
 
   const isNotReady = isLoadingUser || isLoadingTierLists;
 
-  const tierListCardsSkeleton = new Array(6).fill(undefined).map(() => (
-    <Skeleton
-      sx={({ colors }) => ({
-        width: "90%",
-        maxWidth: "600px",
-        height: "300px",
-        "&::before": { background: colors.dark[5] },
-        "&::after": { background: colors.dark[8] },
-      })}
-    />
-  ));
+  const tierListCardsSkeleton = new Array(6).fill(undefined).map(() => <Skeleton sx={tierListCardSkeletonSx} />);
 
   return (
     <AccountNavShell>
