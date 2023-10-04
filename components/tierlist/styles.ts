@@ -426,10 +426,10 @@ const tierListCardContainerWidth: CSSObject = {
   maxWidth: "600px",
 };
 
-export const tierListCardContainerSx = (theme: MantineTheme): CSSObject => ({
+export const tierListCardContainerSx = ({ colors, radius }: MantineTheme): CSSObject => ({
   ...tierListCardContainerWidth,
-  background: theme.colors.dark[6],
-  borderRadius: theme.radius.sm,
+  background: colors.dark[6],
+  borderRadius: radius.sm,
   transition: "transform 100ms ease",
   ":hover": {
     transform: "scale(1.02)",
@@ -441,4 +441,10 @@ export const tierListCardSkeletonSx = ({ colors }: MantineTheme): CSSObject => (
   height: "300px",
   "&::before": { background: colors.dark[5] },
   "&::after": { background: colors.dark[8] },
+});
+
+export const tierListCardDescriptionSx = ({ spacing }: MantineTheme): CSSObject => ({
+  marginTop: spacing.lg,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 });

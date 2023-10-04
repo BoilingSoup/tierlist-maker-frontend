@@ -19,7 +19,9 @@ const TierLists: NextPage = () => {
 
   const isNotReady = isLoadingUser || isLoadingTierLists;
 
-  const tierListCardsSkeleton = new Array(6).fill(undefined).map(() => <Skeleton sx={tierListCardSkeletonSx} />);
+  const tierListCardsSkeleton = new Array(6)
+    .fill(undefined)
+    .map((_, i) => <Skeleton key={i} sx={tierListCardSkeletonSx} />);
 
   return (
     <AccountNavShell>
