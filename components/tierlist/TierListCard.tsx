@@ -3,7 +3,7 @@ import { IconDeviceFloppy, IconEye, IconPencil, IconTrash, IconX } from "@tabler
 import Link from "next/link";
 import { forwardRef, useReducer, useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthProvider";
-import { capitalizeSentences, titleCase } from "./helpers";
+import { capitalizeSentences, lastCharIsPunctuation, titleCase } from "./helpers";
 import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
 import {
   tierListCardButtonsContainerSx,
@@ -19,6 +19,9 @@ type Props = {
   tierList: UserTierListsResponse["data"][number];
 };
 
+const titleMaxLength = 80;
+const descriptionMaxLength = 100;
+
 export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, observerRef) => {
   const { user } = useAuth();
   const theme = useMantineTheme();
@@ -26,10 +29,12 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   const [isEditing, toggle] = useReducer((prev) => !prev, false);
 
   const [title, setTitle] = useState(tierList.title);
-  const titleIsError = title.length > 80;
+  const titleIsError = title.length > titleMaxLength;
 
   const [description, setDescription] = useState(tierList.description ? capitalizeSentences(tierList.description) : "");
-  const descriptionIsError = description.length > 100;
+  const descriptionIsError = lastCharIsPunctuation(description)
+    ? description.length > descriptionMaxLength + 1 // frontend adds (.) if no punctuation at end. (.) is not saved in database.
+    : description.length > descriptionMaxLength;
 
   const hasErrors = titleIsError || descriptionIsError;
 
