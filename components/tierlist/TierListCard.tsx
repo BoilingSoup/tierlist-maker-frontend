@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Stack, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import { Box, Button, Flex, Image, Stack, Text, Textarea, TextInput, useMantineTheme } from "@mantine/core";
 import { IconDeviceFloppy, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { forwardRef, useReducer, useRef, useState } from "react";
@@ -7,11 +7,11 @@ import { capitalizeSentences, titleCase } from "./helpers";
 import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
 import {
   tierListCardButtonsContainerSx,
-  tierListCardButtonSx,
   tierListCardContainerSx,
   getTierListCardDescriptionStyles,
   tierListCardImageContainerSx,
   tierListCardImageSx,
+  grayButtonHoverSx,
 } from "./styles";
 import { UserTierListsResponse } from "./types";
 
@@ -26,7 +26,14 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   const [isEditing, toggle] = useReducer((prev) => !prev, false);
 
   const [title, setTitle] = useState(tierList.title);
+  const titleIsError = title.length > 80;
+
   const [description, setDescription] = useState(tierList.description ? capitalizeSentences(tierList.description) : "");
+  const descriptionIsError = description.length > 100;
+
+  const hasErrors = titleIsError || descriptionIsError;
+
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const handleCancel = () => {
     toggle();
@@ -34,6 +41,10 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
 
   const handleDelete = () => {
     toggle();
+  };
+
+  const handleShowDeleteConfirmation = () => {
+    setShowDeleteConfirmation(true);
   };
 
   const handleSave = () => {
@@ -68,6 +79,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
           },
         }}
         onChange={(e) => setTitle(e.target.value)}
+        error={titleIsError}
       />
       <Box sx={{ height: "100%", margin: `0 ${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.lg}` }}>
         <Flex sx={(theme) => ({ alignItems: "center", gap: theme.spacing.lg })}>
@@ -75,21 +87,42 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             <Image ref={mantineImageRootRef} src={tierList.thumbnail} sx={tierListCardImageSx} />
           </Box>
           <Stack sx={tierListCardButtonsContainerSx}>
-            {isEditing ? (
+            {showDeleteConfirmation ? (
               <>
-                <Button onClick={handleSave} color="blue.8" leftIcon={<IconDeviceFloppy />} sx={tierListCardButtonSx}>
+                <Text color="white">
+                  This can not be undone. <br />
+                  Are you sure?
+                </Text>
+                <Flex gap={"sm"}>
+                  <Button w="50%" color="gray.7" onClick={() => setShowDeleteConfirmation(false)}>
+                    No
+                  </Button>
+                  <Button w="50%" color="red.8">
+                    Yes
+                  </Button>
+                </Flex>
+              </>
+            ) : isEditing ? (
+              <>
+                <Button
+                  onClick={handleSave}
+                  color="blue.8"
+                  leftIcon={<IconDeviceFloppy />}
+                  disabled={hasErrors}
+                  sx={{ ":disabled": { background: theme.colors.dark[8] } }}
+                >
                   Save
                 </Button>
-                <Button onClick={handleCancel} color="gray.8" leftIcon={<IconX />} sx={tierListCardButtonSx}>
+                <Button onClick={handleCancel} color="gray.8" leftIcon={<IconX />} sx={grayButtonHoverSx}>
                   Cancel
                 </Button>
-                <Button onClick={handleDelete} color="red.8" leftIcon={<IconTrash />} sx={tierListCardButtonSx}>
+                <Button onClick={handleShowDeleteConfirmation} color="red.8" leftIcon={<IconTrash />}>
                   Delete
                 </Button>
               </>
             ) : (
               <>
-                <Button onClick={toggle} color="gray.8" leftIcon={<IconPencil />} sx={tierListCardButtonSx}>
+                <Button onClick={toggle} color="gray.8" leftIcon={<IconPencil />} sx={grayButtonHoverSx}>
                   Edit
                 </Button>
                 <Button
@@ -97,7 +130,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
                   href={`/tierlist/${tierList.id}`}
                   color="gray.8"
                   leftIcon={<IconEye />}
-                  sx={tierListCardButtonSx}
+                  sx={grayButtonHoverSx}
                 >
                   View
                 </Button>
@@ -113,6 +146,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
             value={description ?? ""}
             placeholder={"Description..."}
             onChange={(e) => setDescription(e.target.value)}
+            error={descriptionIsError}
           />
         )}
       </Box>
