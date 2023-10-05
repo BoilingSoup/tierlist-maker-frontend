@@ -36,6 +36,8 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   const handleCancel = () => {
+    setTitle(tierList.title);
+    setDescription(tierList.description ? capitalizeSentences(tierList.description) : "");
     toggle();
   };
 
