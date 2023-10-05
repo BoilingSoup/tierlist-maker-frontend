@@ -8,6 +8,7 @@ import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserT
 import { tierListCardsContainerSx } from "../../components/tierlist/styles";
 import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollLoading";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const TierLists: NextPage = () => {
   const { user, isLoading: isLoadingUser } = useAuth();
@@ -21,9 +22,11 @@ const TierLists: NextPage = () => {
 
   const isNotReady = isLoadingUser || isLoadingTierLists;
 
+  const [animateChildren] = useAutoAnimate();
+
   return (
     <AccountNavShell>
-      <Flex sx={tierListCardsContainerSx}>
+      <Flex sx={tierListCardsContainerSx} ref={animateChildren}>
         {isNotReady && <TierListCardsSkeleton count={6} />}
 
         {pages?.map((pg, i) => {

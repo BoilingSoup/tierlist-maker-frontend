@@ -3,6 +3,7 @@ import { IconDeviceFloppy, IconEye, IconPencil, IconTrash, IconX } from "@tabler
 import Link from "next/link";
 import { forwardRef, useReducer, useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthProvider";
+import { useDeleteTierListMutation } from "../../hooks/api/useDeleteTierListMutation";
 import { capitalizeSentences, lastCharIsPunctuation, titleCase } from "./helpers";
 import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
 import {
@@ -40,6 +41,8 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+  const { mutate: deleteTierListMutation } = useDeleteTierListMutation();
+
   const handleCancel = () => {
     setTitle(tierList.title);
     setDescription(tierList.description ? capitalizeSentences(tierList.description) : "");
@@ -47,6 +50,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   };
 
   const handleDelete = () => {
+    deleteTierListMutation(tierList.id);
     toggle();
   };
 
@@ -104,7 +108,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
                   <Button w="50%" color="gray.7" onClick={() => setShowDeleteConfirmation(false)}>
                     No
                   </Button>
-                  <Button w="50%" color="red.8">
+                  <Button onClick={handleDelete} w="50%" color="red.8">
                     Yes
                   </Button>
                 </Flex>
