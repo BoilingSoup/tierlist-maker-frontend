@@ -496,8 +496,8 @@ export const tierListCardButtonsContainerSx = ({ spacing }: MantineTheme) => ({
   justifyContent: "center",
 });
 
-export const tierListCardButtonSx = ({ colors }: MantineTheme) => ({
+export const grayButtonHoverSx = ({ colors }: MantineTheme) => ({
   ":hover": {
-    backgroundColor: colors.dark[3],
+    background: colors.dark[3],
   },
 });

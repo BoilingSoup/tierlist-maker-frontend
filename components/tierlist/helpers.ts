@@ -990,20 +990,28 @@ export function checkForDiff({ clientData, serverData }: DiffParam): DiffData {
   return out;
 }
 
+const punctuationRegex = new RegExp(/[.|!|?]/);
+
 export function titleCase(title: string): string {
   const words = title.split(" ");
-  const capitalized = words.map((word) => word[0].toUpperCase() + word.slice(1));
+  const capitalized = words.map((word) => (word[0] !== undefined ? word[0].toUpperCase() + word.slice(1) : ""));
   return capitalized.join(" ");
 }
 
-export function capitalizeSentences(text: string): string {
-  const punctuationRegex = new RegExp(/[.|!|?]/);
+export function lastCharIsPunctuation(input: string | null) {
+  if (input === null || input.length === 0) {
+    return false;
+  }
 
+  return punctuationRegex.test(input[input.length - 1]);
+}
+
+export function capitalizeSentences(text: string): string {
   const sentences = text.split(punctuationRegex);
-  const capitalizedArr = sentences.map((sentence) => sentence[0].toUpperCase() + sentence.slice(1));
+  const capitalizedArr = sentences.map((sentence) =>
+    sentence[0] !== undefined ? sentence[0].toUpperCase() + sentence.slice(1) : ""
+  );
   const capitalizedStr = capitalizedArr.join(" ");
 
-  const lastCharIsPunctuation = punctuationRegex.test(capitalizedStr[capitalizedStr.length - 1]);
-
-  return lastCharIsPunctuation ? capitalizedStr : capitalizedStr + ".";
+  return lastCharIsPunctuation(capitalizedStr) ? capitalizedStr : capitalizedStr + ".";
 }
