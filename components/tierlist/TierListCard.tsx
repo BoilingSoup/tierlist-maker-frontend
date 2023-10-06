@@ -1,9 +1,22 @@
-import { Box, Button, Flex, Image, Stack, Text, Textarea, TextInput, useMantineTheme } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Flex,
+  Image,
+  Loader,
+  Stack,
+  Switch,
+  Text,
+  Textarea,
+  TextInput,
+  useMantineTheme,
+} from "@mantine/core";
 import { IconDeviceFloppy, IconEye, IconPencil, IconTrash, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { forwardRef, useReducer, useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useDeleteTierListMutation } from "../../hooks/api/useDeleteTierListMutation";
+import { useSetIsPublicMutation } from "../../hooks/api/useSetIsPublicMutation";
 import { useUpdateTierListInfoMutation } from "../../hooks/api/useUpdateTierListInfoMutation";
 import { capitalizeSentences, lastCharIsPunctuation, titleCase } from "./helpers";
 import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
@@ -26,6 +39,8 @@ const descriptionMaxLength = 100;
 
 export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, observerRef) => {
   const { user } = useAuth();
+  const isOwner = user?.id === tierList.user_id;
+
   const theme = useMantineTheme();
 
   const [isEditing, toggle] = useReducer((prev) => !prev, false);
@@ -54,7 +69,27 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
 
   const handleSave = () => {
     toggle();
-    updateTierListInfoMutation({ title: title.trim(), description: description.trim(), tierListID: tierList.id });
+    updateTierListInfoMutation({
+      title: title.trim(),
+      description: description.trim(),
+      tierListID: tierList.id,
+      setTitle,
+      setDescription,
+    });
+  };
+
+  const switchRef = useRef<HTMLInputElement>(null);
+  const [switchState, setSwitchState] = useState(tierList.is_public);
+
+  const { mutate: setIsPublicMutation, isLoading: isMutating } = useSetIsPublicMutation();
+
+  const handleToggleIsPublic = () => {
+    if (!switchRef.current) {
+      return;
+    }
+    setSwitchState((prev) => !prev);
+
+    setIsPublicMutation({ is_public: switchRef.current?.checked, tierListID: tierList.id, setSwitchState });
   };
 
   const mantineImageRootRef = useRef<HTMLDivElement>(null);
@@ -128,9 +163,11 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
               </>
             ) : (
               <>
-                <Button onClick={toggle} color="gray.8" leftIcon={<IconPencil />} sx={grayButtonHoverSx}>
-                  Edit
-                </Button>
+                {isOwner && (
+                  <Button onClick={toggle} color="gray.8" leftIcon={<IconPencil />} sx={grayButtonHoverSx}>
+                    Edit
+                  </Button>
+                )}
                 <Button
                   component={Link}
                   href={`/tierlist/${tierList.id}`}
@@ -140,6 +177,22 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
                 >
                   View
                 </Button>
+                {isOwner && (
+                  <Switch
+                    color="green.4"
+                    styles={{
+                      thumb: { background: "rgb(0, 120, 0)" },
+                      label: { color: "white", fontWeight: "bold" },
+                      root: { marginLeft: "auto", marginRight: "auto" },
+                    }}
+                    label={isMutating ? <Loader size={20} /> : switchState ? "Public" : "Not Public"}
+                    mt="md"
+                    ref={switchRef}
+                    defaultChecked={tierList.is_public}
+                    checked={switchState}
+                    onChange={handleToggleIsPublic}
+                  />
+                )}
               </>
             )}
           </Stack>

@@ -1,4 +1,5 @@
 import { useMantineTheme } from "@mantine/core";
+import { Dispatch, SetStateAction } from "react";
 import { InfiniteData, useMutation, useQueryClient } from "react-query";
 import { DataUpdateFunction } from "react-query/types/core/utils";
 import { showErrorNotification } from "../../components/common/helpers";
@@ -32,8 +33,10 @@ export const useUpdateTierListInfoMutation = () => {
         updateInfoInCache({ tierListID, title, description })
       );
     },
-    onError() {
+    onError(_, { setTitle, setDescription }) {
       queryClient.setQueryData(queryKeys.userTierLists(user?.id ?? ""), undoUpdateInfoInCache(changed));
+      setTitle(changed.tierList.title);
+      setDescription(changed.tierList.description ?? "");
       showErrorNotification({ theme, message: "Update info failed! Try refreshing the page.", title: "Error" });
     },
   });
@@ -45,7 +48,14 @@ type UpdateTierListInfoParam = {
   description: string;
 };
 
-async function updateTierListInfo({ tierListID, title, description }: UpdateTierListInfoParam) {
+async function updateTierListInfo({
+  tierListID,
+  title,
+  description,
+}: UpdateTierListInfoParam & {
+  setTitle: Dispatch<SetStateAction<string>>;
+  setDescription: Dispatch<SetStateAction<string>>;
+}) {
   const res = await apiClient.patch<SaveTierListResponse>(`/tierlist/${tierListID}`, { title, description });
   return res.data;
 }
