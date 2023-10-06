@@ -4,6 +4,7 @@ import Link from "next/link";
 import { forwardRef, useReducer, useRef, useState } from "react";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useDeleteTierListMutation } from "../../hooks/api/useDeleteTierListMutation";
+import { useUpdateTierListInfoMutation } from "../../hooks/api/useUpdateTierListInfoMutation";
 import { capitalizeSentences, lastCharIsPunctuation, titleCase } from "./helpers";
 import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
 import {
@@ -30,7 +31,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
   const [isEditing, toggle] = useReducer((prev) => !prev, false);
 
   const [title, setTitle] = useState(tierList.title);
-  const titleIsError = title.length > titleMaxLength;
+  const titleIsError = title.length > titleMaxLength || title.trim().length === 0;
 
   const [description, setDescription] = useState(tierList.description ? capitalizeSentences(tierList.description) : "");
   const descriptionIsError = lastCharIsPunctuation(description)
@@ -43,23 +44,17 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
 
   const { mutate: deleteTierListMutation } = useDeleteTierListMutation();
 
+  const { mutate: updateTierListInfoMutation } = useUpdateTierListInfoMutation();
+
   const handleCancel = () => {
     setTitle(tierList.title);
     setDescription(tierList.description ? capitalizeSentences(tierList.description) : "");
     toggle();
   };
 
-  const handleDelete = () => {
-    deleteTierListMutation(tierList.id);
-    toggle();
-  };
-
-  const handleShowDeleteConfirmation = () => {
-    setShowDeleteConfirmation(true);
-  };
-
   const handleSave = () => {
     toggle();
+    updateTierListInfoMutation({ title: title.trim(), description: description.trim(), tierListID: tierList.id });
   };
 
   const mantineImageRootRef = useRef<HTMLDivElement>(null);
@@ -108,7 +103,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
                   <Button w="50%" color="gray.7" onClick={() => setShowDeleteConfirmation(false)}>
                     No
                   </Button>
-                  <Button onClick={handleDelete} w="50%" color="red.8">
+                  <Button onClick={() => deleteTierListMutation(tierList.id)} w="50%" color="red.8">
                     Yes
                   </Button>
                 </Flex>
@@ -127,7 +122,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
                 <Button onClick={handleCancel} color="gray.8" leftIcon={<IconX />} sx={grayButtonHoverSx}>
                   Cancel
                 </Button>
-                <Button onClick={handleShowDeleteConfirmation} color="red.8" leftIcon={<IconTrash />}>
+                <Button onClick={() => setShowDeleteConfirmation(true)} color="red.8" leftIcon={<IconTrash />}>
                   Delete
                 </Button>
               </>

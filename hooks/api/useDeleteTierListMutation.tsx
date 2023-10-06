@@ -6,13 +6,15 @@ import { UserTierListsResponse } from "../../components/tierlist/types";
 import { useAuth } from "../../contexts/AuthProvider";
 import { apiClient } from "../../lib/apiClient";
 import { queryKeys } from "../../lib/queryKeys";
+import { getTierListDataFromCache } from "./helpers";
+import { TierListCacheChangeInfo } from "./types";
 
 export const useDeleteTierListMutation = () => {
   const { user } = useAuth();
   const theme = useMantineTheme();
   const queryClient = useQueryClient();
 
-  let deleted: { tierList: UserTierListsResponse["data"][number]; pageIndex: number; tierListIndex: number };
+  let deleted: TierListCacheChangeInfo;
 
   return useMutation(deleteTierList, {
     onMutate(tierListID) {
@@ -38,25 +40,7 @@ async function deleteTierList(tierListID: string) {
   return res.data;
 }
 
-const getTierListDataFromCache = ({
-  cacheData,
-  tierListID,
-}: {
-  cacheData: InfiniteData<UserTierListsResponse>;
-  tierListID: string;
-}): { tierList: UserTierListsResponse["data"][number]; pageIndex: number; tierListIndex: number } | void => {
-  for (let i = 0; i < cacheData.pages.length; ++i) {
-    const page = cacheData.pages[i];
 
-    for (let j = 0; j < page.data.length; ++j) {
-      const tierList = page.data[j];
-
-      if (tierList.id === tierListID) {
-        return { tierList, pageIndex: i, tierListIndex: j };
-      }
-    }
-  }
-};
 
 const deleteTierListFromCache = (
   tierListID: string
@@ -80,11 +64,7 @@ const undoDeleteTierListFromCache = ({
   pageIndex,
   tierListIndex,
   tierList,
-}: {
-  pageIndex: number;
-  tierListIndex: number;
-  tierList: UserTierListsResponse["data"][number];
-}): DataUpdateFunction<InfiniteData<UserTierListsResponse> | undefined, InfiniteData<UserTierListsResponse>> => {
+}: TierListCacheChangeInfo): DataUpdateFunction<InfiniteData<UserTierListsResponse> | undefined, InfiniteData<UserTierListsResponse>> => {
   return function (prev) {
     if (prev === undefined) {
       return { pageParams: [], pages: [] };
