@@ -1,11 +1,15 @@
-import { Flex } from "@mantine/core";
+import { Center, Flex, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
-import { tierListCardsContainerSx } from "../../components/tierlist/styles";
+import {
+  noSavedTierListsContainerSx,
+  noSavedTierListsTextSx,
+  tierListCardsContainerSx,
+} from "../../components/tierlist/styles";
 import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollLoading";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
@@ -24,6 +28,8 @@ const TierLists: NextPage = () => {
 
   const [animateChildren] = useAutoAnimate();
 
+  const noSavedTierLists = pages !== undefined && pages[0].data.length === 0;
+
   return (
     <AccountNavShell>
       <Flex sx={tierListCardsContainerSx} ref={animateChildren}>
@@ -41,6 +47,11 @@ const TierLists: NextPage = () => {
           });
         })}
       </Flex>
+      {noSavedTierLists && (
+        <Center sx={noSavedTierListsContainerSx}>
+          <Text sx={noSavedTierListsTextSx}>You haven't saved any tier lists!</Text>
+        </Center>
+      )}
       {isFetchingNextPage && <InfiniteScrollLoading />}
     </AccountNavShell>
   );
