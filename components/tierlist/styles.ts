@@ -489,15 +489,25 @@ export const tierListCardImageContainerSx: CSSObject = {
 
 export const tierListCardImageSx: CSSObject = { width: "300px", height: "200px", objectFit: "contain" };
 
-export const tierListCardButtonsContainerSx = ({ spacing }: MantineTheme) => ({
+export const tierListCardButtonsContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
   width: "100%",
   height: "200px",
   gap: spacing.sm,
   justifyContent: "center",
 });
 
-export const grayButtonHoverSx = ({ colors }: MantineTheme) => ({
+export const grayButtonHoverSx = ({ colors }: MantineTheme): CSSObject => ({
   ":hover": {
     background: colors.dark[3],
   },
+});
+
+export const noSavedTierListsContainerSx = (): CSSObject => ({
+  width: "100%",
+  height: `calc(100% - ${NAVBAR_HEIGHT})`,
+});
+
+export const noSavedTierListsTextSx = ({ fontSizes }: MantineTheme): CSSObject => ({
+  fontSize: `calc(${fontSizes.lg} + ${fontSizes.lg})`,
+  color: "white",
 });
