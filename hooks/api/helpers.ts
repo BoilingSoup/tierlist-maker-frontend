@@ -1,6 +1,7 @@
-import { SaveTierListResponse, TierListData } from "../../components/tierlist/types";
+import { InfiniteData } from "react-query";
+import { SaveTierListResponse, TierListData, UserTierListsResponse } from "../../components/tierlist/types";
 import { apiClient } from "../../lib/apiClient";
-import { UploadResponse } from "./types";
+import { TierListCacheChangeInfo, UploadResponse } from "./types";
 
 const PRE_POST_REQUEST_MAX_PROGRESS = 53;
 
@@ -82,3 +83,23 @@ export function tween(startValue: number, endValue: number, duration: number, ca
 
   update();
 }
+
+export const getTierListDataFromCache = ({
+  cacheData,
+  tierListID,
+}: {
+  cacheData: InfiniteData<UserTierListsResponse>;
+  tierListID: string;
+}): TierListCacheChangeInfo | void => {
+  for (let i = 0; i < cacheData.pages.length; ++i) {
+    const page = cacheData.pages[i];
+
+    for (let j = 0; j < page.data.length; ++j) {
+      const tierList = page.data[j];
+
+      if (tierList.id === tierListID) {
+        return { tierList, pageIndex: i, tierListIndex: j };
+      }
+    }
+  }
+};
