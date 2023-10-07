@@ -27,8 +27,13 @@ import { useGetTierList } from "../../../hooks/api/useGetTierList";
 import { useSaveTierListActionHelpers } from "../../../components/tierlist/hooks/useSaveTierListActionHelpers";
 import { createPortal } from "react-dom";
 import { useIsMounted } from "../../../components/common/hooks/useIsMounted";
+import { useGetInfinitePublicTierLists } from "../../../hooks/api/useGetInfinitePublicTierLists";
+import { useGetInfiniteUserTierLists } from "../../../hooks/api/useGetInfiniteUserTierLists";
 
 const TierList: NextPage = () => {
+  useGetInfinitePublicTierLists();
+  useGetInfiniteUserTierLists();
+
   const router = useRouter();
   const uuid = router.query.uuid as string | undefined;
 

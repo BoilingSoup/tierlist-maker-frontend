@@ -1,6 +1,7 @@
 import { useMantineTheme } from "@mantine/core";
 import { Dispatch, SetStateAction } from "react";
 import { InfiniteData, useMutation, useQueryClient } from "react-query";
+import { DataUpdateFunction } from "react-query/types/core/utils";
 import { showErrorNotification } from "../../components/common/helpers";
 import { SaveTierListResponse, UserTierListsResponse } from "../../components/tierlist/types";
 import { useAuth } from "../../contexts/AuthProvider";
@@ -18,14 +19,19 @@ export const useSetIsPublicMutation = () => {
 
   return useMutation(updateIsPublicStatus, {
     onSuccess() {
+      queryClient.resetQueries(queryKeys.publicTierListsIndex());
+      queryClient.refetchQueries(queryKeys.publicTierListsIndex());
+
       queryClient.refetchQueries(queryKeys.userTierLists(user?.id ?? ""));
     },
-    onMutate({ tierListID }) {
+    onMutate({ tierListID, is_public }) {
       const cacheData = queryClient.getQueryData<InfiniteData<UserTierListsResponse>>(
         queryKeys.userTierLists(user?.id ?? "")
       );
 
       changed = getTierListDataFromCache({ cacheData: cacheData!, tierListID })!;
+
+      queryClient.setQueryData(queryKeys.userTierLists(user?.id ?? ""), setIsPublicInUserCache({ changed, is_public }));
     },
     onError(_, { setSwitchState }) {
       showErrorNotification({
@@ -34,6 +40,11 @@ export const useSetIsPublicMutation = () => {
         message: "Failed to make tier list public. Try refreshing the page.",
       });
       setSwitchState(changed.tierList.is_public);
+
+      queryClient.setQueryData(
+        queryKeys.userTierLists(user?.id ?? ""),
+        setIsPublicInUserCache({ changed, is_public: changed.tierList.is_public })
+      );
     },
   });
 };
@@ -47,4 +58,28 @@ type UpdateIsPublicParam = {
 async function updateIsPublicStatus({ is_public, tierListID }: UpdateIsPublicParam) {
   const res = await apiClient.patch<SaveTierListResponse>(`/tierlist/${tierListID}/isPublic`, { is_public });
   return res.data;
+}
+
+type SetIsPublicInCacheParam = {
+  changed: TierListCacheChangeInfo;
+  is_public: boolean;
+};
+
+function setIsPublicInUserCache({
+  changed,
+  is_public,
+}: SetIsPublicInCacheParam): DataUpdateFunction<
+  InfiniteData<UserTierListsResponse> | undefined,
+  InfiniteData<UserTierListsResponse>
+> {
+  return function (prev) {
+    if (prev === undefined) {
+      return { pages: [], pageParams: [] };
+    }
+
+    const copy = JSON.parse(JSON.stringify(prev)) as InfiniteData<UserTierListsResponse>;
+    copy.pages[changed.pageIndex].data[changed.tierListIndex].is_public = is_public;
+
+    return copy;
+  };
 }

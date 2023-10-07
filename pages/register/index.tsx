@@ -7,10 +7,13 @@ import { RegisterForm } from "../../components/forms/RegisterForm";
 import { OAuthIconsGroup } from "../../components/forms/OAuthIconsGroup";
 import { useRedirectIfAuthenticated } from "../../components/common/hooks/useRedirectIfAuthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
+import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 
 const Register: NextPage = () => {
   const { user, isLoading } = useAuth();
   useRedirectIfAuthenticated({ user, isLoading, redirectTo: "/" });
+
+  useGetInfinitePublicTierLists();
 
   return (
     <Center sx={formPageContainerSx}>

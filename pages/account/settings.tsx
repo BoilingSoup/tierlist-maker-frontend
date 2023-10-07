@@ -24,10 +24,15 @@ import {
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
+import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
+import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
 
 const Settings: NextPage = () => {
   const { user, isLoading } = useAuth();
   useRedirectIfUnauthenticated({ user, isLoading, redirectTo: "/" });
+
+  useGetInfinitePublicTierLists();
+  useGetInfiniteUserTierLists();
 
   const theme = useMantineTheme();
 

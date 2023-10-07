@@ -26,9 +26,14 @@ import {
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState } from "../../components/tierlist/types";
 import { SITE_NAME } from "../../config/config";
+import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
+import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
 import { useLocalTierListStore } from "../../hooks/store/useLocalTierListStore";
 
 const Create: NextPage = () => {
+  useGetInfinitePublicTierLists();
+  useGetInfiniteUserTierLists();
+
   const fullScreen = useFullScreen();
   const sensors = useDndSensors();
   const [animateChildren] = useAutoAnimate();

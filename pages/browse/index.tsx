@@ -1,4 +1,3 @@
-import autoAnimate from "@formkit/auto-animate";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Box, Flex } from "@mantine/core";
 import type { NextPage } from "next";
@@ -7,12 +6,15 @@ import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollL
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
+import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
 
 const Browse: NextPage = () => {
   const {
     lastTierListRef,
     query: { data, isLoading, isFetchingNextPage },
   } = useGetInfinitePublicTierLists();
+
+  useGetInfiniteUserTierLists();
 
   const pages = data?.pages;
 
