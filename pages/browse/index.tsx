@@ -43,6 +43,7 @@ const Browse: NextPage = () => {
             marginBottom: theme.spacing.xl,
           },
         })}
+        ref={animateChildren}
       >
         {isLoading && <TierListCardsSkeleton count={40} />}
 
@@ -52,9 +53,9 @@ const Browse: NextPage = () => {
           return pg.data.map((tierList, j) => {
             const isLastTierList = pg.data.length - 1 === j;
             if (isLastPage && isLastTierList) {
-              return <TierListCard key={tierList.id} tierList={tierList} ref={lastTierListRef} />;
+              return <TierListCard key={tierList.id} tierList={tierList} ref={lastTierListRef} readonly />;
             }
-            return <TierListCard key={tierList.id} tierList={tierList} />;
+            return <TierListCard key={tierList.id} tierList={tierList} readonly />;
           });
         })}
 

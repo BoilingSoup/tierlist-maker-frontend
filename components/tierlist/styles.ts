@@ -511,3 +511,30 @@ export const noSavedTierListsTextSx = ({ fontSizes }: MantineTheme): CSSObject =
   fontSize: `calc(${fontSizes.lg} + ${fontSizes.lg})`,
   color: "white",
 });
+
+export const getTierListCardTitleInputStyles = (
+  theme: MantineTheme
+): Styles<TextInputStylesNames, Record<string, any>> => ({
+  input: {
+    color: "white",
+    width: `calc(100% - ${theme.spacing.lg} - ${theme.spacing.lg})`,
+    background: theme.colors.dark[4],
+    fontSize: theme.fontSizes.xl,
+    fontWeight: "bold",
+    height: "40px",
+    textAlign: "center",
+    margin: theme.spacing.lg,
+    ":disabled": {
+      color: "white",
+      background: theme.colors.dark[6],
+      border: "none",
+      cursor: "initial",
+      padding: 0,
+    },
+  },
+});
+
+export const tierListCardMidSectionSx = ({ spacing }: MantineTheme): CSSObject => ({
+  alignItems: "center",
+  gap: spacing.lg,
+});
