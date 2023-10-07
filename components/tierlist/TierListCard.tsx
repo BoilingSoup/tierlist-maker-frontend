@@ -191,6 +191,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
                     defaultChecked={tierList.is_public}
                     checked={switchState}
                     onChange={handleToggleIsPublic}
+                    disabled={isMutating}
                   />
                 )}
               </>
