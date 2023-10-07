@@ -1,6 +1,7 @@
 const RECENT_TIER_LISTS = "recent_tier_lists";
 const USER = "user";
 const TIER_LIST = "tierlist";
+const INDEX = "index";
 
 export const queryKeys = {
   recentTierLists() {
@@ -14,5 +15,8 @@ export const queryKeys = {
   },
   userTierLists(userID: string) {
     return [userID];
+  },
+  publicTierListsIndex() {
+    return [INDEX];
   },
 };
