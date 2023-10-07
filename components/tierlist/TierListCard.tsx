@@ -27,17 +27,20 @@ import {
   tierListCardImageContainerSx,
   tierListCardImageSx,
   grayButtonHoverSx,
+  getTierListCardTitleInputStyles,
+  tierListCardMidSectionSx,
 } from "./styles";
 import { UserTierListsResponse } from "./types";
 
 type Props = {
   tierList: UserTierListsResponse["data"][number];
+  readonly?: boolean;
 };
 
 const titleMaxLength = 80;
 const descriptionMaxLength = 100;
 
-export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, observerRef) => {
+export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, readonly }, observerRef) => {
   const { user } = useAuth();
   const isOwner = user?.id === tierList.user_id;
 
@@ -100,35 +103,27 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList }, obs
       <TextInput
         value={titleCase(title)}
         disabled={!isEditing}
-        styles={{
-          input: {
-            color: "white",
-            width: `calc(100% - ${theme.spacing.lg} - ${theme.spacing.lg})`,
-            background: theme.colors.dark[4],
-            fontSize: theme.fontSizes.xl,
-            fontWeight: "bold",
-            height: "40px",
-            textAlign: "center",
-            margin: theme.spacing.lg,
-            ":disabled": {
-              color: "white",
-              background: theme.colors.dark[6],
-              border: "none",
-              cursor: "initial",
-              padding: 0,
-            },
-          },
-        }}
+        styles={getTierListCardTitleInputStyles(theme)}
         onChange={(e) => setTitle(e.target.value)}
         error={titleIsError}
       />
       <Box sx={{ height: "100%", margin: `0 ${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.lg}` }}>
-        <Flex sx={(theme) => ({ alignItems: "center", gap: theme.spacing.lg })}>
+        <Flex sx={tierListCardMidSectionSx}>
           <Box sx={tierListCardImageContainerSx}>
             <Image ref={mantineImageRootRef} src={tierList.thumbnail} sx={tierListCardImageSx} />
           </Box>
           <Stack sx={tierListCardButtonsContainerSx}>
-            {showDeleteConfirmation ? (
+            {readonly ? (
+              <Button
+                component={Link}
+                href={`/tierlist/${tierList.id}`}
+                color="gray.8"
+                leftIcon={<IconEye />}
+                sx={(theme) => ({ ...grayButtonHoverSx(theme), height: "60px" })}
+              >
+                View
+              </Button>
+            ) : showDeleteConfirmation ? (
               <>
                 <Text color="white">
                   This can not be undone. <br />

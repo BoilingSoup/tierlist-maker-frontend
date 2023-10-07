@@ -59,6 +59,9 @@ export const useSaveTierListMutation = () => {
       }, 500);
     },
     onSettled: (_, __, { setIsSaving, setRequestProgress }) => {
+      resetQueries(queryKeys.publicTierListsIndex());
+      refetchQueries(queryKeys.publicTierListsIndex());
+
       resetQueries(queryKeys.userTierLists(userID));
       refetchQueries(queryKeys.userTierLists(userID));
 
@@ -96,7 +99,6 @@ async function handleDiffMetadata({
   let payload = { data: JSON.parse(JSON.stringify(data)) as TierListData };
 
   if (added.length > 0) {
-    console.log("uploading");
     const srcs = await uploadNewImages({ data, added, requestProgress, setRequestProgress });
 
     payload = replacePayloadSrcs({ payload, added, srcs });
