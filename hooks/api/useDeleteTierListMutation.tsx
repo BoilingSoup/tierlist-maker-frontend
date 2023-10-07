@@ -17,6 +17,10 @@ export const useDeleteTierListMutation = () => {
   let deleted: TierListCacheChangeInfo;
 
   return useMutation(deleteTierList, {
+    onSuccess() {
+      queryClient.resetQueries(queryKeys.publicTierListsIndex());
+      queryClient.refetchQueries(queryKeys.publicTierListsIndex());
+    },
     onMutate(tierListID) {
       const cacheData = queryClient.getQueryData<InfiniteData<UserTierListsResponse>>(
         queryKeys.userTierLists(user?.id ?? "")
@@ -40,8 +44,6 @@ async function deleteTierList(tierListID: string) {
   return res.data;
 }
 
-
-
 const deleteTierListFromCache = (
   tierListID: string
 ): DataUpdateFunction<InfiniteData<UserTierListsResponse> | undefined, InfiniteData<UserTierListsResponse>> => {
@@ -64,7 +66,10 @@ const undoDeleteTierListFromCache = ({
   pageIndex,
   tierListIndex,
   tierList,
-}: TierListCacheChangeInfo): DataUpdateFunction<InfiniteData<UserTierListsResponse> | undefined, InfiniteData<UserTierListsResponse>> => {
+}: TierListCacheChangeInfo): DataUpdateFunction<
+  InfiniteData<UserTierListsResponse> | undefined,
+  InfiniteData<UserTierListsResponse>
+> => {
   return function (prev) {
     if (prev === undefined) {
       return { pageParams: [], pages: [] };

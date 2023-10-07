@@ -14,6 +14,8 @@ import { convertThemeBreakpointToPx } from "../components/common/helpers";
 import { RecentTierListGrid } from "../components/home/RecentTierListGrid";
 import { Footer } from "../components/common/Footer";
 import { useShowAccountVerifiedNotification } from "../components/home/hooks/useShowAccountVerifiedNotification";
+import { useGetInfinitePublicTierLists } from "../hooks/api/useGetInfinitePublicTierLists";
+import { useGetInfiniteUserTierLists } from "../hooks/api/useGetInfiniteUserTierLists";
 
 // Playground while I tinker with styles.
 // Will move these objs after brainstorming phase.
@@ -42,6 +44,9 @@ const Home: NextPage = () => {
   const { data, isError, error, isLoading } = useRecentTierList();
 
   useShowAccountVerifiedNotification(theme);
+
+  useGetInfinitePublicTierLists();
+  useGetInfiniteUserTierLists();
 
   return (
     <>

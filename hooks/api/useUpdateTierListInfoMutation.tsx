@@ -19,7 +19,8 @@ export const useUpdateTierListInfoMutation = () => {
 
   return useMutation(updateTierListInfo, {
     onSuccess() {
-      queryClient.invalidateQueries(queryKeys.userTierLists(user?.id ?? ""));
+      queryClient.resetQueries(queryKeys.publicTierListsIndex());
+      queryClient.refetchQueries(queryKeys.publicTierListsIndex());
     },
     onMutate({ tierListID, title, description }) {
       const cacheData = queryClient.getQueryData<InfiniteData<UserTierListsResponse>>(

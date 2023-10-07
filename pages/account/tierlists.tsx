@@ -13,10 +13,13 @@ import {
 import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollLoading";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 
 const TierLists: NextPage = () => {
   const { user, isLoading: isLoadingUser } = useAuth();
   useRedirectIfUnauthenticated({ user, isLoading: isLoadingUser, redirectTo: "/" });
+
+  useGetInfinitePublicTierLists();
 
   const {
     lastTierListRef,
