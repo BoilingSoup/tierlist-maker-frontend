@@ -1,5 +1,10 @@
 import { InfiniteData } from "react-query";
-import { SaveTierListResponse, TierListData, UserTierListsResponse } from "../../components/tierlist/types";
+import {
+  SaveTierListParam,
+  SaveTierListResponse,
+  TierListData,
+  UserTierListsResponse,
+} from "../../components/tierlist/types";
 import { apiClient } from "../../lib/apiClient";
 import { TierListCacheChangeInfo, UploadResponse } from "./types";
 
@@ -54,12 +59,12 @@ export async function upload({ formData, requestProgress, setRequestProgress }: 
   });
 }
 
-type SaveTierListParam = {
+type _SaveTierListParam = {
   uuid: string;
   payload: { data: TierListData };
 };
 
-export async function saveTierList({ uuid, payload }: SaveTierListParam) {
+export async function saveTierList({ uuid, payload }: _SaveTierListParam) {
   const res = await apiClient.put<SaveTierListResponse>(`/tierlist/${uuid}`, payload);
   return res.data;
 }
@@ -103,3 +108,8 @@ export const getTierListDataFromCache = ({
     }
   }
 };
+
+export async function createTierListRequest({ payload, requestProgress, setRequestProgress }: SaveTierListParam) {
+  const res = await apiClient.post<SaveTierListResponse>("/tierlist", payload);
+  return { response: res.data, requestProgress, setRequestProgress };
+}

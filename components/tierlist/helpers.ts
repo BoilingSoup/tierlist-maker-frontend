@@ -33,6 +33,7 @@ import {
   DragOverType,
   FullScreenProp,
   OverItemEventData,
+  SaveTierListParam,
   SortableImageProps,
   TierListData,
   TierListRowData,
@@ -42,6 +43,7 @@ import {
 import imageCompression from "browser-image-compression";
 import { THUMBNAIL_WIDTH } from "../../config/config";
 import { SetDataArg } from "../../hooks/store/types";
+import { UploadResponse } from "../../hooks/api/types";
 
 /** Converts value of useFullscreen() to prop used in components */
 export const getFullScreenProp = (fullScreen: ReturnType<typeof useFullscreen>): FullScreenProp => ({
@@ -1014,4 +1016,68 @@ export function capitalizeSentences(text: string): string {
   const capitalizedStr = capitalizedArr.join(" ");
 
   return lastCharIsPunctuation(capitalizedStr) ? capitalizedStr : capitalizedStr + ".";
+}
+
+type ReconstructDeps = {
+  response: UploadResponse;
+  metadata: {
+    lengths: { thumbnail: number; sidebar: number; [key: string]: number };
+    order: string[];
+  };
+  title: string;
+  placeholder: string;
+  tierListData: TierListData;
+  description?: string;
+};
+
+/**
+ * Replaces TierListData image Blobs with src links
+ */
+export function reconstructPayload({
+  response,
+  metadata,
+  title,
+  placeholder,
+  tierListData,
+  description,
+}: ReconstructDeps): SaveTierListParam["payload"] {
+  const payload: SaveTierListParam["payload"] = {
+    title: title.trim() === "" ? placeholder : title.trim(),
+    data: JSON.parse(JSON.stringify(tierListData)) as TierListData,
+    thumbnail: undefined,
+    description,
+  };
+
+  const { order, lengths } = metadata;
+  let offset = 0;
+
+  for (let id of order) {
+    let rowIndex = -1;
+
+    if (id !== "thumbnail" && id !== "sidebar") {
+      rowIndex = payload.data.rows.findIndex((row) => row.id.toString() === id);
+    }
+
+    for (let i = 0; i < lengths[id]; ++i) {
+      switch (id) {
+        case "thumbnail":
+          payload.thumbnail = response.data[offset + i];
+          break;
+
+        case "sidebar":
+          payload.data.sidebar[i].src = response.data[offset + i];
+          break;
+
+        default:
+          if (rowIndex !== -1) {
+            payload.data.rows[rowIndex].items[i].src = response.data[offset + i];
+          }
+
+          break;
+      }
+    }
+    offset += lengths[id];
+  }
+
+  return payload;
 }

@@ -1,37 +1,39 @@
-import { useRouter } from "next/router";
-import { useMutation } from "react-query";
-import { TierListData } from "../../components/tierlist/types";
-import { useLocalTierListStore } from "../store/useLocalTierListStore";
-import { generateFormData, reconstructPayload } from "../../components/tierlist/helpers";
-import { Dispatch, SetStateAction } from "react";
-import { useServerTierListStore } from "../store/useServerTierListStore";
-import { showSomethingWentWrongNotification } from "../../components/common/helpers";
 import { useMantineTheme } from "@mantine/core";
-import { createTierListRequest, tween, upload } from "./helpers";
+import { useRouter } from "next/router";
+import { Dispatch, SetStateAction } from "react";
+import { useMutation } from "react-query";
+import { showSomethingWentWrongNotification } from "../../components/common/helpers";
+import { generateFormData, reconstructPayload } from "../../components/tierlist/helpers";
+import { TierListData } from "../../components/tierlist/types";
 import { useAuth } from "../../contexts/AuthProvider";
 import { queryKeys } from "../../lib/queryKeys";
+import { useServerTierListStore } from "../store/useServerTierListStore";
+import { createTierListRequest, tween, upload } from "./helpers";
 import { useRefetchQueries } from "./useRefetchQueries";
 import { useResetQueries } from "./useResetQueries";
-
-const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
-const ALMOST_COMPLETE_PROGRESS = 90;
-const COMPLETE_PROGRESS = 100;
 
 type Param = {
   title: string;
   placeholder: string;
   description?: string;
+  tierListData: TierListData;
+  closeModal: () => void;
 };
 
-export const useCreateTierListMutation = ({ title, placeholder, description }: Param) => {
-  const resetLocalTierList = useLocalTierListStore((state) => state.reset);
-  const tierListData = useLocalTierListStore((state) => state.data);
-  const addToCache = useServerTierListStore((state) => state.add);
+const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
+const ALMOST_COMPLETE_PROGRESS = 90;
+const COMPLETE_PROGRESS = 100;
 
-  const router = useRouter();
+export const useCloneAndCreateTierListMutation = ({
+  title,
+  placeholder,
+  description,
+  tierListData,
+  closeModal,
+}: Param) => {
   const theme = useMantineTheme();
 
-  const { mutate: createTierListMutation, isLoading: isUploading } = useMutation(uploadImages, {
+  const { mutate: cloneAndCreateTierListMutation, isLoading: isUploading } = useMutation(uploadImages, {
     onSuccess: ({ response, metadata, requestProgress, setRequestProgress }) => {
       const payload = reconstructPayload({ response, metadata, description, placeholder, tierListData, title });
 
@@ -50,6 +52,9 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
   let userID = user?.id;
   const refetchQueries = useRefetchQueries();
   const resetQueries = useResetQueries();
+  const router = useRouter();
+
+  const addToCache = useServerTierListStore((state) => state.add);
 
   const {
     mutate: postTierListJSONMutation,
@@ -59,14 +64,8 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
       addToCache({ uuid: response.id, response });
 
-      if (response.is_public) {
-        resetQueries(queryKeys.publicTierListsIndex());
-        refetchQueries(queryKeys.publicTierListsIndex());
-
-        // TODO: refetch recent tier lists
-      }
-
       if (userID !== undefined) {
+        // TODO: refetch recent tier lists if is_public
         resetQueries(queryKeys.userTierLists(userID));
         refetchQueries(queryKeys.userTierLists(userID));
       }
@@ -77,12 +76,11 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
 
       setTimeout(() => {
         router.push(`/tierlist/${response.id}`); // route.push() takes some time to download the necessary data for the route
+        closeModal();
 
         tween(requestProgress, COMPLETE_PROGRESS, 50, (value) => {
           setRequestProgress(value);
         });
-
-        setTimeout(() => resetLocalTierList(), 5000); // grace period 5s to reset local tierlist AFTER route view has changed
       }, 200);
     },
     onError: () => {
@@ -92,7 +90,7 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
 
   const isLoading = isUploading || isSaving || isSuccess;
 
-  return { createTierListMutation, isLoading };
+  return { cloneAndCreateTierListMutation, isLoading };
 };
 
 type UploadParam = {
@@ -107,5 +105,5 @@ async function uploadImages({ data, setHideToolbars, requestProgress, setRequest
 
   const res = await upload({ formData, requestProgress, setRequestProgress });
 
-  return { response: res.data, metadata: metadata, requestProgress, setRequestProgress };
+  return { response: res.data, metadata, requestProgress, setRequestProgress };
 }

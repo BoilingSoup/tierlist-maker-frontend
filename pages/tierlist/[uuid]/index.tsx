@@ -29,6 +29,8 @@ import { createPortal } from "react-dom";
 import { useIsMounted } from "../../../components/common/hooks/useIsMounted";
 import { useGetInfinitePublicTierLists } from "../../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../../hooks/api/useGetInfiniteUserTierLists";
+import { SaveTierListModal } from "../../../components/tierlist/SaveTierListModal";
+import { useAuth } from "../../../contexts/AuthProvider";
 
 const TierList: NextPage = () => {
   useGetInfinitePublicTierLists();
@@ -37,6 +39,8 @@ const TierList: NextPage = () => {
   const router = useRouter();
   const uuid = router.query.uuid as string | undefined;
 
+  const { user } = useAuth();
+
   const fullScreen = useFullscreen();
   const sensors = useDndSensors();
   const [animateChildren] = useAutoAnimate();
@@ -44,13 +48,16 @@ const TierList: NextPage = () => {
   const {
     data,
     setData,
+    tierListUserID,
     queryObj: { isLoading },
     diff,
   } = useGetTierList(uuid);
 
   usePasteEvent(setData);
 
-  useConfirmationOnExitIfUnsavedChanges(diff);
+  const isOwner = user?.id === tierListUserID;
+  console.log({ tierListUserID, isOwner });
+  useConfirmationOnExitIfUnsavedChanges({ diff, enabled: isOwner });
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
@@ -69,25 +76,45 @@ const TierList: NextPage = () => {
 
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
-  const { isSaving, handleSave, requestProgress } = useSaveTierListActionHelpers({ data, setData, diff, uuid });
+  const saveTierListHelpers = useSaveTierListActionHelpers({
+    data,
+    setData,
+    diff,
+    uuid,
+    tierListUserID,
+  });
 
   const isMounted = useIsMounted();
-  const showSaveOverlay = isSaving && isMounted;
+  const showSaveOverlay = saveTierListHelpers.isSaving && isMounted;
 
   return (
     <>
       <Head>
         <title>Create Tier List</title>
       </Head>
-
       {showSaveOverlay &&
         createPortal(
           <Center sx={savingOverlayContainerSx}>
             <Text mb={20}>Saving...</Text>
-            <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
+            <Progress h={9} w={"100%"} maw={200} animate striped value={saveTierListHelpers.requestProgress} />
           </Center>,
           document.getElementById(PORTAL_TARGET_ID)!
         )}
+      {saveTierListHelpers.modalOpened && (
+        <SaveTierListModal
+          onSave={saveTierListHelpers.save}
+          opened={saveTierListHelpers.modalOpened}
+          onClose={saveTierListHelpers.closeModal}
+          modalTitle={saveTierListHelpers.modalTitle}
+          tierListTitle={saveTierListHelpers.tierListTitle}
+          onChangeTitle={saveTierListHelpers.changeTitle}
+          description={saveTierListHelpers.description}
+          requestProgress={saveTierListHelpers.requestProgress}
+          showProgressBar={saveTierListHelpers.showProgressBar}
+          titlePlaceholder={saveTierListHelpers.titlePlaceholder}
+          onChangeDescription={saveTierListHelpers.changeDescription}
+        />
+      )}
       <DndContext
         id={SITE_NAME}
         onDragStart={dragHandler.start}
@@ -127,7 +154,7 @@ const TierList: NextPage = () => {
             onDeleteImage={rowHandler.deleteImage}
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
-            onClickSave={handleSave}
+            onClickSave={isOwner ? saveTierListHelpers.handleSaveOwnTierList : saveTierListHelpers.handleOpenSaveMenu}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

@@ -1,9 +1,9 @@
-import { useDisclosure } from "@mantine/hooks";
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useCreateTierListMutation } from "../../../hooks/api/useCreateTierListMutation";
 import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
-import { dateInYyyyMmDdHhMmSs } from "../helpers";
 import { TierListData } from "../types";
+import { useHandleOpenSaveMenu } from "./useHandleOpenSaveMenu";
+import { useTierListInfo } from "./useTierListInfo";
 
 export const useCreateTierListActionHelpers = (data: TierListData) => {
   const {
@@ -51,29 +51,6 @@ export const useCreateTierListActionHelpers = (data: TierListData) => {
 };
 
 // internal hooks
-
-const useTierListInfo = () => {
-  const [title, setTitle] = useState("");
-  const [titlePlaceholder, setTitlePlaceholder] = useState("");
-  const [description, setDescription] = useState("");
-
-  const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value);
-
-  const handleChangeDescription = (e: ChangeEvent<HTMLTextAreaElement>) => setDescription(e.target.value);
-
-  return { title, handleChangeTitle, titlePlaceholder, setTitlePlaceholder, description, handleChangeDescription };
-};
-
-const useHandleOpenSaveMenu = (setTitlePlaceholder: Dispatch<SetStateAction<string>>) => {
-  const [opened, { open, close }] = useDisclosure();
-
-  const handleOpenSaveMenu = () => {
-    open();
-    setTitlePlaceholder(`Untitled - ${dateInYyyyMmDdHhMmSs(new Date())}`);
-  };
-
-  return { opened, close, handleOpenSaveMenu };
-};
 
 type CreateTierListMutationHelpersParam = {
   title: string;
