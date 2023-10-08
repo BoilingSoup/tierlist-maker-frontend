@@ -2,6 +2,7 @@ import { MantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconAlertOctagon, IconCheck, IconInfoCircle } from "@tabler/icons-react";
 import { formatDistance } from "date-fns";
+import { ReactNode } from "react";
 import { User } from "../../contexts/AuthProvider";
 import { PxSize } from "../tierlist/types";
 import { getNotificationStyles } from "./styles";
@@ -43,7 +44,7 @@ export const append = <T,>(arr: T[], ...data: T[]) => [...arr, ...data];
 type Notification = {
   theme: MantineTheme;
   title: string;
-  message: string;
+  message: ReactNode;
 };
 
 export const showErrorNotification = ({ theme, title, message }: Notification) =>

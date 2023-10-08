@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { Box, Button, Center, CSSObject, MantineTheme, Text, useMantineTheme } from "@mantine/core";
+import { Box, Button, Center, Text, useMantineTheme } from "@mantine/core";
 import { LandingTierListImage } from "../components/home/LandingTierListImage";
 import {
   landingSectionForegroundSx,
@@ -16,26 +16,14 @@ import { Footer } from "../components/common/Footer";
 import { useShowAccountVerifiedNotification } from "../components/home/hooks/useShowAccountVerifiedNotification";
 import { useGetInfinitePublicTierLists } from "../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../hooks/api/useGetInfiniteUserTierLists";
-
-const junk2 = ({ colors }: MantineTheme): CSSObject => ({
-  width: "100%",
-  background: `radial-gradient(ellipse at top, rgb(30, 30, 30), ${colors.dark[9]})`,
-  overflow: "hidden",
-});
-
-const tbd = (): CSSObject => ({
-  fontSize: "2.5rem",
-  color: "white",
-  marginTop: "220px",
-  textAlign: "center",
-});
+import { recentTierListsContainerSx, recentTierListsHeaderSx } from "../components/home/styles";
 
 const Home: NextPage = () => {
   const { width } = useViewportSize();
   const theme = useMantineTheme();
   const breakpoint = convertThemeBreakpointToPx(theme.breakpoints.md);
 
-  const { data, isError, error, isLoading } = useRecentTierList();
+  const { data, isLoading } = useRecentTierList();
 
   useShowAccountVerifiedNotification(theme);
 
@@ -57,11 +45,11 @@ const Home: NextPage = () => {
           Create New Tier List
         </Button>
       </Center>
-      <Box sx={junk2}>
-        <Text component="h2" sx={tbd}>
+      <Box sx={recentTierListsContainerSx}>
+        <Text component="h2" sx={recentTierListsHeaderSx}>
           Recent Tier Lists
         </Text>
-        <Box my="280px">
+        <Box mb="280px" mt="220px">
           {width < breakpoint && <RecentTierListCarousel data={data} isLoading={isLoading} />}
           {width >= breakpoint && <RecentTierListGrid data={data} isLoading={isLoading} />}
         </Box>

@@ -92,3 +92,16 @@ export const recentGridItemWrapperSx = ({ colors, radius }: MantineTheme): CSSOb
   transition: "transform 200ms ease",
   ":hover": { cursor: "pointer", transform: "scale(1.04)" },
 });
+
+export const recentTierListsContainerSx = ({ colors }: MantineTheme): CSSObject => ({
+  width: "100%",
+  background: `radial-gradient(ellipse at top, rgb(30, 30, 30), ${colors.dark[9]})`,
+  overflow: "hidden",
+});
+
+export const recentTierListsHeaderSx = (): CSSObject => ({
+  fontSize: "2.5rem",
+  color: "white",
+  marginTop: "220px",
+  textAlign: "center",
+});
