@@ -11,6 +11,7 @@ import { useServerTierListStore } from "../store/useServerTierListStore";
 import { createTierListRequest, tween, upload } from "./helpers";
 import { useRefetchQueries } from "./useRefetchQueries";
 import { useResetQueries } from "./useResetQueries";
+import { Actions } from "../../components/tierlist/types";
 
 type Param = {
   title: string;
@@ -18,6 +19,7 @@ type Param = {
   description?: string;
   tierListData: TierListData;
   closeModal: () => void;
+  actionType: Actions | undefined;
 };
 
 const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
@@ -30,12 +32,22 @@ export const useCloneAndCreateTierListMutation = ({
   description,
   tierListData,
   closeModal,
+  actionType,
 }: Param) => {
   const theme = useMantineTheme();
 
   const { mutate: cloneAndCreateTierListMutation, isLoading: isUploading } = useMutation(uploadImages, {
     onSuccess: ({ response, metadata, requestProgress, setRequestProgress }) => {
-      const payload = reconstructPayload({ response, metadata, description, placeholder, tierListData, title });
+      const isPublic = actionType === "save" ? false : true;
+      const payload = reconstructPayload({
+        response,
+        metadata,
+        description,
+        placeholder,
+        tierListData,
+        title,
+        isPublic,
+      });
 
       tween(requestProgress, POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS, 100, (value) => {
         setRequestProgress(value);
@@ -62,12 +74,22 @@ export const useCloneAndCreateTierListMutation = ({
     isSuccess,
   } = useMutation(createTierListRequest, {
     onSuccess: async ({ response, requestProgress, setRequestProgress }) => {
+      if (userID === undefined) {
+        // will/should never be true if user is saving to DB
+        return;
+      }
+
       addToCache({ uuid: response.id, response });
 
-      if (userID !== undefined) {
-        // TODO: refetch recent tier lists if is_public
-        resetQueries(queryKeys.userTierLists(userID));
-        refetchQueries(queryKeys.userTierLists(userID));
+      resetQueries(queryKeys.userTierLists(userID));
+      refetchQueries(queryKeys.userTierLists(userID));
+
+      if (response.is_public) {
+        resetQueries(queryKeys.recentTierLists());
+        refetchQueries(queryKeys.recentTierLists());
+
+        resetQueries(queryKeys.publicTierListsIndex());
+        refetchQueries(queryKeys.publicTierListsIndex());
       }
 
       tween(requestProgress, ALMOST_COMPLETE_PROGRESS, 100, (value) => {

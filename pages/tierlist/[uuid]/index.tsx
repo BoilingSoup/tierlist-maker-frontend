@@ -137,7 +137,8 @@ const TierList: NextPage = () => {
             onDeleteImage={rowHandler.deleteImage}
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
-            onClickSave={isOwner ? saveTierListHelpers.handleSaveOwnTierList : saveTierListHelpers.handleOpenSaveMenu}
+            onClickSave={isOwner ? saveTierListHelpers.saveOwnTierList : saveTierListHelpers.openSaveMenu}
+            onClickPublish={saveTierListHelpers.openPublishMenu}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

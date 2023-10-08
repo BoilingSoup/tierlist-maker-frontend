@@ -22,7 +22,7 @@ type Param = {
   title: string;
   placeholder: string;
   description?: string;
-  actionType: Actions;
+  actionType: Actions | undefined;
 };
 
 export const useCreateTierListMutation = ({ title, placeholder, description, actionType }: Param) => {
