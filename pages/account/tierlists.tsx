@@ -52,7 +52,7 @@ const TierLists: NextPage = () => {
       </Flex>
       {noSavedTierLists && (
         <Center sx={noSavedTierListsContainerSx}>
-          <Text sx={noSavedTierListsTextSx}>You haven't saved any tier lists!</Text>
+          <Text sx={noSavedTierListsTextSx}>You haven&apos;t saved any tier lists!</Text>
         </Center>
       )}
       {isFetchingNextPage && <InfiniteScrollLoading />}

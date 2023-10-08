@@ -1,4 +1,3 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Box, Flex } from "@mantine/core";
 import type { NextPage } from "next";
 import { NAVBAR_HEIGHT } from "../../components/common/styles";
@@ -18,9 +17,8 @@ const Browse: NextPage = () => {
 
   const pages = data?.pages;
 
-  const [animateChildren] = useAutoAnimate();
-
   const noPublicTierLists = pages !== undefined && pages[0].data.length === 0;
+
   return (
     <Box
       sx={(theme) => ({
@@ -43,7 +41,6 @@ const Browse: NextPage = () => {
             marginBottom: theme.spacing.xl,
           },
         })}
-        ref={animateChildren}
       >
         {isLoading && <TierListCardsSkeleton count={40} />}
 

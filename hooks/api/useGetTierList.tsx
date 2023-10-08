@@ -17,8 +17,10 @@ export const useGetTierList = (uuid: string | undefined) => {
   const router = useRouter();
 
   const [data, setData] = useState<TierListData>({ sidebar: [], rows: [] });
+  const [tierListUserID, setTierListUserID] = useState("");
 
-  const { cacheHit, serverData, setServerData } = useCheckServerCacheStore({ uuid, setData });
+  const { cacheHit, serverData, setServerData } = useCheckServerCacheStore({ uuid, setData, setTierListUserID });
+  console.log({ cacheHit });
 
   const queryObj = useQuery(queryKeys.tierList(uuid!), getTierList(uuid!), {
     enabled: uuid !== undefined && !cacheHit,
@@ -34,6 +36,7 @@ export const useGetTierList = (uuid: string | undefined) => {
         }
         setServerData(tierListData);
         setData(tierListData);
+        setTierListUserID(response.user_id);
       } catch (e) {
         showSomethingWentWrongNotification(theme);
         router.push("/");
@@ -46,7 +49,7 @@ export const useGetTierList = (uuid: string | undefined) => {
 
   const diff = checkForDiff({ clientData: data, serverData });
 
-  return { data, setData, queryObj, diff };
+  return { data, setData, queryObj, diff, tierListUserID };
 };
 
 function getTierList(id: string) {
@@ -59,9 +62,10 @@ function getTierList(id: string) {
 type CheckServerCacheParam = {
   uuid: string | undefined;
   setData: Dispatch<SetStateAction<TierListData>>;
+  setTierListUserID: Dispatch<SetStateAction<string>>;
 };
 
-const useCheckServerCacheStore = ({ uuid, setData }: CheckServerCacheParam) => {
+const useCheckServerCacheStore = ({ uuid, setData, setTierListUserID }: CheckServerCacheParam) => {
   const theme = useMantineTheme();
   const router = useRouter();
 
@@ -78,6 +82,7 @@ const useCheckServerCacheStore = ({ uuid, setData }: CheckServerCacheParam) => {
 
     if (cached !== undefined) {
       setCacheHit(true);
+      setTierListUserID(cached.response.user_id);
       try {
         let tierListData: TierListData;
 

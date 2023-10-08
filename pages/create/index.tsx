@@ -1,27 +1,22 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { Box, Button, Center, Flex, Loader, Modal, Progress, Textarea, TextInput } from "@mantine/core";
+import { Box, Flex } from "@mantine/core";
 import { useFullscreen as useFullScreen } from "@mantine/hooks";
-import { IconDeviceFloppy } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { ChangeEvent, FormEvent, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import { DOM_TO_PNG_ID } from "../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../components/tierlist/helpers";
 import { useCreateTierListActionHelpers } from "../../components/tierlist/hooks/useCreateTierListActionHelpers";
 import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
+import { SaveTierListModal } from "../../components/tierlist/SaveTierListModal";
 import { Sidebar } from "../../components/tierlist/Sidebar";
 import {
   autoAnimateRowContainerSx,
   createPageMainContainerSx,
-  descriptionInputStyles,
   rowsContainerSx,
-  saveModalStyles,
-  submitSaveButtonSx,
-  titleInputStyles,
-  uploadProgressContainerSx,
 } from "../../components/tierlist/styles";
 import { TierListRow } from "../../components/tierlist/TierListRow";
 import { ActiveItemState } from "../../components/tierlist/types";
@@ -65,7 +60,7 @@ const Create: NextPage = () => {
         onDragEnd={dragHandler.end}
         sensors={sensors}
       >
-        <SaveImageModal
+        <SaveTierListModal
           opened={createTierListHelpers.modalOpened}
           showProgressBar={createTierListHelpers.showProgressBar}
           requestProgress={createTierListHelpers.requestProgress}
@@ -119,72 +114,3 @@ const Create: NextPage = () => {
 };
 
 export default Create;
-
-type SaveImageModalProps = {
-  opened: boolean;
-  onClose: () => void;
-  modalTitle: string;
-  tierListTitle: string;
-  titlePlaceholder: string;
-  requestProgress: number;
-  showProgressBar: boolean;
-  description: string;
-  onSave: (e: FormEvent) => void;
-  onChangeTitle: (e: ChangeEvent<HTMLInputElement>) => void;
-  onChangeDescription: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-};
-
-const SaveImageModal = ({
-  opened,
-  modalTitle,
-  titlePlaceholder,
-  requestProgress,
-  showProgressBar,
-  onClose: handleClose,
-  onSave: handleSave,
-  onChangeTitle: handleChangeTitle,
-  onChangeDescription: handleChangeDescription,
-  description,
-  tierListTitle,
-}: SaveImageModalProps) => {
-  const titleTooLong = tierListTitle.length > 80;
-  const descriptionTooLong = description.length > 100;
-
-  const invalidForm = titleTooLong || descriptionTooLong;
-
-  return (
-    <Modal centered opened={opened} onClose={handleClose} title={modalTitle} styles={saveModalStyles}>
-      <form onSubmit={handleSave}>
-        <TextInput
-          label="Title"
-          placeholder={titlePlaceholder}
-          styles={titleInputStyles}
-          onChange={handleChangeTitle}
-          disabled={showProgressBar}
-          error={titleTooLong && "Title must be 80 chars or less"}
-        />
-        <Textarea
-          label="Description (optional)"
-          styles={descriptionInputStyles}
-          onChange={handleChangeDescription}
-          disabled={showProgressBar}
-          value={description}
-          error={descriptionTooLong && "Description must be 100 chars or less"}
-        />
-        <Flex justify="space-between" gap="lg">
-          <Center sx={uploadProgressContainerSx}>
-            {showProgressBar && <Progress h={7} w="100%" mt="lg" striped animate value={requestProgress} />}
-          </Center>
-          <Button
-            type="submit"
-            leftIcon={!showProgressBar && <IconDeviceFloppy />}
-            disabled={showProgressBar || invalidForm}
-            sx={submitSaveButtonSx}
-          >
-            {showProgressBar ? <Loader size={23} color="gray.0" /> : "SAVE"}
-          </Button>
-        </Flex>
-      </form>
-    </Modal>
-  );
-};

@@ -158,6 +158,7 @@ export type SaveTierListResponse = {
   is_public: boolean;
   created_at: string;
   updated_at: string;
+  user_id: string;
 };
 
 type AddedImage =
@@ -203,4 +204,15 @@ export type UserTierListsResponse = PaginationMetadata & {
     updated_at: string;
     user_id: string;
   }>;
+};
+
+export type SaveTierListParam = {
+  payload: {
+    title: string;
+    data: TierListData;
+    thumbnail?: string;
+    description?: string;
+  };
+  requestProgress: number;
+  setRequestProgress: Dispatch<SetStateAction<number>>;
 };
