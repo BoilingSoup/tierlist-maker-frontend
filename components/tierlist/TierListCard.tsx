@@ -60,9 +60,9 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, reado
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-  const { mutate: deleteTierListMutation } = useDeleteTierListMutation();
+  const { mutate: deleteTierListMutation } = useDeleteTierListMutation(tierList.is_public);
 
-  const { mutate: updateTierListInfoMutation } = useUpdateTierListInfoMutation();
+  const { mutate: updateTierListInfoMutation } = useUpdateTierListInfoMutation(tierList.is_public);
 
   const handleCancel = () => {
     setTitle(tierList.title);

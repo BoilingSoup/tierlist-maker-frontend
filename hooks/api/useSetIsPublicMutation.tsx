@@ -22,6 +22,9 @@ export const useSetIsPublicMutation = () => {
       queryClient.resetQueries(queryKeys.publicTierListsIndex());
       queryClient.refetchQueries(queryKeys.publicTierListsIndex());
 
+      queryClient.resetQueries(queryKeys.recentTierLists());
+      queryClient.refetchQueries(queryKeys.recentTierLists());
+
       queryClient.refetchQueries(queryKeys.userTierLists(user?.id ?? ""));
     },
     onMutate({ tierListID, is_public }) {
