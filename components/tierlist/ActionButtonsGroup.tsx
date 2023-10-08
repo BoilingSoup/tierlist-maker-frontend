@@ -1,5 +1,12 @@
 import { Button, Flex, Loader, Modal } from "@mantine/core";
-import { IconDeviceFloppy, IconDownload, IconMaximize, IconMaximizeOff, IconWorldUpload } from "@tabler/icons-react";
+import {
+  IconDeviceFloppy,
+  IconDownload,
+  IconMaximize,
+  IconMaximizeOff,
+  IconStrikethrough,
+  IconWorldUpload,
+} from "@tabler/icons-react";
 import { ActionButton } from "./ActionButton";
 import { actionButtonsGroupSx, exportedImageStyle, modalButtonsContainerSx, modalStyles } from "./styles";
 import { FullScreenProp } from "./types";
@@ -9,14 +16,27 @@ import { useState } from "react";
 import { useIsDesktopScreen } from "../common/hooks/useIsDesktopScreen";
 import { useAuth } from "../../contexts/AuthProvider";
 import { getImageHandlers } from "./helpers";
+import { actionButtonsSx } from "./styles";
 
 type Props = {
   fullScreen: FullScreenProp;
   onSave: () => void;
   onPublish: () => void;
+  isOwner?: boolean;
+  isPublic?: boolean;
+  isTogglingPublicStatus?: boolean;
+  isLoading?: boolean;
 };
 
-export const ActionButtonsGroup = ({ fullScreen, onSave: handleSave, onPublish: handlePublish }: Props) => {
+export const ActionButtonsGroup = ({
+  fullScreen,
+  onSave: handleSave,
+  onPublish: handlePublish,
+  isOwner,
+  isPublic,
+  isTogglingPublicStatus,
+  isLoading,
+}: Props) => {
   const { user } = useAuth();
 
   const setIsExporting = useIsExportingStore((state) => state.setValue);
@@ -28,7 +48,7 @@ export const ActionButtonsGroup = ({ fullScreen, onSave: handleSave, onPublish: 
     close();
   };
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingExport, setIsLoadingExport] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
 
@@ -36,19 +56,22 @@ export const ActionButtonsGroup = ({ fullScreen, onSave: handleSave, onPublish: 
     setImgSrc,
     setIsDownloading,
     setIsExporting,
-    setIsLoading,
+    setIsLoading: setIsLoadingExport,
     openModal: open,
   });
 
   const { state: isFullScreen, toggle: toggleFullScreen } = fullScreen;
   const fullScreenIcon = isFullScreen ? <IconMaximizeOff size={23} /> : <IconMaximize size={23} />;
 
+  const canUnpublish = !isTogglingPublicStatus && isOwner && isPublic;
+  const canPublish = !isTogglingPublicStatus && isOwner && !isPublic;
+
   return (
     <>
       <ExportImageModal
         opened={opened}
         src={imgSrc}
-        isLoading={isLoading}
+        isLoading={isLoadingExport}
         isDownloading={isDownloading}
         onClose={handleCloseModal}
         onDownloadImage={handleDownloadImage}
@@ -59,7 +82,21 @@ export const ActionButtonsGroup = ({ fullScreen, onSave: handleSave, onPublish: 
         {user !== null && (
           <>
             <ActionButton icon={<IconDeviceFloppy size={23} />} text="Save" onClick={handleSave} />
-            <ActionButton icon={<IconWorldUpload size={23} />} text="Publish" onClick={handlePublish} />
+            {!isLoading && !isOwner && (
+              <ActionButton icon={<IconWorldUpload size={23} />} text={"Publish"} onClick={handlePublish} />
+            )}
+            {canUnpublish && (
+              <ActionButton icon={<IconStrikethrough size={23} />} text={"Unpublish"} onClick={handlePublish} />
+            )}
+            {canPublish && (
+              <ActionButton icon={<IconWorldUpload size={23} />} text={"Publish"} onClick={handlePublish} />
+            )}
+            {isLoading && <Button sx={actionButtonsSx(user)} disabled />}
+            {isTogglingPublicStatus && (
+              <Button sx={actionButtonsSx(user)} disabled>
+                <Loader size={25} />
+              </Button>
+            )}
           </>
         )}
       </Flex>

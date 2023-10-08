@@ -19,10 +19,18 @@ type Props = {
   onMoveAllImages: () => void;
   onClickSave: () => void;
   onClickPublish: () => void;
+  isOwner?: boolean;
+  isPublic?: boolean;
+  isTogglingPublicStatus?: boolean;
+  isLoading?: boolean;
 };
 
 export const Sidebar = ({
   isDeleting,
+  isOwner,
+  isPublic,
+  isLoading,
+  isTogglingPublicStatus,
   onToggleDelete: toggle,
   data,
   onAddImage: setImages,
@@ -31,7 +39,7 @@ export const Sidebar = ({
   onMoveAllImages: handleMoveAllImages,
   onDeleteAllImages: handleDeleteAllImages,
   onClickSave: handleClickSave,
-  onClickPublish: handleClickPublish
+  onClickPublish: handleClickPublish,
 }: Props) => {
   const transitionDuration = 115; // ms
   const { deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions({
@@ -85,7 +93,15 @@ export const Sidebar = ({
           isDeleting={isDeleting}
           onDelete={handleDeleteImage}
         />
-        <ActionButtonsGroup onSave={handleClickSave} onPublish={handleClickPublish} fullScreen={fullScreen} />
+        <ActionButtonsGroup
+          onSave={handleClickSave}
+          onPublish={handleClickPublish}
+          fullScreen={fullScreen}
+          isOwner={isOwner}
+          isPublic={isPublic}
+          isTogglingPublicStatus={isTogglingPublicStatus}
+          isLoading={isLoading}
+        />
       </Flex>
     </>
   );

@@ -18,9 +18,15 @@ export const useGetTierList = (uuid: string | undefined) => {
 
   const [data, setData] = useState<TierListData>({ sidebar: [], rows: [] });
   const [tierListUserID, setTierListUserID] = useState("");
+  const [isPublic, setIsPublic] = useState<boolean>();
 
-  const { cacheHit, serverData, setServerData } = useCheckServerCacheStore({ uuid, setData, setTierListUserID });
-  console.log({ cacheHit });
+  const { cacheHit, serverData, setServerData } = useCheckServerCacheStore({
+    uuid,
+    setData,
+    setTierListUserID,
+    setIsPublic,
+  });
+  // console.log({ cacheHit });
 
   const queryObj = useQuery(queryKeys.tierList(uuid!), getTierList(uuid!), {
     enabled: uuid !== undefined && !cacheHit,
@@ -37,6 +43,7 @@ export const useGetTierList = (uuid: string | undefined) => {
         setServerData(tierListData);
         setData(tierListData);
         setTierListUserID(response.user_id);
+        setIsPublic(response.is_public);
       } catch (e) {
         showSomethingWentWrongNotification(theme);
         router.push("/");
@@ -49,7 +56,7 @@ export const useGetTierList = (uuid: string | undefined) => {
 
   const diff = checkForDiff({ clientData: data, serverData });
 
-  return { data, setData, queryObj, diff, tierListUserID };
+  return { data, setData, queryObj, diff, tierListUserID, isPublic, setIsPublic };
 };
 
 function getTierList(id: string) {
@@ -63,9 +70,10 @@ type CheckServerCacheParam = {
   uuid: string | undefined;
   setData: Dispatch<SetStateAction<TierListData>>;
   setTierListUserID: Dispatch<SetStateAction<string>>;
+  setIsPublic: Dispatch<SetStateAction<boolean | undefined>>;
 };
 
-const useCheckServerCacheStore = ({ uuid, setData, setTierListUserID }: CheckServerCacheParam) => {
+const useCheckServerCacheStore = ({ uuid, setData, setTierListUserID, setIsPublic }: CheckServerCacheParam) => {
   const theme = useMantineTheme();
   const router = useRouter();
 
@@ -83,6 +91,7 @@ const useCheckServerCacheStore = ({ uuid, setData, setTierListUserID }: CheckSer
     if (cached !== undefined) {
       setCacheHit(true);
       setTierListUserID(cached.response.user_id);
+      setIsPublic(cached.response.is_public);
       try {
         let tierListData: TierListData;
 

@@ -236,6 +236,10 @@ export const actionButtonsSx =
       height: user ? "50%" : "100%",
       borderRadius: 0,
     },
+    ":disabled": {
+      background: colors.dark[6],
+      border: `2px solid ${colors.dark[4]}`,
+    },
   });
 
 export const getRowSettingsModalStyles = ({
