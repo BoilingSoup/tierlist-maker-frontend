@@ -1,4 +1,4 @@
-import { DispatchWithoutAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 type Param = {
   checked: boolean;
@@ -25,7 +25,7 @@ export const useToggleDeleteTransitions = ({ checked, duration }: Param) => {
     }
 
     return () => clearTimeout(timer);
-  }, [checked]);
+  }, [checked, duration]);
 
   return { checked, deleteAllVisible, moveAllVisible };
 };
