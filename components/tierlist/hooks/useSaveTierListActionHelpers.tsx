@@ -37,7 +37,13 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
     handleChangeDescription: changeDescription,
   } = useTierListInfo();
 
-  const { opened: modalOpened, close: closeModal, handleOpenSaveMenu } = useHandleOpenSaveMenu(setTitlePlaceholder);
+  const {
+    opened: modalOpened,
+    close: closeModal,
+    handleOpenSaveMenu: openSaveMenu,
+    handleOpenPublishMenu: openPublishMenu,
+    actionType,
+  } = useHandleOpenSaveMenu(setTitlePlaceholder);
 
   const { cloneAndCreateTierListMutation, isLoading } = useCloneAndCreateTierListMutation({
     title: tierListTitle,
@@ -45,11 +51,12 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
     description,
     tierListData: data,
     closeModal,
+    actionType,
   });
 
   const { mutate: saveTierListMutation } = useSaveTierListMutation();
 
-  const handleSaveOwnTierList = () => {
+  const saveOwnTierList = () => {
     const isOwner = tierListUserID === user?.id;
 
     if (uuid === undefined || !isOwner) {
@@ -82,7 +89,12 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
     });
   };
 
-  const modalTitle = isLoading ? "Saving..." : "Save to Account";
+  let modalTitle: string;
+  if (actionType === "save") {
+    modalTitle = isLoading ? "Saving..." : "Save to Account";
+  } else {
+    modalTitle = isLoading ? "Saving..." : "Save & Publish";
+  }
 
   const isMounted = useIsMounted();
   const showSaveOverlay = isSaving && isMounted;
@@ -91,8 +103,9 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
 
   return {
     isSaving,
-    handleSaveOwnTierList,
-    handleOpenSaveMenu,
+    saveOwnTierList,
+    openSaveMenu,
+    openPublishMenu,
     requestProgress,
     modalOpened,
     closeModal,

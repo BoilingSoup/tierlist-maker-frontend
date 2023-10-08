@@ -40,7 +40,7 @@ export const useSetIsPublicMutation = () => {
       showErrorNotification({
         theme,
         title: "Error",
-        message: "Failed to make tier list public. Try refreshing the page.",
+        message: "Failed to change tier list status. Try refreshing the page.",
       });
       setSwitchState(changed.tierList.is_public);
 

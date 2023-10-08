@@ -30,6 +30,14 @@ export const useSaveTierListMutation = () => {
 
   return useMutation(handleDiffMetadata, {
     onSuccess: (res, { requestProgress, setRequestProgress, setData }) => {
+      if (res.is_public) {
+        resetQueries(queryKeys.recentTierLists());
+        refetchQueries(queryKeys.recentTierLists());
+
+        resetQueries(queryKeys.publicTierListsIndex());
+        refetchQueries(queryKeys.publicTierListsIndex());
+      }
+
       const duration = 80; //ms
       tween(requestProgress, DONE, duration, (value) => {
         setRequestProgress(value);
@@ -59,9 +67,6 @@ export const useSaveTierListMutation = () => {
       }, 500);
     },
     onSettled: (_, __, { setIsSaving, setRequestProgress }) => {
-      resetQueries(queryKeys.publicTierListsIndex());
-      refetchQueries(queryKeys.publicTierListsIndex());
-
       resetQueries(queryKeys.userTierLists(userID));
       refetchQueries(queryKeys.userTierLists(userID));
 
