@@ -11,6 +11,7 @@ import { TierListCard } from "../../components/tierlist/TierListCard";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
+import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 
 const Browse: NextPage = () => {
   const {
@@ -19,6 +20,7 @@ const Browse: NextPage = () => {
   } = useGetInfinitePublicTierLists();
 
   useGetInfiniteUserTierLists();
+  useRecentTierList();
 
   const pages = data?.pages;
 

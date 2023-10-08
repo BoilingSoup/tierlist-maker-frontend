@@ -22,10 +22,12 @@ import { SITE_NAME } from "../../config/config";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
 import { useLocalTierListStore } from "../../hooks/store/useLocalTierListStore";
+import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 
 const Create: NextPage = () => {
   useGetInfinitePublicTierLists();
   useGetInfiniteUserTierLists();
+  useRecentTierList();
 
   const { fullScreen, sensors, animateChildren } = useTierListDomHelpers();
 

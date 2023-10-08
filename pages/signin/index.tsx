@@ -8,12 +8,14 @@ import { OAuthIconsGroup } from "../../components/forms/OAuthIconsGroup";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useRedirectIfAuthenticated } from "../../components/common/hooks/useRedirectIfAuthenticated";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
+import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 
 const SignIn: NextPage = () => {
   const { user, isLoading } = useAuth();
   useRedirectIfAuthenticated({ user, isLoading, redirectTo: "/" });
 
   useGetInfinitePublicTierLists();
+  useRecentTierList();
 
   return (
     <Center sx={formPageContainerSx}>

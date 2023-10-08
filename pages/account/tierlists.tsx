@@ -14,12 +14,14 @@ import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollL
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
+import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 
 const TierLists: NextPage = () => {
   const { user, isLoading: isLoadingUser } = useAuth();
   useRedirectIfUnauthenticated({ user, isLoading: isLoadingUser, redirectTo: "/" });
 
   useGetInfinitePublicTierLists();
+  useRecentTierList();
 
   const {
     lastTierListRef,
