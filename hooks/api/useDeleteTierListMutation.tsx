@@ -9,7 +9,7 @@ import { queryKeys } from "../../lib/queryKeys";
 import { getTierListDataFromCache } from "./helpers";
 import { TierListCacheChangeInfo } from "./types";
 
-export const useDeleteTierListMutation = () => {
+export const useDeleteTierListMutation = (isPublic: boolean) => {
   const { user } = useAuth();
   const theme = useMantineTheme();
   const queryClient = useQueryClient();
@@ -18,8 +18,14 @@ export const useDeleteTierListMutation = () => {
 
   return useMutation(deleteTierList, {
     onSuccess() {
+      if (!isPublic) {
+        return;
+      }
       queryClient.resetQueries(queryKeys.publicTierListsIndex());
       queryClient.refetchQueries(queryKeys.publicTierListsIndex());
+
+      queryClient.resetQueries(queryKeys.recentTierLists());
+      queryClient.refetchQueries(queryKeys.recentTierLists());
     },
     onMutate(tierListID) {
       const cacheData = queryClient.getQueryData<InfiniteData<UserTierListsResponse>>(

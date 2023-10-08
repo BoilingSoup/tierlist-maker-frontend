@@ -10,7 +10,7 @@ import { queryKeys } from "../../lib/queryKeys";
 import { getTierListDataFromCache } from "./helpers";
 import { TierListCacheChangeInfo } from "./types";
 
-export const useUpdateTierListInfoMutation = () => {
+export const useUpdateTierListInfoMutation = (isPublic: boolean) => {
   const { user } = useAuth();
   const theme = useMantineTheme();
 
@@ -19,8 +19,15 @@ export const useUpdateTierListInfoMutation = () => {
 
   return useMutation(updateTierListInfo, {
     onSuccess() {
+      if (!isPublic) {
+        return;
+      }
+
       queryClient.resetQueries(queryKeys.publicTierListsIndex());
       queryClient.refetchQueries(queryKeys.publicTierListsIndex());
+
+      queryClient.resetQueries(queryKeys.recentTierLists());
+      queryClient.refetchQueries(queryKeys.recentTierLists());
     },
     onMutate({ tierListID, title, description }) {
       const cacheData = queryClient.getQueryData<InfiniteData<UserTierListsResponse>>(
