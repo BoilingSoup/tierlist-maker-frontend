@@ -1,7 +1,12 @@
-import { Box, Flex } from "@mantine/core";
+import { Box, Center, Flex, Text } from "@mantine/core";
 import type { NextPage } from "next";
-import { NAVBAR_HEIGHT } from "../../components/common/styles";
 import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollLoading";
+import {
+  noPublicTierListsContainerSx,
+  noPublicTierListsTextSx,
+  publicTierListsFlexSx,
+  publicTierListsMainContainerSx,
+} from "../../components/tierlist/styles";
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
@@ -20,29 +25,15 @@ const Browse: NextPage = () => {
   const noPublicTierLists = pages !== undefined && pages[0].data.length === 0;
 
   return (
-    <Box
-      sx={(theme) => ({
-        background: theme.colors.dark[7],
-        borderTop: `1px solid ${theme.colors.dark[3]}`,
-        height: `calc(100vh - ${NAVBAR_HEIGHT})`,
-        color: "white",
-        overflowY: "scroll",
-      })}
-    >
-      <Flex
-        sx={(theme) => ({
-          flexWrap: "wrap",
-          gap: theme.spacing.lg,
-          justifyContent: "center",
-          ":first-of-type": {
-            marginTop: theme.spacing.xl,
-          },
-          ":last-child": {
-            marginBottom: theme.spacing.xl,
-          },
-        })}
-      >
+    <Box sx={publicTierListsMainContainerSx}>
+      <Flex sx={publicTierListsFlexSx}>
         {isLoading && <TierListCardsSkeleton count={40} />}
+
+        {noPublicTierLists && (
+          <Center sx={noPublicTierListsContainerSx}>
+            <Text sx={noPublicTierListsTextSx}>No public tier lists found!</Text>
+          </Center>
+        )}
 
         {pages?.map((pg, i) => {
           const isLastPage = pages.length - 1 === i;

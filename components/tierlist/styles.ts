@@ -360,6 +360,11 @@ export const saveModalStyles: Styles<ModalBaseStylesNames, never> = (theme: Mant
   root: { background: theme.colors.dark[4] },
   header: { background: theme.colors.dark[4], color: "white" },
   body: { background: theme.colors.dark[4] },
+  close: {
+    ":hover": {
+      background: theme.colors.dark[3],
+    },
+  },
 });
 
 export const titleInputStyles: Styles<TextInputStylesNames, Record<string, any>> = (theme: MantineTheme) => ({
@@ -541,4 +546,33 @@ export const getTierListCardTitleInputStyles = (
 export const tierListCardMidSectionSx = ({ spacing }: MantineTheme): CSSObject => ({
   alignItems: "center",
   gap: spacing.lg,
+});
+
+export const noPublicTierListsContainerSx = (): CSSObject => ({
+  height: `calc(100vh - ${NAVBAR_HEIGHT} - ${NAVBAR_HEIGHT})`,
+});
+
+export const noPublicTierListsTextSx = ({ fontSizes }: MantineTheme): CSSObject => ({
+  textAlign: "center",
+  fontSize: `calc(${fontSizes.lg} + ${fontSizes.lg})`,
+});
+
+export const publicTierListsFlexSx = ({ spacing }: MantineTheme): CSSObject => ({
+  flexWrap: "wrap",
+  gap: spacing.lg,
+  justifyContent: "center",
+  ":first-of-type": {
+    marginTop: spacing.xl,
+  },
+  ":last-child": {
+    marginBottom: spacing.xl,
+  },
+});
+
+export const publicTierListsMainContainerSx = ({ colors }: MantineTheme): CSSObject => ({
+  background: colors.dark[7],
+  borderTop: `1px solid ${colors.dark[3]}`,
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+  color: "white",
+  overflowY: "scroll",
 });
