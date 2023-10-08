@@ -1028,6 +1028,7 @@ type ReconstructDeps = {
   placeholder: string;
   tierListData: TierListData;
   description?: string;
+  isPublic: boolean;
 };
 
 /**
@@ -1040,12 +1041,14 @@ export function reconstructPayload({
   placeholder,
   tierListData,
   description,
+  isPublic,
 }: ReconstructDeps): SaveTierListParam["payload"] {
   const payload: SaveTierListParam["payload"] = {
     title: title.trim() === "" ? placeholder : title.trim(),
     data: JSON.parse(JSON.stringify(tierListData)) as TierListData,
-    thumbnail: undefined,
+    thumbnail: "",
     description,
+    is_public: isPublic,
   };
 
   const { order, lengths } = metadata;

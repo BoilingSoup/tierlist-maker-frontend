@@ -1,7 +1,7 @@
 import { FormEvent, useReducer, useState } from "react";
 import { useCreateTierListMutation } from "../../../hooks/api/useCreateTierListMutation";
 import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
-import { TierListData } from "../types";
+import { Actions, TierListData } from "../types";
 import { useHandleOpenSaveMenu } from "./useHandleOpenSaveMenu";
 import { useTierListInfo } from "./useTierListInfo";
 
@@ -19,6 +19,8 @@ export const useCreateTierListActionHelpers = (data: TierListData) => {
     opened: modalOpened,
     close: closeModal,
     handleOpenSaveMenu: openSaveMenu,
+    actionType,
+    handleOpenPublishMenu: openPublishMenu,
   } = useHandleOpenSaveMenu(setTitlePlaceholder);
 
   const {
@@ -30,14 +32,21 @@ export const useCreateTierListActionHelpers = (data: TierListData) => {
     titlePlaceholder,
     description,
     data,
+    actionType,
   });
 
-  const modalTitle = isLoading ? "Saving..." : "Save to Account";
-
+  let modalTitle: string;
+  if (actionType === "save") {
+    modalTitle = isLoading ? "Saving..." : "Save to Account";
+  } else {
+    modalTitle = isLoading ? "Saving..." : "Save & Publish";
+  }
   const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
   return {
     openSaveMenu,
+    openPublishMenu,
+    actionType,
     changeTitle,
     changeDescription,
     save,
@@ -61,6 +70,7 @@ type CreateTierListMutationHelpersParam = {
   titlePlaceholder: string;
   description?: string;
   data: TierListData;
+  actionType: Actions | undefined;
 };
 
 const useCreateTierListMutationHelpers = ({
@@ -68,11 +78,13 @@ const useCreateTierListMutationHelpers = ({
   titlePlaceholder,
   description,
   data,
+  actionType,
 }: CreateTierListMutationHelpersParam) => {
   const { createTierListMutation, isLoading } = useCreateTierListMutation({
     title,
     placeholder: titlePlaceholder,
     description,
+    actionType,
   });
 
   const [requestProgress, setRequestProgress] = useState(0);

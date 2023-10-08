@@ -18,6 +18,7 @@ type Props = {
   onDeleteAllImages: () => void;
   onMoveAllImages: () => void;
   onClickSave: () => void;
+  onClickPublish: () => void;
 };
 
 export const Sidebar = ({
@@ -30,6 +31,7 @@ export const Sidebar = ({
   onMoveAllImages: handleMoveAllImages,
   onDeleteAllImages: handleDeleteAllImages,
   onClickSave: handleClickSave,
+  onClickPublish: handleClickPublish
 }: Props) => {
   const transitionDuration = 115; // ms
   const { deleteAllVisible, moveAllVisible } = useToggleDeleteTransitions({
@@ -83,7 +85,7 @@ export const Sidebar = ({
           isDeleting={isDeleting}
           onDelete={handleDeleteImage}
         />
-        <ActionButtonsGroup onSave={handleClickSave} fullScreen={fullScreen} />
+        <ActionButtonsGroup onSave={handleClickSave} onPublish={handleClickPublish} fullScreen={fullScreen} />
       </Flex>
     </>
   );
