@@ -502,13 +502,17 @@ export const grayButtonHoverSx = ({ colors }: MantineTheme): CSSObject => ({
   },
 });
 
-export const noSavedTierListsContainerSx = (): CSSObject => ({
+export const noSavedTierListsContainerSx = ({ breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
-  height: `calc(100% - ${NAVBAR_HEIGHT})`,
+  height: `calc(100vh - ${NAVBAR_HEIGHT})`,
+  [`@media (max-width: ${breakpoints.lg})`]: {
+    height: `calc(100vh - ${NAVBAR_HEIGHT} - ${NAVBAR_HEIGHT} - ${NAVBAR_HEIGHT})`,
+  },
 });
 
 export const noSavedTierListsTextSx = ({ fontSizes }: MantineTheme): CSSObject => ({
   fontSize: `calc(${fontSizes.lg} + ${fontSizes.lg})`,
+  textAlign: "center",
   color: "white",
 });
 
