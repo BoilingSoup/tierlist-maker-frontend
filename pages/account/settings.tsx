@@ -1,4 +1,16 @@
-import { Accordion, Container, Divider, Flex, Loader, Skeleton, Stack, Text, useMantineTheme } from "@mantine/core";
+import {
+  Accordion,
+  Button,
+  Center,
+  Container,
+  Divider,
+  Flex,
+  Loader,
+  Skeleton,
+  Stack,
+  Text,
+  useMantineTheme,
+} from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import type { NextPage } from "next";
 import { useState } from "react";
@@ -24,6 +36,7 @@ import {
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
 import { useAuth } from "../../contexts/AuthProvider";
+import { useDeleteAccountMutation } from "../../hooks/api/useDeleteAccountMutation";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
 import { useRecentTierList } from "../../hooks/api/useRecentTierList";
@@ -44,6 +57,8 @@ const Settings: NextPage = () => {
   const [activeAccordionPanel, setActiveAccordionPanel] = useState<string[]>([]);
 
   const { mutate: resendVerification, isLoading: isMutating } = useResendVerificationEmail();
+
+  const { mutate: deleteAccountMutation } = useDeleteAccountMutation();
 
   return (
     <AccountNavShell>
@@ -104,7 +119,14 @@ const Settings: NextPage = () => {
             )}
             <Accordion.Item value="item-2">
               <Accordion.Control>Delete Account</Accordion.Control>
-              <Accordion.Panel>stuff here</Accordion.Panel>
+              <Accordion.Panel>
+                <Stack mt="xl" sx={{ alignItems: "center" }}>
+                  <Text color="yellow.5">This action can not be undone. &nbsp;Are you sure?</Text>
+                  <Button color="red.9" onClick={() => deleteAccountMutation()}>
+                    Delete Account
+                  </Button>
+                </Stack>
+              </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
         )}

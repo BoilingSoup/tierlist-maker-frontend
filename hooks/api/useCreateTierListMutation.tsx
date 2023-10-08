@@ -74,7 +74,8 @@ export const useCreateTierListMutation = ({ title, placeholder, description, act
         resetQueries(queryKeys.publicTierListsIndex());
         refetchQueries(queryKeys.publicTierListsIndex());
 
-        // TODO: refetch recent tier lists
+        resetQueries(queryKeys.recentTierLists());
+        refetchQueries(queryKeys.recentTierLists());
       }
 
       if (userID !== undefined) {

@@ -536,7 +536,12 @@ export type GetDragHandlersParam = {
   enabled?: boolean;
 };
 
-export const getDragHandlers = ({ setActiveItem, data, setData, enabled }: GetDragHandlersParam): DragHandlers => {
+export const getDragHandlers = ({
+  setActiveItem,
+  data,
+  setData,
+  enabled = true,
+}: GetDragHandlersParam): DragHandlers => {
   if (!enabled) {
     return {
       start(event: DragStartEvent) {},
@@ -583,7 +588,7 @@ export type GetRowHandlersParam = {
   enabled?: boolean;
 };
 
-export const getRowHandlers = ({ data, setData, enabled }: GetRowHandlersParam): RowHandlers => {
+export const getRowHandlers = ({ data, setData, enabled = true }: GetRowHandlersParam): RowHandlers => {
   if (!enabled) {
     return {
       moveRowUp: (rowID: string) => {},
