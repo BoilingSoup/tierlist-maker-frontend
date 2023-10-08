@@ -48,14 +48,6 @@ export const landingImgLastRowSx = (theme: MantineTheme): CSSObject => ({
   borderBottomRightRadius: landingImgColorBoxBorderRadius,
 });
 
-// export const carouselGeneralSx: CSSObject = {
-//   color: "white",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   marginBlock: "2rem",
-// };
-
 export const CAROUSEL_SLIDE_SIZE = "80%";
 export const CAROUSEL_THUMBNAIL_BORDER_RADIUS = 8; // px
 
@@ -67,17 +59,33 @@ export const recentTierListSkeletonSx = (): CSSObject => ({
   borderRadius: CAROUSEL_THUMBNAIL_BORDER_RADIUS,
 });
 
-// export const carouselLoadingSx = (): CSSObject => ({
-//   ...carouselGeneralSx,
-// });
+export const carouselSx = (): CSSObject => ({
+  margin: "0 auto",
+});
 
-// export const carouselErrorSx = (): CSSObject => ({
-//   ...carouselGeneralSx,
-// });
+export const carouselSlideSx = (): CSSObject => ({
+  maxWidth: THUMBNAIL_WIDTH,
+});
 
-// export const carouselSlideSx = (): CSSObject => ({
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   color: "white",
-// })
+export const carouselSlideStackSx = (): CSSObject => ({
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+});
+
+export const carouselSlideWrapperSx = ({ colors, radius }: MantineTheme): CSSObject => ({
+  background: colors.dark[5],
+  borderRadius: radius.md,
+  padding: "2rem",
+  cursor: "pointer",
+});
+
+export const recentGridContainerSx: CSSObject = { maxWidth: "80%", color: "white" };
+
+export const recentGridItemWrapperSx = ({ colors, radius }: MantineTheme): CSSObject => ({
+  background: colors.dark[5],
+  borderRadius: radius.md,
+  padding: "2rem",
+  transition: "transform 200ms ease",
+  ":hover": { cursor: "pointer", transform: "scale(1.04)" },
+});

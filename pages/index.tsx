@@ -29,9 +29,10 @@ const junk2 = ({ colors }: MantineTheme): CSSObject => ({
 });
 
 const tbd = (): CSSObject => ({
-  fontSize: "clamp(1.5rem, 6vw, 2rem)",
+  fontSize: "2.5rem",
   color: "white",
-  margin: "80px",
+  marginTop: "280px",
+  marginBottom: "220px",
   textAlign: "center",
   // paddingTop: "20px",
 });
@@ -67,9 +68,7 @@ const Home: NextPage = () => {
         <Text component="h2" sx={tbd}>
           Recent Tier Lists
         </Text>
-        {width < breakpoint && (
-          <RecentTierListCarousel data={data} isError={isError} error={error} isLoading={isLoading} />
-        )}
+        {width < breakpoint && <RecentTierListCarousel data={data} isLoading={isLoading} />}
         {width >= breakpoint && (
           <RecentTierListGrid data={data} isError={isError} error={error} isLoading={isLoading} />
         )}

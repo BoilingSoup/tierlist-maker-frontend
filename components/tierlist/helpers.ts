@@ -1013,7 +1013,7 @@ export function capitalizeSentences(text: string): string {
   const capitalizedArr = sentences.map((sentence) =>
     sentence[0] !== undefined ? sentence[0].toUpperCase() + sentence.slice(1) : ""
   );
-  const capitalizedStr = capitalizedArr.join(" ");
+  const capitalizedStr = capitalizedArr.join(" ").trim();
 
   return lastCharIsPunctuation(capitalizedStr) ? capitalizedStr : capitalizedStr + ".";
 }

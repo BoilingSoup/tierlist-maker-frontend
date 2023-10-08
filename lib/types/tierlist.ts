@@ -9,17 +9,3 @@ export type TierListDisplayData = {
     id: string;
   };
 };
-
-// these fields don't exist in display data
-//
-// tiers: {
-//   tier: {
-//     label: string;
-//     color: string;
-//   };
-//   items: {
-//     src: string;
-//     text?: string;
-//     alt?: string;
-//   }[];
-// }[];
