@@ -79,7 +79,7 @@ export const ActionButtonsGroup = ({
       <Flex sx={actionButtonsGroupSx}>
         <ActionButton icon={<IconDownload size={23} />} text="Export PNG" onClick={handleExportPreview} />
         <ActionButton icon={fullScreenIcon} text="Full Screen" onClick={toggleFullScreen} />
-        {user !== null && (
+        {user?.email_verified && (
           <>
             <ActionButton icon={<IconDeviceFloppy size={23} />} text="Save" onClick={handleSave} />
             {!isLoading && !isOwner && (

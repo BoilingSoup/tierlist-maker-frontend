@@ -235,6 +235,6 @@ export const footerContainerSx = ({ spacing, colors }: MantineTheme): CSSObject 
   color: "white",
   alignItems: "center",
   justifyContent: "center",
-  paddingTop: `calc(${spacing.xl} + ${spacing.sm})`,
+  paddingTop: `calc(${spacing.xl} + ${spacing.lg})`,
   paddingBottom: `calc(${spacing.xl} + ${spacing.sm})`,
 });

@@ -1,5 +1,5 @@
 import { SortableContext } from "@dnd-kit/sortable";
-import { ActionIcon, Center, Flex } from "@mantine/core";
+import { ActionIcon, Center, Flex, Text } from "@mantine/core";
 import { useDisclosure, useViewportSize } from "@mantine/hooks";
 import { IconChevronDown, IconChevronUp, IconSettingsFilled } from "@tabler/icons-react";
 import { useIsExportingStore } from "../../hooks/store/useIsExportingStore";
@@ -74,7 +74,13 @@ export const TierListRow = ({
       />
 
       <Flex sx={rowContainerSx(viewportHeight)}>
-        <Center sx={rowLabelContainerSx(size, color)}>{label}</Center>
+        <Center sx={rowLabelContainerSx(size, color)}>
+          <Text
+            sx={(theme) => ({ fontSize: `calc(${theme.fontSizes.lg} + ${theme.fontSizes.lg})`, fontWeight: "bold" })}
+          >
+            {label}
+          </Text>
+        </Center>
         <SortableContext items={items.map((item) => item.id)}>
           <Flex sx={rowImagesContainerSx} ref={setNodeRef}>
             {items.map((item) => (

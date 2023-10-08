@@ -217,7 +217,7 @@ export const actionButtonsSx =
   ({ colors, breakpoints }: MantineTheme): CSSObject => ({
     flexDirection: "column",
     fontSize: "0.6rem",
-    width: user ? "25%" : "50%",
+    width: user?.email_verified ? "25%" : "50%",
     height: "100%",
     color: "white",
     backgroundColor: colors.dark[6],
@@ -233,7 +233,7 @@ export const actionButtonsSx =
     },
     [`@media (min-width:${breakpoints.lg})`]: {
       width: "50%",
-      height: user ? "50%" : "100%",
+      height: user?.email_verified ? "50%" : "100%",
       borderRadius: 0,
     },
     ":disabled": {
@@ -336,7 +336,11 @@ export const rowContainerSx =
   });
 
 export const rowLabelContainerSx = (size: ImageSize, color: string) => (): CSSObject => ({
+  textAlign: "center",
+  whiteSpace: "initial",
+  wordWrap: "break-word",
   minWidth: "100px",
+  maxWidth: size,
   width: size,
   backgroundColor: color,
   color: "black",
