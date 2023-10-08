@@ -10,7 +10,7 @@ import { queryKeys } from "../../lib/queryKeys";
 import { getTierListDataFromCache } from "./helpers";
 import { TierListCacheChangeInfo } from "./types";
 
-export const useSetIsPublicMutation = () => {
+export const useSetIsPublicMutation = (setIsPublic?: Dispatch<SetStateAction<boolean | undefined>>) => {
   const theme = useMantineTheme();
   const { user } = useAuth();
 
@@ -18,7 +18,7 @@ export const useSetIsPublicMutation = () => {
   let changed: TierListCacheChangeInfo;
 
   return useMutation(updateIsPublicStatus, {
-    onSuccess() {
+    onSuccess(res) {
       queryClient.resetQueries(queryKeys.publicTierListsIndex());
       queryClient.refetchQueries(queryKeys.publicTierListsIndex());
 
@@ -26,6 +26,10 @@ export const useSetIsPublicMutation = () => {
       queryClient.refetchQueries(queryKeys.recentTierLists());
 
       queryClient.refetchQueries(queryKeys.userTierLists(user?.id ?? ""));
+
+      if (setIsPublic) {
+        setIsPublic(res.is_public);
+      }
     },
     onMutate({ tierListID, is_public }) {
       const cacheData = queryClient.getQueryData<InfiniteData<UserTierListsResponse>>(
@@ -42,7 +46,10 @@ export const useSetIsPublicMutation = () => {
         title: "Error",
         message: "Failed to change tier list status. Try refreshing the page.",
       });
-      setSwitchState(changed.tierList.is_public);
+
+      if (setSwitchState) {
+        setSwitchState(changed.tierList.is_public);
+      }
 
       queryClient.setQueryData(
         queryKeys.userTierLists(user?.id ?? ""),
@@ -55,7 +62,7 @@ export const useSetIsPublicMutation = () => {
 type UpdateIsPublicParam = {
   is_public: boolean;
   tierListID: string;
-  setSwitchState: Dispatch<SetStateAction<boolean>>;
+  setSwitchState?: Dispatch<SetStateAction<boolean>>;
 };
 
 async function updateIsPublicStatus({ is_public, tierListID }: UpdateIsPublicParam) {

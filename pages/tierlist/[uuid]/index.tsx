@@ -46,9 +46,12 @@ const TierList: NextPage = () => {
     tierListUserID,
     queryObj: { isLoading },
     diff,
+    isPublic,
+    setIsPublic,
   } = useGetTierList(uuid);
 
   const isOwner = user?.id === tierListUserID;
+
   useConfirmationOnExitIfUnsavedChanges({ diff, enabled: isOwner });
 
   usePasteEvent(setData);
@@ -74,6 +77,8 @@ const TierList: NextPage = () => {
     diff,
     uuid,
     tierListUserID,
+    isPublic,
+    setIsPublic,
   });
 
   return (
@@ -138,7 +143,11 @@ const TierList: NextPage = () => {
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
             onClickSave={isOwner ? saveTierListHelpers.saveOwnTierList : saveTierListHelpers.openSaveMenu}
-            onClickPublish={saveTierListHelpers.openPublishMenu}
+            onClickPublish={isOwner ? saveTierListHelpers.togglePublish : saveTierListHelpers.openPublishMenu}
+            isOwner={isOwner}
+            isPublic={isPublic}
+            isTogglingPublicStatus={saveTierListHelpers.isMutatingPublicStatus}
+            isLoading={isLoading}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

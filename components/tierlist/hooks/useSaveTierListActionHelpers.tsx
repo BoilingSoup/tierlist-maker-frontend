@@ -9,6 +9,7 @@ import { useIsMounted } from "../../common/hooks/useIsMounted";
 import { DiffData, TierListData } from "../types";
 import { useHandleOpenSaveMenu } from "./useHandleOpenSaveMenu";
 import { useTierListInfo } from "./useTierListInfo";
+import { useSetIsPublicMutation } from "../../../hooks/api/useSetIsPublicMutation";
 
 type Param = {
   uuid: string | undefined;
@@ -16,9 +17,19 @@ type Param = {
   setData: Dispatch<SetStateAction<TierListData>>;
   diff: DiffData;
   tierListUserID: string;
+  isPublic: boolean | undefined;
+  setIsPublic: Dispatch<SetStateAction<boolean | undefined>>;
 };
 
-export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierListUserID }: Param) => {
+export const useSaveTierListActionHelpers = ({
+  uuid,
+  data,
+  setData,
+  diff,
+  tierListUserID,
+  isPublic,
+  setIsPublic,
+}: Param) => {
   const theme = useMantineTheme();
   const router = useRouter();
   const { user } = useAuth();
@@ -78,6 +89,16 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
     });
   };
 
+  const { mutate: setIsPublicMutation, isLoading: isMutatingPublicStatus } = useSetIsPublicMutation(setIsPublic);
+
+  const togglePublish = () => {
+    if (uuid === undefined || isPublic === undefined) {
+      return;
+    }
+
+    setIsPublicMutation({ tierListID: uuid, is_public: !isPublic });
+  };
+
   const save = (e: FormEvent) => {
     e.preventDefault();
 
@@ -120,5 +141,7 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
     showSaveOverlay,
     deleteIsToggled,
     toggleDelete,
+    togglePublish,
+    isMutatingPublicStatus,
   };
 };
