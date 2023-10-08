@@ -37,7 +37,7 @@ export const RecentTierListGrid = ({ data, isLoading }: Props) => {
     <Container sx={recentGridContainerSx}>
       <Grid gutter={100}>
         {data?.map((item) => (
-          <RecentTierListGridItem item={item} />
+          <RecentTierListGridItem key={item.id} item={item} />
         ))}
       </Grid>
     </Container>
