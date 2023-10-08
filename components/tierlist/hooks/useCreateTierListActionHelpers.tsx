@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useReducer, useState } from "react";
 import { useCreateTierListMutation } from "../../../hooks/api/useCreateTierListMutation";
 import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
 import { TierListData } from "../types";
@@ -34,6 +34,8 @@ export const useCreateTierListActionHelpers = (data: TierListData) => {
 
   const modalTitle = isLoading ? "Saving..." : "Save to Account";
 
+  const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
+
   return {
     openSaveMenu,
     changeTitle,
@@ -47,6 +49,8 @@ export const useCreateTierListActionHelpers = (data: TierListData) => {
     requestProgress,
     modalOpened,
     closeModal,
+    deleteIsToggled,
+    toggleDelete,
   };
 };
 

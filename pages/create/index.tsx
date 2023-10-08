@@ -1,14 +1,12 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Box, Flex } from "@mantine/core";
-import { useFullscreen as useFullScreen } from "@mantine/hooks";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import { DOM_TO_PNG_ID } from "../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../components/tierlist/helpers";
 import { useCreateTierListActionHelpers } from "../../components/tierlist/hooks/useCreateTierListActionHelpers";
-import { useDndSensors } from "../../components/tierlist/hooks/useDndSensors";
+import { useTierListDomHelpers } from "../../components/tierlist/hooks/useTierListDomHelpers";
 import { usePasteEvent } from "../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../components/tierlist/image-area/OverlayImage";
 import { SaveTierListModal } from "../../components/tierlist/SaveTierListModal";
@@ -29,9 +27,7 @@ const Create: NextPage = () => {
   useGetInfinitePublicTierLists();
   useGetInfiniteUserTierLists();
 
-  const fullScreen = useFullScreen();
-  const sensors = useDndSensors();
-  const [animateChildren] = useAutoAnimate();
+  const { fullScreen, sensors, animateChildren } = useTierListDomHelpers();
 
   const [data, setData] = [
     useLocalTierListStore((state) => state.data),
@@ -43,8 +39,6 @@ const Create: NextPage = () => {
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
   const rowHandler = getRowHandlers({ setData, data });
   const dragHandler = getDragHandlers({ data, setData, setActiveItem });
-
-  const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
 
   const createTierListHelpers = useCreateTierListActionHelpers(data);
 
@@ -81,7 +75,7 @@ const Create: NextPage = () => {
                   key={row.id}
                   data={row}
                   deletable={data.rows.length <= 1}
-                  isDeleting={deleteIsToggled}
+                  isDeleting={createTierListHelpers.deleteIsToggled}
                   onMoveUp={rowHandler.moveRowUp}
                   onMoveDown={rowHandler.moveRowDown}
                   onChangeLabel={rowHandler.changeLabel}
@@ -96,8 +90,8 @@ const Create: NextPage = () => {
             </Box>
           </Box>
           <Sidebar
-            isDeleting={deleteIsToggled}
-            onToggleDelete={toggleDelete}
+            isDeleting={createTierListHelpers.deleteIsToggled}
+            onToggleDelete={createTierListHelpers.toggleDelete}
             fullScreen={getFullScreenProp(fullScreen)}
             data={data}
             onAddImage={rowHandler.addImage}

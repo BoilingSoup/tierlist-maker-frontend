@@ -1,10 +1,11 @@
 import { useMantineTheme } from "@mantine/core";
 import { useRouter } from "next/router";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useReducer, useState } from "react";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { useCloneAndCreateTierListMutation } from "../../../hooks/api/useCloneAndCreateTierListMutation";
 import { useSaveTierListMutation } from "../../../hooks/api/useSaveTierListMutation";
 import { useIsExportingStore } from "../../../hooks/store/useIsExportingStore";
+import { useIsMounted } from "../../common/hooks/useIsMounted";
 import { DiffData, TierListData } from "../types";
 import { useHandleOpenSaveMenu } from "./useHandleOpenSaveMenu";
 import { useTierListInfo } from "./useTierListInfo";
@@ -83,6 +84,11 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
 
   const modalTitle = isLoading ? "Saving..." : "Save to Account";
 
+  const isMounted = useIsMounted();
+  const showSaveOverlay = isSaving && isMounted;
+
+  const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
+
   return {
     isSaving,
     handleSaveOwnTierList,
@@ -98,5 +104,8 @@ export const useSaveTierListActionHelpers = ({ uuid, data, setData, diff, tierLi
     titlePlaceholder,
     save,
     showProgressBar: isLoading,
+    showSaveOverlay,
+    deleteIsToggled,
+    toggleDelete,
   };
 };
