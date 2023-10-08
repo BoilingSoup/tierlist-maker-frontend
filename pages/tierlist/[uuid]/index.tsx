@@ -58,14 +58,14 @@ const TierList: NextPage = () => {
   const rowHandler = getRowHandlers({
     setData: setData,
     data,
-    disabled: data === undefined,
+    enabled: data !== undefined,
   });
 
   const dragHandler = getDragHandlers({
     data,
     setData: setData,
     setActiveItem,
-    disabled: data === undefined,
+    enabled: data !== undefined,
   });
 
   const saveTierListHelpers = useSaveTierListActionHelpers({

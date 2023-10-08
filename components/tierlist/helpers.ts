@@ -533,11 +533,11 @@ export type GetDragHandlersParam = {
   setActiveItem: Dispatch<SetStateAction<ActiveItemState>>;
   data: TierListData;
   setData: Dispatch<SetStateAction<TierListData>>;
-  disabled?: boolean;
+  enabled?: boolean;
 };
 
-export const getDragHandlers = ({ setActiveItem, data, setData, disabled }: GetDragHandlersParam): DragHandlers => {
-  if (disabled) {
+export const getDragHandlers = ({ setActiveItem, data, setData, enabled }: GetDragHandlersParam): DragHandlers => {
+  if (!enabled) {
     return {
       start(event: DragStartEvent) {},
       over(event: DragOverEvent) {},
@@ -580,11 +580,11 @@ type RowHandlers = {
 export type GetRowHandlersParam = {
   data: TierListData;
   setData: ((arg: SetDataArg) => Promise<void>) | ((arg: SetDataArg) => void);
-  disabled?: boolean;
+  enabled?: boolean;
 };
 
-export const getRowHandlers = ({ data, setData, disabled }: GetRowHandlersParam): RowHandlers => {
-  if (disabled) {
+export const getRowHandlers = ({ data, setData, enabled }: GetRowHandlersParam): RowHandlers => {
+  if (!enabled) {
     return {
       moveRowUp: (rowID: string) => {},
       moveRowDown: (rowID: string) => {},
@@ -1028,6 +1028,7 @@ type ReconstructDeps = {
   placeholder: string;
   tierListData: TierListData;
   description?: string;
+  isPublic: boolean;
 };
 
 /**
@@ -1040,12 +1041,14 @@ export function reconstructPayload({
   placeholder,
   tierListData,
   description,
+  isPublic,
 }: ReconstructDeps): SaveTierListParam["payload"] {
   const payload: SaveTierListParam["payload"] = {
     title: title.trim() === "" ? placeholder : title.trim(),
     data: JSON.parse(JSON.stringify(tierListData)) as TierListData,
-    thumbnail: undefined,
+    thumbnail: "",
     description,
+    is_public: isPublic,
   };
 
   const { order, lengths } = metadata;

@@ -99,6 +99,7 @@ const Create: NextPage = () => {
             onDeleteAllImages={rowHandler.deleteAllImages}
             onMoveAllImages={rowHandler.moveAllImages}
             onClickSave={createTierListHelpers.openSaveMenu}
+            onClickPublish={createTierListHelpers.openPublishMenu}
           />
         </Flex>
         <DragOverlay>{activeItem ? <OverlayImage img={activeItem} /> : null}</DragOverlay>

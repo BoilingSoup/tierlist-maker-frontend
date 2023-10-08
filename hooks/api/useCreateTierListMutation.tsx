@@ -12,6 +12,7 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { queryKeys } from "../../lib/queryKeys";
 import { useRefetchQueries } from "./useRefetchQueries";
 import { useResetQueries } from "./useResetQueries";
+import { Actions } from "../../components/tierlist/types";
 
 const POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS = 70;
 const ALMOST_COMPLETE_PROGRESS = 90;
@@ -21,9 +22,10 @@ type Param = {
   title: string;
   placeholder: string;
   description?: string;
+  actionType: Actions;
 };
 
-export const useCreateTierListMutation = ({ title, placeholder, description }: Param) => {
+export const useCreateTierListMutation = ({ title, placeholder, description, actionType }: Param) => {
   const resetLocalTierList = useLocalTierListStore((state) => state.reset);
   const tierListData = useLocalTierListStore((state) => state.data);
   const addToCache = useServerTierListStore((state) => state.add);
@@ -33,7 +35,16 @@ export const useCreateTierListMutation = ({ title, placeholder, description }: P
 
   const { mutate: createTierListMutation, isLoading: isUploading } = useMutation(uploadImages, {
     onSuccess: ({ response, metadata, requestProgress, setRequestProgress }) => {
-      const payload = reconstructPayload({ response, metadata, description, placeholder, tierListData, title });
+      const isPublic = actionType === "save" ? false : true;
+      const payload = reconstructPayload({
+        response,
+        metadata,
+        description,
+        placeholder,
+        tierListData,
+        title,
+        isPublic,
+      });
 
       tween(requestProgress, POST_PAYLOAD_RECONSTRUCTION_MAX_PROGRESS, 100, (value) => {
         setRequestProgress(value);

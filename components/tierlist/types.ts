@@ -210,9 +210,12 @@ export type SaveTierListParam = {
   payload: {
     title: string;
     data: TierListData;
-    thumbnail?: string;
+    thumbnail: string;
     description?: string;
+    is_public: boolean;
   };
   requestProgress: number;
   setRequestProgress: Dispatch<SetStateAction<number>>;
 };
+
+export type Actions = "save" | "publish";

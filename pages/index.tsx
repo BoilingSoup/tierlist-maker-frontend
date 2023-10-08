@@ -55,7 +55,7 @@ const Home: NextPage = () => {
       </Box>
       <Center sx={landingSectionForegroundSx}>
         <Text component="h2" sx={landingSectionTextSx}>
-          A No-BS Tier List Maker
+          A No BS Tier List Maker
           <br />
           Get started now!
         </Text>
