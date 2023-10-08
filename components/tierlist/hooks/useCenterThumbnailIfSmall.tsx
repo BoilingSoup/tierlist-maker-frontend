@@ -26,5 +26,5 @@ export const useCenterThumbnailIfSmall = ({ tierList, ref }: Param) => {
       img.addEventListener("load", handleImageLoaded);
       return () => img.removeEventListener("load", handleImageLoaded);
     }
-  }, [tierList]);
+  }, [tierList, ref]);
 };
