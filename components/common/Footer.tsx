@@ -1,40 +1,28 @@
-import { Flex, Text } from "@mantine/core";
-import { IconBrandGithub } from "@tabler/icons-react";
+import { ActionIcon, Center, Flex, Image, Stack, Text } from "@mantine/core";
+import { IconBrandGithub, IconBrandTwitter } from "@tabler/icons-react";
+import { LOGO_IMG } from "../../config/config";
+import { footerContainerSx, footerLinkSx } from "./styles";
 
 export const Footer = () => {
   return (
-    <Flex
-      sx={{
-        height: "70px",
-        marginTop: "120px",
-        color: "white",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        marginRight: "20px",
-      }}
-    >
-      <Text component="p">
-        &copy; 2023 tierlist.lol &nbsp;&nbsp;{" "}
-        <Text
-          component="a"
-          href="https://github.com/boilingsoup"
-          target="_blank"
-          sx={{
-            ":hover": {
-              textDecoration: "underline",
-            },
-          }}
-        >
-          view source on GitHub
-          <IconBrandGithub
-            style={{
-              display: "inline-block",
-              verticalAlign: "middle",
-              marginLeft: "1ch",
-            }}
-          />
+    <Stack sx={footerContainerSx}>
+      <Center>
+        <Image src={LOGO_IMG} width={40} />
+        <Text ml="md" weight="bold">
+          &copy; 2023 tierlist.lol &nbsp; &#128056; &nbsp;
+          <Text span size="xs" color="green.4" sx={{ verticalAlign: "middle" }}>
+            BoilingSoup
+          </Text>
         </Text>
-      </Text>
-    </Flex>
+      </Center>
+      <Flex sx={{ gap: "10px" }}>
+        <ActionIcon component="a" target="_blank" href="https://twitter.com/BoilingSoupDev" sx={footerLinkSx}>
+          <IconBrandTwitter color="white" size={20} />
+        </ActionIcon>
+        <ActionIcon component="a" target="_blank" href="https://github.com/BoilingSoup" sx={footerLinkSx}>
+          <IconBrandGithub color="white" size={20} />
+        </ActionIcon>
+      </Flex>
+    </Stack>
   );
 };

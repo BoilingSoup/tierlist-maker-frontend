@@ -17,24 +17,17 @@ import { useShowAccountVerifiedNotification } from "../components/home/hooks/use
 import { useGetInfinitePublicTierLists } from "../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../hooks/api/useGetInfiniteUserTierLists";
 
-// Playground while I tinker with styles.
-// Will move these objs after brainstorming phase.
 const junk2 = ({ colors }: MantineTheme): CSSObject => ({
-  // height: `calc(100vh - ${NAVBAR_HEIGHT})`,
   width: "100%",
-  // background: `radial-gradient(ellipse, ${fn.darken(colors.cyan[9], 0.9)}, ${fn.darken(colors.cyan[9], 1)})`,
   background: `radial-gradient(ellipse at top, rgb(30, 30, 30), ${colors.dark[9]})`,
   overflow: "hidden",
-  // paddingBottom: "140px",
 });
 
 const tbd = (): CSSObject => ({
   fontSize: "2.5rem",
   color: "white",
-  marginTop: "280px",
-  marginBottom: "220px",
+  marginTop: "220px",
   textAlign: "center",
-  // paddingTop: "20px",
 });
 
 const Home: NextPage = () => {
@@ -68,10 +61,10 @@ const Home: NextPage = () => {
         <Text component="h2" sx={tbd}>
           Recent Tier Lists
         </Text>
-        {width < breakpoint && <RecentTierListCarousel data={data} isLoading={isLoading} />}
-        {width >= breakpoint && (
-          <RecentTierListGrid data={data} isError={isError} error={error} isLoading={isLoading} />
-        )}
+        <Box my="280px">
+          {width < breakpoint && <RecentTierListCarousel data={data} isLoading={isLoading} />}
+          {width >= breakpoint && <RecentTierListGrid data={data} isLoading={isLoading} />}
+        </Box>
         <Footer />
       </Box>
     </>

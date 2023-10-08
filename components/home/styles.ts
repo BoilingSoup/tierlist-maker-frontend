@@ -65,6 +65,7 @@ export const carouselSx = (): CSSObject => ({
 
 export const carouselSlideSx = (): CSSObject => ({
   maxWidth: THUMBNAIL_WIDTH,
+  margin: "auto 0",
 });
 
 export const carouselSlideStackSx = (): CSSObject => ({
@@ -83,6 +84,8 @@ export const carouselSlideWrapperSx = ({ colors, radius }: MantineTheme): CSSObj
 export const recentGridContainerSx: CSSObject = { maxWidth: "80%", color: "white" };
 
 export const recentGridItemWrapperSx = ({ colors, radius }: MantineTheme): CSSObject => ({
+  color: "white",
+  textDecoration: "none",
   background: colors.dark[5],
   borderRadius: radius.md,
   padding: "2rem",

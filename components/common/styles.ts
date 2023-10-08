@@ -221,3 +221,20 @@ export const page404Sx = ({ colors }: MantineTheme): CSSObject => ({
   width: "100%",
   height: `calc(100vh - ${NAVBAR_HEIGHT})`,
 });
+
+export const footerLinkSx = ({ colors }: MantineTheme): CSSObject => ({
+  width: "36px",
+  height: "36px",
+  border: "1px solid gray",
+  borderRadius: "100px",
+  ":hover": { background: colors.dark[4] },
+});
+
+export const footerContainerSx = ({ spacing, colors }: MantineTheme): CSSObject => ({
+  background: colors.gray[9],
+  color: "white",
+  alignItems: "center",
+  justifyContent: "center",
+  paddingTop: `calc(${spacing.xl} + ${spacing.sm})`,
+  paddingBottom: `calc(${spacing.xl} + ${spacing.sm})`,
+});

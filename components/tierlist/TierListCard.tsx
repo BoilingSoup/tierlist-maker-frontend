@@ -4,6 +4,7 @@ import {
   Flex,
   Image,
   Loader,
+  Paper,
   Stack,
   Switch,
   Text,
@@ -99,14 +100,20 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, reado
   useCenterThumbnailIfSmall({ ref: mantineImageRootRef, tierList });
 
   return (
-    <Box ref={observerRef} sx={tierListCardContainerSx(isEditing)}>
-      <TextInput
-        value={titleCase(title)}
-        disabled={!isEditing}
-        styles={getTierListCardTitleInputStyles(theme)}
-        onChange={(e) => setTitle(e.target.value)}
-        error={titleIsError}
-      />
+    <Paper shadow="xl" ref={observerRef} sx={tierListCardContainerSx(isEditing)}>
+      {readonly ? (
+        <Text color="gray.4" m="lg" size="xl" weight={"bold"} align="center">
+          {titleCase(title)}
+        </Text>
+      ) : (
+        <TextInput
+          value={titleCase(title)}
+          disabled={!isEditing}
+          styles={getTierListCardTitleInputStyles(theme)}
+          onChange={(e) => setTitle(e.target.value)}
+          error={titleIsError}
+        />
+      )}
       <Box sx={{ height: "100%", margin: `0 ${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.lg}` }}>
         <Flex sx={tierListCardMidSectionSx}>
           <Box sx={tierListCardImageContainerSx}>
@@ -117,9 +124,9 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, reado
               <Button
                 component={Link}
                 href={`/tierlist/${tierList.id}`}
-                color="gray.8"
+                color="cyan.6"
                 leftIcon={<IconEye />}
-                sx={(theme) => ({ ...grayButtonHoverSx(theme), height: "60px" })}
+                sx={(theme) => ({ height: "60px", ":hover": { background: theme.colors.cyan[8] } })}
               >
                 View
               </Button>
@@ -166,9 +173,9 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, reado
                 <Button
                   component={Link}
                   href={`/tierlist/${tierList.id}`}
-                  color="gray.8"
+                  color="cyan.6"
                   leftIcon={<IconEye />}
-                  sx={grayButtonHoverSx}
+                  sx={(theme) => ({ ":hover": { background: theme.colors.cyan[8] } })}
                 >
                   View
                 </Button>
@@ -205,7 +212,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, reado
           />
         )}
       </Box>
-    </Box>
+    </Paper>
   );
 });
 

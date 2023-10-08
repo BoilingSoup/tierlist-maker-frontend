@@ -506,6 +506,7 @@ export const tierListCardButtonsContainerSx = ({ spacing }: MantineTheme): CSSOb
 });
 
 export const grayButtonHoverSx = ({ colors }: MantineTheme): CSSObject => ({
+  border: `1px solid ${colors.dark[2]}`,
   ":hover": {
     background: colors.dark[3],
   },
