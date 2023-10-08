@@ -26,6 +26,7 @@ import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useR
 import { useAuth } from "../../contexts/AuthProvider";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
+import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 
 const Settings: NextPage = () => {
   const { user, isLoading } = useAuth();
@@ -33,6 +34,7 @@ const Settings: NextPage = () => {
 
   useGetInfinitePublicTierLists();
   useGetInfiniteUserTierLists();
+  useRecentTierList();
 
   const theme = useMantineTheme();
 

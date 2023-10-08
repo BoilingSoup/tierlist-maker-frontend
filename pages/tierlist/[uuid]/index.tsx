@@ -28,8 +28,10 @@ import { useGetInfiniteUserTierLists } from "../../../hooks/api/useGetInfiniteUs
 import { SaveTierListModal } from "../../../components/tierlist/SaveTierListModal";
 import { useAuth } from "../../../contexts/AuthProvider";
 import { useTierListDomHelpers } from "../../../components/tierlist/hooks/useTierListDomHelpers";
+import { useRecentTierList } from "../../../hooks/api/useRecentTierList";
 
 const TierList: NextPage = () => {
+  useRecentTierList();
   useGetInfinitePublicTierLists();
   useGetInfiniteUserTierLists();
 

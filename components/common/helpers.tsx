@@ -1,6 +1,7 @@
 import { MantineTheme } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { IconAlertOctagon, IconCheck, IconInfoCircle } from "@tabler/icons-react";
+import { formatDistance } from "date-fns";
 import { User } from "../../contexts/AuthProvider";
 import { PxSize } from "../tierlist/types";
 import { getNotificationStyles } from "./styles";
@@ -85,3 +86,19 @@ export const showVerifyAccountNotification = ({ theme, user }: { theme: MantineT
     title: "Verify Account",
     message: `Please verify your account with the email sent to ${user?.email}`,
   });
+
+export const getTimeDiff = (createdAt: string): string => {
+  return formatDistance(new Date(createdAt), new Date(), { addSuffix: true });
+};
+
+export const capitalize = (input: string) => {
+  if (input.length === 0) {
+    return "";
+  }
+
+  if (input.length === 1) {
+    return input[0].toUpperCase();
+  }
+
+  return input[0].toUpperCase() + input.slice(1);
+};

@@ -1,30 +1,43 @@
-import { Container, Grid, Image, Stack, Text } from "@mantine/core";
-import { THUMBNAIL_WIDTH } from "../../config/config";
+import { Container, Flex, Grid } from "@mantine/core";
 import { TierListDisplayData } from "../../lib/types/tierlist";
+import { TierListCardsSkeleton } from "../tierlist/TierListCardsSkeleton";
+import { RecentTierListGridItem } from "./RecentTierListGridItem";
+import { recentGridContainerSx } from "./styles";
 
 type Props = {
   data: TierListDisplayData[] | undefined;
-  isError: boolean;
-  error: unknown;
   isLoading: boolean;
 };
 
-export const RecentTierListGrid = ({ data }: Props) => {
+export const RecentTierListGrid = ({ data, isLoading }: Props) => {
+  if (isLoading) {
+    return (
+      <Container sx={recentGridContainerSx}>
+        <Flex
+          sx={({ spacing }) => ({
+            width: "100%",
+            color: "white",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: `calc(${spacing.xl} + ${spacing.xl})`,
+            ":first-of-type": {
+              marginTop: spacing.xl,
+            },
+            ":last-child": {
+              marginBottom: spacing.xl,
+            },
+          })}
+        >
+          <TierListCardsSkeleton count={6} />
+        </Flex>
+      </Container>
+    );
+  }
   return (
-    <Container sx={{ maxWidth: "80%", color: "white" }}>
-      <Grid gutter={40}>
+    <Container sx={recentGridContainerSx}>
+      <Grid gutter={100}>
         {data?.map((item) => (
-          <Grid.Col key={item.id} span={6}>
-            <Stack sx={{ alignItems: "center" }}>
-              <Text component="h4" sx={{ margin: "0.5rem", fontSize: "clamp(1rem, 6vw, 1.5rem)" }}>
-                {item.title}
-              </Text>
-              <Image key={item.id} src={item.thumbnail} sx={{ maxWidth: THUMBNAIL_WIDTH }} />
-              <Text>
-                by {item.creator.username} {item.created_at}
-              </Text>
-            </Stack>
-          </Grid.Col>
+          <RecentTierListGridItem item={item} />
         ))}
       </Grid>
     </Container>

@@ -439,7 +439,7 @@ export const tierListCardContainerSx =
   (isEditing: boolean) =>
   ({ colors, radius }: MantineTheme): CSSObject => ({
     ...tierListCardContainerWidth,
-    background: colors.dark[6],
+    background: colors.dark[5],
     borderRadius: radius.sm,
     transition: "transform 100ms ease",
     ":hover": {
@@ -465,7 +465,7 @@ export const getTierListCardDescriptionStyles = (theme: MantineTheme): TextInput
     color: "white",
     ":disabled": {
       padding: 0,
-      background: theme.colors.dark[6],
+      background: theme.colors.dark[5],
       cursor: "initial",
       border: "none",
     },
@@ -506,6 +506,7 @@ export const tierListCardButtonsContainerSx = ({ spacing }: MantineTheme): CSSOb
 });
 
 export const grayButtonHoverSx = ({ colors }: MantineTheme): CSSObject => ({
+  border: `1px solid ${colors.dark[2]}`,
   ":hover": {
     background: colors.dark[3],
   },
@@ -539,7 +540,7 @@ export const getTierListCardTitleInputStyles = (
     margin: theme.spacing.lg,
     ":disabled": {
       color: "white",
-      background: theme.colors.dark[6],
+      background: theme.colors.dark[5],
       border: "none",
       cursor: "initial",
       padding: 0,
