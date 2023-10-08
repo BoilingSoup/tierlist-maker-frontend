@@ -1,14 +1,11 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { Box, Center, Flex, Progress, Skeleton, Text } from "@mantine/core";
-import { useFullscreen } from "@mantine/hooks";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useReducer, useState } from "react";
+import { useState } from "react";
 import { DOM_TO_PNG_ID, PORTAL_TARGET_ID } from "../../../components/tierlist/constants";
 import { getDragHandlers, getFullScreenProp, getRowHandlers } from "../../../components/tierlist/helpers";
-import { useDndSensors } from "../../../components/tierlist/hooks/useDndSensors";
 import { usePasteEvent } from "../../../components/tierlist/hooks/usePasteEvent";
 import { OverlayImage } from "../../../components/tierlist/image-area/OverlayImage";
 import { Sidebar } from "../../../components/tierlist/Sidebar";
@@ -26,24 +23,22 @@ import { useConfirmationOnExitIfUnsavedChanges } from "../../../hooks/api/useCon
 import { useGetTierList } from "../../../hooks/api/useGetTierList";
 import { useSaveTierListActionHelpers } from "../../../components/tierlist/hooks/useSaveTierListActionHelpers";
 import { createPortal } from "react-dom";
-import { useIsMounted } from "../../../components/common/hooks/useIsMounted";
 import { useGetInfinitePublicTierLists } from "../../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../../hooks/api/useGetInfiniteUserTierLists";
 import { SaveTierListModal } from "../../../components/tierlist/SaveTierListModal";
 import { useAuth } from "../../../contexts/AuthProvider";
+import { useTierListDomHelpers } from "../../../components/tierlist/hooks/useTierListDomHelpers";
 
 const TierList: NextPage = () => {
   useGetInfinitePublicTierLists();
   useGetInfiniteUserTierLists();
 
+  const { user } = useAuth();
+
   const router = useRouter();
   const uuid = router.query.uuid as string | undefined;
 
-  const { user } = useAuth();
-
-  const fullScreen = useFullscreen();
-  const sensors = useDndSensors();
-  const [animateChildren] = useAutoAnimate();
+  const { fullScreen, sensors, animateChildren } = useTierListDomHelpers();
 
   const {
     data,
@@ -53,11 +48,10 @@ const TierList: NextPage = () => {
     diff,
   } = useGetTierList(uuid);
 
-  usePasteEvent(setData);
-
   const isOwner = user?.id === tierListUserID;
-  console.log({ tierListUserID, isOwner });
   useConfirmationOnExitIfUnsavedChanges({ diff, enabled: isOwner });
+
+  usePasteEvent(setData);
 
   const [activeItem, setActiveItem] = useState<ActiveItemState>(undefined);
 
@@ -74,8 +68,6 @@ const TierList: NextPage = () => {
     disabled: data === undefined,
   });
 
-  const [deleteIsToggled, toggleDelete] = useReducer((prev) => !prev, false);
-
   const saveTierListHelpers = useSaveTierListActionHelpers({
     data,
     setData,
@@ -84,22 +76,13 @@ const TierList: NextPage = () => {
     tierListUserID,
   });
 
-  const isMounted = useIsMounted();
-  const showSaveOverlay = saveTierListHelpers.isSaving && isMounted;
-
   return (
     <>
       <Head>
         <title>Create Tier List</title>
       </Head>
-      {showSaveOverlay &&
-        createPortal(
-          <Center sx={savingOverlayContainerSx}>
-            <Text mb={20}>Saving...</Text>
-            <Progress h={9} w={"100%"} maw={200} animate striped value={saveTierListHelpers.requestProgress} />
-          </Center>,
-          document.getElementById(PORTAL_TARGET_ID)!
-        )}
+      {saveTierListHelpers.showSaveOverlay && <SaveOverlay requestProgress={saveTierListHelpers.requestProgress} />}
+
       {saveTierListHelpers.modalOpened && (
         <SaveTierListModal
           onSave={saveTierListHelpers.save}
@@ -131,7 +114,7 @@ const TierList: NextPage = () => {
                   key={row.id}
                   data={row}
                   deletable={data.rows.length <= 1}
-                  isDeleting={deleteIsToggled}
+                  isDeleting={saveTierListHelpers.deleteIsToggled}
                   onMoveUp={rowHandler.moveRowUp}
                   onMoveDown={rowHandler.moveRowDown}
                   onChangeLabel={rowHandler.changeLabel}
@@ -146,8 +129,8 @@ const TierList: NextPage = () => {
             </Box>
           </Box>
           <Sidebar
-            isDeleting={deleteIsToggled}
-            onToggleDelete={toggleDelete}
+            isDeleting={saveTierListHelpers.deleteIsToggled}
+            onToggleDelete={saveTierListHelpers.toggleDelete}
             fullScreen={getFullScreenProp(fullScreen)}
             data={data}
             onAddImage={rowHandler.addImage}
@@ -164,3 +147,16 @@ const TierList: NextPage = () => {
 };
 
 export default TierList;
+
+type SaveOverlayProps = {
+  requestProgress: number;
+};
+
+const SaveOverlay = ({ requestProgress }: SaveOverlayProps) =>
+  createPortal(
+    <Center sx={savingOverlayContainerSx}>
+      <Text mb={20}>Saving...</Text>
+      <Progress h={9} w={"100%"} maw={200} animate striped value={requestProgress} />
+    </Center>,
+    document.getElementById(PORTAL_TARGET_ID)!
+  );
