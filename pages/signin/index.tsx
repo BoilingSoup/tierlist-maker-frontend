@@ -9,6 +9,8 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { useRedirectIfAuthenticated } from "../../components/common/hooks/useRedirectIfAuthenticated";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useRecentTierList } from "../../hooks/api/useRecentTierList";
+import Head from "next/head";
+import { SITE_NAME } from "../../config/config";
 
 const SignIn: NextPage = () => {
   const { user, isLoading } = useAuth();
@@ -18,18 +20,24 @@ const SignIn: NextPage = () => {
   useRecentTierList();
 
   return (
-    <Center sx={formPageContainerSx}>
-      <FormPageBackground />
-      <Flex sx={formContainerSx}>
-        <Title sx={authTitleSx}>Sign In</Title>
-        <FormTabs />
-        <SignInForm />
-        <Center sx={oauthContainerSx}>
-          <Text size="md">Or sign in with</Text>
-          <OAuthIconsGroup />
-        </Center>
-      </Flex>
-    </Center>
+    <>
+      <Head>
+        <title>Sign In - {SITE_NAME}</title>
+      </Head>
+
+      <Center sx={formPageContainerSx}>
+        <FormPageBackground />
+        <Flex sx={formContainerSx}>
+          <Title sx={authTitleSx}>Sign In</Title>
+          <FormTabs />
+          <SignInForm />
+          <Center sx={oauthContainerSx}>
+            <Text size="md">Or sign in with</Text>
+            <OAuthIconsGroup />
+          </Center>
+        </Flex>
+      </Center>
+    </>
   );
 };
 

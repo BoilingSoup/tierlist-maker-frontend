@@ -9,6 +9,8 @@ import { useRedirectIfAuthenticated } from "../../components/common/hooks/useRed
 import { useAuth } from "../../contexts/AuthProvider";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useRecentTierList } from "../../hooks/api/useRecentTierList";
+import Head from "next/head";
+import { SITE_NAME } from "../../config/config";
 
 const Register: NextPage = () => {
   const { user, isLoading } = useAuth();
@@ -18,18 +20,23 @@ const Register: NextPage = () => {
   useRecentTierList();
 
   return (
-    <Center sx={formPageContainerSx}>
-      <FormPageBackground />
-      <Flex sx={formContainerSx}>
-        <Title sx={authTitleSx}>Registration</Title>
-        <FormTabs />
-        <RegisterForm />
-        <Center sx={oauthContainerSx}>
-          <Text size="md">Or register with</Text>
-          <OAuthIconsGroup />
-        </Center>
-      </Flex>
-    </Center>
+    <>
+      <Head>
+        <title>Register - {SITE_NAME}</title>
+      </Head>
+      <Center sx={formPageContainerSx}>
+        <FormPageBackground />
+        <Flex sx={formContainerSx}>
+          <Title sx={authTitleSx}>Registration</Title>
+          <FormTabs />
+          <RegisterForm />
+          <Center sx={oauthContainerSx}>
+            <Text size="md">Or register with</Text>
+            <OAuthIconsGroup />
+          </Center>
+        </Flex>
+      </Center>
+    </>
   );
 };
 

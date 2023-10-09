@@ -11,7 +11,7 @@ export const OverlayImage = ({ img }: Props) => {
   const size = useResponsiveImageSize((state) => state.size);
   return (
     <Center sx={getSidebarImageContainerSx(size)}>
-      <Image src={img.src} sx={{ width: "100%", objectFit: "cover" }} />
+      <Image src={img.src} alt="the currently dragging image" sx={{ width: "100%", objectFit: "cover" }} />
     </Center>
   );
 };

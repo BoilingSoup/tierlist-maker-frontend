@@ -129,7 +129,9 @@ const ExportImageModal = ({
 
   return (
     <Modal opened={opened} onClose={handleCloseModal} centered size="auto" withCloseButton={false} styles={modalStyles}>
-      {!isLoading && <img ref={setClickable1} src={src} style={exportedImageStyle} />}
+      {!isLoading && (
+        <img ref={setClickable1} alt="exported image of your tier list" src={src} style={exportedImageStyle} />
+      )}
       {isLoading ? (
         <Loader />
       ) : (

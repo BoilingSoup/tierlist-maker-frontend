@@ -93,6 +93,7 @@ export const recentGridItemWrapperSx = ({ colors, radius }: MantineTheme): CSSOb
   borderRadius: radius.md,
   padding: "2rem",
   transition: "transform 200ms ease",
+  overflow: "hidden",
   ":hover": { cursor: "pointer", transform: "scale(1.04)" },
 });
 

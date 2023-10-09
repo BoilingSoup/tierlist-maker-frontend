@@ -50,7 +50,7 @@ export const SortableImage = ({ img, containerID, isDeleting, onDelete: handleDe
           )}
         </Transition>
       )}
-      <img src={img.src} style={{ width: "100%", objectFit: "cover" }} />
+      <img src={img.src} alt="tier list image item" style={{ width: "100%", objectFit: "cover" }} />
     </Center>
   );
 };

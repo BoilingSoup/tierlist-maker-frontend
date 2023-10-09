@@ -9,13 +9,15 @@ export const useGetInfiniteUserTierLists = () => {
   const { user } = useAuth();
 
   const userAvailable = user !== undefined && user !== null;
+
+  const userIsVerified = userAvailable && user.email_verified;
   const userID = userAvailable ? user.id : "";
 
   const query = useInfiniteQuery(
     queryKeys.userTierLists(userID),
     ({ pageParam: cursor }) => fetchUserTierLists(userID, cursor),
     {
-      enabled: userAvailable,
+      enabled: userIsVerified,
       getNextPageParam: (lastPage) => {
         return lastPage.next_cursor;
       },

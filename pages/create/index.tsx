@@ -49,6 +49,7 @@ const Create: NextPage = () => {
       <Head>
         <title>Create Tier List</title>
       </Head>
+        
       <DndContext
         id={SITE_NAME}
         onDragStart={dragHandler.start}

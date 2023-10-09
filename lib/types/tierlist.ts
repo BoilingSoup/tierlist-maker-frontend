@@ -3,7 +3,7 @@ export type TierListDisplayData = {
   title: string;
   description?: string;
   thumbnail: string;
-  created_at: string;
+  updated_at: string;
   creator: {
     username: string;
     id: string;
