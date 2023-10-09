@@ -41,7 +41,7 @@ const TierLists: NextPage = () => {
   return (
     <>
       <Head>
-        <title>My Tier Lists - {SITE_NAME}</title>
+        <title>My Tier Lists - tierlist.lol</title>
       </Head>
       <AccountNavShell>
         <Flex sx={tierListCardsContainerSx} ref={animateChildren}>

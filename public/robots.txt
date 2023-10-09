@@ -1,0 +1,10 @@
+# Block all crawlers for /accounts
+User-agent: *
+Disallow: /account/
+Disallow: /password-reset
+Disallow: /404
+Disallow: /forgot-password
+
+# Allow all crawlers
+User-agent: *
+Allow: /

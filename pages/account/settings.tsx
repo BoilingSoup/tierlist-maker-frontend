@@ -64,7 +64,7 @@ const Settings: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Settings - {SITE_NAME}</title>
+        <title>Settings - tierlist.lol</title>
       </Head>
 
       <AccountNavShell>

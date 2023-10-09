@@ -16,7 +16,6 @@ import {
   formSubmitSx,
   inputStyles,
 } from "../components/forms/styles";
-import { SITE_NAME } from "../config/config";
 import { useAuth } from "../contexts/AuthProvider";
 import { useSendPasswordResetLinkMutation } from "../hooks/api/useSendPasswordResetLinkMuation";
 import { useForgotPasswordForm } from "../hooks/auth/useForgotPasswordForm";
@@ -31,7 +30,7 @@ const ForgotPassword: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Forgot Password - {SITE_NAME}</title>
+        <title>Forgot Password - tierlist.lol</title>
       </Head>
 
       <Center sx={formPageContainerSx}>

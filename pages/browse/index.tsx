@@ -10,7 +10,6 @@ import {
 } from "../../components/tierlist/styles";
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
-import { SITE_NAME } from "../../config/config";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
 import { useRecentTierList } from "../../hooks/api/useRecentTierList";
@@ -31,7 +30,7 @@ const Browse: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Browse - {SITE_NAME}</title>
+        <title>Browse - tierlist.lol</title>
       </Head>
 
       <Box sx={publicTierListsMainContainerSx}>

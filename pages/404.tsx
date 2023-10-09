@@ -1,7 +1,7 @@
 import { Center, Group, Image, Text } from "@mantine/core";
 import Head from "next/head";
 import { container404Content, page404Sx, text404Sx } from "../components/common/styles";
-import { ERROR_404_IMG, SITE_NAME } from "../config/config";
+import { ERROR_404_IMG } from "../config/config";
 
 const img404Dimensions = 200;
 
@@ -9,7 +9,7 @@ const Custom404 = () => {
   return (
     <>
       <Head>
-        <title>404 - {SITE_NAME}</title>
+        <title>404 - tierlist.lol</title>
         <meta
           name="description"
           content="The content you are searching for is not found. Try looking for another tier list."

@@ -10,7 +10,6 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 import Head from "next/head";
-import { SITE_NAME } from "../../config/config";
 
 const Register: NextPage = () => {
   const { user, isLoading } = useAuth();
@@ -22,7 +21,7 @@ const Register: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Register - {SITE_NAME}</title>
+        <title>Register - tierlist.lol</title>
       </Head>
       <Center sx={formPageContainerSx}>
         <FormPageBackground />
