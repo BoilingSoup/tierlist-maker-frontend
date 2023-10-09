@@ -16,15 +16,20 @@ type Prop = {
 };
 
 export const CarouselSlide = ({ data }: Prop) => {
-  const { creator, thumbnail, created_at } = data;
+  const { creator, thumbnail, updated_at } = data;
 
   return (
     <Carousel.Slide sx={carouselSlideSx}>
-      <Box component={Link} href={`/tierlist/${data.id}`}>
+      <Box component={Link} href={`/tierlist/${data.id}`} sx={{ textDecoration: "none" }}>
         <Box sx={carouselSlideWrapperSx}>
           <Text
             component="h4"
-            sx={{ fontSize: "clamp(1rem, 6vw, 1.5rem)", color: "white", marginTop: "1ch", textAlign: "center" }}
+            sx={{
+              fontSize: "clamp(1rem, 6vw, 1.5rem)",
+              color: "white",
+              marginTop: "1ch",
+              textAlign: "center",
+            }}
           >
             {titleCase(data.title)}
           </Text>
@@ -36,7 +41,7 @@ export const CarouselSlide = ({ data }: Prop) => {
               </Text>
               {capitalize(creator.username)}{" "}
               <Text span color="gray.6">
-                {getTimeDiff(created_at)}
+                {getTimeDiff(updated_at)}
               </Text>
             </Text>
           </Stack>

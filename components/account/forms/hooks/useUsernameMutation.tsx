@@ -1,8 +1,10 @@
 import { useMantineTheme } from "@mantine/core";
-import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 import { useAuth, UserDataServerResponse } from "../../../../contexts/AuthProvider";
+import { useRefetchQueries } from "../../../../hooks/api/useRefetchQueries";
+import { useResetQueries } from "../../../../hooks/api/useResetQueries";
 import { apiClient } from "../../../../lib/apiClient";
+import { queryKeys } from "../../../../lib/queryKeys";
 import { showSomethingWentWrongNotification, showSuccessNotification } from "../../../common/helpers";
 import { UsernameFormValues } from "../types";
 
@@ -10,8 +12,14 @@ export const useUsernameMutation = (closeForm: () => void) => {
   const { setUser } = useAuth();
   const theme = useMantineTheme();
 
+  const resetQueries = useResetQueries();
+  const refetchQueries = useRefetchQueries();
+
   return useMutation((payload: UsernameFormValues) => attemptUpdateUsername(payload), {
     onSuccess: (userData) => {
+      resetQueries(queryKeys.recentTierLists());
+      refetchQueries(queryKeys.recentTierLists());
+
       setUser(userData);
       closeForm();
 
@@ -21,8 +29,7 @@ export const useUsernameMutation = (closeForm: () => void) => {
         message: "Your username was changed.",
       });
     },
-    onError: (e: AxiosError) => {
-      // NOTE: Should only fail if throttled or there's a network error.
+    onError: () => {
       showSomethingWentWrongNotification(theme);
     },
   });

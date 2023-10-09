@@ -7,7 +7,7 @@ export const Footer = () => {
   return (
     <Stack sx={footerContainerSx}>
       <Center>
-        <Image src={LOGO_IMG} width={40} />
+        <Image src={LOGO_IMG} width={40} alt="tierlist.lol logo" />
         <Text ml="md" weight="bold">
           &copy; 2023 tierlist.lol &nbsp; &#128056; &nbsp;
           <Text span size="xs" color="green.4" sx={{ verticalAlign: "middle" }}>

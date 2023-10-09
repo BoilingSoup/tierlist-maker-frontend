@@ -25,8 +25,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>{SITE_NAME}</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-        <meta name="description" content="......" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico"></link>
+        <meta
+          name="description"
+          content="Build tier list diagrams easily and for free with this user-friendly tool. Create and customize your tier list to organize and rank items, characters, or any other elements in a visually appealing way."
+        />
+        <meta name="author" content="Boiling Soup" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
       </Head>
 
       <MantineProvider emotionCache={cssCache} withGlobalStyles withNormalizeCSS>

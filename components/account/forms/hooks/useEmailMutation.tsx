@@ -1,8 +1,9 @@
 import { useMantineTheme } from "@mantine/core";
 import { AxiosError } from "axios";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useAuth, UserDataServerResponse } from "../../../../contexts/AuthProvider";
 import { apiClient } from "../../../../lib/apiClient";
+import { queryKeys } from "../../../../lib/queryKeys";
 import { showSomethingWentWrongNotification, showVerifyAccountNotification } from "../../../common/helpers";
 import { EmailFormValues } from "../types";
 import { useEmailForm } from "./useEmailForm";
@@ -13,11 +14,15 @@ type Param = {
 };
 
 export const useEmailMutation = ({ close: closeForm, form }: Param) => {
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const theme = useMantineTheme();
+
+  const queryClient = useQueryClient();
 
   return useMutation((payload: EmailFormValues) => attemptUpdateEmail(payload), {
     onSuccess: (userData) => {
+      queryClient.removeQueries(queryKeys.userTierLists(user?.id ?? ""));
+
       setUser(userData);
 
       closeForm();

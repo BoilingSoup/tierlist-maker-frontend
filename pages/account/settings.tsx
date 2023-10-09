@@ -1,7 +1,6 @@
 import {
   Accordion,
   Button,
-  Center,
   Container,
   Divider,
   Flex,
@@ -13,6 +12,7 @@ import {
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import type { NextPage } from "next";
+import Head from "next/head";
 import { useState } from "react";
 import { AccountNavShell } from "../../components/account/AccountNavShell";
 import { ChangePasswordForm } from "../../components/account/forms/ChangePasswordForm";
@@ -35,6 +35,7 @@ import {
   accordionCollapsedHeight,
 } from "../../components/account/styles";
 import { useRedirectIfUnauthenticated } from "../../components/common/hooks/useRedirectIfUnauthenticated";
+import { SITE_NAME } from "../../config/config";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useDeleteAccountMutation } from "../../hooks/api/useDeleteAccountMutation";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
@@ -61,77 +62,83 @@ const Settings: NextPage = () => {
   const { mutate: deleteAccountMutation } = useDeleteAccountMutation();
 
   return (
-    <AccountNavShell>
-      <Container mt="3rem">
-        <Text component="h1" sx={accountSettingsTitleSx}>
-          Account Settings
-        </Text>
-        <Divider my="xl" color={settingDividerColor} />
-        <SettingContainer my="xl">
-          <UsernameForm />
-        </SettingContainer>
-        <Divider my="xl" color={settingDividerColor} />
-        <Stack align="center" my="xl">
-          <SettingContainer>
-            <EmailForm />
-          </SettingContainer>
-          <SettingContainer sx={settingButtonContainerSx}>
-            <SettingSubmitButton
-              skeleton={isLoading}
-              compact
-              h={compactButtonHeight}
-              w={getEmailVerificationButtonWidth({ user, isLoading })}
-              sx={getEmailVerificationButtonSx({ user, isLoading })}
-              disabled={(userIsLoaded && user.email_verified) || isMutating}
-              onClick={resendVerification}
-            >
-              {userIsLoaded && user.email_verified && (
-                <Flex sx={emailVerifiedButtonContentsSx}>
-                  <IconCheck size={verifiedCheckSize} />
-                  <Text span ml="1ch">
-                    verified
-                  </Text>
-                </Flex>
-              )}
-              {userIsLoaded && !user.email_verified && !isMutating && <Text span>Resend Verification Email</Text>}
-              {userIsLoaded && !user.email_verified && isMutating && <Loader size="xs" color="cyan" />}
-            </SettingSubmitButton>
-          </SettingContainer>
-        </Stack>
+    <>
+      <Head>
+        <title>Settings - {SITE_NAME}</title>
+      </Head>
 
-        {isLoading ? (
-          <Skeleton my="xl" h={accordionCollapsedHeight} w="100%" sx={settingSkeletonSx} />
-        ) : (
-          <Accordion
-            my="xl"
-            value={activeAccordionPanel}
-            multiple
-            onChange={setActiveAccordionPanel}
-            styles={getAccountSettingsAccordionStyles(theme)}
-          >
-            {!oauthProvider && user?.email_verified && (
-              <Accordion.Item value="item-1">
-                <Accordion.Control>Change Password</Accordion.Control>
+      <AccountNavShell>
+        <Container mt="3rem">
+          <Text component="h1" sx={accountSettingsTitleSx}>
+            Account Settings
+          </Text>
+          <Divider my="xl" color={settingDividerColor} />
+          <SettingContainer my="xl">
+            <UsernameForm />
+          </SettingContainer>
+          <Divider my="xl" color={settingDividerColor} />
+          <Stack align="center" my="xl">
+            <SettingContainer>
+              <EmailForm />
+            </SettingContainer>
+            <SettingContainer sx={settingButtonContainerSx}>
+              <SettingSubmitButton
+                skeleton={isLoading}
+                compact
+                h={compactButtonHeight}
+                w={getEmailVerificationButtonWidth({ user, isLoading })}
+                sx={getEmailVerificationButtonSx({ user, isLoading })}
+                disabled={(userIsLoaded && user.email_verified) || isMutating}
+                onClick={resendVerification}
+              >
+                {userIsLoaded && user.email_verified && (
+                  <Flex sx={emailVerifiedButtonContentsSx}>
+                    <IconCheck size={verifiedCheckSize} />
+                    <Text span ml="1ch">
+                      verified
+                    </Text>
+                  </Flex>
+                )}
+                {userIsLoaded && !user.email_verified && !isMutating && <Text span>Resend Verification Email</Text>}
+                {userIsLoaded && !user.email_verified && isMutating && <Loader size="xs" color="cyan" />}
+              </SettingSubmitButton>
+            </SettingContainer>
+          </Stack>
+
+          {isLoading ? (
+            <Skeleton my="xl" h={accordionCollapsedHeight} w="100%" sx={settingSkeletonSx} />
+          ) : (
+            <Accordion
+              my="xl"
+              value={activeAccordionPanel}
+              multiple
+              onChange={setActiveAccordionPanel}
+              styles={getAccountSettingsAccordionStyles(theme)}
+            >
+              {!oauthProvider && user?.email_verified && (
+                <Accordion.Item value="item-1">
+                  <Accordion.Control>Change Password</Accordion.Control>
+                  <Accordion.Panel>
+                    <ChangePasswordForm />
+                  </Accordion.Panel>
+                </Accordion.Item>
+              )}
+              <Accordion.Item value="item-2">
+                <Accordion.Control>Delete Account</Accordion.Control>
                 <Accordion.Panel>
-                  <ChangePasswordForm />
+                  <Stack mt="xl" sx={{ alignItems: "center" }}>
+                    <Text color="yellow.5">This action can not be undone. &nbsp;Are you sure?</Text>
+                    <Button color="red.9" onClick={() => deleteAccountMutation()}>
+                      Delete Account
+                    </Button>
+                  </Stack>
                 </Accordion.Panel>
               </Accordion.Item>
-            )}
-            <Accordion.Item value="item-2">
-              <Accordion.Control>Delete Account</Accordion.Control>
-              <Accordion.Panel>
-                <Stack mt="xl" sx={{ alignItems: "center" }}>
-                  <Text color="yellow.5">This action can not be undone. &nbsp;Are you sure?</Text>
-                  <Button color="red.9" onClick={() => deleteAccountMutation()}>
-                    Delete Account
-                  </Button>
-                </Stack>
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
-        )}
-      </Container>
-    </AccountNavShell>
+            </Accordion>
+          )}
+        </Container>
+      </AccountNavShell>
+    </>
   );
 };
 

@@ -19,6 +19,7 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { useDeleteTierListMutation } from "../../hooks/api/useDeleteTierListMutation";
 import { useSetIsPublicMutation } from "../../hooks/api/useSetIsPublicMutation";
 import { useUpdateTierListInfoMutation } from "../../hooks/api/useUpdateTierListInfoMutation";
+import { IsOwnerTag } from "../common/IsOwnerTag";
 import { capitalizeSentences, lastCharIsPunctuation, titleCase } from "./helpers";
 import { useCenterThumbnailIfSmall } from "./hooks/useCenterThumbnailIfSmall";
 import {
@@ -100,7 +101,8 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, reado
   useCenterThumbnailIfSmall({ ref: mantineImageRootRef, tierList });
 
   return (
-    <Paper shadow="xl" ref={observerRef} sx={tierListCardContainerSx(isEditing)}>
+    <Paper shadow="xl" ref={observerRef} sx={tierListCardContainerSx(isEditing)} pos="relative">
+      {readonly && isOwner && <IsOwnerTag />}
       {readonly ? (
         <Text color="gray.4" m="lg" size="xl" weight={"bold"} align="center">
           {titleCase(title)}
@@ -117,7 +119,7 @@ export const TierListCard = forwardRef<HTMLDivElement, Props>(({ tierList, reado
       <Box sx={{ height: "100%", margin: `0 ${theme.spacing.lg} ${theme.spacing.lg} ${theme.spacing.lg}` }}>
         <Flex sx={tierListCardMidSectionSx}>
           <Box sx={tierListCardImageContainerSx}>
-            <Image ref={mantineImageRootRef} src={tierList.thumbnail} sx={tierListCardImageSx} />
+            <Image ref={mantineImageRootRef} alt="thumbnail" src={tierList.thumbnail} sx={tierListCardImageSx} />
           </Box>
           <Stack sx={tierListCardButtonsContainerSx}>
             {readonly ? (

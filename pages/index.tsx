@@ -17,6 +17,8 @@ import { useShowAccountVerifiedNotification } from "../components/home/hooks/use
 import { useGetInfinitePublicTierLists } from "../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../hooks/api/useGetInfiniteUserTierLists";
 import { recentTierListsContainerSx, recentTierListsHeaderSx } from "../components/home/styles";
+import Head from "next/head";
+import { SITE_NAME } from "../config/config";
 
 const Home: NextPage = () => {
   const { width } = useViewportSize();
@@ -32,11 +34,15 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Home - {SITE_NAME}</title>
+      </Head>
+
       <Box sx={landingTierListContainerSx}>
         <LandingTierListImage overlayAlpha={0.5} />
       </Box>
       <Center sx={landingSectionForegroundSx}>
-        <Text component="h2" sx={landingSectionTextSx}>
+        <Text component="h1" sx={landingSectionTextSx}>
           A No BS Tier List Maker
           <br />
           Get started now!

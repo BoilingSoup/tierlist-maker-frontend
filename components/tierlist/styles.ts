@@ -442,6 +442,7 @@ const tierListCardContainerWidth: CSSObject = {
 export const tierListCardContainerSx =
   (isEditing: boolean) =>
   ({ colors, radius }: MantineTheme): CSSObject => ({
+    overflow: "hidden",
     ...tierListCardContainerWidth,
     background: colors.dark[5],
     borderRadius: radius.sm,

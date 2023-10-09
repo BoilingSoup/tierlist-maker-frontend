@@ -1,5 +1,6 @@
 import { Box, Center, Flex, Text } from "@mantine/core";
 import type { NextPage } from "next";
+import Head from "next/head";
 import { InfiniteScrollLoading } from "../../components/tierlist/InfiniteScrollLoading";
 import {
   noPublicTierListsContainerSx,
@@ -9,6 +10,7 @@ import {
 } from "../../components/tierlist/styles";
 import { TierListCard } from "../../components/tierlist/TierListCard";
 import { TierListCardsSkeleton } from "../../components/tierlist/TierListCardsSkeleton";
+import { SITE_NAME } from "../../config/config";
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useGetInfiniteUserTierLists } from "../../hooks/api/useGetInfiniteUserTierLists";
 import { useRecentTierList } from "../../hooks/api/useRecentTierList";
@@ -27,31 +29,37 @@ const Browse: NextPage = () => {
   const noPublicTierLists = pages !== undefined && pages[0].data.length === 0;
 
   return (
-    <Box sx={publicTierListsMainContainerSx}>
-      <Flex sx={publicTierListsFlexSx}>
-        {isLoading && <TierListCardsSkeleton count={40} />}
+    <>
+      <Head>
+        <title>Browse - {SITE_NAME}</title>
+      </Head>
 
-        {noPublicTierLists && (
-          <Center sx={noPublicTierListsContainerSx}>
-            <Text sx={noPublicTierListsTextSx}>No public tier lists found!</Text>
-          </Center>
-        )}
+      <Box sx={publicTierListsMainContainerSx}>
+        <Flex sx={publicTierListsFlexSx}>
+          {isLoading && <TierListCardsSkeleton count={40} />}
 
-        {pages?.map((pg, i) => {
-          const isLastPage = pages.length - 1 === i;
+          {noPublicTierLists && (
+            <Center sx={noPublicTierListsContainerSx}>
+              <Text sx={noPublicTierListsTextSx}>No public tier lists found!</Text>
+            </Center>
+          )}
 
-          return pg.data.map((tierList, j) => {
-            const isLastTierList = pg.data.length - 1 === j;
-            if (isLastPage && isLastTierList) {
-              return <TierListCard key={tierList.id} tierList={tierList} ref={lastTierListRef} readonly />;
-            }
-            return <TierListCard key={tierList.id} tierList={tierList} readonly />;
-          });
-        })}
+          {pages?.map((pg, i) => {
+            const isLastPage = pages.length - 1 === i;
 
-        {isFetchingNextPage && <InfiniteScrollLoading />}
-      </Flex>
-    </Box>
+            return pg.data.map((tierList, j) => {
+              const isLastTierList = pg.data.length - 1 === j;
+              if (isLastPage && isLastTierList) {
+                return <TierListCard key={tierList.id} tierList={tierList} ref={lastTierListRef} readonly />;
+              }
+              return <TierListCard key={tierList.id} tierList={tierList} readonly />;
+            });
+          })}
+
+          {isFetchingNextPage && <InfiniteScrollLoading />}
+        </Flex>
+      </Box>
+    </>
   );
 };
 
