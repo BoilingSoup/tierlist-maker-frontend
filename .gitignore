@@ -38,3 +38,5 @@ next-env.d.ts
 # editor files
 .dir-locals.el
 .node-version
+# Local Netlify folder
+.netlify

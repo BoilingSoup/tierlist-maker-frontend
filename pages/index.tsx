@@ -18,7 +18,6 @@ import { useGetInfinitePublicTierLists } from "../hooks/api/useGetInfinitePublic
 import { useGetInfiniteUserTierLists } from "../hooks/api/useGetInfiniteUserTierLists";
 import { recentTierListsContainerSx, recentTierListsHeaderSx } from "../components/home/styles";
 import Head from "next/head";
-import { SITE_NAME } from "../config/config";
 
 const Home: NextPage = () => {
   const { width } = useViewportSize();
@@ -35,7 +34,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Home - {SITE_NAME}</title>
+        <title>Home - tierlist.lol</title>
       </Head>
 
       <Box sx={landingTierListContainerSx}>

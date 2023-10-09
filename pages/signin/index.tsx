@@ -10,7 +10,6 @@ import { useRedirectIfAuthenticated } from "../../components/common/hooks/useRed
 import { useGetInfinitePublicTierLists } from "../../hooks/api/useGetInfinitePublicTierLists";
 import { useRecentTierList } from "../../hooks/api/useRecentTierList";
 import Head from "next/head";
-import { SITE_NAME } from "../../config/config";
 
 const SignIn: NextPage = () => {
   const { user, isLoading } = useAuth();
@@ -22,7 +21,7 @@ const SignIn: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Sign In - {SITE_NAME}</title>
+        <title>Sign In - tierlist.lol</title>
       </Head>
 
       <Center sx={formPageContainerSx}>

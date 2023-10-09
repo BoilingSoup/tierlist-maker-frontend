@@ -17,7 +17,6 @@ import {
   formSubmitSx,
   inputStyles,
 } from "../../components/forms/styles";
-import { SITE_NAME } from "../../config/config";
 import { usePasswordResetMutation } from "../../hooks/api/usePasswordResetMutation";
 import { usePasswordResetForm } from "../../hooks/auth/usePasswordResetFrom";
 
@@ -29,7 +28,7 @@ const PasswordReset: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Reset Password - {SITE_NAME}</title>
+        <title>Reset Password - tierlist.lol</title>
       </Head>
       <Center sx={formPageContainerSx}>
         <FormPageBackground />
