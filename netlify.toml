@@ -1,9 +1,19 @@
 [build]
-command = "next build"
-publish = "out"
+  command = "next build && next export"
+  publish = "out"
 
 [[redirects]]
   from = "https://tierlistlol.netlify.app/*"
   to = "https://tierlist.lol/:splat"
   status = 301
   force = true
+
+[[redirects]]
+  from = "/tierlist/*"
+  to = "/tierlist/[uuid].html"
+  status = 200
+
+[[redirects]]
+  from = "/password-reset/*"
+  to = "/password-reset/[token].html"
+  status = 200
