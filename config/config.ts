@@ -10,7 +10,7 @@ export const SITE_NAME = "tierlist.lol";
 /** API endpoint */
 
 // export const BASE_URL = "http://localhost:8080";
-export const BASE_URL = "https://tierlist.lol";
+export const BASE_URL = "https://api.tierlist.lol";
 
 const API_VERSION = "v1";
 export const BASE_API = process.env.BASE_API || `${BASE_URL}/${API_VERSION}`;
