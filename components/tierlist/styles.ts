@@ -559,8 +559,8 @@ export const getTierListCardTitleInputStyles = (
 export const tierListCardMidSectionSx = ({ spacing, breakpoints }: MantineTheme): CSSObject => ({
   alignItems: "center",
   gap: spacing.lg,
-  [`@media (max-width: ${breakpoints.lg})`]: {
-    flexWrap: "wrap",
+  [`@media (max-width: ${breakpoints.xs})`]: {
+    flexDirection: "column",
   },
 });
 
