@@ -1,9 +1,6 @@
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
 [build]
-command = "npm run build"
-publish = ".next"
+command = "next build"
+publish = "out"
 
 [[redirects]]
   from = "https://tierlistlol.netlify.app/*"
