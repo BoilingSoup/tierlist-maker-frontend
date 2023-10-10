@@ -503,11 +503,14 @@ export const tierListCardImageContainerSx: CSSObject = {
 
 export const tierListCardImageSx: CSSObject = { width: "300px", height: "200px", objectFit: "contain" };
 
-export const tierListCardButtonsContainerSx = ({ spacing }: MantineTheme): CSSObject => ({
+export const tierListCardButtonsContainerSx = ({ spacing, breakpoints }: MantineTheme): CSSObject => ({
   width: "100%",
   height: "200px",
   gap: spacing.sm,
   justifyContent: "center",
+  [`@media (max-width: ${breakpoints.lg})`]: {
+    height: "auto",
+  },
 });
 
 export const grayButtonHoverSx = ({ colors }: MantineTheme): CSSObject => ({
@@ -553,9 +556,12 @@ export const getTierListCardTitleInputStyles = (
   },
 });
 
-export const tierListCardMidSectionSx = ({ spacing }: MantineTheme): CSSObject => ({
+export const tierListCardMidSectionSx = ({ spacing, breakpoints }: MantineTheme): CSSObject => ({
   alignItems: "center",
   gap: spacing.lg,
+  [`@media (max-width: ${breakpoints.lg})`]: {
+    flexWrap: "wrap",
+  },
 });
 
 export const noPublicTierListsContainerSx = (): CSSObject => ({
