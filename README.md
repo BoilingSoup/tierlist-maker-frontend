@@ -25,4 +25,4 @@ https://github.com/BoilingSoup/tierlist.lol-frontend/assets/84747244/3dac411a-b3
   - Get more practice making full-stack apps
   - Practice implementing file uploads
   - Improve my approaches for server-side & client-side caching
-
+  - All the tier list makers on Google's front page are too confusing for me
