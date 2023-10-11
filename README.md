@@ -12,8 +12,8 @@ https://github.com/BoilingSoup/tierlist.lol-frontend/assets/84747244/3dac411a-b3
 # Features 
   ### These features do not require auth
   - Make flexible tier lists with drag & drop, or with your keyboard (Tab, ENTER, arrow keys) thanks to accessibility provided by [DndKit](https://github.com/clauderic/dnd-kit)
-  - Export your tier list as png and download
-  - View and modify tier lists shared by other people
+  - Export tier lists as .png and download
+  - View, modify (does not persist), and download tier lists shared by other people
   ### These features require auth
   - Save/Edit/Delete your tier list to the cloud
   - Make your tier list public for others to view, share, and clone  
