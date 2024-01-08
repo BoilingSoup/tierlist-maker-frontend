@@ -1,7 +1,7 @@
 
-# Tierlist.lol 
+# Tierlist.fun 
 
-[tierlist.lol](https://tierlist.lol) is a full-stack tier list builder made with:
+[tierlist.fun](https://tierlist.fun) is a full-stack tier list builder made with:
   - NextJS (frontend)
   - Laravel (backend API)
   - CockroachDB
